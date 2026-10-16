@@ -12,7 +12,7 @@ set -e
 : "${HALEX_API_TOKEN:?Set HALEX_API_TOKEN env var (see AI_BUILD.md)}"
 ENDPOINT="${PUBLISH_ENDPOINT:-https://halex-web-sharpchefjeff-1314.vercel.app/api/publish}"
 EVM_DB="${EVM_DB:-$HOME/workspace/solana-tracker/evm.db}"
-MARKET_INDEX_DB="${MARKET_INDEX_DB:-$HOME/workspace/solana-tracker/market_index.db}"
+MARKET_INDEX_DB="${MARKET_INDEX_DB:-$HOME/workspace/solana-tracker/market-index/market_index.db}"
 TMPDIR=$(mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
@@ -21,7 +21,7 @@ sqlite3 "$EVM_DB" "SELECT json_group_array(json_object('chain',chain,'pool_addre
 
 # 2. market-index — top tokens (placeholder if DB empty)
 if [ -s "$MARKET_INDEX_DB" ]; then
-  sqlite3 "$MARKET_INDEX_DB" "SELECT json_group_array(json_object('symbol',symbol,'name',name,'price',price,'market_cap',market_cap)) FROM (SELECT * FROM tokens ORDER BY market_cap DESC LIMIT 20);" > "$TMPDIR/market-index.json" 2>/dev/null || echo '{"status":"pending","message":"Feed not yet configured"}' > "$TMPDIR/market-index.json"
+  sqlite3 "$MARKET_INDEX_DB" "SELECT json_group_array(json_object('symbol',symbol,'name',name,'price',price_usd,'market_cap',market_cap)) FROM (SELECT * FROM tokens ORDER BY market_cap DESC LIMIT 20);" > "$TMPDIR/market-index.json" 2>/dev/null || echo '{"status":"pending","message":"Feed not yet configured"}' > "$TMPDIR/market-index.json"
 else
   echo '{"status":"pending","message":"Feed not yet configured"}' > "$TMPDIR/market-index.json"
 fi
