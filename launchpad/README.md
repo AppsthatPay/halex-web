@@ -21,6 +21,14 @@ The RUSTY-branded, tabbed token mint page. Part of the HALEX build.
   (source file; the PNG is base64-embedded in `mint.html` so the page is
   fully self-contained — no missing-asset risk when shared).
 
+## Serving on Vercel
+
+Next.js serves static files from `public/`. The served copy lives at
+`public/launchpad/mint.html` → served at `/launchpad/mint.html` once the
+Vercel project is linked to this repo (dashboard: halex-web → Settings →
+Git → connect AppsthatPay/halex-web). `launchpad/mint.html` is the same
+file kept beside this README as the source of truth.
+
 ## Wiring (when the native/app tab lands)
 
 - Fill the form → RUSTY prepares the chain transaction → phone wallet signs
