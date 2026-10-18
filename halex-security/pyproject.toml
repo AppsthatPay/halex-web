@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "halex-security"
+version = "1.0.0"
+description = "Software security system for the HALEX app: verification gates, AI-socket policy, secret handling, audit, fail-closed gates"
+requires-python = ">=3.10"
+license = { text = "UNLICENSED" }
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["halex_security*"]
