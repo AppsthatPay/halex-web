@@ -53,3 +53,31 @@ BLOB_READ_WRITE_TOKEN=... HALEX_FEED_DIR=/path/to/finished/feeds npm run publish
 All `/api/*` routes except `/api/health` require
 `Authorization: Bearer <HALEX_API_TOKEN>`. The middleware fails closed:
 no token configured means no access.
+
+## Setup: extra directories
+
+This repo carries two packages alongside the web app. Use them during setup:
+
+### `TradeX-Apex1/` — the trade system, buildable
+APEX¹: the unified signal feed. Full build guide for standing up the trade
+engine (paper first, live only behind measured proof).
+1. Read `TradeX-Apex1/README.md`, then follow `TradeX-Apex1/AI_BUILD_PROMPT.md`
+   step by step (7-step assembly order; each step has a "done" check).
+2. Copy `TradeX-Apex1/.env.example` to `.env` and fill in **your own** keys and
+   wallets — no secrets ship in this repo, ever.
+3. Paper trade first. Live arming requires ≥65% measured win rate over ≥30
+   closed paper trades, plus the triple-gate (explicit override + key file +
+   armed flag). See `TradeX-Apex1/docs/PAPER_VS_LIVE.md`.
+
+### `halex-security/` — software security system, installs with the app
+Code, not a prompt. Two installs:
+- **Server** (always-on box / API routes): `pip install ./halex-security`
+- **Android app**: include the `:halex-security` module from
+  `halex-security/android/halex-security` in `settings.gradle.kts`.
+- Run the checks: `pytest` (Python, 17 tests) and
+  `./gradlew :halex-security:test` (Android, builds on GitHub).
+
+What it enforces: UXSS + SHELL verification gates on untrusted input, the
+AI-socket policy (AI wires and operates — never modifies the app or its
+libraries), safe secret handling, append-only audit log, fail-closed
+multi-gates. Full rules in `halex-security/README.md`.
