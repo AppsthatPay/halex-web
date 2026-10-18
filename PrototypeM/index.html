@@ -505,7 +505,7 @@ body.launching{overflow:hidden}
 <section class="tab active" id="tab-home">
   <div class="hero-band">
     <h2>The whole HALEX stack, in one testable sandbox.</h2>
-    <p>Live market firehose, watched-token research, the RUSTY mint, AI trading wallets, SolHaG verdicts and the Chaintarium — wired to real public data where it exists, and honestly labeled where a backend is still to come.</p>
+    <p>Live market firehose, watched-token research, the RUSTY mint, AI trading wallets, APEX² research reports and the Chaintarium — wired to real public data where it exists, and honestly labeled where a backend is still to come.</p>
     <div class="mkt-strip" id="mkt-strip"></div>
     <p class="note" style="margin-top:9px"><span class="chip warn">SNAPSHOT — NOT LIVE</span>&nbsp; Market snapshot: Oct 17, 2026 close · Source: Basis Desk market close. Live prices are on APEX¹.</p>
   </div>
@@ -566,7 +566,7 @@ body.launching{overflow:hidden}
 <section class="tab" id="tab-apex2">
   <div class="tabhead">
     <h2>APEX² — Watchlist &amp; Research Lab</h2>
-    <p>Tokens you chose to watch, plus the forensic bench: paste any contract and run the impersonation and scam checks before money moves.</p>
+    <p>Tokens you chose to watch, plus the research bench. APEX² is how HALEX investigates a token: watch one from APEX¹ or paste any contract here and APEX² builds the full report — contract address and on-chain metadata, live price, liquidity and whether a real exit exists, the buy/sell tape, holder and deployer checks, and impersonation screening — with the verdict and the reasons shown.</p>
   </div>
   <div class="sec-title">Watched tokens</div>
   <div id="watch-list"></div>
@@ -578,7 +578,7 @@ body.launching{overflow:hidden}
       <input id="lab-input" type="text" placeholder="Paste a contract address (any chain)…" style="flex:1; min-width:200px" autocomplete="off" spellcheck="false" />
       <button class="btn primary" id="lab-go">Run checks</button>
     </div>
-    <p class="note" style="margin:9px 0 0">Checks run live against DexScreener: ticker-collision count (the vamp test), verifiable links, liquidity depth, pair age and trading activity. No verifiable link = guilty until proven innocent.</p>
+    <p class="note" style="margin:9px 0 0">APEX² Research runs live against market data: contract address and metadata, ticker-collision count (the vamp test), verifiable links, current price, liquidity depth, pair age, and the buy/sell tape. The full report also weighs what people are actually saying around a token — callouts, posts, positives and negatives. No verifiable link = guilty until proven innocent.</p>
     <div id="lab-result" style="margin-top:6px"></div>
   </div>
 </section>
@@ -729,11 +729,11 @@ body.launching{overflow:hidden}
 <!-- ================= RESEARCH ================= -->
 <section class="tab" id="tab-research">
   <div class="tabhead">
-    <h2>Research — SolHaG verdicts</h2>
-    <p>Every token gets a verdict: <b>REAL</b>, <b>SUSPECT</b> or <b>MIMIC</b> — scored from live market structure, with the reasons shown. Impersonation is the dominant scam pattern: never trust a ticker, cross-reference the contract.</p>
+    <h2>APEX² Research</h2>
+    <p>APEX² Research is HALEX's token investigation view. Search or watch a token and it returns a complete report: contract address, on-chain metadata, current price, liquidity, the buy/sell tape, and community activity — callouts, posts, and the positives and negatives people are posting. Every token also gets a verdict: <b>REAL</b>, <b>SUSPECT</b> or <b>MIMIC</b> — scored from live market structure, with the reasons shown. Impersonation is the dominant scam pattern: never trust a ticker, cross-reference the contract.</p>
   </div>
   <div id="research-list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
-  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Scores are computed in your browser from live DexScreener pair data: liquidity depth, pair age, buy/sell balance, volume and verifiable links. They are a first-pass screen, not a guarantee — the full SolHaG engine adds holder and deployer-wallet forensics.</span></div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Scores are computed in your browser from live DexScreener pair data: liquidity depth, pair age, buy/sell balance, volume and verifiable links. They are a first-pass screen, not a guarantee — the full APEX² Research pass adds holder and deployer-wallet forensics plus community activity, so the report covers both the market structure and what people are saying about the token.</span></div>
 </section>
 
 <!-- ================= CHAINTARIUM ================= -->
@@ -886,7 +886,7 @@ var TABS = [
   {id:"rusty",  label:"RUSTY",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c1 3-2 4-2 7a4.5 4.5 0 009 0c0-2-1-3-1-3s3 1 3 5a7 7 0 11-14 0c0-5 4-6 5-9z"/></svg>'},
   {id:"news",   label:"News",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h13v14H4zM17 9h3v10h-3M7 9h7M7 13h7M7 17h4"/></svg>'},
   {id:"trading",label:"Trading", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'},
-  {id:"research",label:"Research",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>'},
+  {id:"research",label:"APEX² Research",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>'},
   {id:"chaintarium",label:"Chaintarium", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(-18 12 12)"/></svg>'},
   {id:"sockets",label:"Sockets", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg>'},
   {id:"security",label:"Security",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>'},
@@ -1291,7 +1291,7 @@ function verdictFor(score){
   return {key:"mimic", label:"MIMIC / AVOID", blurb:"Structure matches the impersonation playbook. Treat as a trap until provenance is proven."};
 }
 function analyzePairs(pairs, symbol){
-  /* shared SolHaG-style scoring over DexScreener pairs */
+  /* shared APEX² scoring over DexScreener pairs */
   pairs = (pairs||[]).slice().sort(function(a,b){ return ((b.liquidity&&b.liquidity.usd)||0) - ((a.liquidity&&a.liquidity.usd)||0); });
   var p = pairs[0];
   if(!p) return null;
@@ -1471,7 +1471,7 @@ function renderTrading(){
 
 /* ---------------- Sockets ---------------- */
 var SOCKETS = [
-  { name:"Market data socket", status:"LIVE IN SANDBOX", cls:"ok", desc:"DexScreener + GeckoTerminal public APIs. This is the one socket genuinely connected here — it powers APEX¹, APEX² and the Research verdicts in real time." },
+  { name:"Market data socket", status:"LIVE IN SANDBOX", cls:"ok", desc:"DexScreener + GeckoTerminal public APIs. This is the one socket genuinely connected here — it powers APEX¹, APEX² and the APEX² Research verdicts in real time." },
   { name:"HALEX wallet socket", status:"PREVIEW", cls:"warn", desc:"Pairing, balance reads and on-device signing requests. The interface is real; the handshake is not wired in the sandbox. Keys never leave the phone." },
   { name:"Trade execution socket", status:"PREVIEW", cls:"warn", desc:"Routes portal quotes to the always-on box where the loops run. Paper and live are separated by the armed flag + triple gate — a flag alone is never enough on an unproven signal source." },
   { name:"AI provider sockets — Muse / Grok / others", status:"PREVIEW", cls:"warn", desc:"External AIs plug in to operate: fetch, scan, design, summarize. Structured capabilities in, structured results out, everything public-facing passes the halex-security gates. No socket grants write access to code." },
