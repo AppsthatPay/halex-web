@@ -1,0 +1,1608 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<link rel="icon" href="data:," />
+<title>HALEX-M Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{
+  --bg:#0a0c10; --bg2:#0e1117; --panel:#12151d; --panel2:#171b26; --panel3:#1d2230;
+  --line:#242a38; --line2:#2e3547;
+  --text:#eceef4; --muted:#9aa3b5; --faint:#6b7488;
+  --orange:#f7931a; --gold:#ffc24b; --green:#31c48d; --red:#ff6b5e; --blue:#5aa9ff; --teal:#2dd4bf;
+  --sol:#9945ff; --eth:#8a9cff; --bnb:#f0b90b; --base:#4d7cff;
+  --rust-bg:#150c09; --rust-panel:#1f110c; --rust-panel2:#2a1710; --rust-line:#472619;
+  --rust:#e05226; --ember:#ff8a3c; --rust-text:#f6e3d7; --rust-muted:#c49a86;
+  --nav-h:64px;
+  --radius:14px;
+  color-scheme:dark;
+}
+/* HALEX-M ships dark-first by design (Black Onyx family). The in-app theme
+   switcher (Blue & White / Evening / Orange & White) arrives with the HALEX-M
+   theme system; this sandbox build holds the dark theme on every device. */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"IBM Plex Sans",system-ui,sans-serif; font-size:15px; line-height:1.45;
+  padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 14px);
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+a{color:var(--blue); text-decoration:none}
+a:hover{text-decoration:underline}
+button{font-family:inherit; cursor:pointer}
+img{display:block}
+h1,h2,h3{margin:0; font-weight:600; letter-spacing:-.01em}
+.wrap{max-width:1060px; margin:0 auto; padding:0 14px}
+
+/* ---------- top strip ---------- */
+.topstrip{
+  position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+}
+.topstrip .wrap{display:flex; align-items:center; gap:10px; padding-top:10px; padding-bottom:10px}
+.brandmark{display:flex; align-items:center; gap:9px; min-width:0}
+.brandmark .glyph{
+  width:30px; height:30px; border-radius:9px; flex:none;
+  background:linear-gradient(135deg, var(--orange), #b25f00);
+  display:flex; align-items:center; justify-content:center; color:#181000; font-weight:700; font-size:15px;
+}
+.brandmark b{font-size:15px; letter-spacing:.02em}
+.brandmark span{font-size:11px; color:var(--muted); display:block; line-height:1.1}
+.pill{
+  margin-left:auto; display:inline-flex; align-items:center; gap:6px; flex:none;
+  font-size:11px; font-weight:600; padding:5px 10px; border-radius:999px;
+  border:1px solid var(--line2); background:var(--panel); color:var(--muted);
+}
+.pill .dot{width:7px; height:7px; border-radius:50%; background:var(--gold)}
+.pill.live .dot{background:var(--green)}
+.pill.err .dot{background:var(--red)}
+
+/* ---------- sections / tabs ---------- */
+section.tab{display:none; padding:18px 0 8px; animation:fadein .18s ease}
+section.tab.active{display:block}
+@keyframes fadein{from{opacity:0; transform:translateY(3px)} to{opacity:1; transform:none}}
+@media (prefers-reduced-motion: reduce){ section.tab{animation:none} }
+.tabhead{margin-bottom:14px}
+.tabhead h2{font-size:22px}
+.tabhead p{margin:4px 0 0; color:var(--muted); font-size:13.5px; max-width:62ch}
+.sec-title{font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.09em; color:var(--faint); margin:22px 0 10px}
+.sec-title:first-child{margin-top:0}
+
+/* ---------- generic cards ---------- */
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px}
+.grid{display:grid; gap:10px}
+.grid.c2{grid-template-columns:1fr 1fr}
+.grid.c3{grid-template-columns:1fr 1fr 1fr}
+@media (max-width:640px){ .grid.c3{grid-template-columns:1fr 1fr} }
+.stat b{font-size:19px; display:block; font-family:"IBM Plex Mono",monospace; font-weight:600}
+.stat span{font-size:11.5px; color:var(--muted)}
+.chip{
+  display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600;
+  padding:3px 8px; border-radius:999px; border:1px solid var(--line2); color:var(--muted); background:var(--panel2);
+}
+.chip.ok{color:var(--green); border-color:color-mix(in srgb, var(--green) 45%, var(--line))}
+.chip.warn{color:var(--gold); border-color:color-mix(in srgb, var(--gold) 45%, var(--line))}
+.chip.bad{color:var(--red); border-color:color-mix(in srgb, var(--red) 45%, var(--line))}
+.chip.info{color:var(--blue); border-color:color-mix(in srgb, var(--blue) 45%, var(--line))}
+.note{font-size:12.5px; color:var(--muted)}
+.tag-note{
+  display:flex; gap:8px; align-items:flex-start; font-size:12.5px; color:var(--muted);
+  background:var(--panel2); border:1px dashed var(--line2); border-radius:10px; padding:9px 11px; margin-top:10px;
+}
+.tag-note svg{flex:none; margin-top:1px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  border:1px solid var(--line2); background:var(--panel3); color:var(--text);
+  font-size:13.5px; font-weight:600; padding:9px 14px; border-radius:10px;
+}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--orange); border-color:var(--orange); color:#1c1100}
+.btn.buy{background:var(--green); border-color:var(--green); color:#04160d}
+.btn.sell{background:var(--red); border-color:var(--red); color:#1c0503}
+.btn.ghost{background:transparent}
+.btn:disabled{opacity:.55; cursor:default}
+.btn.block{width:100%}
+input,select,textarea{
+  width:100%; background:var(--bg2); border:1px solid var(--line2); color:var(--text);
+  border-radius:10px; padding:10px 11px; font-size:14px; font-family:inherit;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid color-mix(in srgb, var(--orange) 65%, transparent); outline-offset:0; border-color:var(--orange)}
+label.flabel{display:block; font-size:12px; font-weight:600; color:var(--muted); margin:0 0 5px}
+.field{margin-bottom:12px}
+.up{color:var(--green)} .down{color:var(--red)}
+.empty{
+  border:1px dashed var(--line2); border-radius:var(--radius); padding:22px 16px; text-align:center; color:var(--muted); font-size:13.5px;
+}
+
+/* ---------- home ---------- */
+.hero-band{
+  border-radius:18px; padding:18px; border:1px solid var(--line);
+  background:
+    radial-gradient(120% 160% at 85% -20%, color-mix(in srgb, var(--orange) 26%, transparent), transparent 55%),
+    linear-gradient(160deg, var(--panel3), var(--panel));
+}
+.hero-band h2{font-size:21px; max-width:24ch}
+.hero-band p{color:var(--muted); font-size:13.5px; margin:6px 0 0; max-width:56ch}
+.mkt-strip{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:14px}
+@media (max-width:760px){ .mkt-strip{grid-template-columns:repeat(3,1fr)} .mkt-strip .mkt:nth-child(n+4){display:none} }
+.mkt{background:color-mix(in srgb, var(--bg) 45%, transparent); border:1px solid var(--line); border-radius:10px; padding:8px 10px}
+.mkt span{font-size:11px; color:var(--muted); display:block}
+.mkt b{font-family:"IBM Plex Mono",monospace; font-size:14.5px; font-weight:600}
+.mkt i{font-style:normal; font-size:11px; font-family:"IBM Plex Mono",monospace}
+.layers{display:grid; gap:8px}
+.layer{display:flex; gap:12px; align-items:flex-start; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:12px}
+.layer .lnum{
+  flex:none; width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:13px; background:var(--panel3); border:1px solid var(--line2); color:var(--gold);
+}
+.layer b{font-size:14px} .layer p{margin:2px 0 0; font-size:12.5px; color:var(--muted)}
+.quickgrid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+@media (max-width:640px){ .quickgrid{grid-template-columns:repeat(3,1fr)} }
+.quick{
+  display:flex; flex-direction:column; align-items:center; gap:7px; padding:13px 6px;
+  background:var(--panel); border:1px solid var(--line); border-radius:12px; color:var(--text); font-size:12px; font-weight:600;
+}
+.quick svg{color:var(--gold); width:22px; height:22px}
+
+/* ---------- feed ---------- */
+.feed-tools{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:12px}
+.fchip{
+  border:1px solid var(--line2); background:var(--panel); color:var(--muted);
+  font-size:12.5px; font-weight:600; padding:7px 12px; border-radius:999px;
+}
+.fchip.on{background:var(--text); color:var(--bg); border-color:var(--text)}
+.feed-status{font-size:12px; color:var(--faint); margin-left:auto}
+.tokencard{
+  display:flex; gap:12px; width:100%; text-align:left; align-items:flex-start;
+  background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:13px; margin-bottom:9px; color:var(--text);
+}
+.tokencard:active{border-color:var(--line2)}
+.tok-ava{position:relative; flex:none; width:44px; height:44px}
+.tok-ava .letter{
+  position:absolute; inset:0; border-radius:12px; display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:14px; color:#fff; background:linear-gradient(135deg,#3a4358,#232a3a);
+}
+.tok-ava img{position:absolute; inset:0; width:44px; height:44px; border-radius:12px; object-fit:cover; background:var(--panel3)}
+.tok-main{flex:1; min-width:0}
+.tok-top{display:flex; align-items:baseline; gap:7px; flex-wrap:wrap}
+.tok-top b{font-size:15px}
+.tok-top .sym{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--gold); font-weight:600}
+.tok-top .chain{font-size:10.5px; color:var(--faint); text-transform:uppercase; letter-spacing:.06em}
+.tok-desc{font-size:12.5px; color:var(--muted); margin-top:3px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.tok-nums{display:flex; gap:14px; margin-top:8px; flex-wrap:wrap}
+.tok-nums div span{font-size:10.5px; color:var(--faint); display:block}
+.tok-nums div b{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600}
+.tok-side{text-align:right; flex:none}
+.tok-side .price{font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:15px}
+.tok-side .chg{font-family:"IBM Plex Mono",monospace; font-size:12px}
+.skel{border-radius:var(--radius); border:1px solid var(--line); background:var(--panel); height:92px; margin-bottom:9px; position:relative; overflow:hidden}
+.skel::after{content:""; position:absolute; inset:0; background:linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--text) 6%, transparent) 50%, transparent 70%); animation:shim 1.3s infinite}
+@keyframes shim{from{transform:translateX(-100%)} to{transform:translateX(100%)}}
+@media (prefers-reduced-motion: reduce){ .skel::after{animation:none} }
+
+/* ---------- detail sheet ---------- */
+.sheet-veil{position:fixed; inset:0; background:rgba(4,5,8,.62); z-index:60; display:none}
+.sheet-veil.open{display:block}
+.sheet{
+  position:fixed; left:0; right:0; bottom:0; z-index:61; display:none;
+  background:var(--bg2); border-top:1px solid var(--line2); border-radius:20px 20px 0 0;
+  max-height:88vh; overflow-y:auto; padding:16px 16px calc(18px + env(safe-area-inset-bottom));
+}
+.sheet.open{display:block}
+@media (min-width:820px){ .sheet{left:50%; right:auto; transform:translateX(-50%); width:640px; border:1px solid var(--line2); border-bottom:none} }
+.sheet .grab{width:38px; height:4px; border-radius:99px; background:var(--line2); margin:0 auto 12px}
+.kv{display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px solid var(--line); font-size:13.5px}
+.kv span{color:var(--muted)} .kv b{font-family:"IBM Plex Mono",monospace; font-weight:600; text-align:right}
+.portal{margin-top:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:13px}
+.portal .seg{display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px}
+.portal .seg button{padding:9px; border-radius:9px; border:1px solid var(--line2); background:var(--panel2); color:var(--muted); font-weight:700; font-size:14px}
+.portal .seg button.on-buy{background:var(--green); border-color:var(--green); color:#04160d}
+.portal .seg button.on-sell{background:var(--red); border-color:var(--red); color:#1c0503}
+.portal .amounts{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:8px 0}
+.portal .amounts button{padding:7px 0; font-size:12.5px; border-radius:8px; border:1px solid var(--line2); background:var(--panel2); color:var(--text); font-family:"IBM Plex Mono",monospace}
+.range-row{display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 2px}
+.range-row button{font-size:11.5px; padding:5px 10px; border-radius:99px; border:1px solid var(--line2); background:var(--panel); color:var(--muted); font-weight:600}
+.range-row button.on{background:var(--text); color:var(--bg)}
+#detail-chart{width:100%; height:120px; display:block}
+.toast{
+  position:fixed; left:50%; transform:translateX(-50%) translateY(20px); bottom:calc(var(--nav-h) + 18px); z-index:80;
+  background:var(--panel3); color:var(--text); border:1px solid var(--line2); border-radius:12px;
+  padding:11px 15px; font-size:13px; max-width:min(92vw,480px); opacity:0; pointer-events:none; transition:.22s; box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+/* ---------- checks / verdicts ---------- */
+.check{display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); align-items:flex-start}
+.check:last-child{border-bottom:none}
+.check .ic{flex:none; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.check .ic.pass{background:color-mix(in srgb, var(--green) 18%, transparent); color:var(--green)}
+.check .ic.warn{background:color-mix(in srgb, var(--gold) 18%, transparent); color:var(--gold)}
+.check .ic.fail{background:color-mix(in srgb, var(--red) 18%, transparent); color:var(--red)}
+.check b{font-size:13.5px} .check p{margin:1px 0 0; font-size:12.5px; color:var(--muted)}
+.verdict-banner{border-radius:12px; padding:14px; display:flex; gap:13px; align-items:center; border:1px solid}
+.verdict-banner.real{background:color-mix(in srgb, var(--green) 10%, var(--panel)); border-color:color-mix(in srgb, var(--green) 40%, var(--line))}
+.verdict-banner.suspect{background:color-mix(in srgb, var(--gold) 10%, var(--panel)); border-color:color-mix(in srgb, var(--gold) 40%, var(--line))}
+.verdict-banner.mimic{background:color-mix(in srgb, var(--red) 10%, var(--panel)); border-color:color-mix(in srgb, var(--red) 40%, var(--line))}
+.verdict-banner .vscore{font-family:"IBM Plex Mono",monospace; font-size:26px; font-weight:600}
+.verdict-banner h3{font-size:17px}
+.verdict-banner p{margin:2px 0 0; font-size:12.5px; color:var(--muted)}
+.scorebar{height:7px; border-radius:99px; background:var(--panel3); overflow:hidden; margin-top:8px}
+.scorebar i{display:block; height:100%; border-radius:99px}
+
+/* ---------- trading ---------- */
+.wallet-card .addr{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted); word-break:break-all}
+.bal{font-family:"IBM Plex Mono",monospace; font-size:21px; font-weight:600}
+.skill-row{display:flex; gap:11px; align-items:flex-start; padding:12px 0; border-bottom:1px solid var(--line)}
+.skill-row:last-child{border-bottom:none}
+.skill-row .grow{flex:1; min-width:0}
+.skill-row b{font-size:14px}
+.skill-row p{margin:2px 0 0; font-size:12.5px; color:var(--muted)}
+.wr{text-align:right; flex:none}
+.wr b{font-family:"IBM Plex Mono",monospace; font-size:16px}
+.wr span{display:block; font-size:10.5px; color:var(--faint)}
+table.log{width:100%; border-collapse:collapse; font-size:12.5px}
+table.log th{text-align:left; color:var(--faint); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:6px 8px 6px 0; border-bottom:1px solid var(--line)}
+table.log td{padding:8px 8px 8px 0; border-bottom:1px solid var(--line); vertical-align:top}
+table.log tr:last-child td{border-bottom:none}
+@media (max-width:560px){ table.log .hideS{display:none} }
+
+/* ---------- news ---------- */
+.news-item{display:block; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:9px; color:var(--text)}
+.news-item:hover{text-decoration:none; border-color:var(--line2)}
+.news-item h3{font-size:15.5px; line-height:1.35}
+.news-item p{margin:5px 0 0; font-size:13px; color:var(--muted)}
+.news-meta{display:flex; gap:7px; flex-wrap:wrap; margin-top:9px; align-items:center}
+.news-meta .src{font-size:11.5px; color:var(--faint); font-weight:600}
+
+/* ---------- chaintarium ---------- */
+#chain-stage{position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--line); background:radial-gradient(120% 120% at 50% 40%, #101623 0%, #05070c 70%); height:430px}
+@media (max-width:640px){ #chain-stage{height:380px} }
+#chain-canvas{position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:grab}
+#chain-canvas:active{cursor:grabbing}
+.planet-label{
+  position:absolute; transform:translate(-50%,-140%); pointer-events:none;
+  font-size:10.5px; font-weight:600; letter-spacing:.04em; color:#dfe6f5;
+  background:rgba(8,10,16,.72); border:1px solid rgba(255,255,255,.16); padding:2px 7px; border-radius:99px; white-space:nowrap;
+}
+.chain-info{margin-top:10px}
+.chain-ctl{display:flex; gap:7px; flex-wrap:wrap; margin-top:10px}
+.chain-ctl button{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; border:1px solid var(--line2); background:var(--panel); color:var(--muted)}
+.chain-ctl button.on{background:var(--text); color:var(--bg)}
+
+/* ---------- sockets / security ---------- */
+.socket-row{display:flex; gap:12px; align-items:flex-start; padding:13px 0; border-bottom:1px solid var(--line)}
+.socket-row:last-child{border-bottom:none}
+.socket-row .port{flex:none; width:38px; height:38px; border-radius:11px; background:var(--panel3); border:1px solid var(--line2); display:flex; align-items:center; justify-content:center; color:var(--gold)}
+.socket-row b{font-size:14px} .socket-row p{margin:2px 0 0; font-size:12.5px; color:var(--muted)}
+.gate{display:flex; gap:12px; align-items:flex-start}
+.gate .gicon{flex:none; width:40px; height:40px; border-radius:11px; display:flex; align-items:center; justify-content:center; background:color-mix(in srgb, var(--green) 14%, transparent); color:var(--green); border:1px solid color-mix(in srgb, var(--green) 35%, var(--line))}
+.logline{display:flex; gap:10px; font-size:12.5px; padding:9px 0; border-bottom:1px solid var(--line); align-items:flex-start}
+.logline:last-child{border-bottom:none}
+.logline time{font-family:"IBM Plex Mono",monospace; color:var(--faint); font-size:11.5px; flex:none; padding-top:1px}
+.logline p{margin:0} .logline p span{color:var(--muted)}
+
+/* ---------- RUSTY ---------- */
+.rusty-zone{
+  background:var(--rust-bg); border:1px solid var(--rust-line); border-radius:18px; padding:16px; color:var(--rust-text);
+}
+.rusty-head{display:flex; gap:14px; align-items:center; margin-bottom:6px}
+.rusty-head img{width:74px; height:74px; border-radius:16px; border:1px solid var(--rust-line); object-fit:cover; flex:none}
+.rusty-head h2{font-size:24px; letter-spacing:.14em; color:var(--ember)}
+.rusty-head p{margin:3px 0 0; font-size:12.5px; color:var(--rust-muted)}
+.rusty-zone .sec-title{color:#a06a4e}
+.rusty-card{background:var(--rust-panel); border:1px solid var(--rust-line); border-radius:12px; padding:13px}
+.rusty-zone input,.rusty-zone select,.rusty-zone textarea{background:#120806; border-color:var(--rust-line); color:var(--rust-text)}
+.rusty-zone input:focus,.rusty-zone select:focus,.rusty-zone textarea:focus{outline-color:color-mix(in srgb, var(--ember) 60%, transparent); border-color:var(--ember)}
+.rusty-zone label.flabel{color:var(--rust-muted)}
+.rusty-steps{display:flex; gap:6px; flex-wrap:wrap; margin:12px 0}
+.rusty-steps button{
+  font-size:12.5px; font-weight:600; padding:8px 12px; border-radius:99px;
+  border:1px solid var(--rust-line); background:var(--rust-panel); color:var(--rust-muted);
+}
+.rusty-steps button.on{background:var(--rust); border-color:var(--rust); color:#fff7f0}
+.rusty-step{display:none} .rusty-step.on{display:block}
+.chainpick{display:grid; grid-template-columns:repeat(3,1fr); gap:7px}
+@media (max-width:560px){ .chainpick{grid-template-columns:repeat(2,1fr)} }
+.chainpick button{
+  text-align:left; padding:10px 11px; border-radius:11px; border:1px solid var(--rust-line);
+  background:var(--rust-panel); color:var(--rust-text); font-size:13px; font-weight:600;
+}
+.chainpick button small{display:block; font-weight:400; color:var(--rust-muted); font-size:11px; margin-top:2px}
+.chainpick button.on{border-color:var(--ember); background:var(--rust-panel2); box-shadow:inset 0 0 0 1px var(--ember)}
+.preset-row{display:flex; gap:7px; flex-wrap:wrap}
+.preset-row button{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; border:1px solid var(--rust-line); background:var(--rust-panel); color:var(--rust-muted)}
+.preset-row button.on{background:var(--ember); border-color:var(--ember); color:#221000}
+.page-preview{border-radius:14px; padding:16px; color:#fff; min-height:150px; position:relative; overflow:hidden}
+.page-preview h3{font-size:19px}
+.page-preview p{font-size:13px; opacity:.88; max-width:44ch}
+.page-preview .ca{font-family:"IBM Plex Mono",monospace; font-size:11px; opacity:.75; word-break:break-all}
+.rusty-zone .kv{border-color:var(--rust-line)} .rusty-zone .kv span{color:var(--rust-muted)}
+.rusty-zone .note{color:var(--rust-muted)}
+.rusty-zone .btn{background:#33180d; border-color:var(--rust-line); color:var(--rust-text)}
+.rusty-zone .btn.primary{background:var(--rust); border-color:var(--rust); color:#fff5ee}
+.rusty-zone .tag-note{background:#1c0d07; border-color:var(--rust-line); color:var(--rust-muted)}
+
+/* ---------- bottom nav ---------- */
+nav.tabbar{
+  position:fixed; left:0; right:0; bottom:0; z-index:50; height:calc(var(--nav-h) + env(safe-area-inset-bottom));
+  padding-bottom:env(safe-area-inset-bottom);
+  background:color-mix(in srgb, var(--bg2) 92%, transparent); backdrop-filter:blur(12px); border-top:1px solid var(--line);
+}
+nav.tabbar .rail{
+  display:flex; gap:2px; overflow-x:auto; scrollbar-width:none; max-width:1060px; margin:0 auto; padding:6px 8px 0;
+}
+nav.tabbar .rail::-webkit-scrollbar{display:none}
+nav.tabbar button{
+  flex:1 0 auto; min-width:62px; display:flex; flex-direction:column; align-items:center; gap:3px;
+  background:none; border:none; color:var(--faint); font-size:10px; font-weight:600; padding:6px 4px 4px; border-radius:10px;
+}
+nav.tabbar button svg{width:21px; height:21px}
+nav.tabbar button.on{color:var(--orange)}
+nav.tabbar button.on svg{color:var(--orange)}
+@media (min-width:900px){ nav.tabbar button{min-width:78px; font-size:10.5px} }
+.footer-note{padding:20px 0 6px; color:var(--faint); font-size:12px; text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topstrip">
+  <div class="wrap">
+    <div class="brandmark">
+      <div class="glyph">H</div>
+      <div><b>HALEX-M</b><span>Sandbox preview · not production</span></div>
+    </div>
+    <span class="pill" id="feed-pill"><span class="dot"></span><span id="feed-pill-text">Feed: connecting…</span></span>
+  </div>
+</div>
+
+<main class="wrap">
+
+<!-- ================= HOME ================= -->
+<section class="tab active" id="tab-home">
+  <div class="hero-band">
+    <h2>The whole HALEX stack, in one testable sandbox.</h2>
+    <p>Live market firehose, watched-token research, the RUSTY mint, AI trading wallets, SolHaG verdicts and the Chaintarium — wired to real public data where it exists, and honestly labeled where a backend is still to come.</p>
+    <div class="mkt-strip" id="mkt-strip"></div>
+    <p class="note" style="margin-top:9px">Market snapshot: Oct 17, 2026 close · Source: Basis Desk market close. Live prices are on APEX¹.</p>
+  </div>
+
+  <div class="sec-title">Jump in</div>
+  <div class="quickgrid" id="quickgrid"></div>
+
+  <div class="sec-title">System status</div>
+  <div class="grid c2">
+    <div class="card stat"><span>APEX¹ feed</span><b id="home-feed-stat">Connecting…</b><span>DexScreener + GeckoTerminal, all chains, user-filtered — no gatekeeper</span></div>
+    <div class="card stat"><span>BCIA council</span><b>Paper-first</b><span>5-agent deliberation layer. Decides, tests, reprograms failing skills. Jeffrey's word is ground truth.</span></div>
+    <div class="card stat"><span>AllenX · Base</span><b class="up" style="font-size:16px">LIVE bridge armed</b><span>Re-armed Oct 17 by direct order. $2 max per trade. Everything else stays paper.</span></div>
+    <div class="card stat"><span>Security gates</span><b class="up" style="font-size:16px">UXSS + SHELL passing</b><span>Every Braintree write passes both gates. Verified Oct 18 — details on the Security tab.</span></div>
+  </div>
+
+  <div class="sec-title">Game engine — layered systems</div>
+  <div class="layers">
+    <div class="layer"><div class="lnum">L4</div><div><b>World layer — Chaintarium</b><p>The 3D blockchain solar system. Bitcoin is the sun; chains orbit as planets; wallets, pools and tokens live on the surface. Working in this sandbox — open the Chaintarium tab.</p></div></div>
+    <div class="layer"><div class="lnum">L3</div><div><b>Agent layer — BCIA + CIA executors</b><p>Traders run like processes under a central nervous system: every trade reported, tracked, controlled. Winners keep trading; proven losers get reformulated, never mid-position.</p></div></div>
+    <div class="layer"><div class="lnum">L2</div><div><b>Economy layer — RUSTY mints + Launch Feed</b><p>Every launch mints a token and its information page, then publishes to a public launch feed anyone can adopt. Originals are provable from birth — the anti-vamp layer.</p></div></div>
+    <div class="layer"><div class="lnum">L1</div><div><b>Skill layer — Braintree knowledgebase</b><p>Winning trade skills hang categorized in the Braintree, cloned and hot-swapped at decision boundaries. All writes pass the halex-security gates.</p></div></div>
+    <div class="layer"><div class="lnum">L0</div><div><b>Core layer — hardwired HALEX libraries</b><p>Fixed, immutable software. The AI wires components together and operates them through sockets — it never modifies the core. See the AI Sockets tab.</p></div></div>
+  </div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Layers L0–L3 describe the production architecture. In this sandbox only the Chaintarium (L4) is fully interactive; the rest are status views over real system records.</span></div>
+</section>
+
+<!-- ================= APEX 1 ================= -->
+<section class="tab" id="tab-apex1">
+  <div class="tabhead">
+    <h2>APEX¹ — Market Feed</h2>
+    <p>The firehose: live tokens across the total chain catalog. You taper it with the chain filters — no backend gatekeeper deciding what you may see.</p>
+  </div>
+  <div class="feed-tools" id="apex1-filters">
+    <button class="fchip on" data-chain="all">All chains</button>
+    <button class="fchip" data-chain="solana">Solana</button>
+    <button class="fchip" data-chain="base">Base</button>
+    <button class="fchip" data-chain="ethereum">Ethereum</button>
+    <button class="fchip" data-chain="bsc">BNB</button>
+    <button class="fchip" data-chain="sui">Sui</button>
+    <span class="feed-status" id="apex1-status">Loading live feed…</span>
+  </div>
+  <div id="apex1-feed">
+    <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
+  </div>
+  <div class="sec-title">Fresh token profiles</div>
+  <p class="note" style="margin:-4px 0 10px">Newest profiles indexed by DexScreener. Young tokens are where the impersonation scams live — send anything suspicious to the Research Lab on APEX² before touching it.</p>
+  <div id="apex1-profiles"><div class="skel"></div><div class="skel"></div></div>
+</section>
+
+<!-- ================= APEX 2 ================= -->
+<section class="tab" id="tab-apex2">
+  <div class="tabhead">
+    <h2>APEX² — Watchlist &amp; Research Lab</h2>
+    <p>Tokens you chose to watch, plus the forensic bench: paste any contract and run the impersonation and scam checks before money moves.</p>
+  </div>
+  <div class="sec-title">Watched tokens</div>
+  <div id="watch-list"></div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Watchlist lives in this session only in the sandbox. In production it syncs with your HALEX wallet and feeds the APEX² analysis reports.</span></div>
+
+  <div class="sec-title">Research Lab — token lookup</div>
+  <div class="card">
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <input id="lab-input" type="text" placeholder="Paste a contract address (any chain)…" style="flex:1; min-width:200px" autocomplete="off" spellcheck="false" />
+      <button class="btn primary" id="lab-go">Run checks</button>
+    </div>
+    <p class="note" style="margin:9px 0 0">Checks run live against DexScreener: ticker-collision count (the vamp test), verifiable links, liquidity depth, pair age and trading activity. No verifiable link = guilty until proven innocent.</p>
+    <div id="lab-result" style="margin-top:6px"></div>
+  </div>
+</section>
+
+<!-- ================= RUSTY ================= -->
+<section class="tab" id="tab-rusty">
+  <div class="rusty-zone">
+    <div class="rusty-head">
+      <img src="data:image/webp;base64,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" alt="RUSTY red wolf emblem" width="74" height="74" />
+      <div>
+        <h2>RUSTY</h2>
+        <p>The mint. One flow mints the token <i>and</i> its information page, then publishes both to the Launch Feed. RUSTY prepares — your HALEX wallet signs on-device.</p>
+      </div>
+    </div>
+    <div class="rusty-steps" id="rusty-steps">
+      <button class="on" data-step="1">1 · Token</button>
+      <button data-step="2">2 · Metadata</button>
+      <button data-step="3">3 · Owner</button>
+      <button data-step="4">4 · Page Design</button>
+      <button data-step="5">5 · Liquidity</button>
+      <button data-step="6">6 · Review &amp; Deploy</button>
+    </div>
+
+    <div class="rusty-step on" data-step="1">
+      <div class="sec-title">Chain</div>
+      <div class="chainpick" id="rusty-chains"></div>
+      <div class="sec-title">Token configuration</div>
+      <div class="rusty-card">
+        <div class="field"><label class="flabel" for="r-name">Token name</label><input id="r-name" type="text" value="Ember Pup" maxlength="32" /></div>
+        <div class="grid c2">
+          <div class="field"><label class="flabel" for="r-sym">Ticker</label><input id="r-sym" type="text" value="EPUP" maxlength="10" /></div>
+          <div class="field"><label class="flabel" for="r-dec">Decimals</label><input id="r-dec" type="number" value="9" min="0" max="18" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label class="flabel" for="r-supply">Total supply</label><input id="r-supply" type="text" value="1,000,000,000" /></div>
+      </div>
+    </div>
+
+    <div class="rusty-step" data-step="2">
+      <div class="sec-title">Metadata — the token's public identity</div>
+      <div class="rusty-card">
+        <div class="field"><label class="flabel" for="r-desc">Description</label><textarea id="r-desc" rows="3">Born at the watering hole. A community ember token minted through RUSTY on HALEX.</textarea></div>
+        <div class="grid c2">
+          <div class="field"><label class="flabel" for="r-web">Website</label><input id="r-web" type="url" placeholder="https://…" /></div>
+          <div class="field"><label class="flabel" for="r-x">X / Twitter</label><input id="r-x" type="text" placeholder="https://x.com/…" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label class="flabel" for="r-tg">Telegram / community</label><input id="r-tg" type="text" placeholder="https://t.me/…" /></div>
+      </div>
+      <p class="note" style="margin-top:10px">This metadata is written into the token page and the Launch Feed entry at birth — timestamped, so the original is provable when the clones show up.</p>
+    </div>
+
+    <div class="rusty-step" data-step="3">
+      <div class="sec-title">Owner metadata — Founding Minter</div>
+      <div class="rusty-card">
+        <div class="field"><label class="flabel" for="r-owner">Verified handle (optional)</label><input id="r-owner" type="text" placeholder="@yourhandle" /></div>
+        <p class="note" style="margin:0">The founder's handle is minted with the token, proven by a wallet signature. The wording is always <b>owner-verified</b>, never "official". On-chain stays minimal — a reference, not the data. Optional: permissionless minting doesn't change. Brand Guard verification attaches to this field later without re-minting.</p>
+      </div>
+    </div>
+
+    <div class="rusty-step" data-step="4">
+      <div class="sec-title">Page design — prompt it</div>
+      <div class="rusty-card">
+        <div class="field"><label class="flabel" for="r-prompt">Describe the token page</label><textarea id="r-prompt" rows="2">Dark forge theme, ember orange accents, big bold headline, wolf energy</textarea></div>
+        <div class="preset-row" id="r-presets">
+          <button data-preset="forge" class="on">Ember Forge</button>
+          <button data-preset="onyx">Black Onyx</button>
+          <button data-preset="ocean">Deep Ocean</button>
+          <button data-preset="royal">Royal Gold</button>
+        </div>
+        <p class="note" style="margin:10px 0 12px">Hybrid by design: the page <i>program</i> is Muse-exclusive — a hardwired template behind the halex-security UXSS gate. Your AI designs through the AI socket with structured design tokens (palette, layout, copy) — never raw code onto a public page.</p>
+        <div class="page-preview" id="r-preview">
+          <span class="chip" style="background:rgba(0,0,0,.35); border-color:rgba(255,255,255,.3); color:#fff">Token page preview</span>
+          <h3 id="pv-name" style="margin-top:12px">Ember Pup</h3>
+          <p id="pv-desc">Born at the watering hole. A community ember token minted through RUSTY on HALEX.</p>
+          <p class="ca" id="pv-ca">CA: minted at deploy · chain: Solana</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="rusty-step" data-step="5">
+      <div class="sec-title">Liquidity</div>
+      <div class="rusty-card">
+        <div class="grid c2">
+          <div class="field"><label class="flabel" for="r-liq-amt">Seed amount</label><input id="r-liq-amt" type="text" value="5" /></div>
+          <div class="field"><label class="flabel" for="r-liq-pair">Paired asset</label>
+            <select id="r-liq-pair"><option>SOL</option><option>USDC</option><option>ETH</option><option>BNB</option></select></div>
+        </div>
+        <div class="field" style="margin-bottom:0"><label class="flabel" for="r-liq-pct">Supply into the pool</label>
+          <select id="r-liq-pct"><option>80% of supply</option><option>50% of supply</option><option>100% of supply</option></select></div>
+        <p class="note" style="margin:10px 0 0">Pool creation rides in the same deploy flow. A token with no exit is a donation — RUSTY quotes the sell side before it ever lets you seed.</p>
+      </div>
+    </div>
+
+    <div class="rusty-step" data-step="6">
+      <div class="sec-title">Review &amp; deploy</div>
+      <div class="rusty-card" id="r-review"></div>
+      <button class="btn primary block" id="r-deploy" style="margin-top:12px">Prepare deploy</button>
+      <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span><b>Honest boundary:</b> RUSTY builds and tests every adapter and prepares the full unsigned transaction. It cannot sign mainnet — your phone wallet signs, you approve. Deploy is a preview in this sandbox; nothing mints here.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= NEWS ================= -->
+<section class="tab" id="tab-news">
+  <div class="tabhead">
+    <h2>News — tuned to your interests</h2>
+    <p>An AI-curated snapshot built around Solana, Base, memecoins and the trade system. Snapshot pulled Oct 18, 2026 — the live news socket is not wired in this sandbox yet.</p>
+  </div>
+  <div class="feed-tools" id="news-filters">
+    <button class="fchip on" data-tag="all">All</button>
+    <button class="fchip" data-tag="solana">Solana</button>
+    <button class="fchip" data-tag="bitcoin">Bitcoin</button>
+    <button class="fchip" data-tag="markets">Markets</button>
+    <button class="fchip" data-tag="regulation">Regulation</button>
+    <button class="fchip" data-tag="tokens">Tokenization</button>
+  </div>
+  <div id="news-list"></div>
+  <p class="note">Sentiment gauge for the snapshot day: Fear &amp; Greed 53 — Neutral (down from 63 a day earlier). Sources: Basis Desk, Adalytica, CryptoPotato via CryptoQuant, Bitcoin Insider, ₿Proud.</p>
+</section>
+
+<!-- ================= TRADING ================= -->
+<section class="tab" id="tab-trading">
+  <div class="tabhead">
+    <h2>AI Trading</h2>
+    <p>The trader fleet under BCIA. Win rates here are <b>measured, never promised</b> — a system earns live money only at ≥65% over ≥30 closed paper trades, profit factor ≥1.2.</p>
+  </div>
+  <div class="sec-title">AI wallets</div>
+  <div class="grid c3" id="ai-wallets"></div>
+  <p class="note" style="margin-top:8px">Balances pulled Oct 16, 2026. Live balance socket not wired in the sandbox.</p>
+
+  <div class="sec-title">Skillsets — the proving program</div>
+  <div class="card" id="skillsets" style="padding-top:4px; padding-bottom:4px"></div>
+
+  <div class="sec-title">Verified trade events</div>
+  <div class="card" style="padding-top:6px; padding-bottom:6px">
+    <table class="log">
+      <thead><tr><th>Date</th><th>Event</th><th class="hideS">Detail</th><th>Result</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">Oct 16</td><td>Trade Portal $1 round-trip — B3 (Base)</td><td class="hideS">Buy → verified in wallet → sell → auto-unwrap. Portal failed closed once, correctly, before the fix.</td><td class="mono">$1.00 → $0.96 · 96% retained</td></tr>
+        <tr><td class="mono">Oct 16</td><td>B3 incident — old executor</td><td class="hideS">Silent fallback dumped into a dust pool; quote check only tested &gt; 0. Rule born here: a tx hash is never confirmation — proceeds verified in wallet, or it didn't happen.</td><td class="mono down">Loss · execution, not token</td></tr>
+        <tr><td class="mono">Oct 16</td><td>Sniper1 first milestone</td><td class="hideS">10 shots at the watering hole, all peaked at entry. Fix identified: buy only on positive buy-acceleration, 5-minute time stop.</td><td class="mono">0/10 · parked for rework</td></tr>
+        <tr><td class="mono">Oct 17</td><td>AllenX live bridge re-armed</td><td class="hideS">Sell simulation pre-flight + liquidity gate + holdings verification all passing before re-arm.</td><td class="mono up">LIVE · $2 max</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Paper trading runs on the always-on box, not in this page — the sandbox shows the fleet's real status and records. No simulated trades are generated here.</span></div>
+</section>
+
+<!-- ================= RESEARCH ================= -->
+<section class="tab" id="tab-research">
+  <div class="tabhead">
+    <h2>Research — SolHaG verdicts</h2>
+    <p>Every token gets a verdict: <b>REAL</b>, <b>SUSPECT</b> or <b>MIMIC</b> — scored from live market structure, with the reasons shown. Impersonation is the dominant scam pattern: never trust a ticker, cross-reference the contract.</p>
+  </div>
+  <div id="research-list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Scores are computed in your browser from live DexScreener pair data: liquidity depth, pair age, buy/sell balance, volume and verifiable links. They are a first-pass screen, not a guarantee — the full SolHaG engine adds holder and deployer-wallet forensics.</span></div>
+</section>
+
+<!-- ================= CHAINTARIUM ================= -->
+<section class="tab" id="tab-chaintarium">
+  <div class="tabhead">
+    <h2>Chaintarium</h2>
+    <p>The Blockchain 3D World Research Engine. Bitcoin is the sun; the chains orbit as planets. Drag to look around, scroll or pinch to zoom, tap a planet to inspect it.</p>
+  </div>
+  <div id="chain-stage">
+    <canvas id="chain-canvas"></canvas>
+    <div id="chain-labels"></div>
+  </div>
+  <div class="chain-ctl" id="chain-chips"></div>
+  <div class="card chain-info" id="chain-info">
+    <b>Bitcoin — the sun</b>
+    <p class="note" style="margin-top:4px">Every chain in the system orbits the original. Select a planet above, or tap one in the sky, to fly the camera to it. Zoom from full orbit down to street-level metadata.</p>
+  </div>
+</section>
+
+<!-- ================= AI SOCKETS ================= -->
+<section class="tab" id="tab-sockets">
+  <div class="tabhead">
+    <h2>AI Sockets</h2>
+    <p>The hardwired principle: the app and its libraries are fixed, immutable software. The AI is the electrician, not the architect — it wires components together and operates them, and can never modify, add to, or destroy the code.</p>
+  </div>
+  <div class="card" style="border-color:color-mix(in srgb, var(--gold) 40%, var(--line))">
+    <b>The socket rule</b>
+    <p class="note" style="margin-top:5px; font-size:13.5px">Read-only on code, execute-only on operations. An AI connected through a socket receives structured capabilities — quote, scan, prepare, publish — and returns structured results. Anything an AI produces for a public surface passes the halex-security gates before it ships. That's how the RUSTY page-design channel works: design tokens in, verified page out.</p>
+  </div>
+  <div class="sec-title">Sockets</div>
+  <div class="card" style="padding-top:4px; padding-bottom:4px" id="socket-list"></div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>In this sandbox the market-data socket is genuinely live (your browser talks to DexScreener + GeckoTerminal). The wallet, trade-execution and AI-provider sockets show their real interfaces with honest status — they connect in the production build, not here.</span></div>
+</section>
+
+<!-- ================= SECURITY ================= -->
+<section class="tab" id="tab-security">
+  <div class="tabhead">
+    <h2>Security — halex-security</h2>
+    <p>Two gates stand between any writer and the Braintree knowledgebase. Nothing reaches a tag except through <span class="mono">braintree.propose()</span>.</p>
+  </div>
+  <div class="grid c2">
+    <div class="card gate"><div class="gicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <div><b>UXSS gate</b> <span class="chip ok">PASSING</span><p class="note" style="margin-top:4px">Blocks script tags, javascript: URIs and event handlers in anything destined for the HALEX UI. Protects every rendered surface, including AI-designed token pages.</p></div></div>
+    <div class="card gate"><div class="gicon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17l6-6-6-6M12 19h8"/></svg></div>
+      <div><b>SHELL gate</b> <span class="chip ok">PASSING</span><p class="note" style="margin-top:4px">Blocks shell/code injection and prompt injection aimed at the machine or the AI. Dirty proposals go to quarantine — they never touch a tag.</p></div></div>
+  </div>
+  <div class="sec-title">Write path</div>
+  <div class="card">
+    <p style="margin:0 0 8px"><span class="mono" style="font-size:13px">propose() → UXSS gate → SHELL gate → appended as next R-observation, with provenance</span></p>
+    <p class="note" style="margin:0">Tag lifecycle: <b>Seed → Feed → Verify → Prune → Forge</b>. Direct tag edits that bypass propose() are a violation. Security layers sit entirely outside BCIA command — the council gets sanitized status only, never raw internals, and cannot weaken a gate.</p>
+  </div>
+  <div class="sec-title">Audit log — verified gate tests, Oct 18, 2026</div>
+  <div class="card" style="padding-top:6px; padding-bottom:6px">
+    <div class="logline"><time>06:51</time><p><span class="chip ok">ACCEPTED</span>&nbsp; Clean knowledge proposal <span>— passed UXSS + SHELL, appended as R-observation with provenance.</span></p></div>
+    <div class="logline"><time>06:51</time><p><span class="chip bad">QUARANTINED</span>&nbsp; Proposal carrying a script tag <span>— stopped at the UXSS gate, written to quarantine/, tag untouched.</span></p></div>
+    <div class="logline"><time>06:51</time><p><span class="chip bad">QUARANTINED</span>&nbsp; Proposal carrying a prompt-injection payload <span>— stopped at the SHELL gate, written to quarantine/, tag untouched.</span></p></div>
+    <div class="logline"><time>—</time><p><span class="chip info">POLICY</span>&nbsp; Standing rule <span>— BCIA receives sanitized security status only. It cannot lift lockdowns, override policy, approve releases or rotate credentials.</span></p></div>
+  </div>
+  <p class="note">Log shown is the verified test record from the write-path check. The live audit stream connects with the production backend.</p>
+</section>
+
+<!-- ================= WALLET ================= -->
+<section class="tab" id="tab-wallet">
+  <div class="tabhead">
+    <h2>HALEX Wallet</h2>
+    <p>HALEX-M talks to the HALEX wallet; the wallet signs on-device. Keys never leave the phone — RUSTY prepares, APEX quotes, the wallet approves.</p>
+  </div>
+  <div class="card" style="text-align:center; padding:26px 16px">
+    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.6" style="margin:0 auto 10px"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>
+    <b style="font-size:16px">No wallet connected</b>
+    <p class="note" style="max-width:44ch; margin:6px auto 14px">Pairing uses the wallet's on-device approval — the same flow that signs RUSTY deploys and APEX trades. In this sandbox the pairing handshake is a preview: no keys, no signatures, nothing leaves this page.</p>
+    <button class="btn primary" id="wallet-connect">Connect HALEX Wallet</button>
+    <p class="note" id="wallet-connect-note" style="margin-top:10px"></p>
+  </div>
+  <div class="sec-title">What connects when it's live</div>
+  <div class="grid c2">
+    <div class="card"><b>Multisig vault</b><p class="note" style="margin-top:4px">Onboarding builds 3 on-device wallets; 2-of-3 executes; 3 recovery phrases. Bitcoin P2WSH 2-of-3; EVM via Safe, gas user-paid. App lock: password + 4-digit PIN, no cloud backup of keys.</p></div>
+    <div class="card"><b>Accounts</b><p class="note" style="margin-top:4px">Tabbed multi-wallet, Trust-style swipe — hundreds of wallets, user-created and AI-created. Send/receive across EVMs, Solana and more; incoming tokens auto-detect into holdings.</p></div>
+    <div class="card"><b>Chain coverage</b><p class="note" style="margin-top:4px">Roadmap locked: 25 EVM + 13 non-EVM chains. Native today: Solana, Ethereum, BNB, Base. Aptos is the priority add after Bitcoin.</p></div>
+    <div class="card"><b>Swap</b><p class="note" style="margin-top:4px">Trade on HALEX-M, sign in the HALEX wallet — the same 7-step fail-closed portal that proved the $1 B3 round-trip at 96% retained: validate → quote all venues → sanity → simulate → gated execute → verify balances.</p></div>
+  </div>
+</section>
+
+<p class="footer-note">HALEX-M Sandbox · a test build. Live data: DexScreener + GeckoTerminal public APIs. Anything not yet wired says so on its face.</p>
+</main>
+
+<!-- token detail sheet -->
+<div class="sheet-veil" id="sheet-veil"></div>
+<div class="sheet" id="token-sheet" role="dialog" aria-modal="true" aria-label="Token detail">
+  <div class="grab"></div>
+  <div id="sheet-body"><div class="skel"></div><div class="skel"></div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- bottom nav -->
+<nav class="tabbar"><div class="rail" id="tabbar"></div></nav>
+
+<script>
+"use strict";
+/* ============================================================
+   HALEX-M Sandbox — classic script, in-memory state only.
+   Live data: DexScreener + GeckoTerminal public APIs (no keys).
+   ============================================================ */
+var $ = function(s, el){ return (el||document).querySelector(s); };
+var $$ = function(s, el){ return Array.prototype.slice.call((el||document).querySelectorAll(s)); };
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+function fmtUsd(n){
+  if(n==null || isNaN(n)) return "—";
+  n = Number(n);
+  if(n >= 1e9) return "$" + (n/1e9).toFixed(2) + "B";
+  if(n >= 1e6) return "$" + (n/1e6).toFixed(2) + "M";
+  if(n >= 1e3) return "$" + (n/1e3).toFixed(1) + "K";
+  if(n >= 1) return "$" + n.toFixed(2);
+  if(n >= 0.01) return "$" + n.toFixed(4);
+  if(n === 0) return "$0";
+  return "$" + n.toPrecision(3);
+}
+function fmtPrice(n){
+  if(n==null || isNaN(n)) return "—";
+  n = Number(n);
+  if(n >= 1) return "$" + n.toLocaleString("en-US",{maximumFractionDigits:2});
+  if(n >= 0.01) return "$" + n.toFixed(4);
+  return "$" + n.toPrecision(3);
+}
+function fmtPct(n){
+  if(n==null || isNaN(n)) return "—";
+  var v = Number(n);
+  return (v>=0?"+":"") + v.toFixed(1) + "%";
+}
+function ageStr(ts){
+  if(!ts) return "—";
+  var s = Math.max(0, (Date.now()-ts)/1000);
+  if(s < 3600) return Math.floor(s/60) + "m old";
+  if(s < 86400) return Math.floor(s/3600) + "h old";
+  return Math.floor(s/86400) + "d old";
+}
+function hueFor(str){ var h=0; for(var i=0;i<str.length;i++){ h=(h*31 + str.charCodeAt(i))%360; } return h; }
+function avatarBg(sym){ var h = hueFor(sym||"?"); return "linear-gradient(135deg, hsl("+h+",55%,42%), hsl("+((h+40)%360)+",60%,26%))"; }
+function toast(msg){
+  var t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(toast._h); toast._h = setTimeout(function(){ t.classList.remove("show"); }, 3400);
+}
+
+/* ---------------- tabs ---------------- */
+var TABS = [
+  {id:"home",   label:"Home",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg>'},
+  {id:"apex1",  label:"APEX¹",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l5-6 4 3 6-8 3 4"/><path d="M3 21h18"/></svg>'},
+  {id:"apex2",  label:"APEX²",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/></svg>'},
+  {id:"rusty",  label:"RUSTY",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c1 3-2 4-2 7a4.5 4.5 0 009 0c0-2-1-3-1-3s3 1 3 5a7 7 0 11-14 0c0-5 4-6 5-9z"/></svg>'},
+  {id:"news",   label:"News",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h13v14H4zM17 9h3v10h-3M7 9h7M7 13h7M7 17h4"/></svg>'},
+  {id:"trading",label:"Trading", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'},
+  {id:"research",label:"Research",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>'},
+  {id:"chaintarium",label:"Chaintarium", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3.2"/><ellipse cx="12" cy="12" rx="10" ry="4.2" transform="rotate(-18 12 12)"/></svg>'},
+  {id:"sockets",label:"Sockets", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg>'},
+  {id:"security",label:"Security",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg>'},
+  {id:"wallet", label:"Wallet",  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>'}
+];
+var currentTab = "home";
+function buildNav(){
+  var rail = $("#tabbar");
+  rail.innerHTML = TABS.map(function(t){
+    return '<button data-tab="'+t.id+'" class="'+(t.id===currentTab?"on":"")+'" aria-label="'+t.label+'">'+t.icon+"<span>"+t.label+"</span></button>";
+  }).join("");
+  $$("button", rail).forEach(function(b){
+    b.addEventListener("click", function(){ showTab(b.getAttribute("data-tab")); });
+  });
+}
+function showTab(id){
+  currentTab = id;
+  $$("section.tab").forEach(function(s){ s.classList.toggle("active", s.id === "tab-"+id); });
+  $$("#tabbar button").forEach(function(b){ b.classList.toggle("on", b.getAttribute("data-tab")===id); });
+  window.scrollTo({top:0});
+  if(id === "chaintarium") startChaintarium();
+  if(id === "research" && !researchRendered) renderResearch();
+  if(id === "apex2") renderWatchlist();
+}
+function quickGrid(){
+  var picks = ["apex1","apex2","rusty","trading","research","chaintarium","sockets","wallet"];
+  $("#quickgrid").innerHTML = picks.map(function(id){
+    var t = TABS.filter(function(x){ return x.id===id; })[0];
+    return '<button class="quick" data-go="'+id+'">'+t.icon.replace('width="1.8"','width="1.8" width="22" height="22"')+t.label+"</button>";
+  }).join("");
+  $$("#quickgrid [data-go]").forEach(function(b){
+    b.addEventListener("click", function(){ showTab(b.getAttribute("data-go")); });
+  });
+}
+
+/* ---------------- home market snapshot (Oct 17, 2026 close — Basis Desk) ---------------- */
+var SNAPSHOT = [
+  {sym:"BTC", price:"$81,378", chg:-0.1}, {sym:"ETH", price:"$2,400", chg:-0.8},
+  {sym:"SOL", price:"$103.32", chg:-0.9}, {sym:"BNB", price:"$717.20", chg:-0.4},
+  {sym:"XRP", price:"$1.29", chg:-1.2}
+];
+function renderSnapshot(){
+  $("#mkt-strip").innerHTML = SNAPSHOT.map(function(m){
+    return '<div class="mkt"><span>'+m.sym+'</span><b>'+m.price+'</b> <i class="'+(m.chg>=0?"up":"down")+'">'+fmtPct(m.chg)+"</i></div>";
+  }).join("");
+}
+
+/* ---------------- state ---------------- */
+var feedTokens = [];      /* priced tokens from GeckoTerminal trending pools */
+var profileTokens = [];   /* fresh DexScreener profiles */
+var watchlist = [];       /* in-memory: {chainId, address, sym, name} */
+var feedChainFilter = "all";
+
+/* ---------------- APEX1 feed ---------------- */
+function setFeedPill(state, text){
+  var p = $("#feed-pill"); p.className = "pill" + (state==="live"?" live":state==="err"?" err":"");
+  $("#feed-pill-text").textContent = text;
+  var hs = $("#home-feed-stat"); if(hs) hs.textContent = text.replace("Feed: ","");
+}
+function tokenCard(t, opts){
+  opts = opts || {};
+  var chgCls = (t.change24||0) >= 0 ? "up" : "down";
+  var desc = t.description ? '<div class="tok-desc">'+esc(t.description)+"</div>" : "";
+  var img = t.icon ? '<img src="'+esc(t.icon)+'" alt="" loading="lazy" onerror="this.remove()" />' : "";
+  return '<button class="tokencard" data-open-token="'+esc(t.chainId)+"|"+esc(t.address)+'">' +
+    '<div class="tok-ava"><div class="letter" style="background:'+avatarBg(t.symbol)+'">'+esc((t.symbol||"?").slice(0,3))+"</div>"+img+"</div>" +
+    '<div class="tok-main"><div class="tok-top"><b>'+esc(t.name||t.symbol||"Unknown")+'</b><span class="sym">$'+esc(t.symbol||"")+'</span><span class="chain">'+esc(t.chainId)+"</span></div>" +
+    desc +
+    '<div class="tok-nums">' +
+      (t.mcap!=null ? "<div><span>Mkt Cap</span><b>"+fmtUsd(t.mcap)+"</b></div>" : "") +
+      (t.liquidity!=null ? "<div><span>Liquidity</span><b>"+fmtUsd(t.liquidity)+"</b></div>" : "") +
+      (t.volume24!=null ? "<div><span>Vol 24h</span><b>"+fmtUsd(t.volume24)+"</b></div>" : "") +
+      (t.createdAt ? "<div><span>Age</span><b>"+ageStr(t.createdAt)+"</b></div>" : "") +
+    "</div></div>" +
+    (t.price!=null ? '<div class="tok-side"><div class="price">'+fmtPrice(t.price)+'</div><div class="chg '+chgCls+'">'+fmtPct(t.change24)+"</div></div>" : "") +
+  "</button>";
+}
+function bindTokenCards(root){
+  $$("[data-open-token]", root).forEach(function(el){
+    el.addEventListener("click", function(){
+      var parts = el.getAttribute("data-open-token").split("|");
+      openToken(parts[0], parts[1]);
+    });
+  });
+}
+function renderFeed(){
+  var list = feedTokens.filter(function(t){ return feedChainFilter==="all" || t.chainId===feedChainFilter; });
+  var box = $("#apex1-feed");
+  if(!feedTokens.length){
+    box.innerHTML = '<div class="empty">The live feed did not answer. Check your connection and tap retry.<br><br><button class="btn" onclick="loadFeed()">Retry feed</button></div>';
+    return;
+  }
+  if(!list.length){
+    box.innerHTML = '<div class="empty">No trending pools on this chain right now. The firehose is unfiltered — quiet chains happen.</div>';
+  } else {
+    box.innerHTML = list.map(function(t){ return tokenCard(t); }).join("");
+  }
+  bindTokenCards(box);
+}
+function renderProfiles(){
+  var box = $("#apex1-profiles");
+  if(!profileTokens.length){ box.innerHTML = '<div class="empty">No fresh profiles returned.</div>'; return; }
+  box.innerHTML = profileTokens.slice(0,10).map(function(t){ return tokenCard(t); }).join("");
+  bindTokenCards(box);
+}
+function loadFeed(){
+  setFeedPill("", "Feed: connecting…");
+  $("#apex1-status").textContent = "Loading live feed…";
+  var gt = fetch("https://api.geckoterminal.com/api/v2/networks/trending_pools?include=base_token&page=1")
+    .then(function(r){ if(!r.ok) throw new Error("gt "+r.status); return r.json(); })
+    .then(function(j){
+      var inc = {};
+      (j.included||[]).forEach(function(x){ if(x.type==="token") inc[x.id]=x.attributes; });
+      feedTokens = (j.data||[]).map(function(p){
+        var a = p.attributes, rel = p.relationships.base_token.data.id;
+        var tok = inc[rel] || {};
+        var network = rel.split("_")[0];
+        var addr = rel.slice(network.length+1);
+        return {
+          chainId: network, address: addr, pairAddress: a.address,
+          name: tok.name || a.name, symbol: tok.symbol || "",
+          price: parseFloat(a.base_token_price_usd), change24: parseFloat(a.price_change_percentage && a.price_change_percentage.h24),
+          mcap: parseFloat(a.market_cap_usd || a.fdv_usd), liquidity: parseFloat(a.reserve_in_usd),
+          volume24: parseFloat(a.volume_usd && a.volume_usd.h24), createdAt: a.pool_created_at ? Date.parse(a.pool_created_at) : null,
+          icon: tok.image_url && tok.image_url.indexOf("missing")<0 ? tok.image_url : null,
+          description: ""
+        };
+      }).filter(function(t){ return t.symbol; });
+      var now = new Date();
+      var hh = String(now.getHours()).padStart(2,"0"), mm = String(now.getMinutes()).padStart(2,"0");
+      setFeedPill("live", "Feed: live · " + hh + ":" + mm);
+      $("#apex1-status").textContent = "Live · GeckoTerminal trending pools · " + feedTokens.length + " tokens · " + hh + ":" + mm;
+      renderFeed();
+    })
+    .catch(function(){
+      setFeedPill("err", "Feed: unreachable");
+      $("#apex1-status").textContent = "Live feed unreachable — retry in a moment.";
+      renderFeed();
+    });
+  fetch("https://api.dexscreener.com/token-profiles/latest/v1")
+    .then(function(r){ if(!r.ok) throw new Error("ds"); return r.json(); })
+    .then(function(arr){
+      var seen = {};
+      profileTokens = (arr||[]).filter(function(p){
+        if(!p.tokenAddress || seen[p.tokenAddress]) return false;
+        seen[p.tokenAddress] = 1; return true;
+      }).map(function(p){
+        return {
+          chainId: p.chainId, address: p.tokenAddress,
+          name: p.description ? "" : "", symbol: "",
+          description: (p.description||"").slice(0,220), icon: p.icon || null, links: p.links||[],
+          price: null, mcap: null
+        };
+      });
+      /* enrich with names/symbols/prices from the pairs endpoint, in chunks */
+      var addrs = profileTokens.slice(0,20).map(function(t){ return t.address; }).join(",");
+      return fetch("https://api.dexscreener.com/latest/dex/tokens/" + addrs)
+        .then(function(r){ return r.json(); })
+        .then(function(j){
+          var byTok = {};
+          (j.pairs||[]).forEach(function(pr){
+            var k = pr.baseToken.address;
+            if(!byTok[k] || (pr.liquidity && byTok[k].liquidity && pr.liquidity.usd > byTok[k].liquidity.usd)) byTok[k] = pr;
+          });
+          profileTokens.forEach(function(t){
+            var pr = byTok[t.address];
+            if(pr){
+              t.name = pr.baseToken.name; t.symbol = pr.baseToken.symbol;
+              t.price = parseFloat(pr.priceUsd); t.mcap = pr.marketCap || pr.fdv;
+              t.liquidity = pr.liquidity ? pr.liquidity.usd : null;
+              t.volume24 = pr.volume ? pr.volume.h24 : null;
+              t.change24 = pr.priceChange ? pr.priceChange.h24 : null;
+              t.createdAt = pr.pairCreatedAt || null;
+              if(!t.description && pr.info && pr.info.description) t.description = pr.info.description.slice(0,220);
+            }
+          });
+          renderProfiles();
+        })
+        .catch(function(){ renderProfiles(); });
+    })
+    .catch(function(){ $("#apex1-profiles").innerHTML = '<div class="empty">DexScreener profiles unreachable right now.</div>'; });
+  return gt;
+}
+$$("#apex1-filters .fchip").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("#apex1-filters .fchip").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    feedChainFilter = b.getAttribute("data-chain");
+    renderFeed();
+  });
+});
+
+/* ---------------- token detail + portal ---------------- */
+var sheetToken = null, portalSide = "buy", portalRange = "24h", portalSeries = null;
+function openSheet(html){
+  $("#sheet-body").innerHTML = html;
+  $("#sheet-veil").classList.add("open");
+  $("#token-sheet").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeSheet(){
+  $("#sheet-veil").classList.remove("open");
+  $("#token-sheet").classList.remove("open");
+  document.body.style.overflow = "";
+}
+$("#sheet-veil").addEventListener("click", closeSheet);
+function drawChart(){
+  var c = $("#detail-chart"); if(!c || !portalSeries || portalSeries.length < 2) return;
+  var dpr = window.devicePixelRatio || 1;
+  var W = c.clientWidth, H = c.clientHeight;
+  c.width = W*dpr; c.height = H*dpr;
+  var ctx = c.getContext("2d"); ctx.scale(dpr, dpr);
+  var vals = portalSeries.map(function(p){ return p.v; });
+  var min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  if(max - min < 1e-12){ max = min + 1; }
+  var pad = (max-min)*0.12; min -= pad; max += pad;
+  var upTrend = vals[vals.length-1] >= vals[0];
+  var col = upTrend ? "#31c48d" : "#ff6b5e";
+  ctx.beginPath();
+  vals.forEach(function(v, i){
+    var x = (i/(vals.length-1))*(W-8)+4, y = H - ((v-min)/(max-min))*(H-14) - 7;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+  ctx.lineTo(W-4, H); ctx.lineTo(4, H); ctx.closePath();
+  ctx.fillStyle = upTrend ? "rgba(49,196,141,.12)" : "rgba(255,107,94,.12)"; ctx.fill();
+  ctx.fillStyle = "rgba(150,160,180,.9)"; ctx.font = "10px 'IBM Plex Mono', monospace";
+  ctx.fillText(fmtPrice(max-pad), 4, 11);
+  ctx.fillText(fmtPrice(min+pad), 4, H-3);
+}
+function loadChart(network, pairAddress){
+  portalSeries = null;
+  var agg = { "1h": ["minute",15,16], "24h": ["hour",1,24], "7d": ["hour",4,42], "30d": ["day",1,30] }[portalRange] || ["hour",1,24];
+  fetch("https://api.geckoterminal.com/api/v2/networks/"+network+"/pools/"+pairAddress+"/ohlcv/"+agg[0]+"?aggregate="+agg[1]+"&limit="+agg[2])
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var list = (j.data && j.data.attributes && j.data.attributes.ohlcv_list) || [];
+      portalSeries = list.map(function(row){ return { t: row[0], v: row[4] }; }).reverse();
+      drawChart();
+    })
+    .catch(function(){ portalSeries = null; });
+}
+function openToken(chainId, address){
+  openSheet('<div class="skel"></div><div class="skel"></div>');
+  fetch("https://api.dexscreener.com/latest/dex/tokens/" + address)
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var pairs = (j.pairs||[]).filter(function(p){ return p.chainId===chainId || true; });
+      pairs.sort(function(a,b){ return ((b.liquidity&&b.liquidity.usd)||0) - ((a.liquidity&&a.liquidity.usd)||0); });
+      var p = pairs[0];
+      if(!p){ $("#sheet-body").innerHTML = '<div class="empty">No live pair found for this token.</div>'; return; }
+      sheetToken = {
+        chainId: p.chainId, address: address, pairAddress: p.pairAddress,
+        name: p.baseToken.name, symbol: p.baseToken.symbol,
+        price: parseFloat(p.priceUsd), change24: p.priceChange ? p.priceChange.h24 : null,
+        mcap: p.marketCap || p.fdv, liquidity: p.liquidity ? p.liquidity.usd : null,
+        volume24: p.volume ? p.volume.h24 : null, createdAt: p.pairCreatedAt,
+        icon: p.info && p.info.imageUrl, description: (p.info && p.info.description) || "",
+        dex: p.dexId, pairUrl: p.url,
+        websites: (p.info && p.info.websites) || [], socials: (p.info && p.info.socials) || [],
+        txns: p.txns && p.txns.h24
+      };
+      renderSheet();
+      loadChart(p.chainId, p.pairAddress);
+    })
+    .catch(function(){ $("#sheet-body").innerHTML = '<div class="empty">Could not load this token from DexScreener. Try again in a moment.</div>'; });
+}
+function renderSheet(){
+  var t = sheetToken; if(!t) return;
+  var inWatch = watchlist.some(function(w){ return w.address===t.address; });
+  var links = "";
+  t.websites.forEach(function(w){ links += '<a href="'+esc(w.url)+'" target="_blank" rel="noopener">'+esc(w.label||"Website")+"</a> · "; });
+  t.socials.forEach(function(s){ links += '<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.type)+"</a> · "; });
+  if(t.pairUrl) links += '<a href="'+esc(t.pairUrl)+'" target="_blank" rel="noopener">DexScreener pair</a>';
+  var chgCls = (t.change24||0) >= 0 ? "up" : "down";
+  $("#sheet-body").innerHTML =
+    '<div style="display:flex; gap:12px; align-items:flex-start">' +
+      '<div class="tok-ava"><div class="letter" style="background:'+avatarBg(t.symbol)+'">'+esc((t.symbol||"?").slice(0,3))+"</div>" +
+      (t.icon ? '<img src="'+esc(t.icon)+'" alt="" onerror="this.remove()" />' : "") + "</div>" +
+      '<div style="flex:1; min-width:0"><b style="font-size:17px">'+esc(t.name)+'</b> <span class="sym mono" style="color:var(--gold); font-size:12.5px">$'+esc(t.symbol)+'</span>' +
+      '<div class="note" style="font-size:12px">'+esc(t.chainId)+" · "+esc(t.dex||"")+" · "+ageStr(t.createdAt)+"</div></div>" +
+      '<button class="btn ghost" onclick="closeSheet()" aria-label="Close" style="padding:6px 10px">✕</button></div>' +
+    '<div style="display:flex; align-items:baseline; gap:10px; margin-top:12px"><span class="mono" style="font-size:24px; font-weight:600">'+fmtPrice(t.price)+'</span><span class="mono '+chgCls+'">'+fmtPct(t.change24)+" · 24h</span></div>" +
+    '<div class="range-row" id="range-row">' +
+      ["1h","24h","7d","30d"].map(function(r){ return '<button data-range="'+r+'" class="'+(r===portalRange?"on":"")+'">'+r+"</button>"; }).join("") +
+    "</div>" +
+    '<canvas id="detail-chart"></canvas>' +
+    (t.description ? '<p class="note" style="margin-top:10px">'+esc(t.description.slice(0,300))+"</p>" : "") +
+    '<div style="margin-top:6px">' +
+      '<div class="kv"><span>Market cap</span><b>'+fmtUsd(t.mcap)+"</b></div>" +
+      '<div class="kv"><span>Liquidity</span><b>'+fmtUsd(t.liquidity)+"</b></div>" +
+      '<div class="kv"><span>Volume 24h</span><b>'+fmtUsd(t.volume24)+"</b></div>" +
+      (t.txns ? '<div class="kv"><span>Txns 24h</span><b>'+(t.txns.buys||0)+" buys / "+(t.txns.sells||0)+" sells</b></div>" : "") +
+      '<div class="kv"><span>Contract</span><b style="font-size:11px">'+esc(t.address)+"</b></div>" +
+    "</div>" +
+    (links ? '<p style="font-size:13px; margin:12px 0 0">'+links+"</p>" : '<p class="note" style="margin-top:12px">No verifiable links on this token. Per the house rule, that means guilty until proven innocent — run it through the Research Lab.</p>') +
+    '<div style="display:flex; gap:8px; margin-top:14px">' +
+      '<button class="btn" id="sheet-watch" style="flex:1">'+(inWatch ? "★ Watching on APEX²" : "☆ Watch → APEX²")+"</button>" +
+      '<button class="btn" id="sheet-lab" style="flex:1">Research Lab checks</button>' +
+    "</div>" +
+    '<div class="portal"><div class="seg">' +
+      '<button id="seg-buy" class="'+(portalSide==="buy"?"on-buy":"")+'">BUY</button>' +
+      '<button id="seg-sell" class="'+(portalSide==="sell"?"on-sell":"")+'">SELL</button></div>' +
+      '<label class="flabel" for="portal-amt">Amount (USD)</label><input id="portal-amt" type="number" value="25" min="0" step="1" />' +
+      '<div class="amounts"><button data-amt="10">$10</button><button data-amt="25">$25</button><button data-amt="50">$50</button><button data-amt="100">$100</button></div>' +
+      '<p class="note" id="portal-est"></p>' +
+      '<button class="btn block '+(portalSide==="buy"?"buy":"sell")+'" id="portal-go">'+(portalSide==="buy"?"Buy ":"Sell ")+esc(t.symbol)+"</button>" +
+      '<p class="note" style="margin-top:9px">Preview portal — execution is not wired in the sandbox. In production this quote routes through the Trade Portal (all venues quoted, simulated, fail-closed) and signs in your HALEX wallet.</p>' +
+    "</div>";
+  $$("#range-row button").forEach(function(b){
+    b.addEventListener("click", function(){
+      portalRange = b.getAttribute("data-range");
+      $$("#range-row button").forEach(function(x){ x.classList.toggle("on", x===b); });
+      loadChart(t.chainId, t.pairAddress);
+    });
+  });
+  drawChart();
+  var est = function(){
+    var amt = parseFloat(($("#portal-amt")||{}).value) || 0;
+    $("#portal-est").textContent = t.price ? ("≈ " + (amt/t.price).toLocaleString("en-US",{maximumFractionDigits:4}) + " " + t.symbol + " at the live pair price, before fees and slippage.") : "";
+  };
+  $("#portal-amt").addEventListener("input", est); est();
+  $$(".portal .amounts button").forEach(function(b){
+    b.addEventListener("click", function(){ $("#portal-amt").value = b.getAttribute("data-amt"); est(); });
+  });
+  $("#seg-buy").addEventListener("click", function(){ portalSide="buy"; renderSheet(); });
+  $("#seg-sell").addEventListener("click", function(){ portalSide="sell"; renderSheet(); });
+  $("#portal-go").addEventListener("click", function(){
+    toast("Sandbox preview: trade execution is not wired. Nothing was bought or sold.");
+  });
+  $("#sheet-watch").addEventListener("click", function(){
+    if(inWatch){ toast(t.symbol + " is already on your APEX² watchlist."); return; }
+    watchlist.push({chainId:t.chainId, address:t.address, sym:t.symbol, name:t.name});
+    toast(t.symbol + " added to APEX² watchlist (this session).");
+    renderSheet();
+  });
+  $("#sheet-lab").addEventListener("click", function(){
+    closeSheet(); showTab("apex2");
+    $("#lab-input").value = t.address;
+    runLab();
+  });
+}
+
+/* ---------------- APEX2 watchlist + lab ---------------- */
+function renderWatchlist(){
+  var box = $("#watch-list");
+  if(!watchlist.length){
+    box.innerHTML = '<div class="empty">Nothing watched yet. Open any token on APEX¹ and tap “Watch → APEX²”.<br><br>Watching a token is what creates its APEX² entry: live card here, analysis in the Research Lab below, and a world to visit in the Chaintarium.</div>';
+    return;
+  }
+  box.innerHTML = '<div class="skel"></div>';
+  var addrs = watchlist.map(function(w){ return w.address; }).join(",");
+  fetch("https://api.dexscreener.com/latest/dex/tokens/" + addrs)
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var byTok = {};
+      (j.pairs||[]).forEach(function(pr){
+        var k = pr.baseToken.address;
+        if(!byTok[k] || ((pr.liquidity&&pr.liquidity.usd)||0) > ((byTok[k].liquidity&&byTok[k].liquidity.usd)||0)) byTok[k] = pr;
+      });
+      box.innerHTML = watchlist.map(function(w){
+        var pr = byTok[w.address];
+        if(!pr) return tokenCard({chainId:w.chainId, address:w.address, name:w.name, symbol:w.sym});
+        return tokenCard({
+          chainId: pr.chainId, address: w.address, name: pr.baseToken.name, symbol: pr.baseToken.symbol,
+          price: parseFloat(pr.priceUsd), change24: pr.priceChange ? pr.priceChange.h24 : null,
+          mcap: pr.marketCap || pr.fdv, liquidity: pr.liquidity ? pr.liquidity.usd : null,
+          volume24: pr.volume ? pr.volume.h24 : null, createdAt: pr.pairCreatedAt,
+          icon: pr.info && pr.info.imageUrl
+        });
+      }).join("");
+      bindTokenCards(box);
+    })
+    .catch(function(){ box.innerHTML = '<div class="empty">Watchlist prices unreachable right now — your watched tokens are still listed under Research.</div>'; });
+}
+function checkRow(kind, title, detail){
+  var icons = {
+    pass: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg>',
+    warn: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg>',
+    fail: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 5l14 14M19 5L5 19"/></svg>'
+  };
+  return '<div class="check"><div class="ic '+kind+'">'+icons[kind]+'</div><div><b>'+esc(title)+"</b><p>"+esc(detail)+"</p></div></div>";
+}
+function verdictFor(score){
+  if(score >= 70) return {key:"real", label:"REAL", blurb:"Structure looks like a genuine token. Still not a guarantee — size like it can go to zero."};
+  if(score >= 40) return {key:"suspect", label:"SUSPECT", blurb:"Mixed signals. Possible, but the burden of proof is on the token. Research deeper before any size."};
+  return {key:"mimic", label:"MIMIC / AVOID", blurb:"Structure matches the impersonation playbook. Treat as a trap until provenance is proven."};
+}
+function analyzePairs(pairs, symbol){
+  /* shared SolHaG-style scoring over DexScreener pairs */
+  pairs = (pairs||[]).slice().sort(function(a,b){ return ((b.liquidity&&b.liquidity.usd)||0) - ((a.liquidity&&a.liquidity.usd)||0); });
+  var p = pairs[0];
+  if(!p) return null;
+  var checks = [], score = 50;
+  var liq = (p.liquidity && p.liquidity.usd) || 0;
+  if(liq >= 100000){ checks.push(["pass","Liquidity depth","$"+Math.round(liq).toLocaleString()+" in the deepest pool — a real exit exists."]); score += 14; }
+  else if(liq >= 20000){ checks.push(["warn","Liquidity depth","$"+Math.round(liq).toLocaleString()+" — thin. Size moves this price, both ways."]); score += 4; }
+  else { checks.push(["fail","Liquidity depth","Only $"+Math.round(liq).toLocaleString()+" in the deepest pool — buying is easy, selling is the trap."]); score -= 22; }
+  var ageH = p.pairCreatedAt ? (Date.now()-p.pairCreatedAt)/3600000 : 0;
+  if(ageH >= 168){ checks.push(["pass","Pair age", Math.floor(ageH/24)+" days old — survived the window where most launches die."]); score += 10; }
+  else if(ageH >= 24){ checks.push(["warn","Pair age", Math.floor(ageH)+" hours old — past the first rug window, not proven."]); score += 2; }
+  else { checks.push(["fail","Pair age", (ageH<1 ? Math.max(1,Math.floor(ageH*60))+" minutes" : Math.floor(ageH)+" hours")+" old — newborn. This is the watering hole; most of what is born here dies here."]); score -= 12; }
+  var info = p.info || {};
+  var hasLinks = ((info.websites||[]).length + (info.socials||[]).length) > 0;
+  if(hasLinks){ checks.push(["pass","Verifiable links","Website/socials published in pair metadata — identity can be cross-referenced."]); score += 10; }
+  else { checks.push(["fail","Verifiable links","No website or socials in the metadata. No verifiable link = guilty until proven innocent."]); score -= 18; }
+  var tx = (p.txns && p.txns.h24) || {buys:0, sells:0};
+  var tot = (tx.buys||0) + (tx.sells||0);
+  if(tot >= 500){ checks.push(["pass","Trading activity", tot.toLocaleString()+" transactions in 24h, "+(tx.buys||0)+" buys / "+(tx.sells||0)+" sells — two-sided flow."]); score += 8; }
+  else if(tot >= 50){ checks.push(["warn","Trading activity", tot+" transactions in 24h — light but real flow."]); score += 2; }
+  else { checks.push(["fail","Trading activity", "Only "+tot+" transactions in 24h — near-dead or staged."]); score -= 10; }
+  var vol = (p.volume && p.volume.h24) || 0;
+  if(liq > 0 && vol/liq > 3){ checks.push(["warn","Volume vs liquidity","24h volume is "+(vol/liq).toFixed(1)+"× the pool — churn this hot usually means insiders cycling, not adoption."]); score -= 6; }
+  score = Math.max(2, Math.min(98, Math.round(score)));
+  return { pair: p, checks: checks, score: score, verdict: verdictFor(score) };
+}
+function runLab(){
+  var q = $("#lab-input").value.trim();
+  var box = $("#lab-result");
+  if(!q){ box.innerHTML = '<p class="note">Paste a contract address first.</p>'; return; }
+  box.innerHTML = '<div class="skel"></div>';
+  var isAddr = q.length >= 32 && !/\s/.test(q);
+  var url = isAddr
+    ? "https://api.dexscreener.com/latest/dex/tokens/" + encodeURIComponent(q)
+    : "https://api.dexscreener.com/latest/dex/search?q=" + encodeURIComponent(q);
+  fetch(url).then(function(r){ return r.json(); }).then(function(j){
+    var pairs = j.pairs || [];
+    if(!pairs.length){ box.innerHTML = '<div class="empty">No pairs found for that input on DexScreener. An untracked contract is itself a red flag.</div>'; return; }
+    var main = pairs.slice().sort(function(a,b){ return ((b.liquidity&&b.liquidity.usd)||0)-((a.liquidity&&a.liquidity.usd)||0); })[0];
+    var sym = main.baseToken.symbol, name = main.baseToken.name;
+    /* ticker-collision: search the symbol, count distinct contracts */
+    fetch("https://api.dexscreener.com/latest/dex/search?q=" + encodeURIComponent(sym))
+      .then(function(r){ return r.json(); })
+      .then(function(sj){
+        var contracts = {};
+        (sj.pairs||[]).forEach(function(pr){ if(pr.baseToken.symbol === sym) contracts[pr.baseToken.address] = pr.chainId; });
+        var n = Object.keys(contracts).length;
+        var res = analyzePairs(pairs, sym);
+        var collision;
+        if(n >= 5) collision = ["fail","Ticker collision — the vamp test", n+" distinct contracts trade under $"+sym+". Impersonation launches are the dominant scam pattern — a famous name with many contracts means most of them are traps. Verify THIS contract against the project's own channels."];
+        else if(n >= 2) collision = ["warn","Ticker collision — the vamp test", n+" contracts share $"+sym+". Copies exist; confirm this address is the original before trusting it."];
+        else collision = ["pass","Ticker collision — the vamp test", "Only one contract trades under $"+sym+" — no mimics found."];
+        if(n >= 5) res.score = Math.max(2, res.score - 16);
+        if(n >= 2 && n < 5) res.score = Math.max(2, res.score - 6);
+        res.verdict = verdictFor(res.score);
+        var v = res.verdict;
+        box.innerHTML =
+          '<div class="verdict-banner '+v.key+'" style="margin-top:12px"><div><div class="vscore">'+res.score+'</div><div class="note">/ 100</div></div><div><h3>'+v.label+" — "+esc(name)+' <span class="mono" style="color:var(--gold); font-size:13px">$'+esc(sym)+'</span></h3><p>'+esc(v.blurb)+'</p><div class="scorebar"><i style="width:'+res.score+'%; background:'+(v.key==="real"?"var(--green)":v.key==="suspect"?"var(--gold)":"var(--red)")+'"></i></div></div></div>' +
+          '<div style="margin-top:6px">' + checkRow(collision[0], collision[1], collision[2]) + res.checks.map(function(c){ return checkRow(c[0], c[1], c[2]); }).join("") + "</div>" +
+          '<p class="note" style="margin-top:10px">Deepest pair: '+esc(main.dexId)+" on "+esc(main.chainId)+' · <a href="'+esc(main.url)+'" target="_blank" rel="noopener">view on DexScreener</a></p>';
+      })
+      .catch(function(){ box.innerHTML = '<div class="empty">Collision check failed — treat the token as unverified.</div>'; });
+  }).catch(function(){ box.innerHTML = '<div class="empty">DexScreener did not answer. Try again in a moment.</div>'; });
+}
+$("#lab-go").addEventListener("click", runLab);
+$("#lab-input").addEventListener("keydown", function(e){ if(e.key === "Enter") runLab(); });
+
+/* ---------------- Research tab ---------------- */
+var researchRendered = false;
+function renderResearch(){
+  researchRendered = true;
+  var box = $("#research-list");
+  var src = feedTokens.length ? feedTokens.slice(0,8) : [];
+  if(!src.length){
+    box.innerHTML = '<div class="empty">Waiting on the live feed — verdicts are scored from APEX¹ data. Reopen APEX¹, let it load, then come back.</div>';
+    researchRendered = false; return;
+  }
+  box.innerHTML = '<div class="skel"></div><div class="skel"></div>';
+  var jobs = src.map(function(t){
+    return fetch("https://api.dexscreener.com/latest/dex/tokens/" + t.address)
+      .then(function(r){ return r.json(); })
+      .then(function(j){ return { t: t, res: analyzePairs(j.pairs, t.symbol) }; })
+      .catch(function(){ return { t: t, res: null }; });
+  });
+  Promise.all(jobs).then(function(rows){
+    rows = rows.filter(function(r){ return r.res; });
+    rows.sort(function(a,b){ return b.res.score - a.res.score; });
+    if(!rows.length){ box.innerHTML = '<div class="empty">Scoring failed — DexScreener did not answer.</div>'; return; }
+    box.innerHTML = rows.map(function(r){
+      var v = r.res.verdict, t = r.t;
+      var topReasons = r.res.checks.slice(0,3).map(function(c){
+        return '<div class="check" style="padding:7px 0"><div class="ic '+c[0]+'"></div><div><b style="font-size:13px">'+esc(c[1])+'</b><p>'+esc(c[2])+"</p></div></div>";
+      }).join("");
+      return '<div class="card" style="margin-bottom:10px">' +
+        '<div style="display:flex; gap:11px; align-items:center">' +
+          '<div class="tok-ava" style="width:40px; height:40px"><div class="letter" style="background:'+avatarBg(t.symbol)+'; border-radius:11px">'+esc(t.symbol.slice(0,3))+"</div></div>" +
+          '<div style="flex:1; min-width:0"><b>'+esc(t.name)+'</b> <span class="mono" style="color:var(--gold); font-size:12px">$'+esc(t.symbol)+'</span><div class="note" style="font-size:12px">'+esc(t.chainId)+" · "+fmtPrice(t.price)+" · liq "+fmtUsd(t.liquidity)+"</div></div>" +
+          '<span class="chip '+(v.key==="real"?"ok":v.key==="suspect"?"warn":"bad")+'">'+v.label+" · "+r.res.score+"</span></div>" +
+        '<div class="scorebar"><i style="width:'+r.res.score+'%; background:'+(v.key==="real"?"var(--green)":v.key==="suspect"?"var(--gold)":"var(--red)")+'"></i></div>' +
+        topReasons +
+      "</div>";
+    }).join("");
+  });
+}
+
+/* ---------------- News (snapshot, Oct 18 2026) ---------------- */
+var NEWS = [
+  { tags:["markets","bitcoin"], src:"Basis Desk", when:"Oct 17 close",
+    title:"Crypto Market Close Oct. 17: BTC $81,378 (−0.1%), Fear & Greed slips to 53",
+    body:"A quiet red close across the majors — ETH $2,400 (−0.8%), SOL $103.32 (−0.9%), XRP $1.29 (−1.2%). Stablecoin supply held at $306.2B. Top stories of the day: DTCC completed live tokenization trades with J.P. Morgan and CME Group, and Ethereum scheduled the Glamsterdam upgrade for Hoodi testnet activation on Oct. 26.",
+    url:"https://basisdesk.news/news/crypto-market-close-october-17-2026" },
+  { tags:["solana"], src:"Adalytica", when:"Oct 18",
+    title:"Solana falls below $103 after Samsung USDC rollout",
+    body:"SOL slid to $103.33 despite Samsung announcing USDC transfers on 82 million Galaxy devices — the problem is flow, not fundamentals: U.S. spot Solana ETFs posted eight straight days of net outflows and $959M of leveraged positions were liquidated market-wide. RSI sat at 22.1, deep in oversold territory.",
+    url:"https://adalytica.com/news/solana-falls-below-103-samsung-usdc-rollout-d54eaf8b" },
+  { tags:["markets","solana","bitcoin"], src:"CryptoPotato · CryptoQuant", when:"Oct 18",
+    title:"Analysts more bullish now than at the start of the 2023 bull market — SOL leads",
+    body:"CryptoQuant's Bull Score Index jumped from 20 in July to as high as 90 in September. Solana carries the strongest consensus of the five assets examined at +72, with 31 of 34 analysts (91%) betting on the bulls — ETH and SOL sentiment are leading this cycle instead of lagging BTC's recovery.",
+    url:"https://pediaxtech.blogspot.com/2026/10/bitcoin-analysts-are-more-bullish-now.html" },
+  { tags:["solana"], src:"Bitcoin Insider", when:"Oct 18",
+    title:"Solana and XRP rebound Sunday, but Tuesday's prices stay out of reach",
+    body:"Sequential Coinbase observations put SOL at $104.01 (+1.88% vs Saturday evening) and XRP at $1.2965 (+0.80%). The bounce reduced the week's losses rather than erasing them: SOL still needs +3.71% to regain Tuesday's $107.87 print.",
+    url:"https://www.bitcoininsider.org/article/solana-xrp-recovery-weekly-losses" },
+  { tags:["markets"], src:"₿Proud", when:"Oct 18",
+    title:"Bitcoin holds near $81.6K as total market cap dips to $2.75T",
+    body:"Bitcoin dominance 59.5%, Ethereum 10.7%, only 16 of the top 100 non-stablecoin assets green. Top gainers: Bitway +16.71%, Pearl +12.39%, Monero +4.28%. Heaviest losers: Filecoin −10.86%, Worldcoin −7.40%, Pump.fun −6.78%.",
+    url:"https://bproud.blog/crypto-market-today-2026-10-18/" },
+  { tags:["regulation","tokens"], src:"Basis Desk", when:"Oct 17",
+    title:"DTCC completes live tokenization trades with J.P. Morgan and CME Group",
+    body:"Wall Street's clearing house ran live tokenization trades with two of the largest names in traditional finance — the tokenization rail keeps moving from pilot to production. Same close: ESMA designated digital innovation and AI as strategic supervisory priorities from 2027.",
+    url:"https://basisdesk.news/news/crypto-market-close-october-17-2026" }
+];
+function renderNews(tag){
+  var list = NEWS.filter(function(n){ return tag==="all" || n.tags.indexOf(tag)>=0; });
+  $("#news-list").innerHTML = list.length ? list.map(function(n){
+    return '<a class="news-item" href="'+n.url+'" target="_blank" rel="noopener"><h3>'+esc(n.title)+"</h3><p>"+esc(n.body)+'</p><div class="news-meta"><span class="src">'+esc(n.src)+" · "+esc(n.when)+'</span>'+n.tags.map(function(t){ return '<span class="chip">'+t+"</span>"; }).join("")+"</div></a>";
+  }).join("") : '<div class="empty">No snapshot stories under this interest yet.</div>';
+}
+$$("#news-filters .fchip").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("#news-filters .fchip").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    renderNews(b.getAttribute("data-tag"));
+  });
+});
+
+/* ---------------- Trading ---------------- */
+var AI_WALLETS = [
+  { name:"AllenX", chain:"Base", addr:"0x510Bc429F1Ee61a3C54c886aB7049FbE059fa73f", bal:"0.00342 ETH", mode:"LIVE", cls:"bad",
+    desc:"Original AllenX live bridge. Re-armed Oct 17 by direct order after the sell path was proven. $2 max per trade doctrine holds." },
+  { name:"Allen2", chain:"Base", addr:"0xD2958744072f8820f79FCC748d61A8F2a823411e", bal:"0.00496 ETH", mode:"PAPER", cls:"info",
+    desc:"Second-wave momentum trader. Paper until it measures ≥65% win rate over ≥30 closed trades. Separate bankroll, separate circuit breakers." },
+  { name:"TEST01", chain:"Solana", addr:"6yELZxRmRvwoow8MMGMpwLgGYFLJjRV63guaAAKEX7Kn", bal:"0.01045 SOL", mode:"PAPER", cls:"info",
+    desc:"Solana proving loop + NewAPI signal follower (trust → analyze → judge). Goes live only when the measured bar is met — the tripwire flips it, and reports after." }
+];
+var SKILLS = [
+  { name:"Sniper1 — watering-hole sniper", status:"PARKED", cls:"warn", wr:"0%", rec:"0 / 10 closed",
+    desc:"Bought the top 10 times out of 10 — every entry peaked at 1.00×. Rework is specified: enter only on positive buy-acceleration from the six tracked deployers, 5-minute time stop. Cron disabled until the rework is paper-validated." },
+  { name:"TEST01-NewAPI — signal follower", status:"MEASURING", cls:"info", wr:"—", rec:"accumulating",
+    desc:"Takes outside signals raw on the paper loop — safety gates disarmed by design, because the experiment measures the signal, not our filter. Per-source win rate decides who earns a place. Mayhem-flagged signals are taken and measured here, and only here." },
+  { name:"Allen2 — momentum skill set", status:"PAPER", cls:"info", wr:"—", rec:"0 / 9 live-era closes",
+    desc:"Cloned into the Braintree as a categorized knowledgebase entry. Its gates are its edge — judged as second-wave momentum, not retrofitted into a sniper." },
+  { name:"Trade Portal — execution skill", status:"PROVEN", cls:"ok", wr:"96%", rec:"round-trip retained",
+    desc:"The 7-step fail-closed executor: validate → quote all venues → economic sanity → simulate exact calldata → triple-gated execute → verify balance deltas. Live-proof: $1.00 → $0.96 on the B3 round-trip, proceeds verified in wallet." }
+];
+function renderTrading(){
+  $("#ai-wallets").innerHTML = AI_WALLETS.map(function(w){
+    return '<div class="card wallet-card"><div style="display:flex; justify-content:space-between; align-items:center; gap:8px"><b>'+w.name+'</b><span class="chip '+w.cls+'">'+w.mode+'</span></div>' +
+      '<div class="note" style="font-size:12px">'+w.chain+'</div><div class="bal" style="margin:6px 0 4px">'+w.bal+'</div>' +
+      '<div class="addr">'+w.addr+'</div><p class="note" style="margin-top:8px">'+w.desc+"</p></div>";
+  }).join("");
+  $("#skillsets").innerHTML = SKILLS.map(function(s){
+    return '<div class="skill-row"><div class="grow"><b>'+s.name+'</b> <span class="chip '+s.cls+'">'+s.status+'</span><p>'+s.desc+'</p></div>' +
+      '<div class="wr"><b>'+s.wr+'</b><span>'+s.rec+"</span></div></div>";
+  }).join("");
+}
+
+/* ---------------- Sockets ---------------- */
+var SOCKETS = [
+  { name:"Market data socket", status:"LIVE IN SANDBOX", cls:"ok", desc:"DexScreener + GeckoTerminal public APIs. This is the one socket genuinely connected here — it powers APEX¹, APEX² and the Research verdicts in real time." },
+  { name:"HALEX wallet socket", status:"PREVIEW", cls:"warn", desc:"Pairing, balance reads and on-device signing requests. The interface is real; the handshake is not wired in the sandbox. Keys never leave the phone." },
+  { name:"Trade execution socket", status:"PREVIEW", cls:"warn", desc:"Routes portal quotes to the always-on box where the loops run. Paper and live are separated by the armed flag + triple gate — a flag alone is never enough on an unproven signal source." },
+  { name:"AI provider sockets — Muse / Grok / others", status:"PREVIEW", cls:"warn", desc:"External AIs plug in to operate: fetch, scan, design, summarize. Structured capabilities in, structured results out, everything public-facing passes the halex-security gates. No socket grants write access to code." },
+  { name:"Launch Feed socket", status:"SPEC DEPENDENT", cls:"info", desc:"Every RUSTY launch publishes {token, page, CA, chain, timestamp} to a public read API that any market feed can adopt. Ours eats from the same API, so the in-app card and third-party feeds can never disagree." },
+  { name:"News interest socket", status:"SNAPSHOT", cls:"info", desc:"Curates against your interest profile (Solana, Base, memecoins, the trade system). Snapshot-driven in this sandbox; the live curation feed lands with the backend." }
+];
+function renderSockets(){
+  $("#socket-list").innerHTML = SOCKETS.map(function(s){
+    return '<div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg></div>' +
+      '<div style="flex:1"><b>'+s.name+'</b> <span class="chip '+s.cls+'">'+s.status+'</span><p>'+s.desc+"</p></div></div>";
+  }).join("");
+}
+
+/* ---------------- Wallet ---------------- */
+$("#wallet-connect").addEventListener("click", function(){
+  $("#wallet-connect-note").textContent = "Preview only — wallet pairing is not wired in this sandbox, and no connection was attempted.";
+  toast("Wallet pairing is a preview in this sandbox — nothing connected.");
+});
+
+/* ---------------- RUSTY ---------------- */
+var RUSTY_CHAINS = [
+  { id:"solana", name:"Solana", fam:"SPL / Token-2022", fee:"≈ 0.01 SOL network + rent", how:"create-mint → metadata → mintTo, one flow" },
+  { id:"base", name:"Base", fam:"ERC-20 template", fee:"quoted in ETH at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"ethereum", name:"Ethereum", fam:"ERC-20 template", fee:"quoted in ETH at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"bsc", name:"BNB Chain", fam:"ERC-20 template", fee:"quoted in BNB at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"ink", name:"INK", fam:"ERC-20 template", fee:"quoted in ETH at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"unichain", name:"Unichain", fam:"ERC-20 template", fee:"quoted in ETH at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"hyperevm", name:"HyperEVM", fam:"ERC-20 template", fee:"quoted in HYPE at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"sei", name:"Sei", fam:"ERC-20 template", fee:"quoted in SEI at signing", how:"one audited ERC-20 template, all EVMs" },
+  { id:"xrp", name:"XRP Ledger", fam:"Trustline issuance", fee:"fractions of a cent + reserves", how:"cold/hot wallets, trustline issue, blackhole option" },
+  { id:"sui", name:"Sui", fam:"Move Currency Standard", fee:"quoted in SUI at signing", how:"Move package publish, TreasuryCap (burnable)" },
+  { id:"bitcoin", name:"Bitcoin · Runes", fam:"Runes etching", fee:"BTC network fee at signing", how:"etching committed in OP_RETURN — the token definition lives in the commit. Hardest adapter: needs a Runes-aware signer" }
+];
+var rustyChain = RUSTY_CHAINS[0], rustyPreset = "forge";
+var PRESETS = {
+  forge:  { bg:"linear-gradient(150deg,#2a0f06,#120806 70%)", accent:"#ff8a3c" },
+  onyx:   { bg:"linear-gradient(150deg,#1b1d24,#07080b 70%)", accent:"#ffc24b" },
+  ocean:  { bg:"linear-gradient(150deg,#06222e,#041018 70%)", accent:"#2dd4bf" },
+  royal:  { bg:"linear-gradient(150deg,#241a02,#100b01 70%)", accent:"#ffd76a" }
+};
+function renderRustyChains(){
+  $("#rusty-chains").innerHTML = RUSTY_CHAINS.map(function(c){
+    return '<button data-chain="'+c.id+'" class="'+(c.id===rustyChain.id?"on":"")+'">'+c.name+"<small>"+c.fam+"</small></button>";
+  }).join("");
+  $$("#rusty-chains button").forEach(function(b){
+    b.addEventListener("click", function(){
+      rustyChain = RUSTY_CHAINS.filter(function(c){ return c.id===b.getAttribute("data-chain"); })[0];
+      renderRustyChains(); renderRustyPreview(); renderRustyReview();
+    });
+  });
+}
+$$("#rusty-steps button").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("#rusty-steps button").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    var step = b.getAttribute("data-step");
+    $$(".rusty-step").forEach(function(s){ s.classList.toggle("on", s.getAttribute("data-step")===step); });
+    if(step === "6") renderRustyReview();
+  });
+});
+function renderRustyPreview(){
+  var p = PRESETS[rustyPreset];
+  var pv = $("#r-preview");
+  pv.style.background = p.bg;
+  $("#pv-name").textContent = ($("#r-name").value || "Your Token") + "  ·  $" + ($("#r-sym").value || "TKN").toUpperCase();
+  $("#pv-name").style.color = p.accent;
+  $("#pv-desc").textContent = $("#r-desc").value || "";
+  $("#pv-ca").textContent = "CA: minted at deploy · chain: " + rustyChain.name + ( $("#r-owner").value ? " · owner-verified: " + $("#r-owner").value : "" );
+}
+["r-name","r-sym","r-desc","r-owner"].forEach(function(id){
+  $("#"+id).addEventListener("input", renderRustyPreview);
+});
+$$("#r-presets button").forEach(function(b){
+  b.addEventListener("click", function(){
+    $$("#r-presets button").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on");
+    rustyPreset = b.getAttribute("data-preset");
+    renderRustyPreview();
+  });
+});
+function renderRustyReview(){
+  var rows = [
+    ["Token", ($("#r-name").value||"—") + " ($" + ($("#r-sym").value||"—").toUpperCase() + ")"],
+    ["Chain", rustyChain.name + " · " + rustyChain.fam],
+    ["Mint path", rustyChain.how],
+    ["Supply", ($("#r-supply").value||"—") + " · " + ($("#r-dec").value||"9") + " decimals"],
+    ["Owner metadata", $("#r-owner").value ? "owner-verified: " + $("#r-owner").value : "not attached (optional)"],
+    ["Links", [$("#r-web").value, $("#r-x").value, $("#r-tg").value].filter(Boolean).join(" · ") || "none — the Research Lab will flag this token"],
+    ["Liquidity", ($("#r-liq-amt").value||"—") + " " + $("#r-liq-pair").value + " seed · " + $("#r-liq-pct").value],
+    ["Estimated network fee", rustyChain.fee],
+    ["Ships with it", "Token page (public shareable link) + Launch Feed entry, timestamped at birth"]
+  ];
+  $("#r-review").innerHTML = rows.map(function(r){
+    return '<div class="kv"><span>'+esc(r[0])+"</span><b>"+esc(r[1])+"</b></div>";
+  }).join("");
+}
+$("#r-deploy").addEventListener("click", function(){
+  var btn = $("#r-deploy");
+  btn.disabled = true; btn.textContent = "Preparing unsigned transaction…";
+  setTimeout(function(){
+    btn.textContent = "Ready — awaiting wallet signature (preview)";
+    toast("Preview: unsigned deploy prepared for " + rustyChain.name + ". In production your HALEX wallet signs on-device. Nothing minted.");
+    setTimeout(function(){ btn.disabled = false; btn.textContent = "Prepare deploy"; }, 2600);
+  }, 700);
+});
+
+/* ---------------- Chaintarium (Three.js) ---------------- */
+var CHAINS_3D = [
+  { id:"bitcoin", name:"Bitcoin", sym:"BTC", color:0xf7931a, size:2.6, orbit:0, speed:0, info:"The sun. The original chain — every other world in this system orbits it. In the Research Engine, Bitcoin anchors the map: zoom out and it's the light everything else is measured against." },
+  { id:"ethereum", name:"Ethereum", sym:"ETH", color:0x8a9cff, size:1.15, orbit:7.5, speed:0.16, info:"The first smart-contract world. Deep DeFi continents, the Glamsterdam upgrade scheduled for Hoodi testnet Oct 26, 2026. Wallet coverage: native in HALEX wallet 0.10.x." },
+  { id:"solana", name:"Solana", sym:"SOL", color:0x9945ff, size:1.9, orbit:11.5, speed:0.24, info:"The Jupiter of the system — the biggest memecoin gravity well in crypto. The watering hole: tokens are born in its pools by the thousand, and the predators hunt there. TEST01 hunts on this world (paper). 200ms block times now live." },
+  { id:"xrp", name:"XRP Ledger", sym:"XRP", color:0xff5a3c, size:0.95, orbit:15, speed:0.13, info:"The Mars of the system — red, fast, payments-native. Issuance works by trustline: no contract needed, fractions of a cent in fees. RUSTY mints here with cold/hot wallet issuance and a blackhole option." },
+  { id:"bsc", name:"BNB Chain", sym:"BNB", color:0xf0b90b, size:1.25, orbit:18.5, speed:0.19, info:"A high-volume EVM world. One ERC-20 template covers it in RUSTY; native in the HALEX wallet today." },
+  { id:"base", name:"Base", sym:"BASE", color:0x4d7cff, size:1.05, orbit:22, speed:0.21, info:"Coinbase's EVM world and the fleet's home turf: AllenX trades live here ($2 max), Allen2 proves itself here on paper. New-launch discovery runs through the APEX¹ firehose." },
+  { id:"sui", name:"Sui", sym:"SUI", color:0x4da2ff, size:0.85, orbit:25.5, speed:0.27, info:"A Move-language world. RUSTY mints via the Move Currency Standard — TreasuryCap stays burnable, so supply discipline is enforceable on-chain." },
+  { id:"sei", name:"Sei", sym:"SEI", color:0xd84a6b, size:0.75, orbit:28.5, speed:0.3, info:"A trading-optimized EVM world on the outer orbit of the HALEX catalog — covered by the same ERC-20 adapter as the rest of the EVM family." }
+];
+var ch = { started:false, focus:null };
+function chainInfoHTML(c){
+  return "<b>"+esc(c.name)+(c.sym ? ' <span class="mono" style="color:var(--gold); font-size:12px">$'+esc(c.sym)+"</span>" : "")+'</b><p class="note" style="margin-top:4px">'+esc(c.info)+"</p>";
+}
+function renderChainChips(){
+  $("#chain-chips").innerHTML = CHAINS_3D.map(function(c){
+    return '<button data-chain3d="'+c.id+'" class="'+(ch.focus===c.id?"on":"")+'">'+c.name+"</button>";
+  }).join("");
+  $$("#chain-chips button").forEach(function(b){
+    b.addEventListener("click", function(){
+      var c = CHAINS_3D.filter(function(x){ return x.id===b.getAttribute("data-chain3d"); })[0];
+      focusChain(c);
+    });
+  });
+}
+function focusChain(c){
+  ch.focus = c.id;
+  ch.focusObj = c._obj || null;
+  $("#chain-info").innerHTML = chainInfoHTML(c);
+  renderChainChips();
+}
+function startChaintarium(){
+  renderChainChips();
+  if(ch.started) return;
+  ch.started = true;
+  var canvas = $("#chain-canvas"), stage = $("#chain-stage"), labelsBox = $("#chain-labels");
+  if(!window.THREE){
+    stage.innerHTML = '<div class="empty" style="margin:16px">The 3D engine (Three.js CDN) did not load — check your connection and reopen this tab.</div>';
+    return;
+  }
+  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
+  var targetDist = 34, dist = 34, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
+  camera.position.set(0, 14, 34);
+
+  /* stars */
+  var starGeo = new THREE.BufferGeometry();
+  var pos = [];
+  for(var i=0;i<900;i++){
+    var r = 90 + Math.random()*80, th = Math.random()*Math.PI*2, ph = Math.acos(2*Math.random()-1);
+    pos.push(r*Math.sin(ph)*Math.cos(th), r*Math.cos(ph)*0.6, r*Math.sin(ph)*Math.sin(th));
+  }
+  starGeo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0x8fa3c8, size:0.55, sizeAttenuation:true })));
+
+  var world = new THREE.Group(); scene.add(world);
+  scene.add(new THREE.AmbientLight(0x8899bb, 0.55));
+  var sunLight = new THREE.PointLight(0xffc37a, 1.6, 0); world.add(sunLight);
+
+  var planets = [];
+  CHAINS_3D.forEach(function(c, idx){
+    var mat = new THREE.MeshStandardMaterial({ color: c.color, roughness: 0.55, metalness: 0.15, emissive: c.orbit===0 ? c.color : 0x000000, emissiveIntensity: c.orbit===0 ? 0.55 : 0 });
+    var mesh = new THREE.Mesh(new THREE.SphereGeometry(c.size, 40, 40), mat);
+    mesh.userData.chain = c;
+    world.add(mesh);
+    c._obj = mesh;
+    if(c.orbit > 0){
+      var ringGeo = new THREE.RingGeometry(c.orbit-0.03, c.orbit+0.03, 128);
+      var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:0x39445e, side:THREE.DoubleSide, transparent:true, opacity:0.55 }));
+      ring.rotation.x = Math.PI/2; world.add(ring);
+    }
+    var label = document.createElement("div");
+    label.className = "planet-label"; label.textContent = c.name;
+    labelsBox.appendChild(label);
+    planets.push({ c: c, mesh: mesh, label: label, angle: Math.random()*Math.PI*2 });
+  });
+  /* Solana's ring system — the Jupiter of the system gets rings */
+  var sol = CHAINS_3D.filter(function(c){ return c.id==="solana"; })[0];
+  if(sol && sol._obj){
+    var sring = new THREE.Mesh(new THREE.RingGeometry(2.5, 3.4, 64), new THREE.MeshBasicMaterial({ color:0x14f195, side:THREE.DoubleSide, transparent:true, opacity:0.35 }));
+    sring.rotation.x = Math.PI/2.4;
+    sol._obj.add(sring);
+  }
+
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w/h; camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener("resize", resize);
+
+  /* controls: drag rotate, wheel + pinch zoom */
+  var drag = null, pinchD = 0;
+  function pt(e){ var r = canvas.getBoundingClientRect(); return { x: e.clientX-r.left, y: e.clientY-r.top }; }
+  canvas.addEventListener("pointerdown", function(e){ drag = { p: pt(e), moved: 0 }; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointermove", function(e){
+    if(!drag) return;
+    var p = pt(e);
+    var dx = p.x - drag.p.x, dy = p.y - drag.p.y;
+    drag.moved += Math.abs(dx) + Math.abs(dy);
+    tRotY += dx * 0.005; tRotX += dy * 0.004;
+    tRotX = Math.max(-0.15, Math.min(1.25, tRotX));
+    drag.p = p;
+  });
+  canvas.addEventListener("pointerup", function(e){
+    if(drag && drag.moved < 6) pick(e);
+    drag = null;
+  });
+  canvas.addEventListener("wheel", function(e){
+    e.preventDefault();
+    targetDist = Math.max(9, Math.min(60, targetDist + e.deltaY*0.03));
+  }, { passive:false });
+  canvas.addEventListener("touchmove", function(e){
+    if(e.touches.length === 2){
+      var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      if(pinchD) targetDist = Math.max(9, Math.min(60, targetDist - (d-pinchD)*0.08));
+      pinchD = d;
+    }
+  }, { passive:true });
+  canvas.addEventListener("touchend", function(){ pinchD = 0; });
+
+  var ray = new THREE.Raycaster(), mouse = new THREE.Vector2();
+  function pick(e){
+    var r = canvas.getBoundingClientRect();
+    mouse.x = ((e.clientX-r.left)/r.width)*2 - 1;
+    mouse.y = -((e.clientY-r.top)/r.height)*2 + 1;
+    ray.setFromCamera(mouse, camera);
+    var hits = ray.intersectObjects(planets.map(function(p){ return p.mesh; }));
+    if(hits.length) focusChain(hits[0].object.userData.chain);
+  }
+
+  var focusPos = new THREE.Vector3();
+  function animate(){
+    requestAnimationFrame(animate);
+    if(currentTab !== "chaintarium") return;
+    var t = Date.now()*0.001;
+    planets.forEach(function(p){
+      if(p.c.orbit === 0){ p.mesh.position.set(0,0,0); p.mesh.rotation.y = t*0.02; return; }
+      var a = p.angle + t * p.c.speed * 0.14;
+      p.mesh.position.set(Math.cos(a)*p.c.orbit, Math.sin(a*1.7)*0.4, Math.sin(a)*p.c.orbit);
+      p.mesh.rotation.y = t*0.3;
+    });
+    rotY += (tRotY-rotY)*0.07; rotX += (tRotX-rotX)*0.07;
+    dist += (targetDist-dist)*0.06;
+    var focusObj = null;
+    planets.forEach(function(p){ if(p.c.id === ch.focus) focusObj = p.mesh; });
+    if(focusObj && ch.focus !== "bitcoin"){
+      focusObj.getWorldPosition(focusPos);
+      world.position.lerp(new THREE.Vector3(-focusPos.x, -focusPos.y*0.4, -focusPos.z), 0.05);
+    } else {
+      world.position.lerp(new THREE.Vector3(0,0,0), 0.05);
+    }
+    camera.position.set(Math.sin(rotY)*Math.cos(rotX)*dist, Math.sin(rotX)*dist, Math.cos(rotY)*Math.cos(rotX)*dist);
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    /* labels */
+    var w = stage.clientWidth, h = stage.clientHeight;
+    planets.forEach(function(p){
+      var v = new THREE.Vector3();
+      p.mesh.getWorldPosition(v); v.project(camera);
+      if(v.z > 1){ p.label.style.display = "none"; return; }
+      p.label.style.display = "block";
+      p.label.style.left = ((v.x*0.5+0.5)*w) + "px";
+      p.label.style.top = ((-v.y*0.5+0.5)*h) + "px";
+    });
+  }
+  animate();
+}
+
+/* ---------------- boot ---------------- */
+buildNav();
+quickGrid();
+renderSnapshot();
+renderNews("all");
+renderTrading();
+renderSockets();
+renderRustyChains();
+renderRustyPreview();
+renderRustyReview();
+loadFeed();
+</script>
+</body>
+</html>
