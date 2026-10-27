@@ -483,6 +483,29 @@ body.chain-pop{overflow:hidden}
 .surface-note{position:absolute; left:10px; right:10px; bottom:8px; z-index:5; margin:0; font-size:11px; color:rgba(200,210,230,.62); pointer-events:none}
 .zone-label{position:absolute; transform:translate(-50%,-130%); pointer-events:none; font-size:10px; font-weight:600; letter-spacing:.03em; color:#ffe1a8; background:rgba(10,8,2,.66); border:1px solid rgba(255,194,75,.4); padding:2px 7px; border-radius:99px; white-space:nowrap}
 
+/* Chaintarium toolbar — the in-window toolkit (unclutter): toggles for
+   overlays and transfer routes, plus Show-all when a search has
+   isolated the view to one world. Orbit view only: in planet view the
+   bar hides, but the toggles it set keep applying there. In the popped
+   window it rides below the window buttons, clear of them. */
+.chain-tools{position:absolute; right:10px; top:10px; z-index:61; display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+.chain-tools .btn{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; background:rgba(8,10,16,.85); backdrop-filter:blur(6px)}
+.chain-tools .btn[aria-pressed="false"]{opacity:.72}
+#chain-stage.pop .chain-tools{top:58px}
+@media (max-width:640px){ #chain-stage.pop .chain-tools{top:106px} }
+#surface.open ~ .chain-tools{display:none}
+/* overlays-off: hide the clutter layers, keep controls and cards */
+#chain-stage.overlays-off #chain-labels,
+#chain-stage.overlays-off .rotate-hint,
+#chain-stage.overlays-off #surface-labels,
+#chain-stage.overlays-off .surface-note,
+#chain-stage.overlays-off .feat-legend{display:none !important}
+/* cross-chain transfer route labels — tappable links to the route's
+   endpoint worlds; tapping one opens the route card with a Visit
+   button for each end */
+.route-label{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.02em; color:#ffe1a8; background:rgba(8,10,16,.72); border:1px solid rgba(255,194,75,.45); padding:2px 7px; border-radius:99px; white-space:nowrap}
+.route-label:hover{color:#fff; border-color:var(--gold)}
+
 /* ---------- chaintarium — cosmos tracker ---------- */
 .chain-track{margin-top:10px}
 .track-head{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
@@ -945,7 +968,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb, 
 @keyframes surfin{from{opacity:0; transform:scale(1.045)} to{opacity:1; transform:none}}
 @media (prefers-reduced-motion: reduce){ #surface.open{animation:none} }
 #chain-canvas{transition:transform .68s cubic-bezier(.5,0,.8,.4), opacity .68s ease, filter .68s ease}
-#chain-stage.diving #chain-canvas{transform:scale(1.5); opacity:.15; filter:brightness(1.7) saturate(1.4)}
+#chain-stage.diving #chain-canvas{transform:scale(1.2); opacity:.15; filter:brightness(1.7) saturate(1.4)}
 .planet-label{
   color:#eef3ff; background:rgba(6,10,18,.78); border-color:rgba(120,220,255,.35);
   box-shadow:0 0 12px rgba(45,212,191,.16), inset 0 1px 0 rgba(255,255,255,.1); backdrop-filter:blur(3px);
@@ -1719,6 +1742,11 @@ nav.tabbar button span{letter-spacing:.015em}
     <div class="pop-actions">
       <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
       <button class="btn" id="chain-pop-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg>Pop back in</button>
+    </div>
+    <div class="chain-tools" id="chain-tools">
+      <button class="btn" id="chain-tools-overlays" aria-pressed="true">Overlays on</button>
+      <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
+      <button class="btn" id="chain-tools-showall" hidden>Show all worlds</button>
     </div>
   </div>
   <div class="chain-ctl" id="chain-chips"></div>
@@ -4901,6 +4929,17 @@ function startChaintarium(){
   var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
+  /* fit distance: how far the camera must sit for the whole system to
+     fit — outermost orbit (76) plus a world radius, over the camera's
+     55° field, worst case over every drag orientation and aspect. The
+     old fixed cap (115) clipped the outer worlds on phones; pinch and
+     wheel now stop at this computed distance instead, so pinching all
+     the way out always frames the full solar system. */
+  function chainFitDist(){
+    var r = canvas.getBoundingClientRect();
+    var a = r.width / Math.max(1, r.height);
+    return Math.ceil(82 / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+  }
   camera.position.set(0, 20, 46);
 
   /* stars — a deep field with a few tinted families (ice blue, gold,
@@ -4998,7 +5037,7 @@ function startChaintarium(){
     if(c.orbit > 0){
       var ringGeo = new THREE.RingGeometry(c.orbit-0.035, c.orbit+0.035, 128);
       var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:c.color, side:THREE.DoubleSide, transparent:true, opacity:0.2 }));
-      ring.rotation.x = Math.PI/2; world.add(ring);
+      ring.rotation.x = Math.PI/2; world.add(ring); c._ring = ring;
     }
     var label = document.createElement("div");
     label.className = "planet-label"; label.textContent = c.name;
@@ -5103,7 +5142,27 @@ function startChaintarium(){
     g.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEG + 1) * 3), 3));
     var line = new THREE.Line(g, new THREE.LineBasicMaterial({ color: rd[2], transparent: true, opacity: 0.44, blending: THREE.AdditiveBlending, depthWrite: false }));
     world.add(line);
-    routes.push({ a: ca._obj, b: cb._obj, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012 });
+    /* cross-chain transfer route label — a tappable link to the route's
+       endpoint worlds: tapping it opens the route card with a Visit
+       button for each end. The label rides the arc apex, placed every
+       frame like the planet labels. */
+    var midObj = new THREE.Object3D(); world.add(midObj);
+    var rlabel = document.createElement("div");
+    rlabel.className = "route-label"; rlabel.textContent = ca.sym + " → " + cb.sym;
+    rlabel.title = "Cross-chain transfer route: " + ca.name + " → " + cb.name;
+    (function(frm, to){
+      rlabel.addEventListener("click", function(){
+        $("#chain-info").innerHTML =
+          "<b>Cross-chain transfer route</b>" +
+          "<p class=\"note\" style=\"margin-top:4px\">A stylized route showing how value moves between worlds — not live transfer data. The bright pulses riding it are transfers in flight.</p>" +
+          '<div class="kv"><span>From</span><b>' + esc(frm.name) + "</b></div>" +
+          '<div class="kv"><span>To</span><b>' + esc(to.name) + "</b></div>" +
+          '<button class="btn primary" data-visit="' + frm.id + '" style="margin-top:12px">Visit ' + esc(frm.name) + "</button> " +
+          '<button class="btn" data-visit="' + to.id + '" style="margin-top:12px">Visit ' + esc(to.name) + "</button>";
+      });
+    })(ca, cb);
+    labelsBox.appendChild(rlabel);
+    routes.push({ a: ca._obj, b: cb._obj, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012, line: line, label: rlabel, midObj: midObj });
   });
   var pulseGeo = new THREE.BufferGeometry();
   pulseGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(Math.max(1, routes.length * 2) * 3), 3));
@@ -5119,6 +5178,7 @@ function startChaintarium(){
       var lift = _va.distanceTo(_vb);
       _vm.multiplyScalar(1 + Math.min(0.34, lift * 0.012 + 0.1));
       _vm.y += lift * 0.14;
+      if(rt.midObj) rt.midObj.position.copy(_vm);
       rt.curve = new THREE.QuadraticBezierCurve3(_va.clone(), _vm.clone(), _vb.clone());
       var lp = rt.geo.attributes.position.array;
       for(var s = 0; s <= ARC_SEG; s++){
@@ -5186,12 +5246,12 @@ function startChaintarium(){
   canvas.addEventListener("wheel", function(e){
     e.preventDefault();
     lastTouch = performance.now();
-    targetDist = Math.max(9, Math.min(115, targetDist + e.deltaY*0.03));
+    targetDist = Math.max(9, Math.min(chainFitDist(), targetDist + e.deltaY*0.03));
   }, { passive:false });
   canvas.addEventListener("touchmove", function(e){
     if(e.touches.length === 2){
       var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-      if(pinchD) targetDist = Math.max(9, Math.min(115, targetDist - (d-pinchD)*0.08));
+      if(pinchD) targetDist = Math.max(9, Math.min(chainFitDist(), targetDist - (d-pinchD)*0.08));
       pinchD = d;
     }
   }, { passive:true });
@@ -5223,7 +5283,10 @@ function startChaintarium(){
     if(reduceMotionSys){ visitChain(c); return; }
     diving = true;
     ch.focus = c.id;
-    targetDist = Math.max(11, c.size * 4.2);
+    /* gentler tap zoom: the dive stops at distance 20 (was 11) with a
+       wider frame per world size, so a planet tap no longer rushes
+       the camera into the world's face before the sphere opens */
+    targetDist = Math.max(20, c.size * 6.5);
     stage.classList.add("diving");
     setTimeout(function(){
       stage.classList.remove("diving");
@@ -5259,10 +5322,21 @@ function startChaintarium(){
         mn.mesh.position.set(px + Math.cos(ma)*mn.dist, py + Math.sin(ma*1.3)*0.18, pz + Math.sin(ma)*mn.dist);
         mn.mesh.rotation.y = t*0.25;
       });
+      /* search isolation: only the isolated world (and its moons and orbit ring) stays visible */
+      var isoVis = !ch.isolated || p.c.id === ch.isolated;
+      p.mesh.visible = isoVis;
+      if(p.c._ring) p.c._ring.visible = isoVis;
+      p.moons.forEach(function(mn){ mn.mesh.visible = isoVis; });
     });
     updateRoutes(t);
+    /* cross-chain transfer routes: visible unless the transfers layer
+       is off or the view is isolated to one world; pulses ride with them */
+    var transfersOn = !ch.transfersOff && !ch.isolated;
+    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn; });
+    if(pulsePts) pulsePts.visible = transfersOn;
     if(sunGlow) sunGlow.material.opacity = 0.32 + Math.sin(t * 1.4) * 0.05; /* the sun breathes — slow, restrained */
     if(belt) belt.rotation.y = t * 0.008; /* the belt crawls around the sun */
+    if(belt) belt.visible = !ch.isolated;
     if(comet.head && !reduceMotionSys){
       var cu = (t % 46) / 46 * Math.PI * 2, cp = cometPos(cu, new THREE.Vector3());
       comet.head.position.copy(cp);
@@ -5273,7 +5347,7 @@ function startChaintarium(){
       }
       comet.tailGeo.attributes.position.needsUpdate = true;
     }
-    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys;
+    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys && !ch.isolated && !ch.transfersOff;
     rotY += (tRotY-rotY)*0.07; rotX += (tRotX-rotX)*0.07;
     dist += (targetDist-dist)*0.06;
     var focusObj = null;
@@ -5310,13 +5384,23 @@ function startChaintarium(){
     camera.up.set(0, 1, 0).applyEuler(camEul);
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
-    /* labels — moons are named only for the world you're visiting/focused on */
+    /* labels — moons are named only for the world you're visiting/focused on;
+       under a search isolation, only the isolated world's labels stay */
     planets.forEach(function(p){
-      placeLabel(p.mesh, p.label);
+      if(ch.isolated && p.c.id !== ch.isolated) p.label.style.display = "none";
+      else placeLabel(p.mesh, p.label);
       p.moons.forEach(function(mn){
-        if(ch.focus === p.c.id) placeLabel(mn.mesh, mn.label);
+        if(ch.focus === p.c.id && (!ch.isolated || ch.isolated === p.c.id)) placeLabel(mn.mesh, mn.label);
         else mn.label.style.display = "none";
       });
+    });
+    /* transfer route labels ride their arc apexes; hidden with the
+       routes when transfers are off or the view is isolated */
+    routes.forEach(function(rt){
+      if(rt.label){
+        if(transfersOn && rt.midObj) placeLabel(rt.midObj, rt.label);
+        else rt.label.style.display = "none";
+      }
     });
     /* the focus HUD rides above the world you're locked onto */
     var hudC = chainById(ch.focus || "bitcoin");
@@ -5581,6 +5665,11 @@ function visitChainById(id){ var c = chainById(id); if(c) visitChain(c); }
 function visitChain(c, moonName){
   ch.focus = c.id;
   ch.focusObj = c._obj || null;
+  /* visiting a world isolates the orbit view to it, so coming back
+     from its surface returns to that world alone; Show-all in the
+     toolbar restores the whole system */
+  ch.isolated = c.id;
+  syncChainTools();
   $("#chain-info").innerHTML = chainInfoHTML(c);
   renderChainChips();
   var inp = $("#chain-search"); if(inp) inp.value = "";
@@ -6606,7 +6695,7 @@ function renderSuggestList(entries, note){
       if(!en) return;
       var inp = $("#chain-search"); if(inp) inp.value = "";
       hideSuggest();
-      if(en.type === "chain") visitChain(en.c, en.moon ? en.moon.name : null);
+      if(en.type === "chain") focusWorld(en.c.id);
       else if(en.type === "wallet"){ if(en.chain === "solana") trackWalletSol(en.address); else trackWalletEvm(en.address); }
       else if(en.type === "contract") trackTokenByAddress(en.address);
       else if(en.type === "token") trackToken(en.pair);
@@ -6817,9 +6906,39 @@ function focusWorld(worldId){
   var c = chainById(worldId); if(!c) return;
   if(surf.open) closeSurface();
   ch.focus = c.id;
+  /* focusing a result isolates the orbit view to its world — the
+     search contract: isolate the system to the result and show its
+     card (the chain card above for chains, the tracker entry for
+     tracked tokens and wallets). Show-all in the toolbar restores it. */
+  ch.isolated = c.id;
   $("#chain-info").innerHTML = chainInfoHTML(c);
   renderChainChips();
+  syncChainTools();
 }
+/* Chaintarium toolbar state — the in-window toolkit: overlays and
+   transfer routes toggle, and Show-all clears a search isolation. */
+function syncChainTools(){
+  var sa = $("#chain-tools-showall");
+  if(sa) sa.hidden = !ch.isolated;
+  var ov = $("#chain-tools-overlays"), stage = $("#chain-stage");
+  if(ov && stage){
+    var off = stage.classList.contains("overlays-off");
+    ov.textContent = off ? "Overlays off" : "Overlays on";
+    ov.setAttribute("aria-pressed", off ? "false" : "true");
+  }
+  var tr = $("#chain-tools-transfers");
+  if(tr){
+    tr.textContent = ch.transfersOff ? "Transfers off" : "Transfers on";
+    tr.setAttribute("aria-pressed", ch.transfersOff ? "false" : "true");
+  }
+}
+(function initChainTools(){
+  var ov = $("#chain-tools-overlays"), tr = $("#chain-tools-transfers"), sa = $("#chain-tools-showall"), stage = $("#chain-stage");
+  if(ov && stage) ov.addEventListener("click", function(){ stage.classList.toggle("overlays-off"); syncChainTools(); });
+  if(tr) tr.addEventListener("click", function(){ ch.transfersOff = !ch.transfersOff; syncChainTools(); });
+  if(sa) sa.addEventListener("click", function(){ ch.isolated = null; syncChainTools(); });
+  syncChainTools();
+})();
 function panelNudge(){
   var p = $("#chain-track");
   if(p) setTimeout(function(){ p.scrollIntoView({ behavior:"smooth", block:"nearest" }); }, 90);
