@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HALEX AI — Staging</title>
+<style>
+  body{margin:0;background:#0a0a0a;color:#f2f2f2;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{background:#111;border-bottom:2px solid #d4af37;padding:14px 16px}
+  h1{margin:0;font-size:22px;color:#d4af37}
+  h1 span{color:#2dd4bf}
+  .sub{color:#bbb;font-size:14px;margin-top:4px}
+  main{max-width:820px;margin:0 auto;padding:14px}
+  .banner{background:#1a1605;border:1px solid #d4af37;border-radius:10px;padding:12px;font-size:14px;line-height:1.5}
+  .banner b{color:#d4af37}
+  #log{margin:16px 0;display:flex;flex-direction:column;gap:10px}
+  .msg{background:#161616;border:1px solid #333;border-radius:10px;padding:12px;white-space:pre-wrap;line-height:1.5;font-size:15px}
+  .msg.user{border-color:#2dd4bf}
+  .msg.ai{border-color:#d4af37}
+  .msg.tool{background:#0f2a26;border-color:#1f7a6d;font-size:13px}
+  label{display:block;margin-top:12px;font-size:13px;color:#bbb}
+  input,textarea,select{width:100%;box-sizing:border-box;background:#161616;color:#fff;border:1px solid #444;border-radius:8px;padding:10px;font-size:15px;margin-top:4px}
+  button{background:#d4af37;color:#000;border:0;border-radius:8px;padding:11px 16px;font-size:15px;font-weight:700;margin:8px 6px 0 0}
+  button.secondary{background:#222;color:#fff;border:1px solid #555}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .row>*{flex:1}
+  .small{font-size:13px;color:#999;line-height:1.5}
+  details{margin-top:14px;background:#111;border:1px solid #333;border-radius:10px;padding:12px}
+  summary{cursor:pointer;font-weight:700}
+  a{color:#2dd4bf}
+  code{word-break:break-all}
+</style>
+</head>
+<body>
+<header>
+  <h1>HALEX <span>AI</span> — Staging v0.2</h1>
+  <div class="sub">Allen modeled as software, on a limited scale. Not Allen, not a copy of any proprietary assistant. Advisory only.</div>
+</header>
+<main>
+  <div class="banner">
+    <b>What this page can and cannot do.</b><br>
+    HALEX AI works like Allen on a limited scale: it collaborates, researches first and reads back before building, builds pages, docs, reports and scripts as downloadable starters, explains Token DNA, looks up tokens, checks Brand Guard, drafts posts, and queues tasks for Allen to review on every refill.<br>
+    It is NOT Allen. It does not have Allen's memory or authority. It CANNOT move funds, share or hold wallet keys, trade live, post to X, or be limitless. Model use costs money somewhere. Drafts are drafts, never sends.
+  </div>
+
+  <div id="log"></div>
+
+  <label for="q">Ask HALEX AI, or type a command</label>
+  <textarea id="q" rows="3" placeholder="Try: explain Token DNA — or: lookup token 0x... — or: brand guard halexrtrade.online — or: build a page about HALEX Chain — or: show workflows"></textarea>
+  <div>
+    <button id="send">Ask</button>
+    <button id="queueBtn" class="secondary">Queue this as a task</button>
+    <button id="downloadBtn" class="secondary">Download task queue JSON</button>
+    <button id="clearBtn" class="secondary">Clear chat and settings</button>
+  </div>
+  <p class="small">Agent loop in this page: plan, then tool, then observe, then answer. At most 3 tool rounds per message. Tool calls show in the log.</p>
+
+  <details>
+    <summary>Model API slot (optional, browser only)</summary>
+    <p class="small">Leave this empty and the page still works offline with HALEX knowledge and read-only tools. If you add a key, it is stored only in this browser's local storage, never in the repo and never sent anywhere except the API base URL you type below. Never paste a wallet seed or private key here. A model API key is not a wallet key.</p>
+    <label>API base URL (OpenAI-compatible)
+      <input id="baseUrl" placeholder="https://api.together.xyz/v1">
+    </label>
+    <label>Model name (confirm the exact ID at your host)
+      <input id="modelName" placeholder="Example: check your host for the exact Kimi K3 model ID">
+    </label>
+    <label>API key (browser only)
+      <input id="apiKey" type="password" placeholder="Paste only a model API key, never a wallet key">
+    </label>
+    <div>
+      <button id="saveModel" class="secondary">Save model settings in this browser</button>
+      <button id="wipeModel" class="secondary">Wipe key and settings</button>
+    </div>
+    <p class="small" id="modelStatus">Model: offline HALEX mode. No key stored.</p>
+  </details>
+
+  <details>
+    <summary>Task queue (handoff to Allen)</summary>
+    <p class="small">Tasks you queue here are advisory until Jeffrey approves them. Download the JSON and put it in the repo as halex-ai-queue.json, or hand it to Allen in chat. Allen reviews it, patches HALEX AI, bumps the version, and pushes a new version. That is the upgrade loop.</p>
+    <div id="queueList"></div>
+  </details>
+
+  <details>
+    <summary>About HALEX AI and its limits</summary>
+    <p class="small">HALEX AI is built from open components and general agent knowledge: a planner, a tool loop, memory, retrieval, and safety gates. Recommended primary model route: a hosted open-weight frontier model, Kimi K3 via Together AI or Fireworks AI, with the exact model ID and price confirmed at the host. Fallback: DeepSeek V4.1 Flash (MIT, 1M context). In-browser small models are an offline fallback only, not the main brain, because they are slow and weak on a phone for multi-step work. Full research: RESEARCH.md. Full design: DESIGN.md. Staging only. Not live on GitHub Pages yet, not posted to X, no keys in code.</p>
+  </details>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
