@@ -1,0 +1,679 @@
+{
+  "bounds": "This pass modified no module file in either tree, ran no git, installed nothing, and touched no network. Writes are confined to the self-reviews folder.",
+  "drift": {
+    "missing_folders": [],
+    "on_disk_folders": [
+      "builder",
+      "dialectic",
+      "drift",
+      "economic_engine",
+      "fault_tolerance",
+      "fuzz_testing",
+      "invariant",
+      "kernel",
+      "learning",
+      "memory_graph",
+      "meta_reflection",
+      "p2p_mesh",
+      "quarantine",
+      "scheduler"
+    ],
+    "quarantine_added": [],
+    "quarantine_baseline_created_this_pass": true,
+    "quarantine_changed": [],
+    "quarantine_removed": [],
+    "unexpected_folders": [],
+    "verdict_table_folders": [
+      "builder",
+      "dialectic",
+      "drift",
+      "economic_engine",
+      "fault_tolerance",
+      "fuzz_testing",
+      "invariant",
+      "kernel",
+      "learning",
+      "memory_graph",
+      "meta_reflection",
+      "p2p_mesh",
+      "quarantine/autonomous_builder",
+      "quarantine/daemon",
+      "quarantine/doc_generator",
+      "quarantine/global_forager",
+      "quarantine/neuronal_moe",
+      "quarantine/quantum_provenance",
+      "quarantine/seed_relay",
+      "quarantine/self_heal",
+      "quarantine/ui_gateway",
+      "scheduler"
+    ]
+  },
+  "generated": "2026-10-29T21:22:03.244931Z",
+  "proposals": [
+    "The staged suite did not run fully clean this pass (86 tests). Read the per-location results in the review record and triage before the next build step.",
+    "The status-claim scan flagged 32 source-file status strings containing hard success words. Spot-check the newest ones against behavior, the way the gate probed Modules 18 and 21."
+  ],
+  "review_version": 1,
+  "seed_marker": "ZINIUM-SEED-ALLEN",
+  "status_claim_review_items": [
+    {
+      "file": "adaptations/doc_generator_ast.py",
+      "kind": "source",
+      "line": 103,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "EXTRACTED_NOT_VERIFIED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "adaptations/doc_generator_ast.py",
+      "kind": "source",
+      "line": 134,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "VERIFIED_FILE_READ_AND_TESTS_PASSED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "adaptations/forager_intake.py",
+      "kind": "source",
+      "line": 69,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "NOT_EXECUTED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "adaptations/tests/test_adaptations.py",
+      "kind": "test",
+      "line": 41,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "EXTRACTED_NOT_VERIFIED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "adaptations/tests/test_adaptations.py",
+      "kind": "test",
+      "line": 47,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "VERIFIED_FILE_READ_AND_TESTS_PASSED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "adaptations/tests/test_adaptations.py",
+      "kind": "test",
+      "line": 93,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "NOT_EXECUTED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/__main__.py",
+      "kind": "source",
+      "line": 46,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "COMPLETED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/orchestrator.py",
+      "kind": "source",
+      "line": 135,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "COMPLETED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/core/improvement_engine.py",
+      "kind": "source",
+      "line": 16,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PARAMETER_TUNED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/fuzz_testing/fuzz_simulator.py",
+      "kind": "source",
+      "line": 53,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "FUZZ_CAMPAIGN_COMPLETE",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/kernel/system_kernel.py",
+      "kind": "source",
+      "line": 70,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "ENVELOPE_VERIFIED_AND_SEALED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/learning/active_learner.py",
+      "kind": "source",
+      "line": 42,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "POLICY_REINFORCED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/learning/test_active_learner.py",
+      "kind": "test",
+      "line": 18,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "POLICY_REINFORCED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/meta_reflection/meta_evaluator.py",
+      "kind": "source",
+      "line": 49,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "META_REFLECTION_COMPLETE",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/meta_reflection/test_meta_evaluator.py",
+      "kind": "test",
+      "line": 19,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "META_REFLECTION_COMPLETE",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/p2p_mesh/mesh_coordinator.py",
+      "kind": "source",
+      "line": 31,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PEER_REGISTERED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/p2p_mesh/test_mesh_coordinator.py",
+      "kind": "test",
+      "line": 17,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PEER_REGISTERED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "halex_ai_integrated/components/scheduler/resource_scheduler.py",
+      "kind": "source",
+      "line": 43,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "ROUTED_SUCCESSFULLY",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "tests_integration/test_orchestrator.py",
+      "kind": "test",
+      "line": 19,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "COMPLETED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "tests_integration/test_orchestrator.py",
+      "kind": "test",
+      "line": 42,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "COMPLETED",
+      "tree": "halex-ai-integrated"
+    },
+    {
+      "file": "improvement_engine.py",
+      "kind": "source",
+      "line": 16,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PARAMETER_TUNED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "fuzz_testing/fuzz_simulator.py",
+      "kind": "source",
+      "line": 53,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "FUZZ_CAMPAIGN_COMPLETE",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "kernel/system_kernel.py",
+      "kind": "source",
+      "line": 70,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "ENVELOPE_VERIFIED_AND_SEALED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "learning/active_learner.py",
+      "kind": "source",
+      "line": 42,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "POLICY_REINFORCED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "learning/test_active_learner.py",
+      "kind": "test",
+      "line": 18,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "POLICY_REINFORCED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "meta_reflection/meta_evaluator.py",
+      "kind": "source",
+      "line": 49,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "META_REFLECTION_COMPLETE",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "meta_reflection/test_meta_evaluator.py",
+      "kind": "test",
+      "line": 19,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "META_REFLECTION_COMPLETE",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "p2p_mesh/mesh_coordinator.py",
+      "kind": "source",
+      "line": 31,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PEER_REGISTERED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "p2p_mesh/test_mesh_coordinator.py",
+      "kind": "test",
+      "line": 17,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PEER_REGISTERED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/autonomous_builder/autonomous_synthesis.py",
+      "kind": "source",
+      "line": 47,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "AUTONOMOUS_EXECUTION_SUCCESSFUL",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/autonomous_builder/autonomous_synthesis.py",
+      "kind": "source",
+      "line": 64,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "AUTONOMOUS_EXECUTION_SUCCESSFUL",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/autonomous_builder/autonomous_synthesis.py",
+      "kind": "source",
+      "line": 72,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "MODULE_SYNTHESIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/autonomous_builder/test_autonomous_synthesis.py",
+      "kind": "test",
+      "line": 22,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "MODULE_SYNTHESIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/doc_generator/doc_generator.py",
+      "kind": "source",
+      "line": 27,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "VERIFIED_AND_SEALED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/global_forager/knowledge_forager.py",
+      "kind": "source",
+      "line": 51,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "SWEEP_COMPLETED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/global_forager/knowledge_forager.py",
+      "kind": "source",
+      "line": 56,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "DAILY_GLOBAL_SWEEP_SUCCESSFUL",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/global_forager/test_global_forager.py",
+      "kind": "test",
+      "line": 22,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "DAILY_GLOBAL_SWEEP_SUCCESSFUL",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/neuronal_moe/moe_engine.py",
+      "kind": "source",
+      "line": 66,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "INTELLIGENCE_GRAFTED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/neuronal_moe/test_moe_engine.py",
+      "kind": "test",
+      "line": 23,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "INTELLIGENCE_GRAFTED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/quantum_provenance/quantum_ledger.py",
+      "kind": "source",
+      "line": 74,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "BYZANTINE_FAULT_TOLERANCE_VERIFIED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/self_heal/sandbox_healer.py",
+      "kind": "source",
+      "line": 29,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "FUZZ_EXECUTION_COMPLETE",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/self_heal/sandbox_healer.py",
+      "kind": "source",
+      "line": 56,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PATCH_SYNTHESIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/self_heal/test_sandbox_healer.py",
+      "kind": "test",
+      "line": 17,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "FUZZ_EXECUTION_COMPLETE",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/self_heal/test_sandbox_healer.py",
+      "kind": "test",
+      "line": 23,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PATCH_SYNTHESIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/test_ui_gateway.py",
+      "kind": "test",
+      "line": 17,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "LAYOUT_INITIALIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/test_ui_gateway.py",
+      "kind": "test",
+      "line": 28,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PUBLIC_SOURCE_HOOK_EXECUTED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/test_ui_gateway.py",
+      "kind": "test",
+      "line": 32,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "SEED_WELDED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/ui_gateway.py",
+      "kind": "source",
+      "line": 27,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "LAYOUT_INITIALIZED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/ui_gateway.py",
+      "kind": "source",
+      "line": 51,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "PUBLIC_SOURCE_HOOK_EXECUTED",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "quarantine/ui_gateway/ui_gateway.py",
+      "kind": "source",
+      "line": 65,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "SEED_WELDED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    },
+    {
+      "file": "scheduler/resource_scheduler.py",
+      "kind": "source",
+      "line": 43,
+      "note": "REVIEW ITEM for a human gate, not a verdict",
+      "text": "ROUTED_SUCCESSFULLY",
+      "tree": "halex-ai-suite"
+    }
+  ],
+  "tests": {
+    "integrated": {
+      "all_ok": true,
+      "locations": [
+        {
+          "location": "adaptations/tests",
+          "ok": true,
+          "tests": 14
+        },
+        {
+          "location": "halex_ai_integrated/components/builder",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/core",
+          "ok": true,
+          "tests": 39
+        },
+        {
+          "location": "halex_ai_integrated/components/dialectic",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/drift",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/fault_tolerance",
+          "ok": true,
+          "tests": 2
+        },
+        {
+          "location": "halex_ai_integrated/components/fuzz_testing",
+          "ok": true,
+          "tests": 1
+        },
+        {
+          "location": "halex_ai_integrated/components/invariant",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/kernel",
+          "ok": true,
+          "tests": 4
+        },
+        {
+          "location": "halex_ai_integrated/components/learning",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/memory_graph",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/meta_reflection",
+          "ok": true,
+          "tests": 2
+        },
+        {
+          "location": "halex_ai_integrated/components/p2p_mesh",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "halex_ai_integrated/components/scheduler",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "tests_integration",
+          "ok": true,
+          "tests": 7
+        },
+        {
+          "location": "zinium_seed_hook/tests",
+          "ok": true,
+          "tests": 9
+        }
+      ],
+      "root": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-integrated",
+      "total_tests": 102
+    },
+    "staged": {
+      "all_ok": false,
+      "locations": [
+        {
+          "location": ".",
+          "ok": true,
+          "tests": 39
+        },
+        {
+          "location": "builder",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "dialectic",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "drift",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "economic_engine",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "fault_tolerance",
+          "ok": true,
+          "tests": 2
+        },
+        {
+          "location": "fuzz_testing",
+          "ok": true,
+          "tests": 1
+        },
+        {
+          "location": "invariant",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "kernel",
+          "ok": true,
+          "tests": 4
+        },
+        {
+          "location": "learning",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "memory_graph",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "meta_reflection",
+          "ok": true,
+          "tests": 2
+        },
+        {
+          "location": "p2p_mesh",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "quarantine/autonomous_builder",
+          "ok": true,
+          "tests": 3
+        },
+        {
+          "location": "quarantine/daemon",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/doc_generator",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/global_forager",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/neuronal_moe",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/quantum_provenance",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/seed_relay",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/self_heal",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "quarantine/ui_gateway",
+          "ok": false,
+          "tests": 1
+        },
+        {
+          "location": "scheduler",
+          "ok": true,
+          "tests": 3
+        }
+      ],
+      "root": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/gemini/halex-ai-suite",
+      "total_tests": 86
+    }
+  }
+}

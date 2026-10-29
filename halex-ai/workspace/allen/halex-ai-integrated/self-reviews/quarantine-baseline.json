@@ -1,0 +1,33 @@
+{
+  "created": "2026-10-29T21:23:43.140304Z",
+  "hashes": {
+    "quarantine/README.md": "5d346ad7f87f5aa310b13d063da86e05d37553f612192f0069b8af3334253058",
+    "quarantine/autonomous_builder/README.md": "bd18f1cda150302011267bfe70639b06aeb012d81200489ce6df7bb406be5e1b",
+    "quarantine/autonomous_builder/autonomous_synthesis.py": "5132870e2f1e13b2202f80d17be956474a78f2b35ecb0eef5a067c9c6af8fab9",
+    "quarantine/autonomous_builder/test_autonomous_synthesis.py": "333a551bd96e9eeeb94fbda0b60c2f0b591400bbf78600fbb366a51c15bd0f28",
+    "quarantine/daemon/README.md": "1a28ec34275afb788a0fb600a904e5887285dc0680f4f272c9eeebac7f8046cd",
+    "quarantine/daemon/autonomous_daemon.py": "aa0bd55f901c8729b847a939efacd1cdab84fd8ed08d1c04a6ee1ca56ba1c141",
+    "quarantine/daemon/test_autonomous_daemon.py": "f37c4b73f7c57c259aaf24dacae4b786ff675e5b9cd7463e451bf36dc9f93da6",
+    "quarantine/doc_generator/README.md": "086a83350c879bb7bbd5261cff7a5c19a81c4349a4dbb85bd00d1cf604c33113",
+    "quarantine/doc_generator/doc_generator.py": "2c8153ffc61d5d7c52f5a88167c8397e99a6363a44cbdf218a7c458f6ed5d630",
+    "quarantine/doc_generator/test_doc_generator.py": "e02db3da4627a55d9be2d558071dfaadf2cb44027c6e9d21d3ee2e65c87b4032",
+    "quarantine/global_forager/README.md": "a3023adae1828534468d09acc6fa6bb496a19b336c4b4ad6993d7cc4a7499d2d",
+    "quarantine/global_forager/knowledge_forager.py": "9c72bd85c76e79faaf0b33fe63982818ba62fca8472023b8b0fbe13a84aefdc1",
+    "quarantine/global_forager/test_global_forager.py": "6ae0910cfa3e2a9c7e95f5b30273059cddf64df78a054a6864120600027b0d09",
+    "quarantine/neuronal_moe/README.md": "e71994cf2a91be35faf1436da5af4183dc6aa1bd99a9d5920c3df2af114fbf43",
+    "quarantine/neuronal_moe/moe_engine.py": "737fcc8624ec6e707a09fa694a3742b05c197dc2e98c3a3cd81d84d8ba0e0cca",
+    "quarantine/neuronal_moe/test_moe_engine.py": "10272af9f7e7e7fbf645729d1c961be8de4c61f08237462afa3f547f25270ac3",
+    "quarantine/quantum_provenance/README.md": "93efff8d81f3ae512ee8c3cdb94a4691d6ef94617c001a40723f3b0785c7d58a",
+    "quarantine/quantum_provenance/quantum_ledger.py": "168790dfcc557ff1a612f64442c2f4bc3b90a86fdd1ea6e2df191c80dc9213ab",
+    "quarantine/quantum_provenance/test_quantum_ledger.py": "5f5ac05e9923225f9039f50e91d5f50138832ab79fd872cf40ee43a9d600f1e4",
+    "quarantine/seed_relay/README.md": "90a3f46ac2e80a9f98ddd7a98a5f1c547cbf259eff244c341000335a9ab3ab43",
+    "quarantine/seed_relay/seed_relay_coordinator.py": "78006a6393118b1aa191b097d4f800916ecb4e5add61c247a03a9c9e25977af2",
+    "quarantine/seed_relay/test_seed_relay.py": "446fd13676b37a46f17fdcaa4fedd9a03a16ab0998789674718aadba1096aa45",
+    "quarantine/self_heal/README.md": "dd9e3b6ec94d8238032ad263d920fc49de631165bfd19538bc086dd973181093",
+    "quarantine/self_heal/sandbox_healer.py": "e2f570e82e62610b99587e2a55f327b026c97238c356280c0f737737ee75be6f",
+    "quarantine/self_heal/test_sandbox_healer.py": "89a05c970662aa6312e2a22993bc8a8eafd0447e426f9940c2b6350308ac1e5b",
+    "quarantine/ui_gateway/README.md": "73901205c73c0fcdfc0ac168f1a163009f4d1bd57c972c1f8964c7d7076c49fb",
+    "quarantine/ui_gateway/test_ui_gateway.py": "d30952ccbc47006647b2cad4c5dbbceefd0a0b629e7c4906547db0729d01989f",
+    "quarantine/ui_gateway/ui_gateway.py": "d536b1600589fe9435b1789e84fadf7d2a2fd9175a84029c245b5913433dc3a7"
+  }
+}
