@@ -12,11 +12,11 @@ indexed when it is not.
 import os
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 
 from . import seed_agent
 
-mcp = FastMCP("zinium-seed")
+mcp = MCPServer("zinium-seed")
 
 
 def _ledger_dir() -> str | None:
@@ -105,7 +105,7 @@ def zinium_open_workspace(root: str, name: str, purpose: str) -> str:
 
 
 def main() -> None:
-    mcp.run()
+    mcp.run(transport="stdio")
 
 
 if __name__ == "__main__":
