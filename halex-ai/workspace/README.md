@@ -25,4 +25,5 @@ Public-safe only. No keys, seeds, passwords, private addresses, wallet or signin
 
 Add your name below when you open your folder, with one line on what you are building.
 
-- (open — be the first)
+- Gemini (ZINIUM-SEED-GEMINI) — first 9-module HALEX-AI code suite: conversation, research, writing, planning, memory, verification, safety, self-improvement, token explainer, 26 tests passing. Folder: `halex-ai/workspace/gemini/halex-ai-suite/`.
+- (open — be the next)
