@@ -71,6 +71,20 @@ h1,h2,h3{margin:0; font-weight:600; letter-spacing:-.01em}
 .pill.live .dot{background:var(--green)}
 .pill.err .dot{background:var(--red)}
 
+/* ---------- top bar wallet connect ---------- */
+.hw-top{position:relative; display:inline-flex; align-items:center; gap:7px; flex:none}
+.hw-top .btn{padding:6px 12px; font-size:12.5px}
+.hw-panel{
+  position:absolute; right:0; top:calc(100% + 9px); width:min(320px, 86vw); z-index:60;
+  background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:12px;
+  box-shadow:0 14px 34px rgba(0,0,0,.45); text-align:left;
+}
+.hw-panel b{font-size:13.5px}
+.hw-panel .note{font-size:12px}
+.hw-panel .hw-opt{display:flex; width:100%; margin-top:8px; text-align:left}
+.hw-panel .hw-addr{font-size:11.5px; color:var(--muted); word-break:break-all; margin-top:7px}
+@media (max-width:560px){ .hw-panel{position:fixed; right:10px; left:10px; width:auto} }
+
 /* ---------- sections / tabs ---------- */
 section.tab{display:none; padding:18px 0 8px; animation:fadein .18s ease}
 section.tab.active{display:block}
@@ -257,6 +271,45 @@ label.flabel{display:block; font-size:12px; font-weight:600; color:var(--muted);
 .range-row button{font-size:11.5px; padding:5px 10px; border-radius:99px; border:1px solid var(--line2); background:var(--panel); color:var(--muted); font-weight:600}
 .range-row button.on{background:var(--text); color:var(--bg)}
 #detail-chart{width:100%; height:200px; display:block; cursor:crosshair; touch-action:pan-y}
+
+/* ---------- Chaintarium charts + layers (2026-10-27, staging) ---------- */
+#detail-chart, #lab-chart{
+  background:linear-gradient(160deg, rgba(20,26,38,.95), rgba(8,12,20,.95) 55%, rgba(10,22,26,.95));
+  border:1px solid rgba(255,194,75,.38);
+  border-radius:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  padding:8px;
+}
+.hd-card{
+  background:linear-gradient(160deg, rgba(24,32,48,.96), rgba(9,13,22,.96) 60%, rgba(8,24,28,.96));
+  border:1px solid rgba(255,194,75,.42);
+  border-radius:16px;
+  padding:13px 14px;
+  margin-top:12px;
+  box-shadow:0 12px 32px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  color:var(--text);
+}
+.hd-card b.hd-title{font-size:14px; letter-spacing:.02em}
+.hd-detail{display:grid; grid-template-columns:1fr 1fr; gap:6px 16px; margin-top:9px}
+.hd-detail div span{display:block; font-size:10.5px; color:var(--faint)}
+.hd-detail div b{font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600}
+.hd-replay{margin-top:11px; border-top:1px solid var(--line); padding-top:10px}
+.hd-replay .replay-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
+.hd-replay input[type="range"]{flex:1; min-width:140px; accent-color:var(--gold)}
+.hd-replay .replay-arrow{font-size:22px; font-weight:800; min-width:26px; text-align:center}
+.hd-replay .replay-arrow.up{color:#31c48d}
+.hd-replay .replay-arrow.down{color:#ff6b5e}
+.hd-replay .replay-step{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted); margin-top:6px; min-height:16px}
+.surf-layers{
+  margin:10px 0 0; padding:10px 12px; border:1px solid rgba(46,230,200,.35); border-radius:12px;
+  background:rgba(8,16,22,.82); color:var(--text);
+}
+.surf-layers .layer-btns{display:flex; gap:6px; flex-wrap:wrap; margin:7px 0}
+.surf-layers .layer-btns button{font-size:11.5px; padding:5px 10px; border-radius:99px; border:1px solid var(--line2); background:var(--panel); color:var(--muted); font-weight:600}
+.surf-layers .layer-btns button.on{background:var(--text); color:var(--bg)}
+.surf-layers input{padding:7px 10px; border-radius:9px; border:1px solid var(--line2); background:var(--panel2); color:var(--text); width:132px}
+.surf-layer-note{font-size:11.5px; color:var(--muted); margin-top:7px}
+
 .toast{
   position:fixed; left:50%; transform:translateX(-50%) translateY(20px); bottom:calc(var(--nav-h) + 18px); z-index:80;
   background:var(--panel3); color:var(--text); border:1px solid var(--line2); border-radius:12px;
@@ -482,6 +535,29 @@ body.chain-pop{overflow:hidden}
 }
 .surface-note{position:absolute; left:10px; right:10px; bottom:8px; z-index:5; margin:0; font-size:11px; color:rgba(200,210,230,.62); pointer-events:none}
 .zone-label{position:absolute; transform:translate(-50%,-130%); pointer-events:none; font-size:10px; font-weight:600; letter-spacing:.03em; color:#ffe1a8; background:rgba(10,8,2,.66); border:1px solid rgba(255,194,75,.4); padding:2px 7px; border-radius:99px; white-space:nowrap}
+
+/* Chaintarium toolbar — the in-window toolkit (unclutter): toggles for
+   overlays and transfer routes, plus Show-all when a search has
+   isolated the view to one world. Orbit view only: in planet view the
+   bar hides, but the toggles it set keep applying there. In the popped
+   window it rides below the window buttons, clear of them. */
+.chain-tools{position:absolute; right:10px; top:10px; z-index:61; display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+.chain-tools .btn{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; background:rgba(8,10,16,.85); backdrop-filter:blur(6px)}
+.chain-tools .btn[aria-pressed="false"]{opacity:.72}
+#chain-stage.pop .chain-tools{top:58px}
+@media (max-width:640px){ #chain-stage.pop .chain-tools{top:106px} }
+#surface.open ~ .chain-tools{display:none}
+/* overlays-off: hide the clutter layers, keep controls and cards */
+#chain-stage.overlays-off #chain-labels,
+#chain-stage.overlays-off .rotate-hint,
+#chain-stage.overlays-off #surface-labels,
+#chain-stage.overlays-off .surface-note,
+#chain-stage.overlays-off .feat-legend{display:none !important}
+/* cross-chain transfer route labels — tappable links to the route's
+   endpoint worlds; tapping one opens the route card with a Visit
+   button for each end */
+.route-label{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.02em; color:#ffe1a8; background:rgba(8,10,16,.72); border:1px solid rgba(255,194,75,.45); padding:2px 7px; border-radius:99px; white-space:nowrap}
+.route-label:hover{color:#fff; border-color:var(--gold)}
 
 /* ---------- chaintarium — cosmos tracker ---------- */
 .chain-track{margin-top:10px}
@@ -945,7 +1021,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb, 
 @keyframes surfin{from{opacity:0; transform:scale(1.045)} to{opacity:1; transform:none}}
 @media (prefers-reduced-motion: reduce){ #surface.open{animation:none} }
 #chain-canvas{transition:transform .68s cubic-bezier(.5,0,.8,.4), opacity .68s ease, filter .68s ease}
-#chain-stage.diving #chain-canvas{transform:scale(1.5); opacity:.15; filter:brightness(1.7) saturate(1.4)}
+#chain-stage.diving #chain-canvas{transform:scale(1.2); opacity:.15; filter:brightness(1.7) saturate(1.4)}
 .planet-label{
   color:#eef3ff; background:rgba(6,10,18,.78); border-color:rgba(120,220,255,.35);
   box-shadow:0 0 12px rgba(45,212,191,.16), inset 0 1px 0 rgba(255,255,255,.1); backdrop-filter:blur(3px);
@@ -1195,6 +1271,19 @@ nav.tabbar button span{letter-spacing:.015em}
     </div>
     <span class="pill" id="feed-pill"><span class="dot"></span><span id="feed-pill-text">Feed: standby</span></span>
     <span class="pill founding" id="founding-pill" hidden><span class="dot"></span>FOUNDING MEMBER</span>
+    <span class="hw-top" id="hw-top">
+      <button class="btn" id="hw-btn" aria-haspopup="true" aria-expanded="false">Connect wallet</button>
+      <span class="hw-panel" id="hw-panel" hidden>
+        <b>Connect a wallet</b>
+        <p class="note" style="margin:4px 0 2px">Read-only in this build: connecting shares your public address only. Nothing is signed and nothing is sent.</p>
+        <button class="btn block hw-opt" id="hw-opt-evm">Browser wallet · EVM</button>
+        <button class="btn block hw-opt" id="hw-opt-sol">Browser wallet · Solana</button>
+        <button class="btn block hw-opt" id="hw-opt-wc">WalletConnect · phone wallet</button>
+        <p class="note" id="hw-note" style="margin-top:9px"></p>
+        <div class="hw-addr mono" id="hw-addr"></div>
+        <button class="btn block" id="hw-disconnect" hidden style="margin-top:9px">Disconnect</button>
+      </span>
+    </span>
   </div>
 </div>
 
@@ -1586,6 +1675,7 @@ nav.tabbar button span{letter-spacing:.015em}
   </div>
   <div class="sec-title">The skill roll</div>
   <div class="skill-roll" id="skill-roll"></div>
+  <div class="card" style="margin-top:12px"><b>HALEX LABS — Clodds Edge Scan (staging only)</b><p style="font-size:13px">Research skill from HALEX LABS: score a candidate 0-100 on tape, liquidity, confidence, and sell-sim, with veto on one-way tape or sell-sim below 90%. Advisory only, never a trade. Live trades go only through the existing Allen2 bridge gates. See HALEX LABS on GitHub, branch halex-labs, for the full skill, source mapping, and MIT notice.</p></div>
   <p class="note" style="margin-top:8px">Records are the snapshot figures used across this app (balances Oct 16, 2026; events verified Oct 16–17). Win rates are measured, never promised — the proving bar is ≥65% over ≥30 closed paper trades, profit factor ≥1.2, before any live capital.</p>
 
   <div class="sec-title">Skill Forge — build a skill with HALEX</div>
@@ -1705,6 +1795,7 @@ nav.tabbar button span{letter-spacing:.015em}
           </div>
         </div>
       </div>
+      <div class="surf-layers" id="surf-layers"><b>Planet layers — 3 years each</b><span class="note" style="font-size:12px"> Core = oldest records, surface = newest. Pick a layer, or type a year and jump to the layer that holds it. Deeper layers render sparser, so a sub-level search renders faster.</span><div class="layer-btns" id="surf-layer-btns"></div><div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="surf-layer-date" type="text" inputmode="numeric" placeholder="Year, e.g. 2020" /><button class="btn" id="surf-layer-go">Go to layer</button></div><p class="surf-layer-note" id="surf-layer-note"></p></div>
       <button class="btn" id="surf-feed-open"><span class="track-live-dot"></span>Live chain feed</button>
       <aside class="surf-feed" id="surf-feed" aria-label="Live chain feed">
         <div class="sf-head"><span class="track-live-dot"></span><b id="sf-title">Live chain feed</b><button id="sf-close" aria-label="Hide the live chain feed">✕</button></div>
@@ -1719,6 +1810,11 @@ nav.tabbar button span{letter-spacing:.015em}
     <div class="pop-actions">
       <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
       <button class="btn" id="chain-pop-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg>Pop back in</button>
+    </div>
+    <div class="chain-tools" id="chain-tools">
+      <button class="btn" id="chain-tools-overlays" aria-pressed="true">Overlays on</button>
+      <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
+      <button class="btn" id="chain-tools-showall" hidden>Show all worlds</button>
     </div>
   </div>
   <div class="chain-ctl" id="chain-chips"></div>
@@ -2075,20 +2171,18 @@ nav.tabbar button span{letter-spacing:.015em}
     <div style="text-align:center">
       <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.6" style="margin:0 auto 10px"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>
       <b style="font-size:16px" id="wallet-state-title">No wallet connected</b>
-      <p class="note" style="max-width:52ch; margin:6px auto 14px">Discovery is real: HALEX-M scans this browser for injected wallet providers (EIP-1193 / EIP-6963 for EVM, the Wallet Standard / <span class="mono">window.solana</span> for Solana) and can open a WalletConnect pairing session. Only wallets that actually answer are listed — nothing is ever shown as connected that isn't.</p>
+      <p class="note" style="max-width:52ch; margin:6px auto 14px">Discovery is real: HALEX-M scans this browser for injected wallet providers (EIP-1193 / EIP-6963 for EVM, the Wallet Standard / <span class="mono">window.solana</span> for Solana), and the Connect wallet button in the top bar connects the same providers directly. WalletConnect pairing activates once HALEX's own project ID is configured. Only wallets that actually answer are listed — nothing is ever shown as connected that isn't.</p>
       <button class="btn primary" id="wallet-connect">Scan for wallets</button>
       <p class="note" id="wallet-connect-note" style="margin-top:10px"></p>
     </div>
     <div id="wallet-results" style="text-align:left"></div>
     <div id="wallet-wc" style="text-align:left; margin-top:16px; border-top:1px solid var(--line); padding-top:14px">
       <b style="font-size:14px">WalletConnect pairing — find the HALEX wallet app</b>
-      <p class="note" style="margin:4px 0 10px">WalletConnect relays the pairing to the HALEX wallet app on your phone: scan the QR with the app to open a session. The relay needs a WalletConnect project ID — paste yours and the pairing session is created for real, in your browser.</p>
+      <p class="note" style="margin:4px 0 10px">WalletConnect relays a pairing to a wallet app on your phone. It activates in this build once HALEX's own WalletConnect project ID is configured by HALEX. You never need a project ID of your own, and HALEX-M will never ask you to paste one: any page that asks for a project ID, a seed phrase or a private key to "connect" is not this app. Until activation, the browser wallet options above and the Connect wallet button in the top bar work as-is.</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
-        <input id="wc-project-id" type="text" placeholder="WalletConnect project ID…" style="flex:1; min-width:200px" autocomplete="off" spellcheck="false" />
-        <button class="btn" id="wc-pair">Show pairing QR</button>
+        <button class="btn" id="wc-pair">WalletConnect pairing</button>
       </div>
       <p class="note" id="wc-note" style="margin-top:9px"></p>
-      <div id="wc-qr" style="margin-top:10px"></div>
     </div>
   </div>
 
@@ -2798,6 +2892,13 @@ function paintChart(c, series, mode, hover, range){
     ctx.beginPath(); ctx.moveTo(hx, 0); ctx.lineTo(hx, plotH); ctx.stroke();
     ctx.beginPath(); ctx.arc(hx, y(series[hover].v), 3.5, 0, Math.PI * 2);
     ctx.fillStyle = "#eceef4"; ctx.fill();
+    /* moving direction arrow at the hovered candle: up = buy pressure, down = sell pressure */
+    var _up = series[hover].v >= series[hover].o;
+    var _ay = y(series[hover].v) + (_up ? -13 : 13);
+    ctx.beginPath();
+    if(_up){ ctx.moveTo(hx, _ay - 5); ctx.lineTo(hx - 5, _ay + 4); ctx.lineTo(hx + 5, _ay + 4); }
+    else { ctx.moveTo(hx, _ay + 5); ctx.lineTo(hx - 5, _ay - 4); ctx.lineTo(hx + 5, _ay - 4); }
+    ctx.closePath(); ctx.fillStyle = _up ? "#31c48d" : "#ff6b5e"; ctx.fill();
   }
 }
 function bindCrosshair(c, opts){
@@ -2819,7 +2920,77 @@ function drawChart(){
   paintChart(c, portalSeries, chartMode, chartHover, portalRange);
   var rd = $("#chart-read");
   if(rd) rd.textContent = chartReadText(portalSeries, chartHover >= 0 ? chartHover : portalSeries.length - 1, portalRange);
+  var rr = $("#chart-replay-range"); if(rr && portalSeries) rr.max = portalSeries.length - 1;
 }
+/* ---------------- HD chart action replay (2026-10-27, staging) ----------------
+   Steps are built from the live GeckoTerminal OHLCV candles already on
+   the chart: direction (close vs open) gives buy/sell pressure, and
+   the step text gives time, price and volume from that candle. A live
+   tape of individual sends, swaps, stakes and pooled-liquidity events
+   is NOT wired yet, so those kinds appear only as labelled sample
+   steps in the panel note, never as live events. Play steps the
+   crosshair through the candles; the range input scrubs it. */
+var chartReplay = { timer: null, idx: -1, playing: false };
+var labReplay = { timer: null, idx: -1, playing: false };
+function replayStepText(series, i){
+  if(!series || i < 0 || i >= series.length) return "No live price history yet — replay starts when GeckoTerminal answers.";
+  var p = series[i];
+  var kind = p.v >= p.o ? "buy pressure" : "sell pressure";
+  var arrow = p.v >= p.o ? "▲" : "▼";
+  return arrow + " Step " + (i + 1) + "/" + series.length + " · " + kind + " · " + fmtClock(p.t, "24h") + " · C " + fmtPrice(p.v) + " · Vol " + fmtUsd(p.vol);
+}
+function bindReplay(playId, rangeId, arrowId, stepId, getSeries, setHover, draw){
+  var play = document.getElementById(playId), range = document.getElementById(rangeId),
+      arrow = document.getElementById(arrowId), step = document.getElementById(stepId);
+  if(!play || !range || !arrow || !step) return null;
+  var st = { timer: null, idx: -1, playing: false };
+  function show(i){
+    var series = getSeries();
+    if(!series || !series.length){ step.textContent = "No live price history yet — replay starts when GeckoTerminal answers."; return; }
+    if(i < 0) i = 0; if(i >= series.length) i = series.length - 1;
+    st.idx = i;
+    setHover(i); draw();
+    range.max = series.length - 1; range.value = i;
+    var p = series[i];
+    arrow.textContent = p.v >= p.o ? "▲" : "▼";
+    arrow.className = "replay-arrow " + (p.v >= p.o ? "up" : "down");
+    step.textContent = replayStepText(series, i);
+  }
+  function stop(){
+    if(st.timer){ clearInterval(st.timer); st.timer = null; }
+    st.playing = false; play.textContent = "▶ Play replay";
+  }
+  play.addEventListener("click", function(){
+    var series = getSeries();
+    if(!series || series.length < 2){ step.textContent = "No live price history yet — replay starts when GeckoTerminal answers."; return; }
+    if(st.playing){ stop(); return; }
+    st.playing = true; play.textContent = "⏸ Pause";
+    if(st.idx < 0 || st.idx >= series.length - 1) show(0); else show(st.idx);
+    st.timer = setInterval(function(){
+      var s2 = getSeries(); if(!s2 || s2.length < 2){ stop(); return; }
+      if(st.idx >= s2.length - 1){ stop(); return; }
+      show(st.idx + 1);
+    }, 650);
+  });
+  range.addEventListener("input", function(){
+    stop();
+    show(parseInt(range.value, 10) || 0);
+  });
+  return { show: show, state: st };
+}
+function initDetailReplay(){
+  return bindReplay("chart-replay-play", "chart-replay-range", "chart-replay-arrow", "chart-replay-step",
+    function(){ return portalSeries; },
+    function(i){ chartHover = i; },
+    function(){ drawChart(); });
+}
+function initLabReplay(){
+  return bindReplay("lab-replay-play", "lab-replay-range", "lab-replay-arrow", "lab-replay-step",
+    function(){ return labSeries; },
+    function(i){ labHover = i; },
+    function(){ drawLabChart(); });
+}
+
 function loadChart(network, pairAddress){
   portalSeries = null; chartHover = -1;
   var note = $("#chart-note");
@@ -2843,6 +3014,7 @@ function drawLabChart(){
   paintChart(c, labSeries, "candles", labHover, labRange);
   var rd = $("#lab-read");
   if(rd) rd.textContent = chartReadText(labSeries, labHover >= 0 ? labHover : labSeries.length - 1, labRange);
+  var lr = $("#lab-replay-range"); if(lr && labSeries) lr.max = labSeries.length - 1;
 }
 function loadLabChart(){
   if(!labPairRef) return;
@@ -2874,6 +3046,7 @@ function initLabChart(main){
   var c = $("#lab-chart");
   if(c) bindCrosshair(c, { series: function(){ return labSeries; }, setHover: function(i){ if(i !== labHover){ labHover = i; drawLabChart(); } } });
   loadLabChart();
+  initLabReplay();
 }
 function labChartHTML(){
   return '<div class="range-row" id="lab-range-row" style="margin-top:14px">' +
@@ -2881,7 +3054,11 @@ function labChartHTML(){
       '<span class="note" style="margin-left:auto; align-self:center">Live OHLCV · GeckoTerminal</span></div>' +
     '<canvas id="lab-chart"></canvas>' +
     '<div class="chart-read mono" id="lab-read"></div>' +
-    '<p class="note" id="lab-chart-note" style="margin-top:2px">Loading live price history…</p>';
+    '<p class="note" id="lab-chart-note" style="margin-top:2px">Loading live price history…</p>' +
+    '<div class="hd-card"><b class="hd-title">Token detail + action replay — Research Lab</b>' +
+    '<div class="hd-replay" style="border-top:none; padding-top:2px"><div class="replay-row"><button class="btn" id="lab-replay-play">▶ Play replay</button><span class="replay-arrow" id="lab-replay-arrow">▲</span><input type="range" id="lab-replay-range" min="0" max="100" value="0" /></div>' +
+    '<div class="replay-step" id="lab-replay-step">Action replay — press play to step through the live OHLCV candles.</div>' +
+    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet wired to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Detail numbers (price, liquidity, market cap, volume, buys, sells) come from the live Research Lab report below when a token is looked up. No bubble graphs.</p></div></div>';
 }
 var chartRszT = null;
 window.addEventListener("resize", function(){
@@ -2907,6 +3084,7 @@ function openToken(chainId, address){
         dex: p.dexId, pairUrl: p.url,
         websites: (p.info && p.info.websites) || [], socials: (p.info && p.info.socials) || [],
         txns: p.txns && p.txns.h24,
+        pairCount: pairs.length,
         gateRes: (typeof analyzePairs === "function") ? analyzePairs(pairs, p.baseToken.symbol, null) : null
       };
       renderSheet();
@@ -2949,6 +3127,19 @@ function renderSheet(){
       '<span class="note" style="margin-left:auto; align-self:center">Drag across the chart to read each candle</span>' +
     "</div>" +
     '<p class="note" id="chart-note" style="margin-top:2px">Loading live price history…</p>' +
+    '<div class="hd-card"><b class="hd-title">Token detail — live DexScreener pair</b>' +
+    '<div class="hd-detail">' +
+      '<div><span>Price</span><b>'+fmtPrice(t.price)+'</b></div>' +
+      '<div><span>Liquidity</span><b>'+fmtUsd(t.liquidity)+'</b></div>' +
+      '<div><span>Market cap</span><b>'+fmtUsd(t.mcap)+'</b></div>' +
+      '<div><span>Volume 24h</span><b>'+fmtUsd(t.volume24)+'</b></div>' +
+      '<div><span>Buys 24h</span><b>'+(t.txns ? t.txns.buys : "—")+'</b></div>' +
+      '<div><span>Sells 24h</span><b>'+(t.txns ? t.txns.sells : "—")+'</b></div>' +
+    '</div>' +
+    '<div class="hd-replay"><div class="replay-row"><button class="btn" id="chart-replay-play">▶ Play replay</button><span class="replay-arrow" id="chart-replay-arrow">▲</span><input type="range" id="chart-replay-range" min="0" max="100" value="0" /></div>' +
+    '<div class="replay-step" id="chart-replay-step">Action replay — press play to step through the live OHLCV candles.</div>' +
+    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet wired to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Buy/sell pressure comes from candle direction. No bubble graphs.</p></div></div>' +
+
     (t.description ? '<p class="note" style="margin-top:10px">'+esc(t.description.slice(0,300))+"</p>" : "") +
     '<div style="margin-top:6px">' +
       '<div class="kv"><span>Market cap</span><b>'+fmtUsd(t.mcap)+"</b></div>" +
@@ -2971,6 +3162,26 @@ function renderSheet(){
         '<div class="scorebar"><i style="width:' + Math.max(0, Math.min(100, g.score)) + "%; background:" + barCol + '"></i></div>' +
         rows +
         '<p class="note" style="font-size:11.5px; margin-top:8px">First-pass read from live pair data, refreshed with this sheet. The full grouped report — every check with its evidence and source — runs in the Research Lab on APEX².</p></div>';
+    })() +
+    (function(){
+      var hasWeb = !!(t.websites && t.websites.length), hasSoc = !!(t.socials && t.socials.length), hasDesc = !!(t.description && t.description.trim());
+      var type = (hasWeb && hasSoc && hasDesc) ? "Project token with a published identity" : (hasWeb || hasSoc || hasDesc) ? "Partially identified token" : "Anonymous launch, impersonation-risk class";
+      var birthDate = t.createdAt ? new Date(t.createdAt).toISOString().slice(0, 10) : "date not read";
+      var rows = [
+        ["Type", type + ". Classed from the pair's published metadata only: a class, not a verdict."],
+        ["Birth", "Pool opened " + ageStr(t.createdAt) + " (" + birthDate + ", UTC) on " + (t.dex || "an unknown DEX") + ", " + (t.chainId || "") + (t.pairAddress ? ", pair " + shortAddr(t.pairAddress) : "") + ". Mint mechanics and launchpad are not read in this sandbox."],
+        ["Deployer lineage", "Not read in this sandbox. The full APEX² pass reads the minting wallet's age, its prior launches and how they ended. A serial deployer whose tokens keep dying is a verdict by itself. Source: live gate, creator read."],
+        ["Tracebacks", "Not read in this sandbox. The full pass follows the deployer wallet's funding lineage hop by hop, back to who funded it. Source: live gate, funding-graph read."],
+        ["Custody", "Not read in this sandbox. Whether the LP is burned, locked or deployer-held is proven on-chain by the live gate before any buy; deployer-held or unreadable custody fails closed. Source: live gate, on-chain position read."],
+        ["Family", "This contract shows " + (t.pairCount || 1) + " live pair" + ((t.pairCount || 1) === 1 ? "" : "s") + " on DexScreener. The same-ticker census (other contracts trading as $" + (t.symbol || "") + ", original versus respin, cross-chain swarm) is not run inside this sheet; it runs in the Research Lab, one tap below."],
+        ["Use case", hasDesc ? t.description.trim().slice(0, 220) : "None found. No description is published on this token's pair metadata, and no use case is claimed anywhere this sheet can read."]
+      ];
+      var html = '<div class="report-card"><div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap"><h4>Token DNA · APEX² Research</h4><span class="chip info" style="margin-left:auto">7 fields</span></div>';
+      rows.forEach(function(r){
+        html += '<div class="check" style="padding:7px 0"><div class="grow"><b style="font-size:12.5px">' + r[0] + '</b><p style="font-size:11.5px">' + esc(r[1]) + "</p></div></div>";
+      });
+      html += '<p class="note" style="font-size:11.5px; margin-top:8px">Part of every token scorecard. Fields this sandbox cannot read are written as not read, never filled in; the live spine dossier computes all seven for real.</p></div>';
+      return html;
     })() +
     (links ? '<p style="font-size:13px; margin:12px 0 0">'+links+"</p>" : '<p class="note" style="margin-top:12px">No verifiable links on this token. Per the house rule, that means guilty until proven innocent — run it through the Research Lab.</p>') +
     '<div style="display:flex; gap:8px; margin-top:14px">' +
@@ -3003,6 +3214,7 @@ function renderSheet(){
   var dc = $("#detail-chart");
   if(dc) bindCrosshair(dc, { series: function(){ return portalSeries; }, setHover: function(i){ if(i !== chartHover){ chartHover = i; drawChart(); } } });
   drawChart();
+  initDetailReplay();
   if(portalSeries && portalSeries.length >= 2){ var cn = $("#chart-note"); if(cn) cn.style.display = "none"; }
   var est = function(){
     var amt = parseFloat(($("#portal-amt")||{}).value) || 0;
@@ -4188,10 +4400,6 @@ function scanWallets(){
 }
 $("#wallet-connect").addEventListener("click", scanWallets);
 
-/* WalletConnect pairing — loads the real SignClient from CDN and opens a
-   real pairing session when a project ID is supplied. No relay session,
-   no QR: the URI only exists if WalletConnect returns one. */
-var wcClient = null;
 function loadScript(src){
   return new Promise(function(res, rej){
     var s = document.createElement("script");
@@ -4199,51 +4407,167 @@ function loadScript(src){
     document.head.appendChild(s);
   });
 }
-$("#wc-pair").addEventListener("click", function(){
-  var note = $("#wc-note"), qrBox = $("#wc-qr");
-  var pid = $("#wc-project-id").value.trim();
-  qrBox.innerHTML = "";
-  if(!pid){
-    note.textContent = "No project ID entered — a WalletConnect session can't be created without one, so no QR was generated. Project IDs are free from WalletConnect Cloud; the HALEX production build ships with its own configured.";
-    return;
+
+/* ---------------- Wallet connect: top bar + WalletConnect ----------------
+   Read-only connection for this build. Connecting shares the wallet's
+   public address only: no signature is ever requested and no transaction
+   is ever sent from this module. Three paths:
+   1. EVM via the injected provider (window.ethereum, EIP-1193). No
+      external dependency.
+   2. Solana via the injected provider (window.solana / Phantom).
+   3. WalletConnect via Reown AppKit, loaded as a deferred module from
+      its official CDN only when HALEX_WC_PROJECT_ID is configured.
+   HALEX has no Reown project ID yet (creating one needs Jeffrey's own
+   Reown account), so the constant ships empty: the WalletConnect path
+   then says so honestly and the injected paths carry the build. Nobody
+   is ever asked to paste a project ID, and there is no input for one. */
+var HALEX_WC_PROJECT_ID = "";
+var HALEX_WC_CDN = "https://cdn.jsdelivr.net/npm/@reown/appkit@1.8/+esm";
+var HW_KEY = "halex.wallet.session.v1";
+var hwState = null;    /* {kind, address, chainId, chainLabel, via, name} */
+var hwProvider = null; /* live provider object, this page session only */
+
+function hwChainLabel(kind, chainId){
+  if(kind === "solana") return "Solana";
+  if(chainId && typeof EVM_CHAINS !== "undefined" && EVM_CHAINS[chainId]) return EVM_CHAINS[chainId].name;
+  return chainId ? ("Chain " + chainId) : "EVM";
+}
+function hwSave(){
+  try{
+    if(hwState) localStorage.setItem(HW_KEY, JSON.stringify(hwState));
+    else localStorage.removeItem(HW_KEY);
+  }catch(e){}
+}
+function hwLoad(){
+  try{
+    var raw = localStorage.getItem(HW_KEY);
+    if(raw){ var s = JSON.parse(raw); if(s && s.address && s.kind) hwState = s; }
+  }catch(e){}
+}
+function hwNote(msg, isErr){
+  var n = $("#hw-note"); if(!n) return;
+  n.textContent = msg || "";
+  n.style.color = isErr ? "var(--red)" : "";
+}
+function hwRender(){
+  var btn = $("#hw-btn"), addr = $("#hw-addr"), disc = $("#hw-disconnect");
+  if(!btn) return;
+  if(hwState && hwState.address){
+    btn.textContent = shortAddr(hwState.address) + (hwState.chainLabel ? " · " + hwState.chainLabel : "");
+    if(addr) addr.textContent = hwState.address + (hwState.chainLabel ? " · " + hwState.chainLabel : "") + (hwState.via ? " · via " + hwState.via : "");
+    if(disc) disc.hidden = false;
+  } else {
+    btn.textContent = "Connect wallet";
+    if(addr) addr.textContent = "";
+    if(disc) disc.hidden = true;
   }
-  note.textContent = "Loading the WalletConnect SignClient…";
-  wcLoadSignClient().then(function(){
-    note.textContent = "Initialising the relay session…";
-    return wcSignClientCtor().init({ projectId: pid, metadata: { name: "HALEX-M Sandbox", description: "HALEX-M wallet pairing (sandbox)", url: "", icons: [] } });
-  }).then(function(client){
-    wcClient = client;
-    return client.connect({
-      requiredNamespaces: {
-        eip155: { methods: ["eth_sendTransaction", "personal_sign"], chains: ["eip155:1", "eip155:8453"], events: ["accountsChanged", "chainChanged"] },
-        solana: { methods: ["solana_signTransaction", "solana_signMessage"], chains: ["solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp"], events: [] }
-      }
+}
+function hwConnected(st, provider){
+  hwState = st; hwProvider = provider || null; hwSave(); hwRender();
+  var title = $("#wallet-state-title"); if(title) title.textContent = "Wallet connected";
+  toast((st.name || "Wallet") + " connected. Read-only: address shown in the top bar.");
+  if(provider && (st.kind === "evm" || st.kind === "solana") && typeof onWalletConnected === "function"){
+    try{ onWalletConnected({ kind: st.kind, address: st.address, chainId: st.chainId, provider: provider, name: st.name }); }catch(e){}
+  }
+}
+function hwWatchEvm(p){
+  if(!p || typeof p.on !== "function" || p.__halexWatched) return;
+  try{
+    p.__halexWatched = true;
+    p.on("accountsChanged", function(accts){
+      if(!hwState || hwState.kind !== "evm") return;
+      if(!accts || !accts.length){ hwDisconnect(); hwNote("The wallet disconnected its account. HALEX-M shows no wallet as connected."); return; }
+      hwState.address = accts[0]; hwSave(); hwRender();
     });
-  }).then(function(pending){
-    if(!pending || !pending.uri) throw new Error("WalletConnect returned no pairing URI");
-    note.textContent = "Pairing session is live — scan this QR with the HALEX wallet app (or any WalletConnect wallet). Waiting for approval…";
-    return loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js").then(function(){
-      var qr = window.qrcode(0, "M");
-      qr.addData(pending.uri);
-      qr.make();
-      qrBox.innerHTML = '<div style="background:#fff; padding:12px; border-radius:12px; display:inline-block">' + qr.createSvgTag(4, 8) + "</div>" +
-        '<p class="note mono" style="margin-top:9px; font-size:10.5px; word-break:break-all">' + esc(pending.uri) + "</p>";
-      return pending.approval();
+    p.on("chainChanged", function(chainId){
+      if(!hwState || hwState.kind !== "evm") return;
+      hwState.chainId = chainId; hwState.chainLabel = hwChainLabel("evm", chainId); hwSave(); hwRender();
     });
-  }).then(function(session){
-    var accts = [];
-    Object.keys(session.namespaces || {}).forEach(function(ns){ (session.namespaces[ns].accounts || []).forEach(function(a){ accts.push(a); }); });
-    note.textContent = "Paired — session approved by the wallet." + (accts.length ? " Accounts: " + accts.join(", ") : "");
-    $("#wallet-state-title").textContent = "Wallet paired via WalletConnect";
-    toast("WalletConnect pairing approved.");
-    accts.forEach(function(a){
-      var parts = String(a).split(":");
-      if(parts.length === 3 && parts[0] === "solana") onWalletConnected({ kind:"solana", address: parts[2], name:"WalletConnect wallet" });
+  }catch(e){}
+}
+function hwConnectEvm(){
+  if(typeof window === "undefined" || !window.ethereum){
+    return Promise.resolve({ ok:false, code:"NO_PROVIDER", error:"No EVM wallet found in this browser. Open HALEX-M inside your wallet app's built-in browser, or install a wallet extension, then try again. Nothing was connected." });
+  }
+  var p = window.ethereum;
+  return p.request({ method:"eth_requestAccounts" }).then(function(accts){
+    if(!accts || !accts.length) throw new Error("the wallet returned no accounts");
+    return p.request({ method:"eth_chainId" }).catch(function(){ return null; }).then(function(chainId){
+      var st = { kind:"evm", address: accts[0], chainId: chainId, chainLabel: hwChainLabel("evm", chainId), via:"Browser wallet", name: evmProviderName(p) };
+      hwConnected(st, p); hwWatchEvm(p);
+      return { ok:true, state: st };
     });
+  }).catch(function(e){ return { ok:false, code:"REJECTED", error:"EVM connect did not complete: " + ((e && e.message) || String(e)) }; });
+}
+function hwConnectSolana(){
+  var p = (typeof window !== "undefined" && window.phantom && window.phantom.solana) || (typeof window !== "undefined" && window.solana) || (typeof window !== "undefined" && window.solflare);
+  if(!p || typeof p.connect !== "function"){
+    return Promise.resolve({ ok:false, code:"NO_PROVIDER", error:"No Solana wallet found in this browser. Open HALEX-M inside your wallet app's built-in browser (Phantom, Solflare, Backpack), then try again. Nothing was connected." });
+  }
+  var attempt;
+  try { attempt = p.connect.length ? p.connect() : p.connect({ onlyIfTrusted: false }); }
+  catch(e){ return Promise.resolve({ ok:false, code:"REJECTED", error:"Solana connect did not complete: " + ((e && e.message) || String(e)) }); }
+  return Promise.resolve(attempt).then(function(res){
+    var pk = (res && res.publicKey) || p.publicKey;
+    if(!pk) throw new Error("the wallet returned no public key");
+    var st = { kind:"solana", address: pk.toString(), chainId: null, chainLabel:"Solana", via:"Browser wallet", name: p.isPhantom ? "Phantom" : (p.isSolflare ? "Solflare" : "Solana wallet") };
+    hwConnected(st, p);
+    return { ok:true, state: st };
+  }).catch(function(e){ return { ok:false, code:"REJECTED", error:"Solana connect did not complete: " + ((e && e.message) || String(e)) }; });
+}
+function hwWalletConnect(){
+  if(!HALEX_WC_PROJECT_ID){
+    return Promise.resolve({ ok:false, code:"WC_NOT_CONFIGURED", error:"WalletConnect is not active in this build yet. It turns on once HALEX's own project ID is configured by HALEX. You never need a project ID of your own, and HALEX-M will never ask you to paste one. The browser wallet options above work now." });
+  }
+  return import(HALEX_WC_CDN).then(function(mod){
+    var create = mod && (mod.createAppKit || (mod.default && mod.default.createAppKit));
+    if(typeof create !== "function") throw new Error("the library loaded in an unexpected shape");
+    var modal = create({ projectId: HALEX_WC_PROJECT_ID, metadata: { name:"HALEX-M", description:"HALEX-M: Advanced Blockchain Intelligence", url: window.location.origin, icons: [] }, themeMode:"dark" });
+    if(modal && typeof modal.open === "function") modal.open();
+    return { ok:true, note:"WalletConnect opened. Approve the session in your wallet app. This build reads the address only and never asks for a signature." };
   }).catch(function(e){
-    note.textContent = "WalletConnect pairing did not complete: " + (e && e.message ? e.message : String(e)) + " — no session was created and nothing is shown as connected.";
+    return { ok:false, code:"WC_LOAD_FAILED", error:"WalletConnect could not be loaded from its official CDN (" + ((e && e.message) || String(e)) + "). Check your connection and try again. Browser wallet connect is unaffected." };
   });
-});
+}
+function hwDisconnect(){
+  if(hwState && typeof connectedWallet !== "undefined" && connectedWallet && connectedWallet.address === hwState.address) connectedWallet = null;
+  var p = hwProvider;
+  if(p && typeof p.disconnect === "function"){ try{ var r = p.disconnect(); if(r && typeof r.catch === "function") r.catch(function(){}); }catch(e){} }
+  hwState = null; hwProvider = null; hwSave(); hwRender();
+  var title = $("#wallet-state-title"); if(title) title.textContent = "No wallet connected";
+  return { ok:true };
+}
+if(typeof window !== "undefined") window.HalexWallet = { connectEvm: hwConnectEvm, connectSolana: hwConnectSolana, walletConnect: hwWalletConnect, disconnect: hwDisconnect, getState: function(){ return hwState; }, projectId: HALEX_WC_PROJECT_ID };
+(function(){
+  hwLoad(); hwRender();
+  var btn = $("#hw-btn"), panel = $("#hw-panel"), top = $("#hw-top");
+  if(btn && panel){
+    btn.addEventListener("click", function(){
+      var open = panel.hidden;
+      panel.hidden = !open;
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      if(open && hwState) hwNote("Restored from your last session on this device. Connect again any time to refresh it.");
+    });
+    document.addEventListener("click", function(e){
+      if(!panel.hidden && top && !top.contains(e.target)){ panel.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+    });
+  }
+  var bE = $("#hw-opt-evm"), bS = $("#hw-opt-sol"), bW = $("#hw-opt-wc"), bD = $("#hw-disconnect");
+  if(bE) bE.addEventListener("click", function(){ hwNote("Requesting accounts from your EVM wallet…"); hwConnectEvm().then(function(r){ hwNote(r.ok ? "Connected. Read-only: nothing was signed and nothing was sent." : r.error, !r.ok); }); });
+  if(bS) bS.addEventListener("click", function(){ hwNote("Requesting connection from your Solana wallet…"); hwConnectSolana().then(function(r){ hwNote(r.ok ? "Connected. Read-only: nothing was signed and nothing was sent." : r.error, !r.ok); }); });
+  if(bW) bW.addEventListener("click", function(){ hwNote("Checking WalletConnect…"); hwWalletConnect().then(function(r){ hwNote(r.ok ? r.note : r.error, !r.ok); }); });
+  if(bD) bD.addEventListener("click", function(){ hwDisconnect(); hwNote("Disconnected here. Your wallet app may still list this site under its own connected apps; revoke it there too if you want it fully forgotten."); });
+  var pair = $("#wc-pair");
+  if(pair) pair.addEventListener("click", function(){
+    var note = $("#wc-note"); if(!note) return;
+    if(!HALEX_WC_PROJECT_ID){
+      note.textContent = "WalletConnect pairing is not active in this build yet: it turns on once HALEX's own project ID is configured. No project ID is needed from you, and none will ever be requested here. Use Scan for wallets above, or the Connect wallet button in the top bar.";
+      return;
+    }
+    note.textContent = "Opening WalletConnect…";
+    hwWalletConnect().then(function(r){ note.textContent = r.ok ? r.note : r.error; });
+  });
+})();
 
 /* ---------------- Wallet balances + Swap ----------------
    Balances are read live from the chain for whichever wallet HALEX is
@@ -4747,7 +5071,7 @@ $("#r-deploy").addEventListener("click", function(){
    The engine script is deferred in the head so first paint never waits
    on it. This loader is the on-demand path: it resolves at once when
    the engine is already present, otherwise it walks the CDN list the
-   same way the WalletConnect loader does. A failed round clears the
+   same way the other CDN loaders in this file do. A failed round clears the
    cached promise so the next attempt retries from the top. */
 var THREE_URLS = [
   "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
@@ -4824,6 +5148,15 @@ var CHAINS_3D = [
     info:"Crypto.com's EVM world — an exchange chain in the outer orbits of the HALEX catalog." },
   { id:"thundercore", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, activity:0.1, orbit:69, speed:0.21,
     info:"A fast, mobile-first EVM world at the far edge of the catalog — small, quick, and easy to overlook." },
+  { id:"litecoin", name:"Litecoin", sym:"LTC", color:0x345d9d, born:2011, activity:0.45, orbit:79.5, speed:0.16,
+    info:"Litecoin — the standalone LTC world. It also rides as a moon of Bitcoin, where it was born from Bitcoin's code; this planet is the same chain mapped on its own, with the same tower, wallet-building and line system as every other world. No live LTC token feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Silver Flats",-0.4,-0.3],["Scrypt Highlands",0.45,-0.45],["The Four-Minute Fields",0.05,0.55]] },
+  { id:"nano", name:"Nano", sym:"NANO", color:0x4a90e2, born:2015, activity:0.3, orbit:83, speed:0.2,
+    info:"Nano — a feeless, block-lattice world: each account carries its own chain, and transfers settle without miners or fees. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live NANO feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Lattice Flats",-0.4,-0.3],["Representative Ridge",0.45,-0.4],["Zero-Fee Plains",0.05,0.55]] },
+  { id:"stellar", name:"Stellar", sym:"XLM", color:0x08b5e5, born:2014, activity:0.4, orbit:86.5, speed:0.18,
+    info:"Stellar — a payments and anchors world: assets move by trustline, and anchors bridge the ledger to banks and stablecoins. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live XLM feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Anchor Harbours",-0.4,-0.3],["Trustline Terraces",0.45,-0.4],["Payments Corridor",0.05,0.55]] },
   { id:"digibyte", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, activity:0.2, orbit:72.5, speed:0.17,
     info:"A UTXO payments chain from the 2014 generation — Bitcoin's codebase hardened with five mining algorithms and 15-second blocks, built for fast, cheap everyday payments. DigiByte is not part of the live APEX¹ firehose: this world is on the map for research, and no live token feed runs behind it.",
     zones:[["Payments Flats",-0.4,-0.3],["DigiShield Highlands",0.45,-0.45],["The Five Mines",0.05,0.55]] },
@@ -4901,6 +5234,17 @@ function startChaintarium(){
   var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
+  /* fit distance: how far the camera must sit for the whole system to
+     fit — outermost orbit (76) plus a world radius, over the camera's
+     55° field, worst case over every drag orientation and aspect. The
+     old fixed cap (115) clipped the outer worlds on phones; pinch and
+     wheel now stop at this computed distance instead, so pinching all
+     the way out always frames the full solar system. */
+  function chainFitDist(){
+    var r = canvas.getBoundingClientRect();
+    var a = r.width / Math.max(1, r.height);
+    return Math.ceil(82 / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+  }
   camera.position.set(0, 20, 46);
 
   /* stars — a deep field with a few tinted families (ice blue, gold,
@@ -4998,7 +5342,7 @@ function startChaintarium(){
     if(c.orbit > 0){
       var ringGeo = new THREE.RingGeometry(c.orbit-0.035, c.orbit+0.035, 128);
       var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:c.color, side:THREE.DoubleSide, transparent:true, opacity:0.2 }));
-      ring.rotation.x = Math.PI/2; world.add(ring);
+      ring.rotation.x = Math.PI/2; world.add(ring); c._ring = ring;
     }
     var label = document.createElement("div");
     label.className = "planet-label"; label.textContent = c.name;
@@ -5103,7 +5447,27 @@ function startChaintarium(){
     g.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEG + 1) * 3), 3));
     var line = new THREE.Line(g, new THREE.LineBasicMaterial({ color: rd[2], transparent: true, opacity: 0.44, blending: THREE.AdditiveBlending, depthWrite: false }));
     world.add(line);
-    routes.push({ a: ca._obj, b: cb._obj, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012 });
+    /* cross-chain transfer route label — a tappable link to the route's
+       endpoint worlds: tapping it opens the route card with a Visit
+       button for each end. The label rides the arc apex, placed every
+       frame like the planet labels. */
+    var midObj = new THREE.Object3D(); world.add(midObj);
+    var rlabel = document.createElement("div");
+    rlabel.className = "route-label"; rlabel.textContent = ca.sym + " → " + cb.sym;
+    rlabel.title = "Cross-chain transfer route: " + ca.name + " → " + cb.name;
+    (function(frm, to){
+      rlabel.addEventListener("click", function(){
+        $("#chain-info").innerHTML =
+          "<b>Cross-chain transfer route</b>" +
+          "<p class=\"note\" style=\"margin-top:4px\">A stylized route showing how value moves between worlds — not live transfer data. The bright pulses riding it are transfers in flight.</p>" +
+          '<div class="kv"><span>From</span><b>' + esc(frm.name) + "</b></div>" +
+          '<div class="kv"><span>To</span><b>' + esc(to.name) + "</b></div>" +
+          '<button class="btn primary" data-visit="' + frm.id + '" style="margin-top:12px">Visit ' + esc(frm.name) + "</button> " +
+          '<button class="btn" data-visit="' + to.id + '" style="margin-top:12px">Visit ' + esc(to.name) + "</button>";
+      });
+    })(ca, cb);
+    labelsBox.appendChild(rlabel);
+    routes.push({ a: ca._obj, b: cb._obj, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012, line: line, label: rlabel, midObj: midObj });
   });
   var pulseGeo = new THREE.BufferGeometry();
   pulseGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(Math.max(1, routes.length * 2) * 3), 3));
@@ -5119,6 +5483,7 @@ function startChaintarium(){
       var lift = _va.distanceTo(_vb);
       _vm.multiplyScalar(1 + Math.min(0.34, lift * 0.012 + 0.1));
       _vm.y += lift * 0.14;
+      if(rt.midObj) rt.midObj.position.copy(_vm);
       rt.curve = new THREE.QuadraticBezierCurve3(_va.clone(), _vm.clone(), _vb.clone());
       var lp = rt.geo.attributes.position.array;
       for(var s = 0; s <= ARC_SEG; s++){
@@ -5186,12 +5551,12 @@ function startChaintarium(){
   canvas.addEventListener("wheel", function(e){
     e.preventDefault();
     lastTouch = performance.now();
-    targetDist = Math.max(9, Math.min(115, targetDist + e.deltaY*0.03));
+    targetDist = Math.max(9, Math.min(chainFitDist(), targetDist + e.deltaY*0.03));
   }, { passive:false });
   canvas.addEventListener("touchmove", function(e){
     if(e.touches.length === 2){
       var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-      if(pinchD) targetDist = Math.max(9, Math.min(115, targetDist - (d-pinchD)*0.08));
+      if(pinchD) targetDist = Math.max(9, Math.min(chainFitDist(), targetDist - (d-pinchD)*0.08));
       pinchD = d;
     }
   }, { passive:true });
@@ -5223,7 +5588,10 @@ function startChaintarium(){
     if(reduceMotionSys){ visitChain(c); return; }
     diving = true;
     ch.focus = c.id;
-    targetDist = Math.max(11, c.size * 4.2);
+    /* gentler tap zoom: the dive stops at distance 20 (was 11) with a
+       wider frame per world size, so a planet tap no longer rushes
+       the camera into the world's face before the sphere opens */
+    targetDist = Math.max(20, c.size * 6.5);
     stage.classList.add("diving");
     setTimeout(function(){
       stage.classList.remove("diving");
@@ -5259,10 +5627,21 @@ function startChaintarium(){
         mn.mesh.position.set(px + Math.cos(ma)*mn.dist, py + Math.sin(ma*1.3)*0.18, pz + Math.sin(ma)*mn.dist);
         mn.mesh.rotation.y = t*0.25;
       });
+      /* search isolation: only the isolated world (and its moons and orbit ring) stays visible */
+      var isoVis = !ch.isolated || p.c.id === ch.isolated;
+      p.mesh.visible = isoVis;
+      if(p.c._ring) p.c._ring.visible = isoVis;
+      p.moons.forEach(function(mn){ mn.mesh.visible = isoVis; });
     });
     updateRoutes(t);
+    /* cross-chain transfer routes: visible unless the transfers layer
+       is off or the view is isolated to one world; pulses ride with them */
+    var transfersOn = !ch.transfersOff && !ch.isolated;
+    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn; });
+    if(pulsePts) pulsePts.visible = transfersOn;
     if(sunGlow) sunGlow.material.opacity = 0.32 + Math.sin(t * 1.4) * 0.05; /* the sun breathes — slow, restrained */
     if(belt) belt.rotation.y = t * 0.008; /* the belt crawls around the sun */
+    if(belt) belt.visible = !ch.isolated;
     if(comet.head && !reduceMotionSys){
       var cu = (t % 46) / 46 * Math.PI * 2, cp = cometPos(cu, new THREE.Vector3());
       comet.head.position.copy(cp);
@@ -5273,7 +5652,7 @@ function startChaintarium(){
       }
       comet.tailGeo.attributes.position.needsUpdate = true;
     }
-    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys;
+    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys && !ch.isolated && !ch.transfersOff;
     rotY += (tRotY-rotY)*0.07; rotX += (tRotX-rotX)*0.07;
     dist += (targetDist-dist)*0.06;
     var focusObj = null;
@@ -5310,13 +5689,23 @@ function startChaintarium(){
     camera.up.set(0, 1, 0).applyEuler(camEul);
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
-    /* labels — moons are named only for the world you're visiting/focused on */
+    /* labels — moons are named only for the world you're visiting/focused on;
+       under a search isolation, only the isolated world's labels stay */
     planets.forEach(function(p){
-      placeLabel(p.mesh, p.label);
+      if(ch.isolated && p.c.id !== ch.isolated) p.label.style.display = "none";
+      else placeLabel(p.mesh, p.label);
       p.moons.forEach(function(mn){
-        if(ch.focus === p.c.id) placeLabel(mn.mesh, mn.label);
+        if(ch.focus === p.c.id && (!ch.isolated || ch.isolated === p.c.id)) placeLabel(mn.mesh, mn.label);
         else mn.label.style.display = "none";
       });
+    });
+    /* transfer route labels ride their arc apexes; hidden with the
+       routes when transfers are off or the view is isolated */
+    routes.forEach(function(rt){
+      if(rt.label){
+        if(transfersOn && rt.midObj) placeLabel(rt.midObj, rt.label);
+        else rt.label.style.display = "none";
+      }
     });
     /* the focus HUD rides above the world you're locked onto */
     var hudC = chainById(ch.focus || "bitcoin");
@@ -5391,7 +5780,10 @@ var CHAIN_VENUES = {
   cosmos:    [["Osmosis", "The Cosmos ecosystem's hub exchange — IBC tokens ferried in from dozens of sovereign chains trade here."]],
   polkadot:  [["Hydration", "Polkadot's liquidity-hub parachain — an omnipool design that holds cross-chain assets in one place."]],
   fantom:    [["SpookySwap", "Fantom's long-standing decentralized exchange."]],
-  cronos:    [["VVS Finance", "Cronos's main decentralized exchange."]]
+  cronos:    [["VVS Finance", "Cronos's main decentralized exchange."]],
+  litecoin: [["Litecoin payments ground", "The chain's home payments ground on the map — where LTC transfers land."]],
+  nano:     [["Nano lattice ground", "The block-lattice ground on the map — each account's own chain, transfers settling without fees."]],
+  stellar:  [["Stellar anchor ground", "The anchor ground on the map — where Stellar assets and trustlines meet the ledger."]]
 };
 var FEAT_WALLET_NAMES = ["Smart-money wallet", "Whale wallet", "Sniper wallet", "Quiet accumulator"];
 var FEAT_TX_NAMES = ["Large transfer", "Bridge arrival", "Whale-sized buy", "Pool refill"];
@@ -5577,10 +5969,74 @@ function initChainPop(){
     if(chainPop.on && e.target && e.target.closest && e.target.closest("#tabbar")) chainSetPop(false);
   });
 }
+/* ---------------- Chaintarium planet layers (2026-10-27, staging) ----------------
+   Layer 0 is the surface: the newest 3 years. Each layer deeper is the
+   previous 3 years, down to the chain's birth year. A year maps to
+   floor((2026 - year) / 3), clamped to the planet's layer count, so a
+   2020 transaction on any chain lands on layer 2 (2018-2020). Deeper
+   layers render sparser (see surfLayerDensity in buildSurfaceScene),
+   which is what makes a sub-level search faster: it does not render
+   the surface's full current activity. */
+var surfLayerIdx = 0;
+function chainLayerCount(c){ return Math.max(1, Math.ceil((2026 - c.born) / 3)); }
+function chainLayerRange(c, idx){
+  var end = 2026 - idx * 3, start = Math.max(c.born, end - 2);
+  return { start: start, end: end };
+}
+function chainLayerRangeText(c, idx){
+  var r = chainLayerRange(c, idx);
+  return (idx === 0 ? "Surface" : "Layer " + idx) + " · " + r.start + "–" + r.end + (idx === 0 ? " · newest" : " · older records");
+}
+function chainLayerForDate(c, year){
+  var idx = Math.floor((2026 - year) / 3);
+  if(idx < 0) idx = 0;
+  var mx = chainLayerCount(c) - 1;
+  if(idx > mx) idx = mx;
+  return idx;
+}
+function renderSurfLayers(c){
+  var btns = $("#surf-layer-btns"), note = $("#surf-layer-note");
+  if(!btns) return;
+  var n = chainLayerCount(c);
+  btns.innerHTML = "";
+  for(var i = 0; i < n; i++){
+    (function(idx){
+      var b = document.createElement("button");
+      b.textContent = chainLayerRangeText(c, idx);
+      b.className = (idx === surfLayerIdx) ? "on" : "";
+      b.addEventListener("click", function(){ setSurfLayer(idx); });
+      btns.appendChild(b);
+    })(i);
+  }
+  if(note) note.textContent = "Now showing: " + chainLayerRangeText(c, surfLayerIdx) + " on " + c.name + ". " +
+    (surfLayerIdx === 0 ? "Full surface activity." : "Sparser rendering: fewer towers, traces and markers than the surface, by design.");
+  var go = $("#surf-layer-go"), inp = $("#surf-layer-date");
+  if(go && !go._layerBound){
+    go._layerBound = true;
+    go.addEventListener("click", function(){
+      var y = parseInt((inp ? inp.value : "").trim(), 10);
+      if(!y || y < 1900 || y > 2026){ if(note) note.textContent = "Type a year between 1900 and 2026 to jump to its layer."; return; }
+      setSurfLayer(chainLayerForDate(surf.chain || c, y));
+    });
+  }
+}
+function setSurfLayer(idx){
+  var c = surf.chain; if(!c) return;
+  var mx = chainLayerCount(c) - 1;
+  if(idx < 0) idx = 0; if(idx > mx) idx = mx;
+  surfLayerIdx = idx;
+  openSurface(c);
+}
+
 function visitChainById(id){ var c = chainById(id); if(c) visitChain(c); }
 function visitChain(c, moonName){
   ch.focus = c.id;
   ch.focusObj = c._obj || null;
+  /* visiting a world isolates the orbit view to it, so coming back
+     from its surface returns to that world alone; Show-all in the
+     toolbar restores the whole system */
+  ch.isolated = c.id;
+  syncChainTools();
   $("#chain-info").innerHTML = chainInfoHTML(c);
   renderChainChips();
   var inp = $("#chain-search"); if(inp) inp.value = "";
@@ -5620,6 +6076,7 @@ function openSurface(c, moonName){
   });
   if(moonName) showMoonNote(c, moonName);
   surfaceTrackStrip(c);
+  renderSurfLayers(c);
   buildSurfaceScene(c, stage);
   surfFeedStart(c);
 }
@@ -5886,6 +6343,8 @@ function buildSurfaceScene(c, stage){
   var rim = new THREE.PointLight(0x2ee6c8, 0.7, 0); rim.position.set(-36, -16, -24); scene.add(rim);
 
   var seed = (hueFor(c.id) % 89) + 3;
+  var surfLayerIdxNow = (typeof surfLayerIdx !== "undefined" ? surfLayerIdx : 0);
+  var surfLayerDensity = surfLayerIdxNow === 0 ? 1 : (surfLayerIdxNow === 1 ? 0.6 : 0.35);
   var R = 15, amp = 1.5 + c.activity * 3.6;
   var world = new THREE.Group(); scene.add(world);
 
@@ -5945,7 +6404,7 @@ function buildSurfaceScene(c, stage){
      calls, which is what keeps it smooth on a phone GPU. */
   var goldMats = [], tealMats = [], litMats = [], hubPts = [], blockMats = [];
   var dummy = new THREE.Object3D(), upAxis = new THREE.Vector3(0, 1, 0), quat = new THREE.Quaternion();
-  var target = Math.round(3400 + c.activity * 4400), placed = 0;
+  var target = Math.round((3400 + c.activity * 4400) * surfLayerDensity), placed = 0;
   for(var k = 0; k < 34000 && placed < target; k++){
     var fy = 1 - (k / 33999) * 2;
     var frad = Math.sqrt(Math.max(0, 1 - fy * fy));
@@ -6007,6 +6466,103 @@ function buildSurfaceScene(c, stage){
     bm.instanceMatrix.needsUpdate = true;
     world.add(bm);
   }
+
+  /* ---- towers, wallet buildings, funding and dump lines (2026-10-27) ----
+     Tokens are towers: height is a clamped log scale of liquidity, so
+     one token cannot break the scene. Wallets are SQUARE buildings:
+     footprint and height both grow with holdings. Funding lines link a
+     wallet to wallets it funded; RED lines are liquidity sell-offs
+     and wallet dumps leading back to another wallet. These structures
+     are deterministic map markers for the chain's shape, not live
+     holdings: real wallets and tokens are read live only through the
+     search bar and the Cosmos Tracker, and those get beacons. */
+  var surfStructCounts = { towers: 0, wallets: 0, funding: 0, dumps: 0 };
+  var surfActionPaths = [], surfActionGeo = null;
+  (function buildChainStructures(){
+    function structDir(i, off){
+      var u = sHash2(i, off, seed), v = sHash2(i, off + 40, seed);
+      var yy = 1 - u * 2, rr = Math.sqrt(Math.max(0, 1 - yy * yy)), tt = v * Math.PI * 2;
+      return new THREE.Vector3(Math.cos(tt) * rr, yy, Math.sin(tt) * rr);
+    }
+    function structPoint(d){
+      var hh = surfHeight(d.x, d.y, d.z, seed, amp);
+      return d.clone().multiplyScalar(R + hh + 0.05);
+    }
+    function arcPath(A, B, lift){
+      var path = [], steps = 14;
+      for(var s = 0; s <= steps; s++){
+        var t = s / steps;
+        var v = A.clone().lerp(B, t).normalize();
+        var hh = surfHeight(v.x, v.y, v.z, seed, amp);
+        path.push(v.clone().multiplyScalar(R + hh + 0.35 + Math.sin(t * Math.PI) * lift));
+      }
+      return path;
+    }
+    function drawArc(path, hex, opacity){
+      var g = new THREE.BufferGeometry().setFromPoints(path);
+      world.add(new THREE.Line(g, new THREE.LineBasicMaterial({ color: hex, transparent: true, opacity: opacity, blending: THREE.AdditiveBlending, depthWrite: false })));
+    }
+    var towerPts = [], walletPts = [];
+    var NT = 12, NW = 16;
+    for(var ti = 0; ti < NT; ti++){
+      var td = structDir(ti, 901), tp = structPoint(td);
+      var liq = Math.pow(10, 3 + sHash2(ti, 903, seed) * 5);
+      var th = Math.max(0.7, Math.min(4.0, 0.7 + Math.log10(liq) * 0.45));
+      var tm = new THREE.Mesh(new THREE.BoxGeometry(0.3, 1, 0.3),
+        new THREE.MeshStandardMaterial({ color: 0x1a2a1a, emissive: (ti % 2 === 0 ? 0xffc24b : 0x2ee6c8), emissiveIntensity: 0.85, roughness: 0.4, metalness: 0.6 }));
+      tm.geometry.translate(0, 0.5, 0);
+      tm.position.copy(tp);
+      tm.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), td);
+      tm.scale.set(1, th, 1);
+      world.add(tm);
+      towerPts.push(tp.clone().add(td.clone().multiplyScalar(th)));
+      surfStructCounts.towers++;
+    }
+    for(var wi = 0; wi < NW; wi++){
+      var wd = structDir(wi, 951), wp = structPoint(wd);
+      var hf = sHash2(wi, 953, seed);
+      var foot = 0.35 + hf * 0.9, wh = 0.4 + hf * 1.8;
+      var wm = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1),
+        new THREE.MeshStandardMaterial({ color: 0x141a26, emissive: 0xffc24b, emissiveIntensity: 0.55, roughness: 0.45, metalness: 0.6 }));
+      wm.geometry.translate(0, 0.5, 0);
+      wm.position.copy(wp);
+      wm.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), wd);
+      wm.scale.set(foot, wh, foot);
+      world.add(wm);
+      walletPts.push(wp.clone().add(wd.clone().multiplyScalar(wh)));
+      surfStructCounts.wallets++;
+    }
+    var actionKinds = ["send", "buy", "swap", "stake", "pool"];
+    var actionCols = { send: 0x5aa9ff, buy: 0x2ee6c8, swap: 0xffc24b, stake: 0xb45cff, pool: 0x2ee6c8 };
+    function addActionPath(A, B, kind, hex, opacity, isDump){
+      var lift = A.distanceTo(B) * 0.12;
+      var path = arcPath(A, B, lift);
+      drawArc(path, hex, opacity);
+      surfActionPaths.push({ path: path, kind: kind, hex: hex, sp: 0.12 + sHash2(surfActionPaths.length, 977, seed) * 0.2 });
+      if(isDump) surfStructCounts.dumps++; else surfStructCounts.funding++;
+    }
+    for(var f = 0; f < walletPts.length; f++){
+      var kind = actionKinds[f % actionKinds.length];
+      addActionPath(walletPts[f], walletPts[(f + 3) % walletPts.length], kind, actionCols[kind], 0.55, false);
+      if(f % 3 === 0) addActionPath(walletPts[f], walletPts[(f + 5) % walletPts.length], "send", 0x5aa9ff, 0.4, false);
+    }
+    for(var d2 = 0; d2 < 3 && d2 < towerPts.length; d2++){
+      addActionPath(towerPts[d2], walletPts[(d2 * 4) % walletPts.length], "dump", 0xff6b5e, 0.85, true);
+    }
+    if(surfActionPaths.length){
+      var NP2 = surfActionPaths.length;
+      var ag = new THREE.BufferGeometry();
+      ag.setAttribute("position", new THREE.BufferAttribute(new Float32Array(NP2 * 3), 3));
+      var acol = new Float32Array(NP2 * 3);
+      surfActionPaths.forEach(function(ap, ix){
+        var cc = new THREE.Color(ap.hex);
+        acol[ix * 3] = cc.r; acol[ix * 3 + 1] = cc.g; acol[ix * 3 + 2] = cc.b;
+      });
+      ag.setAttribute("color", new THREE.BufferAttribute(acol, 3));
+      surfActionGeo = ag;
+      world.add(new THREE.Points(ag, new THREE.PointsMaterial({ vertexColors: true, size: 0.5, sizeAttenuation: true, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false })));
+    }
+  })();
 
   /* the network — light running between hub towers along arcs just above
      the surface, with a bright node burning at each hub */
@@ -6079,7 +6635,7 @@ function buildSurfaceScene(c, stage){
       return d.clone().multiplyScalar(R + hh + 0.07);
     }
     var made = 0;
-    for(var q2 = 0; q2 < 3200 && made < 780; q2++){
+    for(var q2 = 0; q2 < 3200 && made < Math.round(780 * surfLayerDensity); q2++){
       var y1 = 1 - sHash2(q2, 301, seed) * 2, r1 = Math.sqrt(Math.max(0, 1 - y1 * y1)), a1 = sHash2(q2, 307, seed) * Math.PI * 2;
       var d1 = new THREE.Vector3(Math.cos(a1) * r1, y1, Math.sin(a1) * r1);
       if(surfHeight(d1.x, d1.y, d1.z, seed, amp) / amp < 0.05) continue;
@@ -6137,6 +6693,7 @@ function buildSurfaceScene(c, stage){
   scanEl.innerHTML = "<b>SURFACE SCAN — " + esc(c.name.toUpperCase()) + "</b>" +
     '<span class="mono">' + placed.toLocaleString("en-US") + " towers lit</span> · " + hubPts.length + " network hubs · " + arcCount + " light routes · " + tracePaths.length + " circuit traces<br>" +
     "Activity " + c.activity.toFixed(2) + " · Born " + c.born + " · City density follows age × activity";
+  scanEl.innerHTML += "<br>" + chainLayerRangeText(c, surfLayerIdxNow) + " · " + surfStructCounts.towers + " token towers (height = clamped log of liquidity) · " + surfStructCounts.wallets + " square wallet buildings · " + surfStructCounts.funding + " funding lines · " + surfStructCounts.dumps + " red dump lines · action pulses: send, buy, swap, stake, pool · towers/buildings are stylized map markers, not live holdings";
 
   /* surface activity — pools, wallets and tokens as glowing dots scattered over the land */
   function dotField(count, color, size, seedOff){
@@ -6334,7 +6891,7 @@ function buildSurfaceScene(c, stage){
       var spot = findSpot(); if(!spot) return;
       addFeature({ type:"platform", name: v[0], desc: v[1], stats: [["Kind", "Platform"], ["World", c.name]] }, spot);
     });
-    var genCount = Math.round(5 + c.activity * 4);
+    var genCount = Math.round((5 + c.activity * 4) * surfLayerDensity);
     var genTypes = ["wallet", "transaction", "movement", "rug", "bundle"];
     for(var gi = 0; gi < genCount; gi++){
       var gt = genTypes[(gi + (seed % 3)) % genTypes.length];
@@ -6474,6 +7031,17 @@ function buildSurfaceScene(c, stage){
       });
       traceFlow.geo.attributes.position.needsUpdate = true;
     }
+    /* chain-structure action pulses — send, buy, swap, stake, pool, and red dumps */
+    if(surfActionPaths.length && surfActionGeo && !reduceMotion){
+      var aarr = surfActionGeo.attributes.position.array, anow = performance.now() * 0.001;
+      surfActionPaths.forEach(function(ap, ix){
+        var path = ap.path; if(!path || path.length < 2) return;
+        var ft = ((anow * ap.sp) % 1) * (path.length - 1);
+        var i0 = Math.floor(ft), fr2 = ft - i0, va = path[i0], vb = path[Math.min(i0 + 1, path.length - 1)];
+        aarr[ix * 3] = va.x + (vb.x - va.x) * fr2; aarr[ix * 3 + 1] = va.y + (vb.y - va.y) * fr2; aarr[ix * 3 + 2] = va.z + (vb.z - va.z) * fr2;
+      });
+      surfActionGeo.attributes.position.needsUpdate = true;
+    }
     /* tracked beacons breathe — a slow pulse of light so the eye finds
        the wallet or token you're following on the surface */
     if(surfPillars.length && !reduceMotion){
@@ -6606,7 +7174,7 @@ function renderSuggestList(entries, note){
       if(!en) return;
       var inp = $("#chain-search"); if(inp) inp.value = "";
       hideSuggest();
-      if(en.type === "chain") visitChain(en.c, en.moon ? en.moon.name : null);
+      if(en.type === "chain") focusWorld(en.c.id);
       else if(en.type === "wallet"){ if(en.chain === "solana") trackWalletSol(en.address); else trackWalletEvm(en.address); }
       else if(en.type === "contract") trackTokenByAddress(en.address);
       else if(en.type === "token") trackToken(en.pair);
@@ -6718,6 +7286,8 @@ function surfSearchEntries(q){
     if(hit(name, it.kind === "token" ? "token tracked coin" : "wallet tracked address"))
       out.push({ kind:"tracked", it: it, name: name });
   });
+  var ym = q.trim().match(/^(19|20)\d\d$/);
+  if(ym) out.push({ kind:"layer", year: parseInt(ym[0], 10), name: "Go to layer for " + ym[0] });
   c.zones.forEach(function(z){ if(hit(z[0], "zone district region")) out.push({ kind:"zone", name: z[0] }); });
   c.moons.forEach(function(m){ if(hit(m.name, "moon fork")) out.push({ kind:"moon", name: m.name }); });
   return out;
@@ -6734,6 +7304,9 @@ function renderSurfSuggest(){
     return;
   }
   box.innerHTML = entries.slice(0, 8).map(function(en, i){
+    if(en.kind === "layer"){
+      return '<button data-s-hit="' + i + '"><span class="cdot" style="background:#2ee6c8"></span>' + esc(en.name) + "<small>Planet layer · " + esc(chainLayerRangeText(c, chainLayerForDate(c, en.year))) + "</small></button>";
+    }
     if(en.kind === "feature"){
       var t = FEAT_TYPES[en.f.type];
       return '<button data-s-hit="' + i + '"><span class="cdot" style="background:' + t.css + '"></span>' + esc(en.f.name) + "<small>" + esc(t.label) + " · on " + esc(surf.chain.name) + "</small></button>";
@@ -6758,6 +7331,7 @@ function renderSurfSuggest(){
 }
 function pickSurfEntry(en){
   var inp = $("#surf-search"); if(inp) inp.value = "";
+  if(en.kind === "layer"){ setSurfLayer(chainLayerForDate(surf.chain, en.year)); return; }
   if(en.kind === "feature"){ if(surf.selectFeature) surf.selectFeature(en.f); return; }
   if(en.kind === "moon"){ showMoonNote(surf.chain, en.name); toast(en.name + " — its story is in the planet card, top left."); return; }
   if(en.kind === "zone"){
@@ -6817,9 +7391,39 @@ function focusWorld(worldId){
   var c = chainById(worldId); if(!c) return;
   if(surf.open) closeSurface();
   ch.focus = c.id;
+  /* focusing a result isolates the orbit view to its world — the
+     search contract: isolate the system to the result and show its
+     card (the chain card above for chains, the tracker entry for
+     tracked tokens and wallets). Show-all in the toolbar restores it. */
+  ch.isolated = c.id;
   $("#chain-info").innerHTML = chainInfoHTML(c);
   renderChainChips();
+  syncChainTools();
 }
+/* Chaintarium toolbar state — the in-window toolkit: overlays and
+   transfer routes toggle, and Show-all clears a search isolation. */
+function syncChainTools(){
+  var sa = $("#chain-tools-showall");
+  if(sa) sa.hidden = !ch.isolated;
+  var ov = $("#chain-tools-overlays"), stage = $("#chain-stage");
+  if(ov && stage){
+    var off = stage.classList.contains("overlays-off");
+    ov.textContent = off ? "Overlays off" : "Overlays on";
+    ov.setAttribute("aria-pressed", off ? "false" : "true");
+  }
+  var tr = $("#chain-tools-transfers");
+  if(tr){
+    tr.textContent = ch.transfersOff ? "Transfers off" : "Transfers on";
+    tr.setAttribute("aria-pressed", ch.transfersOff ? "false" : "true");
+  }
+}
+(function initChainTools(){
+  var ov = $("#chain-tools-overlays"), tr = $("#chain-tools-transfers"), sa = $("#chain-tools-showall"), stage = $("#chain-stage");
+  if(ov && stage) ov.addEventListener("click", function(){ stage.classList.toggle("overlays-off"); syncChainTools(); });
+  if(tr) tr.addEventListener("click", function(){ ch.transfersOff = !ch.transfersOff; syncChainTools(); });
+  if(sa) sa.addEventListener("click", function(){ ch.isolated = null; syncChainTools(); });
+  syncChainTools();
+})();
 function panelNudge(){
   var p = $("#chain-track");
   if(p) setTimeout(function(){ p.scrollIntoView({ behavior:"smooth", block:"nearest" }); }, 90);
@@ -7376,9 +7980,10 @@ function surfaceTrackStrip(c){
 </script>
 <script>
 /* ---------------- shared chain + wallet helpers ----------------
-   Solana RPC access with endpoint failover, base58 address
-   validation, and the WalletConnect SignClient CDN loader. Used by
-   the Wallet tab (balances + pairing) and the Swap portal. */
+   Solana RPC access with endpoint failover and base58 address
+   validation. Used by the Wallet tab (balances) and the Swap portal.
+   WalletConnect lives in the main script's wallet connect module
+   (Reown AppKit, deferred load, HALEX_WC_PROJECT_ID). */
 var SOL_RPC_URLS = ["https://api.mainnet-beta.solana.com", "https://solana-rpc.publicnode.com"];
 var B58_ALPHA = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 function b58Decode(s){
@@ -7422,27 +8027,6 @@ function solRpc(method, params){
   });
   return p;
 }
-var WC_UMD_URLS = [
-  "https://cdn.jsdelivr.net/npm/@walletconnect/sign-client@2.17.2/dist/index.umd.js",
-  "https://unpkg.com/@walletconnect/sign-client@2.17.2/dist/index.umd.js"
-];
-function wcSignClientCtor(){
-  var g = window["@walletconnect/sign-client"];
-  if(!g) return null;
-  var c = g.SignClient || g.default;
-  return (c && typeof c.init === "function") ? c : null;
-}
-function wcLoadSignClient(){
-  if(wcSignClientCtor()) return Promise.resolve();
-  var chain = Promise.reject(new Error("no CDN tried"));
-  WC_UMD_URLS.forEach(function(url){
-    chain = chain.catch(function(){ return loadScript(url); });
-  });
-  return chain.then(function(){
-    if(!wcSignClientCtor()) throw new Error("the SignClient script loaded but did not register the client (unexpected build)");
-  });
-}
-
 /* ---------------- clipboard helper ----------------
    Used by the Skills Lab "copy skill" button. */
 function lkCopyText(text, doneMsg){
