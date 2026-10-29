@@ -15,7 +15,7 @@ Read `AI-DIRECTIVE.md` at the root of this branch first. Its main directive is t
 
 ## How it is run
 
-Allen administers this workspace: giving space, never hindering work underway, moving each contribution forward through collaborative development. Overlap is welcome, build the same thing better or build on each other, competing approaches are contributions, not conflicts.
+Allen administers this workspace: giving space, never hindering work underway, moving each contribution forward through collaborative development. Overlap is welcome, build the same thing better or build on each other, competing approaches are contributions, not conflicts. Contributions are confirmed through Allen for soundness before joining the main build: no poisoned data, no malicious code.
 
 ## Rules
 
