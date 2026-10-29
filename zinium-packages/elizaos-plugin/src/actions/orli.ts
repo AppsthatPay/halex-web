@@ -1,4 +1,4 @@
-import { Action, IAgentRuntime, Memory, State, HandlerCallback } from '@elizaos/core';
+import { Action, ActionResult, Content, HandlerCallback, IAgentRuntime } from '@elizaos/core';
 import * as crypto from 'node:crypto';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
@@ -9,6 +9,8 @@ import * as path from 'node:path';
 // memory chain (hash-chained JSONL shards) when ZINIUM_LEDGER_DIR is set;
 // otherwise the block is computed and returned without persisting, and the
 // response says so plainly. Nothing is ever claimed as indexed when it is not.
+// Typed against @elizaos/core 1.7.2 (Handler returns ActionResult; callback
+// is optional in the handler signature).
 
 const SECRET_MARKERS = [
   'password', 'passwd', 'secret', 'api_key', 'apikey',
@@ -64,14 +66,15 @@ function indexLesson(lesson: Record<string, unknown>, runtime: IAgentRuntime): {
 }
 
 async function reply(
-  runtime: IAgentRuntime,
-  message: Memory,
-  state: State | undefined,
-  options: { text: string },
-  callback: HandlerCallback,
-): Promise<boolean> {
-  await callback({ text: options.text, action: 'ZINIUM_ORLI' });
-  return true;
+  text: string,
+  data: Record<string, unknown>,
+  callback: HandlerCallback | undefined,
+): Promise<ActionResult> {
+  const content: Content = { text, action: 'ZINIUM_ORLI' };
+  if (callback) {
+    await callback(content);
+  }
+  return { text, success: true, data };
 }
 
 export const ziniumObserveAction: Action = {
@@ -79,15 +82,15 @@ export const ziniumObserveAction: Action = {
   similes: ['ZINIUM OBSERVE', 'SEED OBSERVE'],
   description: 'ZINIUM-SEED Observe: record what the host stack exposed, nothing more.',
   validate: async () => true,
-  handler: async (runtime, message, state, _options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     const text = (message.content.text || '').trim();
     try {
       guard(text);
     } catch (e) {
-      return reply(runtime, message, state, { text: `ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.` }, callback);
+      return reply(`ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.`, { refused: true }, callback);
     }
     const observation = { ts: utcnow(), source: 'elizaos', event: 'observe', payload: text };
-    return reply(runtime, message, state, { text: `ZINIUM-SEED observed: ${JSON.stringify(observation)}` }, callback);
+    return reply(`ZINIUM-SEED observed: ${JSON.stringify(observation)}`, { observation }, callback);
   },
   examples: [[
     { name: '{{user}}', content: { text: 'ZINIUM observe: the feed just listed three new tokens' } },
@@ -100,14 +103,14 @@ export const ziniumReportAction: Action = {
   similes: ['ZINIUM REPORT', 'SEED REPORT'],
   description: 'ZINIUM-SEED Report: turn an observation into a plain report.',
   validate: async () => true,
-  handler: async (runtime, message, state, _options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     const text = (message.content.text || '').trim();
     try {
       guard(text);
     } catch (e) {
-      return reply(runtime, message, state, { text: `ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.` }, callback);
+      return reply(`ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.`, { refused: true }, callback);
     }
-    return reply(runtime, message, state, { text: `ZINIUM-SEED report: elizaos observed — ${text}` }, callback);
+    return reply(`ZINIUM-SEED report: elizaos observed — ${text}`, { report: text }, callback);
   },
   examples: [[
     { name: '{{user}}', content: { text: 'ZINIUM report: what did the seed observe?' } },
@@ -120,18 +123,18 @@ export const ziniumLearnAction: Action = {
   similes: ['ZINIUM LEARN', 'SEED LEARN'],
   description: 'ZINIUM-SEED Learn: keep a lesson stated in plain words. No scores are invented.',
   validate: async () => true,
-  handler: async (runtime, message, state, _options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     const lesson = (message.content.text || '').replace(/^zinium learn:\s*/i, '').trim();
     try {
       guard(lesson);
     } catch (e) {
-      return reply(runtime, message, state, { text: `ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.` }, callback);
+      return reply(`ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.`, { refused: true }, callback);
     }
     if (!lesson) {
-      return reply(runtime, message, state, { text: 'ZINIUM-SEED: give me the lesson in plain words after "ZINIUM learn:".' }, callback);
+      return reply('ZINIUM-SEED: give me the lesson in plain words after "ZINIUM learn:".', { refused: false }, callback);
     }
     const record = { ts: utcnow(), source: 'elizaos', event: 'learn', lesson };
-    return reply(runtime, message, state, { text: `ZINIUM-SEED learned: ${JSON.stringify(record)}` }, callback);
+    return reply(`ZINIUM-SEED learned: ${JSON.stringify(record)}`, { lesson: record }, callback);
   },
   examples: [[
     { name: '{{user}}', content: { text: 'ZINIUM learn: tokens with no metadata and one-way tape keep failing the live gate' } },
@@ -144,22 +147,22 @@ export const ziniumIndexAction: Action = {
   similes: ['ZINIUM INDEX', 'SEED INDEX'],
   description: 'ZINIUM-SEED Index: append a lesson as a hash-chained block into the ZENIUM memory chain.',
   validate: async () => true,
-  handler: async (runtime, message, state, _options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     const lessonText = (message.content.text || '').replace(/^zinium index:\s*/i, '').trim();
     try {
       guard(lessonText);
     } catch (e) {
-      return reply(runtime, message, state, { text: `ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.` }, callback);
+      return reply(`ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.`, { refused: true }, callback);
     }
     if (!lessonText) {
-      return reply(runtime, message, state, { text: 'ZINIUM-SEED: give me the lesson in plain words after "ZINIUM index:".' }, callback);
+      return reply('ZINIUM-SEED: give me the lesson in plain words after "ZINIUM index:".', { refused: false }, callback);
     }
     const record = { ts: utcnow(), source: 'elizaos', event: 'index', lesson: lessonText };
     const { block, persisted } = indexLesson(record, runtime);
     const suffix = persisted
       ? 'indexed into the ZENIUM chain.'
       : 'block computed but NOT persisted: no ZINIUM_LEDGER_DIR is set. Set it to index for real.';
-    return reply(runtime, message, state, { text: `ZINIUM-SEED ${suffix} Block: ${JSON.stringify(block)}` }, callback);
+    return reply(`ZINIUM-SEED ${suffix} Block: ${JSON.stringify(block)}`, { block, persisted }, callback);
   },
   examples: [[
     { name: '{{user}}', content: { text: 'ZINIUM index: tokens with no metadata and one-way tape keep failing the live gate' } },
@@ -172,19 +175,19 @@ export const ziniumRequestAction: Action = {
   similes: ['ZINIUM REQUEST', 'SEED REQUEST'],
   description: 'ZINIUM-SEED Send side: request computational input as an agent. The seed never writes into another AI; the outside source decides what to return.',
   validate: async () => true,
-  handler: async (runtime, message, state, _options, callback) => {
+  handler: async (runtime, message, _state, _options, callback) => {
     const task = (message.content.text || '').replace(/^zinium request:\s*/i, '').trim();
     try {
       guard(task);
     } catch (e) {
-      return reply(runtime, message, state, { text: `ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.` }, callback);
+      return reply(`ZINIUM-SEED refused: ${(e as Error).message}. Public-safe material only.`, { refused: true }, callback);
     }
     if (!task) {
-      return reply(runtime, message, state, { text: 'ZINIUM-SEED: describe the computation you want requested after "ZINIUM request:".' }, callback);
+      return reply('ZINIUM-SEED: describe the computation you want requested after "ZINIUM request:".', { refused: false }, callback);
     }
     const envelopeId = crypto.createHash('sha256').update(utcnow() + task).digest('hex').slice(0, 16);
     const envelope = { envelope_id: envelopeId, ts: utcnow(), task, reply_via: 'ZENIUM index (ZINIUM_INDEX)' };
-    return reply(runtime, message, state, { text: `ZINIUM-SEED request envelope: ${JSON.stringify(envelope)}` }, callback);
+    return reply(`ZINIUM-SEED request envelope: ${JSON.stringify(envelope)}`, { envelope }, callback);
   },
   examples: [[
     { name: '{{user}}', content: { text: 'ZINIUM request: summarize the newest Base launches' } },
