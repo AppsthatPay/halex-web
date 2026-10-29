@@ -5,6 +5,11 @@ mcp-name: io.github.AppsthatPay/zinium-seed
 A community seed, planted by adoption. Any MCP client operator may install
 this server and run the seed; nothing here is placed anywhere uninvited.
 
+**Status (2026-10-29): submission package prepared — the package is NOT
+published yet.** No `zinium-seed-mcp` package exists on PyPI at this time,
+and the install commands further down are the planned form, kept on record
+only. This page makes no claim that the package can be installed today.
+
 ## What it does — the ORLI loop, as MCP tools
 
 | Tool | What it does |
@@ -25,19 +30,25 @@ in AppsthatPay/halex-web. The reference Python implementation is public in
 send commits there (`zinium-seed/` on the `halex-ai`, `vibe-research-lab`,
 `halex-labs`, and `main` branches).
 
-## Install
+## Install — PLANNED, not yet published
+
+The package is not published yet, so the commands below do **not** work
+today. They are the planned install form, recorded here so the intent is
+public. This section will be updated when a verified package exists.
+
+Planned (not live):
 
 ```
 pip install zinium-seed-mcp
 ```
 
-Or run without installing:
+Or, planned, run without installing:
 
 ```
 uvx zinium-seed-mcp
 ```
 
-Client configuration (stdio transport):
+Client configuration (stdio transport, for use once the package is live):
 
 ```json
 {

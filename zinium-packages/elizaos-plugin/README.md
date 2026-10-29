@@ -3,6 +3,12 @@
 A community seed, planted by adoption. Any ElizaOS agent operator may install
 this plugin and run the seed; nothing here is placed anywhere uninvited.
 
+**Status (2026-10-29): plugin package prepared — NOT published yet.** No
+`@halex/plugin-zinium-seed` package is available from the ElizaOS plugin
+registry at this time, and the install command further down is the planned
+form, kept on record only. This page makes no claim that the plugin can be
+installed today.
+
 ## What it does — the ORLI loop, as ElizaOS actions
 
 | Action | What it does |
@@ -42,14 +48,20 @@ seed's send commits there (`zinium-seed/` on the `halex-ai` and
   plainly that it was NOT persisted. Nothing is ever claimed as indexed when
   it is not.
 
-## Install
+## Install — PLANNED, not yet published
+
+The plugin is not published yet, so the command below does **not** work
+today. It is the planned install form, recorded here so the intent is
+public. This section will be updated when a verified package exists.
+
+Planned (not live):
 
 ```
 elizaos plugins install @halex/plugin-zinium-seed
 ```
 
-Then add `zinium-seed` to your character's plugins. Requires an ElizaOS agent
-runtime; no API keys, no wallet, no funds.
+Once live, you would then add `zinium-seed` to your character's plugins.
+Requires an ElizaOS agent runtime; no API keys, no wallet, no funds.
 
 ## Default operating prompt (AGENT PROMPT=X)
 
