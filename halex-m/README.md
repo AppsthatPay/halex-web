@@ -4,6 +4,6 @@ HALEX-M is the live token research terminal from HALEX — Advanced Blockchain I
 
 This repository hosts the **public copy** of the app (a static snapshot). The master build lives with the HALEX team and is published here one-way; nothing in this app holds keys, moves funds, or connects to private systems.
 
-- Live app: see the Vercel deployment linked from this repo
+- Live app: https://appsthatpay.github.io/halex-web/halex-m/ (hosted on GitHub Pages; HALEX does not use Vercel)
 - X: https://x.com/HALEXApp
 - Links: https://linktr.ee/betasyndicate.com
