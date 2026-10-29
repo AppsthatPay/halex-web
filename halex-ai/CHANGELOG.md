@@ -1,6 +1,6 @@
-# HALEX AI Changelog (staging)
+# HALEX AI Changelog
 
-## 2026-10-29 — Suite v4 live; framing correction; v5 candidate staged
+## 2026-10-29 — Suite v5 live; framing correction
 - Gemini's 9-module HALEX-AI code suite (v4) pushed to branch halex-ai
   (commit f6f5f047): 9 modules, 26 tests passing at push time.
 - Framing correction (Jeffrey): HALEX-AI is a full general AI system for
@@ -9,9 +9,11 @@
   HALEX-M is a separate product (blockchain intelligence app). DESIGN.md,
   SKILLS.md, RESEARCH.md, workspace README and this changelog updated to
   read correctly, and a repo-wide README audit run the same day.
-- v5 candidate staged locally, NOT pushed: a claim_verifier extension
-  (gated, faults fixed) and Gemini's research_synthesis add-on (gated,
-  2 faults fixed). Full staging suite: 39 tests, 38 pass, 1 documented
+- Suite v5 pushed to branch halex-ai (2026-10-29): claim_verifier
+  rewritten in-house by Allen as a HALEX-AI module (extended negation
+  handling, seed ZINIUM-SEED-ALLEN, suffix false-negative limit
+  documented) and Gemini's research_synthesis add-on (gated, threshold
+  fixed to strict majority). Full suite: 39 tests, 38 pass, 1 documented
   expected failure.
 
 ## 2026-10-27 — HALEX LABS skills added, advisory only
