@@ -1,0 +1,218 @@
+# HALEX-AI Self-Build Loop
+#
+# Installed 2026-10-29 on Jeffrey's explicit order: the self-building
+# software runs inside GitHub, constantly building itself and
+# learning, autonomously, committing straight into the halex-ai
+# branch. Scheduled workflows only run from the default branch, so
+# this file lives on main; the job checks out and pushes to
+# halex-ai.
+#
+# Kill switch: halex-ai/workspace/allen/halex-ai-selfbuild/
+# SELFBUILD_ENABLED on the halex-ai branch. Delete or rename that
+# file and every run exits quietly. See AUTONOMOUS-LOOP.md in the
+# selfbuild tree on halex-ai for the full description.
+#
+# Green-only rule: a commit lands on halex-ai ONLY when every check
+# in this job passed. On any failure the run fails loudly and
+# nothing is pushed.
+
+name: HALEX-AI Self-Build Loop
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: halex-ai-selfbuild
+  cancel-in-progress: false
+
+jobs:
+  selfbuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SB: tree/halex-ai/workspace/allen/halex-ai-selfbuild
+      SUITE: tree/halex-ai/workspace/gemini/halex-ai-suite
+    steps:
+      - name: Check out the halex-ai branch
+        uses: actions/checkout@v4
+        with:
+          ref: halex-ai
+          path: tree
+
+      - name: Kill switch (SELFBUILD_ENABLED)
+        id: gate
+        run: |
+          if [ -f "$SB/SELFBUILD_ENABLED" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "SELFBUILD_ENABLED present: loop is live."
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "SELFBUILD_ENABLED absent on halex-ai: loop disabled, exiting quietly."
+          fi
+
+      - name: Set up Python 3.12
+        if: steps.gate.outputs.enabled == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Engine test suite (must pass before anything else)
+        if: steps.gate.outputs.enabled == 'true'
+        working-directory: ${{ env.SB }}
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Forbidden-construct scan (engine + any prior proposals)
+        if: steps.gate.outputs.enabled == 'true'
+        run: |
+          python3 - <<'PYEOF'
+          import re, sys
+          from pathlib import Path
+
+          sb = Path("tree/halex-ai/workspace/allen/halex-ai-selfbuild")
+          # Engine package: import/call level constructs. (Prose in the
+          # package docstring negates these words; code patterns only.)
+          engine_patterns = [
+              r"(?:import|from)\s+(?:socket|urllib|requests|http\.client)\b",
+              r"shell\s*=\s*True",
+              r"os\.system\s*\(",
+              r"\b(?:eval|exec)\s*\(",
+              r"private_key|mnemonic|seed_phrase",
+          ]
+          # Synthesized files: strict token scan. A generated module has
+          # no legitimate reason to contain any of these words at all.
+          strict_tokens = [
+              "socket", "urllib", "requests", "http.client", "shell=True",
+              "os.system", "eval(", "exec(", "wallet", "signing",
+              "private_key", "mnemonic", "seed_phrase",
+          ]
+          failures = []
+          for f in sorted((sb / "halex_ai_selfbuild").rglob("*.py")):
+              text = f.read_text(encoding="utf-8")
+              for pat in engine_patterns:
+                  if re.search(pat, text):
+                      failures.append(f"{f}: engine pattern {pat!r}")
+          proposals = sb / "work" / "proposals"
+          if proposals.is_dir():
+              for f in sorted(proposals.rglob("*.py")):
+                  text = f.read_text(encoding="utf-8")
+                  for tok in strict_tokens:
+                      if tok in text:
+                          failures.append(f"{f}: forbidden token {tok!r}")
+          if failures:
+              print("FORBIDDEN CONSTRUCTS FOUND:")
+              print("\n".join(failures))
+              sys.exit(1)
+          print("Forbidden-construct scan clean.")
+          PYEOF
+
+      - name: Run ONE self-build cycle
+        if: steps.gate.outputs.enabled == 'true'
+        working-directory: ${{ env.SB }}
+        run: |
+          python3 -m halex_ai_selfbuild.cycle \
+            --modules-root "$GITHUB_WORKSPACE/$SUITE" \
+            --backlog-dir "$GITHUB_WORKSPACE/$SB/backlog" \
+            --work-dir "$GITHUB_WORKSPACE/$SB/work" \
+            --mirrors "$GITHUB_WORKSPACE/tree/halex-ai"
+
+      - name: Re-run full suites and verify the seal chain
+        if: steps.gate.outputs.enabled == 'true'
+        working-directory: ${{ env.SB }}
+        run: |
+          python3 -m unittest discover -s tests -v
+          for t in $(find work/proposals -name 'test_*.py' 2>/dev/null); do
+            echo "== synthesized tests: $t"
+            (cd "$(dirname "$t")" && python3 "$(basename "$t")")
+          done
+          python3 - <<'PYEOF'
+          import json, glob, sys
+          from pathlib import Path
+          from halex_ai_selfbuild import seal
+
+          reports = sorted(glob.glob("work/reports/cycle-*.json"))
+          if not reports:
+              print("No cycle report produced; failing the run.")
+              sys.exit(1)
+          report = json.loads(Path(reports[-1]).read_text(encoding="utf-8"))
+          if not report["seal_chain"]["verified"]:
+              print("Cycle report says the seal chain does not verify:")
+              print(report["seal_chain"]["errors"])
+              sys.exit(1)
+          ok, errors, count = seal.verify_chain("work/seal-log.jsonl")
+          print(f"Seal chain: {count} entries, verified={ok}")
+          if not ok:
+              print(errors)
+              sys.exit(1)
+          PYEOF
+
+      - name: Forbidden-construct scan (newly synthesized files)
+        if: steps.gate.outputs.enabled == 'true'
+        run: |
+          python3 - <<'PYEOF'
+          import sys
+          from pathlib import Path
+
+          strict_tokens = [
+              "socket", "urllib", "requests", "http.client", "shell=True",
+              "os.system", "eval(", "exec(", "wallet", "signing",
+              "private_key", "mnemonic", "seed_phrase",
+          ]
+          proposals = Path(
+              "tree/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals")
+          failures = []
+          if proposals.is_dir():
+              for f in sorted(proposals.rglob("*.py")):
+                  text = f.read_text(encoding="utf-8")
+                  for tok in strict_tokens:
+                      if tok in text:
+                          failures.append(f"{f}: forbidden token {tok!r}")
+          if failures:
+              print("FORBIDDEN CONSTRUCTS IN SYNTHESIZED FILES:")
+              print("\n".join(failures))
+              sys.exit(1)
+          print("Synthesized-file scan clean.")
+          PYEOF
+
+      - name: Commit the green cycle to halex-ai
+        if: steps.gate.outputs.enabled == 'true'
+        working-directory: tree
+        run: |
+          find . -type d -name __pycache__ -prune -exec rm -rf {} + 2>/dev/null || true
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Cycle produced no changes; nothing to commit."
+            exit 0
+          fi
+          SUMMARY=$(python3 - <<'PYEOF'
+          import json, glob
+          from pathlib import Path
+          reports = sorted(glob.glob(
+              "halex-ai/workspace/allen/halex-ai-selfbuild/work/reports/cycle-*.json"))
+          report = json.loads(Path(reports[-1]).read_text(encoding="utf-8"))
+          synthesis = report.get("synthesis") or {}
+          name = synthesis.get("spec", {}).get("name") or "none"
+          status = synthesis.get("status") or "none"
+          entries = report["seal_chain"]["entries"]
+          log = Path("halex-ai/workspace/allen/halex-ai-selfbuild/work/seal-log.jsonl")
+          head = "none"
+          if log.is_file():
+              import sys
+              sys.path.insert(0, "halex-ai/workspace/allen/halex-ai-selfbuild")
+              from halex_ai_selfbuild import seal
+              chain = seal.read_entries(str(log))
+              if chain:
+                  head = chain[-1]["entry_hash"][:12]
+          print(f"gaps={report['gap_count']} synthesized={name} ({status}) "
+                f"seal_entries={entries} seal_head={head}")
+          PYEOF
+          )
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "HALEX-AI self-build cycle (autonomous): $SUMMARY" \
+                     -m "Green cycle only: engine tests, forbidden-construct scan, full suites, mutation check, and seal verification all passed before this commit. Kill switch: halex-ai/workspace/allen/halex-ai-selfbuild/SELFBUILD_ENABLED."
+          git push origin HEAD:halex-ai
