@@ -21,13 +21,12 @@ The RUSTY-branded, tabbed token mint page. Part of the HALEX build.
   (source file; the PNG is base64-embedded in `mint.html` so the page is
   fully self-contained — no missing-asset risk when shared).
 
-## Serving on Vercel
+## Serving
 
-Next.js serves static files from `public/`. The served copy lives at
-`public/launchpad/mint.html` → served at `/launchpad/mint.html` once the
-Vercel project is linked to this repo (dashboard: halex-web → Settings →
-Git → connect AppsthatPay/halex-web). `launchpad/mint.html` is the same
-file kept beside this README as the source of truth.
+HALEX does not use Vercel (the Vercel route was closed on 2026-10-25).
+Public hosting is GitHub Pages from branch `gh-pages`. The served copy
+lives at `public/launchpad/mint.html` in this repo. `launchpad/mint.html`
+is the same file kept beside this README as the source of truth.
 
 ## Wiring (when the native/app tab lands)
 
@@ -38,5 +37,6 @@ file kept beside this README as the source of truth.
 
 ## R&D
 
+Internal HALEX workspace references (not in this repo):
 - `~/workspace/braindata/research-incoming/rusty-mint-system-rnd-20261018.md` — adapter matrix + metadata schema.
 - `~/workspace/braindata/research-incoming/rusty-mint-deepdive-20261018.md` — mint functions, fees, honest ability assessment.

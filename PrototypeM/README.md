@@ -20,5 +20,9 @@ agent pairing, game-engine layers — says so on its face. Nothing pretends.
 
 ## Live test link
 
-Published sandbox: https://muse.ai/s/halex-m-sandbox-x0c6bxzxjxexqlxwxx
-(edits require re-publish; link serves the last published version)
+Canonical live HALEX-M: https://appsthatpay.github.io/halex-web/halex-m/
+(GitHub Pages — this is the public app readers should use).
+
+Internal sandbox copy: https://muse.ai/s/halex-m-sandbox-x0c6bxzxjxexqlxwxx
+(walled Muse link, not the public app; edits require re-publish and the
+link serves the last published version)
