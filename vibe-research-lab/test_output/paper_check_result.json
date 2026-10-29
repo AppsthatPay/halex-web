@@ -1,0 +1,393 @@
+{
+  "debate_example": {
+    "bear": [
+      "No bear evidence supplied."
+    ],
+    "bull": [
+      "Paper history win rate (recorded): 0.6911."
+    ],
+    "candidate": {
+      "chain": "base",
+      "mint": "unknown",
+      "symbol": "PKR"
+    },
+    "decision": "NO DECISION MADE BY THIS MODULE. For BCIA/CNS deliberation only.",
+    "notes": "Test example; custody/sell-sim not in paper registry, shown as unknown.",
+    "project": "vibe-research-lab",
+    "risk_officer": [
+      "LP custody: unknown.",
+      "Sell-sim: unknown (percent of expected out).",
+      "Copycat count: unknown.",
+      "Deployer note: unknown.",
+      "Risk-officer stance: ADVISORY ONLY. This report does not approve, size, or execute a trade. Live execution, if any, goes only through the existing Allen2 bridge with its own custody, sell-sim / PoVV, copycat, and position-cap gates intact."
+    ]
+  },
+  "decay_report": {
+    "allen1-sol|scalp": {
+      "n_trades": 2,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "allen2-base|lookback": {
+      "n_trades": 1,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "allen2-base|momentum": {
+      "baseline": {
+        "n_trades": 20,
+        "sharpe_trade_level": 0.265,
+        "win_rate": 0.65
+      },
+      "note": "Report only. No strategy was disabled by this scan.",
+      "rolling": {
+        "n_trades": 20,
+        "sharpe_trade_level": 0.6128,
+        "win_rate": 0.7
+      },
+      "signals": {
+        "sharpe": "warning",
+        "win_rate": "healthy",
+        "win_rate_ratio": "healthy"
+      },
+      "state_hint": "warning",
+      "win_rate_ratio": 1.0769
+    },
+    "allen2-base|scalp": {
+      "n_trades": 25,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "allen2-wlr|momentum": {
+      "n_trades": 5,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "allen2-wlr|scalp": {
+      "n_trades": 5,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "base-hot|lookback": {
+      "n_trades": 1,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "base-hot|momentum": {
+      "baseline": {
+        "n_trades": 20,
+        "sharpe_trade_level": 0.7346,
+        "win_rate": 0.85
+      },
+      "note": "Report only. No strategy was disabled by this scan.",
+      "rolling": {
+        "n_trades": 20,
+        "sharpe_trade_level": 0.4946,
+        "win_rate": 0.75
+      },
+      "signals": {
+        "sharpe": "decayed",
+        "win_rate": "healthy",
+        "win_rate_ratio": "healthy"
+      },
+      "state_hint": "decayed",
+      "win_rate_ratio": 0.8824
+    },
+    "base-hot|scalp": {
+      "n_trades": 4,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "mwts-mirror|mirror": {
+      "n_trades": 4,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    },
+    "r8|runner": {
+      "n_trades": 1,
+      "needed": 40,
+      "note": "Not enough closed trades for a baseline + rolling window.",
+      "state_hint": "insufficient_data"
+    }
+  },
+  "factor_manifest": {
+    "dna_copycat_risk": {
+      "columns_required": [
+        "copycat_count"
+      ],
+      "decay_horizon": 0,
+      "formula": "copycat_count / 10 capped at 1.0; >=10 = full swarm risk",
+      "id": "dna_copycat_risk",
+      "min_warmup_bars": 0,
+      "notes": "",
+      "theme": [
+        "copycat"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    },
+    "dna_custody_risk": {
+      "columns_required": [
+        "custody"
+      ],
+      "decay_horizon": 0,
+      "formula": "1.0 if deployer-held/pullable, 0.0 if burned/locked, else indeterminate",
+      "id": "dna_custody_risk",
+      "min_warmup_bars": 0,
+      "notes": "Undetermined custody returns None, never 0.",
+      "theme": [
+        "custody"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    },
+    "dna_metadata_presence": {
+      "columns_required": [
+        "metadata_present"
+      ],
+      "decay_horizon": 0,
+      "formula": "registered only: whether website/socials/description exist",
+      "id": "dna_metadata_presence",
+      "min_warmup_bars": 0,
+      "notes": "Not computable as a score here; presence is a flag for the debate report.",
+      "theme": [
+        "quality"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    },
+    "dna_paper_momentum": {
+      "columns_required": [
+        "paper_win_rate"
+      ],
+      "decay_horizon": 30,
+      "formula": "recorded paper win rate for the strategy, as supplied by the caller",
+      "id": "dna_paper_momentum",
+      "min_warmup_bars": 0,
+      "notes": "Caller must supply the recorded rate; this module does not recompute win rates.",
+      "theme": [
+        "momentum"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    },
+    "dna_sellability": {
+      "columns_required": [
+        "sell_sim_pct"
+      ],
+      "decay_horizon": 0,
+      "formula": "sell_sim_pct / 100; 1.0 = full expected out, <0.90 = below live line",
+      "id": "dna_sellability",
+      "min_warmup_bars": 0,
+      "notes": "Maps to the bridge PoVV / sell-sim gate. Gate stays authoritative.",
+      "theme": [
+        "sellability"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    },
+    "dna_tape_imbalance": {
+      "columns_required": [
+        "tape_buys",
+        "tape_sells"
+      ],
+      "decay_horizon": 0,
+      "formula": "(buys - sells) / (buys + sells) over the reported window",
+      "id": "dna_tape_imbalance",
+      "min_warmup_bars": 0,
+      "notes": "1.0 = buys only, the one-way tape pattern.",
+      "theme": [
+        "volume",
+        "microstructure"
+      ],
+      "universe": [
+        "base",
+        "solana"
+      ]
+    }
+  },
+  "factor_registry_health": {
+    "computable_here": [
+      "dna_copycat_risk",
+      "dna_custody_risk",
+      "dna_paper_momentum",
+      "dna_sellability",
+      "dna_tape_imbalance"
+    ],
+    "loaded": 6,
+    "registered_only": [
+      "dna_metadata_presence"
+    ]
+  },
+  "meld_live_example": {
+    "note": "Rank/veto only. No live order was created, and none can be created by this module.",
+    "rank": 0.0,
+    "rank_reasons": [
+      "monte-carlo max-dd p 0.971",
+      "walk-forward consistency 1.0",
+      "sell-sim below 90%: ranked to zero, bridge gate stands"
+    ],
+    "veto": true,
+    "veto_reasons": [
+      "sell-sim 85% below 90% hard line (bridge gate)",
+      "LP custody undetermined: fail-closed (bridge gate)"
+    ]
+  },
+  "meld_paper_gate": {
+    "reasons": [
+      "validation, provenance, and decay checks all passed"
+    ],
+    "verdict": "PASS"
+  },
+  "paper_trades_closed": 246,
+  "project": "vibe-research-lab",
+  "provenance": {
+    "artifact": {
+      "benchmark": "none (paper history scored against its own shuffled order, not a benchmark index)",
+      "code_path": "/home/hatch/workspace/goals/10-winning-trade-skills/hidden_files/vibe-research-lab/paper_validation.py",
+      "code_sha256": "ca9399071e6c59876c69c374fc444a189da6b236205207348d8c7d6c34f871a3",
+      "created_utc": "2026-10-27T23:22:30.985591Z",
+      "data_source": "/home/hatch/workspace/braindata/cns_positions.db",
+      "first_exit_ts": 1792373590.9867435,
+      "last_exit_ts": 1793137048.9414527,
+      "metrics": {
+        "losses": 76,
+        "max_drawdown": -2.1144,
+        "mean_pnl_pct": 49.264,
+        "n_trades": 246,
+        "profit_factor": 4.4518,
+        "sharpe_trade_level": 0.4158,
+        "total_return": 121.1893,
+        "win_rate": 0.6911,
+        "wins": 170
+      },
+      "name": "vibe-research-lab paper validation run",
+      "notes": "Trade-level Sharpe; no daily-bar annualisation claimed. See paper_validation.py.",
+      "provenance_sha256": "af72f0e4854c66b2c341d113cb7b42b2c9a9b50ee2cb9b9134dbf51d784bccbf",
+      "query": "positions WHERE state='closed' AND pnl_pct IS NOT NULL ORDER BY exit_ts ASC",
+      "version": 1
+    },
+    "verified": {
+      "code_sha256": "ca9399071e6c59876c69c374fc444a189da6b236205207348d8c7d6c34f871a3",
+      "name": "vibe-research-lab paper validation run",
+      "recomputed_sha256": "af72f0e4854c66b2c341d113cb7b42b2c9a9b50ee2cb9b9134dbf51d784bccbf",
+      "stored_sha256": "af72f0e4854c66b2c341d113cb7b42b2c9a9b50ee2cb9b9134dbf51d784bccbf",
+      "verified": true
+    }
+  },
+  "validation": {
+    "base": {
+      "losses": 76,
+      "max_drawdown": -2.1144,
+      "mean_pnl_pct": 49.264,
+      "n_trades": 246,
+      "profit_factor": 4.4518,
+      "sharpe_trade_level": 0.4158,
+      "total_return": 121.1893,
+      "win_rate": 0.6911,
+      "wins": 170
+    },
+    "bootstrap": {
+      "ci_lower": 0.3325,
+      "ci_upper": 0.5107,
+      "confidence": 0.95,
+      "median_sharpe": 0.4209,
+      "n_bootstrap": 1000,
+      "observed_sharpe": 0.4158,
+      "prob_positive": 1.0,
+      "seed": 42
+    },
+    "fee_pct_extra": 0.0,
+    "monte_carlo": {
+      "actual_max_dd": -2.1144,
+      "actual_sharpe": 0.4158,
+      "n_simulations": 1000,
+      "n_trades": 246,
+      "p_value_max_dd": 0.971,
+      "p_value_sharpe": 1.0,
+      "seed": 42,
+      "simulated_sharpe_mean": 0.4158,
+      "simulated_sharpe_p5": 0.4158,
+      "simulated_sharpe_p95": 0.4158
+    },
+    "sharpe_convention": "trade-level (bars_per_year=1); no daily-bar annualisation is claimed for irregular intraday paper trades",
+    "slippage_pct_extra": 0.0,
+    "walk_forward": {
+      "consistency_rate": 1.0,
+      "n_windows": 5,
+      "profitable_windows": 5,
+      "return_mean": 24.2379,
+      "sharpe_mean": 0.4317,
+      "windows": [
+        {
+          "first_exit_ts": 1792373590.9867435,
+          "last_exit_ts": 1792533801.1077726,
+          "max_drawdown": -2.1144,
+          "return": 2.9224,
+          "sharpe_trade_level": 0.0655,
+          "trades": 49,
+          "win_rate": 0.5102,
+          "window": 1
+        },
+        {
+          "first_exit_ts": 1792534700.336453,
+          "last_exit_ts": 1792637722.608075,
+          "max_drawdown": -1.829,
+          "return": 11.688,
+          "sharpe_trade_level": 0.3268,
+          "trades": 49,
+          "win_rate": 0.6939,
+          "window": 2
+        },
+        {
+          "first_exit_ts": 1792643571.792555,
+          "last_exit_ts": 1792737444.1351542,
+          "max_drawdown": -0.0767,
+          "return": 28.9072,
+          "sharpe_trade_level": 0.6938,
+          "trades": 49,
+          "win_rate": 0.8163,
+          "window": 3
+        },
+        {
+          "first_exit_ts": 1792737452.9779382,
+          "last_exit_ts": 1792861188.909416,
+          "max_drawdown": -0.1191,
+          "return": 23.9898,
+          "sharpe_trade_level": 0.4753,
+          "trades": 49,
+          "win_rate": 0.7347,
+          "window": 4
+        },
+        {
+          "first_exit_ts": 1792866344.192731,
+          "last_exit_ts": 1793137048.9414527,
+          "max_drawdown": -0.5181,
+          "return": 53.6819,
+          "sharpe_trade_level": 0.5973,
+          "trades": 50,
+          "win_rate": 0.7,
+          "window": 5
+        }
+      ]
+    }
+  }
+}
