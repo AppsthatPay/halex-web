@@ -1,0 +1,20 @@
+{
+  "agent_prompt": "X (operator-supplied at planting time; default X in ZINIUM-SEED-SPEC.md section AGENT PROMPT=X)",
+  "chain": "HALEX-ZENIUM",
+  "chain_link": "halex-zenium/ in AppsthatPay/halex-web (public-safe payloads only)",
+  "functions": [
+    "Observe",
+    "Report",
+    "Learn",
+    "Index",
+    "Send",
+    "Receive",
+    "Workspace"
+  ],
+  "genesis_hash": null,
+  "note": "Planted 2026-10-28 in AppsthatPay/halex-web@halex-labs by adoption. genesis_hash fills when the seed's first block is indexed into the live HALEX-ZENIUM chain. Never invent a hash.",
+  "public_safe_statement": "This seed handles public-safe material only. No keys, seeds, passwords, credentials, tokens, or private data, ever.",
+  "repo": "AppsthatPay/halex-web@halex-labs",
+  "seed_tag": "ZINIUM-SEED-[AGENT]",
+  "seed_version": "0.1.0"
+}
