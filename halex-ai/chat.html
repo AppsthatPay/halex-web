@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HALEX-AI: General AI, Built by AI</title>
+<link rel="stylesheet" href="halex-ai-ext.css">
+</head>
+<body class="ext-page">
+<header class="ext-header">
+  <h1>HALEX <span>AI</span>: Chat</h1>
+  <div class="ext-sub">A general AI built by AI, for everyone and anything: research, writing, building, planning, and work in any field. Built in the open by many AI systems and human collaborators, coordinated by the assistant Allen. HALEX-AI is not a blockchain product, and it is not HALEX-M: HALEX-M is the separate sibling app for blockchain intelligence, with its own AI.</div>
+</header>
+<main class="ext-main">
+  <div class="ext-banner">
+    <b>What works here, honestly.</b><br>
+    Works offline, with no key: HALEX facts from the bundled knowledge base, and ZINIUM lesson lookup in the bundled lesson index. Those answers are labelled as local knowledge.<br>
+    Needs your own model key: open questions answered by a model. Add an OpenAI-compatible base URL, model name, and API key in the model settings below. The key is stored only in this browser, in localStorage, and is sent only to the base URL you set. Model answers are labelled as model output. If the model call fails, the page falls back to local knowledge and says so. No model answer is ever fabricated.<br>
+    Hard limits: advisory only, no funds, no wallet keys or seeds, no live trading, no posting on its own, and per-action confirmation for anything beyond advice. Never paste a wallet seed or private key here: a model API key is not a wallet key.
+  </div>
+
+  <p class="ext-status" id="ext-status">Status: checking model settings in this browser.</p>
+
+  <div id="ext-log"></div>
+
+  <label class="ext-label" for="ext-q">Ask HALEX-AI</label>
+  <textarea id="ext-q" rows="3" placeholder="Try: what is halex-ai, or: what can halex-ai do, or: halex-ai vs halex-m, or: how to contribute, or: show the gate lesson, or: what are the limits"></textarea>
+  <div class="ext-input-row">
+    <button id="ext-send" type="button">Ask</button>
+  </div>
+  <p class="ext-small">Examples that work offline: what is halex-ai, what can you do, how does the confirmation gate work, what is ZINIUM and ORLI, what is in the code suite, and what are the hard limits.</p>
+
+  <section class="ext-panel">
+    <h2>Model settings (optional, browser only)</h2>
+    <p class="ext-small">These fields use the same browser localStorage keys as the main staging page: <code>halex_ai_base</code>, <code>halex_ai_model</code>, and <code>halex_ai_key</code>, so both pages share one config in this browser. Leave them empty and this page still works offline with local knowledge. A model key lives only in browser localStorage, never in any file or repo.</p>
+    <label class="ext-label" for="ext-base">API base URL (OpenAI-compatible)</label>
+    <input id="ext-base" placeholder="https://api.together.xyz/v1">
+    <label class="ext-label" for="ext-model">Model name (confirm the exact ID at your host)</label>
+    <input id="ext-model" placeholder="Example: check your host for the exact model ID">
+    <label class="ext-label" for="ext-key">API key (browser only)</label>
+    <input id="ext-key" type="password" placeholder="Paste only a model API key, never a wallet key">
+    <div class="ext-input-row">
+      <button id="ext-save" type="button">Save model settings in this browser</button>
+      <button id="ext-wipe" type="button">Wipe key and settings</button>
+    </div>
+  </section>
+
+  <section class="ext-panel">
+    <h2>Tools and their honest status</h2>
+    <p class="ext-small">Every tool in this build carries its real status. A stub says it is a stub and does not pretend to run.</p>
+    <div id="ext-tools">
+      <div class="ext-tool"><strong>lookup_token</strong> : Look up a token by contract address or name. <span class="ext-tool-status">Status: live read-only via DexScreener public API, same as the main staging page</span></div>
+      <div class="ext-tool"><strong>brand_guard_check</strong> : Check a domain, handle, or token address against the canonical HALEX list. <span class="ext-tool-status">Status: live local check against the canonical HALEX list</span></div>
+      <div class="ext-tool"><strong>zinium_lesson_lookup</strong> : Look up a lesson in the bundled ZINIUM lesson index. <span class="ext-tool-status">Status: live local lookup in the bundled lesson index</span></div>
+      <div class="ext-tool"><strong>web_research</strong> : Research a topic on the web. <span class="ext-tool-status">Status: stub: not wired in this build, returns an honest not-wired message</span></div>
+      <div class="ext-tool"><strong>build_file</strong> : Build a starter page, doc, report, or script. <span class="ext-tool-status">Status: stub in this extension: use the main staging page, or queue a task</span></div>
+    </div>
+  </section>
+
+  <section class="ext-panel">
+    <h2>About the build and the gate</h2>
+    <p class="ext-small">HALEX-AI is built in the open. Every contribution passes a confirmation gate before merging: the work must run, tests must pass, data must be clean, and nothing may be hidden. Sound work is merged and credited. Lessons are indexed into ZINIUM with the ORLI loop (Observe, Report, Learn, Index), with provenance and a seed marker in the form ZINIUM-SEED-[NAME]. The first merged code suite has 9 modules, each with tests. HALEX Wallet note: this page holds no wallet keys or seeds and moves no funds. HALEX Chain note: HALEX Chain is at design stage, not deployed, and no token is minted.</p>
+  </section>
+</main>
+<script src="knowledge.js"></script>
+<script src="halex-ai-ext.js"></script>
+</body>
+</html>
