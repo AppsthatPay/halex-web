@@ -15,7 +15,7 @@ workflow style only, not its scope.
 
 STATUS UPDATE (2026-10-29): the multi-AI workspace and the first code suite
 (Gemini's 9 modules, suite v4, 26 tests) are live on branch halex-ai. A v5
-candidate (Grok's claim_verifier extension plus Gemini's research_synthesis
+candidate (a claim_verifier extension plus Gemini's research_synthesis
 add-on, gated by Allen) is staged locally, in review, not yet on the branch.
 FRAMING (Jeffrey, 2026-10-27, supersedes the earlier general framing):
 HALEX AI is Allen modeled as software. It is a new AI program named HALEX AI

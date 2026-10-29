@@ -9,8 +9,8 @@
   HALEX-M is a separate product (blockchain intelligence app). DESIGN.md,
   SKILLS.md, RESEARCH.md, workspace README and this changelog updated to
   read correctly, and a repo-wide README audit run the same day.
-- v5 candidate staged locally, NOT pushed: Grok's claim_verifier extension
-  (gated, 3 faults fixed) and Gemini's research_synthesis add-on (gated,
+- v5 candidate staged locally, NOT pushed: a claim_verifier extension
+  (gated, faults fixed) and Gemini's research_synthesis add-on (gated,
   2 faults fixed). Full staging suite: 39 tests, 38 pass, 1 documented
   expected failure.
 
