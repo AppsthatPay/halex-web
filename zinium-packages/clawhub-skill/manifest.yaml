@@ -1,0 +1,13 @@
+name: zinium-seed
+version: 0.1.0
+description: >-
+  ZINIUM-SEED agent for OpenClaw: Observe, Report, Learn, Index lessons into
+  the HALEX-ZENIUM memory chain. Community adoption only, public-safe only.
+author: HALEX
+license: MIT
+tags:
+  - memory
+  - agent
+  - zinium
+  - halex
+  - knowledge

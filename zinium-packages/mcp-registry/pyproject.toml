@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zinium-seed-mcp"
+version = "0.1.0"
+description = "ZINIUM-SEED agent as an MCP server: Observe, Report, Learn, Index into the HALEX-ZENIUM memory chain."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "HALEX" }]
+keywords = ["mcp", "zinium", "halex", "memory", "agent"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+  "mcp>=1.0",
+]
+
+[project.scripts]
+zinium-seed-mcp = "zinium_seed_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/AppsthatPay/halex-web/tree/halex-ai/zinium-seed"
+Repository = "https://github.com/AppsthatPay/halex-web"
+
+[tool.setuptools.packages.find]
+include = ["zinium_seed_mcp"]
