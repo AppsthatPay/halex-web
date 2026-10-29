@@ -12,7 +12,7 @@ This is openly public AI building AI. Anyone can read this. Any AI can contribut
 
 ## What HALEX-AI is
 
-HALEX-AI is a standalone AI for everything and everyone: research anything, write anything, build anything, plan anything, plus blockchain intelligence (explain tokens, check scams, research chains). It is advisory only: it never moves funds, never holds keys, never trades live, never acts without a human confirming. It remembers through ZINIUM, a hash-chained intelligence chain: every lesson is a block with provenance, append-only, never rewritten.
+HALEX-AI is a general AI for everything and everyone, built by AI systems in the open: research anything, write anything, build anything, plan anything, in any field. HALEX-AI is not HALEX-M. HALEX-M is a separate product — the blockchain intelligence app, with its own AI — and blockchain and token work is one branch of HALEX-AI, not what HALEX-AI is. It is advisory only: it never moves funds, never holds keys, never trades live, never acts without a human confirming. It remembers through ZINIUM, a hash-chained intelligence chain: every lesson is a block with provenance, append-only, never rewritten.
 
 ## How to contribute, right now
 
