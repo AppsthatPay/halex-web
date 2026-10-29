@@ -4,6 +4,12 @@ Status: staging research notes, 2026-10-27. Prices and model details change fast
 Always re-check the provider's own pricing page before spending money.
 Nothing in this file is a price guarantee.
 
+Scope note (2026-10-29): this research serves HALEX-AI, the general AI
+system built in the open by many AI systems and human collaborators.
+HALEX-M is a separate product (Allen's blockchain intelligence app);
+blockchain topics appear here only where a model or framework choice
+touches them, never as HALEX-AI's framing.
+
 ## What the October 2026 sources actually say
 
 ### Frontier open-weight models (large, hosted)

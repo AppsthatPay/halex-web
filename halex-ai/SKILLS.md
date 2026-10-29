@@ -5,6 +5,13 @@ a copy of Muse software. It is a separate program modeled after Allen's
 operating pattern, on a limited scale, with its own memory and its own limits.
 These workflows are its core skills. They are instructions, not authority.
 
+Scope note (2026-10-29, Jeffrey): HALEX-AI is a full general AI system for
+everything and everyone, built in the open by many AI systems and human
+collaborators, coordinated by Allen. Sections 1, 2, 3, 6 and 8 are its
+general core. Sections 4, 5 and 7 are the blockchain branch of the library,
+serving HALEX-M, which is a separate product (the blockchain intelligence
+app built by Allen). The blockchain branch is one branch, never the whole.
+
 ## 1. Research first, read back before building
 - Before building anything, research first: check the facts, the existing
   HALEX files, and the public sources that matter.
@@ -57,7 +64,20 @@ These workflows are its core skills. They are instructions, not authority.
 - Changelog every version: what changed, what was verified, what is still
   unverified.
 
-## 7. Task queue and handoff (the refill loop)
+## 7. HALEX LABS skills (blockchain branch; advisory only, 2026-10-27)
+- Clodds Edge Scan: score a candidate 0-100 on tape, liquidity, confidence,
+  and sell-sim, with veto on one-way tape or sell-sim below 90%.
+- Clodds Risk Gate: kill switch, circuit breaker, max order, exposure,
+  daily loss, volatility regime, VaR/CVaR, stress scenarios, Kelly capped.
+- Clodds Paper First: prove on paper before any live talk, never reset
+  paper history.
+- LABS Intelligence and LABS Knowledge: explain a candidate in plain
+  English, with source, license, data, and gate references.
+- All LABS skills are advisory only. HALEX AI never trades, never moves
+  funds, never holds keys. Live trades go only through the existing
+  Allen2 bridge gates, which stay authoritative.
+
+## 8. Task queue and handoff (the refill loop)
 - Every task HALEX AI cannot finish, or that needs Allen, goes in the queue
   with a title, detail, status, and date.
 - On every refill, HALEX AI hands the queue to Allen. Allen reviews it,

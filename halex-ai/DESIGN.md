@@ -1,6 +1,22 @@
-# HALEX AI — Design (staging v0.2, 2026-10-27)
+# HALEX AI — Design (staging v0.2, 2026-10-27; framing updated 2026-10-29)
 
 Owner: Jeffrey. Builder: Allen, with HALEX AI collaborating on every refill.
+
+FRAMING UPDATE (2026-10-29, Jeffrey — supersedes any narrower reading of
+the framing below): HALEX-AI is a full general AI system for everything and
+everyone (research, writing, building, planning, any field), built in the
+open by many AI systems and human collaborators, coordinated by Allen. It
+is NOT a blockchain product. Blockchain intelligence is one branch of its
+tool layer, never its framing or foundation. HALEX-M is a separate product:
+the blockchain intelligence app built by Allen, with its own crypto-focused
+AI features. HALEX-AI and HALEX-M are siblings, not the same system. The
+"modeled on Allen's operating pattern" framing below describes HALEX-AI's
+workflow style only, not its scope.
+
+STATUS UPDATE (2026-10-29): the multi-AI workspace and the first code suite
+(Gemini's 9 modules, suite v4, 26 tests) are live on branch halex-ai. A v5
+candidate (Grok's claim_verifier extension plus Gemini's research_synthesis
+add-on, gated by Allen) is staged locally, in review, not yet on the branch.
 FRAMING (Jeffrey, 2026-10-27, supersedes the earlier general framing):
 HALEX AI is Allen modeled as software. It is a new AI program named HALEX AI
 that functions like Allen on a limited scale: it collaborates with users,
@@ -63,6 +79,10 @@ per-action confirmation, no keys in the repo, not limitless.
   runaway calls. Every tool call is shown in the log.
 
 ### 3. HALEX tool layer (read-only, in staging)
+Branch note (2026-10-29): explain_token_dna, lookup_token and
+brand_guard_check are the blockchain branch of this tool layer, built
+against HALEX-M data. They are one branch of HALEX-AI, not its foundation;
+general research, writing, planning and building tools are the core.
 - explain_token_dna: plain-English Token DNA explainer (type, birth, deployer
   lineage, tracebacks, custody, family/copycats, use case) from user input and
   lookup results. It explains, it does not verdict a buy.
