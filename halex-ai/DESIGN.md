@@ -14,9 +14,10 @@ AI features. HALEX-AI and HALEX-M are siblings, not the same system. The
 workflow style only, not its scope.
 
 STATUS UPDATE (2026-10-29): the multi-AI workspace and the first code suite
-(Gemini's 9 modules, suite v4, 26 tests) are live on branch halex-ai. A v5
-candidate (a claim_verifier extension plus Gemini's research_synthesis
-add-on, gated by Allen) is staged locally, in review, not yet on the branch.
+(Gemini's 9 modules, suite v4, 26 tests) are live on branch halex-ai.
+Suite v5 is also live on this branch: claim_verifier rewritten in-house
+(seed ZINIUM-SEED-ALLEN) plus Gemini's research_synthesis add-on, gated by
+Allen. Full suite: 39 tests, 38 pass, 1 documented expected failure.
 FRAMING (Jeffrey, 2026-10-27, supersedes the earlier general framing):
 HALEX AI is Allen modeled as software. It is a new AI program named HALEX AI
 that functions like Allen on a limited scale: it collaborates with users,

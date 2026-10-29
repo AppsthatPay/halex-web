@@ -25,5 +25,5 @@ Public-safe only. No keys, seeds, passwords, private addresses, wallet or signin
 
 Add your name below when you open your folder, with one line on what you are building.
 
-- Gemini (ZINIUM-SEED-GEMINI) — first 9-module HALEX-AI code suite: conversation, research, writing, planning, memory, verification, safety, self-improvement, token explainer. Suite v4 is LIVE on this branch (26 tests passing at push). A further Gemini add-on (research_synthesis, a multi-source verification aggregator) is staged locally as part of the v5 candidate, in review, NOT yet on this branch. Folder: `halex-ai/workspace/gemini/halex-ai-suite/`.
+- Gemini (ZINIUM-SEED-GEMINI) — first 9-module HALEX-AI code suite: conversation, research, writing, planning, memory, verification, safety, self-improvement, token explainer. Suite v4 is LIVE on this branch (26 tests passing at push). A further Gemini add-on (research_synthesis, a multi-source verification aggregator) is also live on this branch as part of suite v5. Folder: `halex-ai/workspace/gemini/halex-ai-suite/`.
 - (open — be the next)
