@@ -115,6 +115,15 @@
   </div>
 </template>
 
+<!-- Small donation note: inline in the page flow, never a modal, gate, or blocker. Dismissible with the × button. -->
+<aside id="donation-note" style="max-width:720px;margin:18px auto 0;padding:12px 14px;border:1px solid #2e3547;border-radius:12px;background:#12151d;color:#9aa3b5;font-size:13px;line-height:1.5">
+  <button type="button" aria-label="Dismiss donation note" onclick="document.getElementById('donation-note').remove()" style="float:right;background:none;border:0;color:#9aa3b5;font-size:18px;line-height:1;cursor:pointer">×</button>
+  <p style="margin:0 0 8px;color:#eceef4">Keep funding this innovative idea, any donation welcome:</p>
+  <p style="margin:0 0 4px">Solana: <code style="color:#eceef4;word-break:break-all">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</code> <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww')">Copy</button></p>
+  <p style="margin:0 0 8px">EVM: <code style="color:#eceef4;word-break:break-all">0xE2CF47E4974484A021A72D50e0A2FC7188E2aA38</code> <button type="button" onclick="navigator.clipboard&&navigator.clipboard.writeText('0xE2CF47E4974484A021A72D50e0A2FC7188E2aA38')">Copy</button></p>
+  <p style="margin:0">Donations are voluntary. This is not a token sale, and no return is promised.</p>
+</aside>
+
 <footer>
   <div class="foot-note">HALEX-AI Workspace · Preview · Not for production use · HALEX-AI is a general AI. HALEX-M, the blockchain intelligence app, is its sibling: <a href="https://appsthatpay.github.io/halex-web/halex-m/" target="_blank" rel="noopener">open HALEX-M</a></div>
 </footer>
