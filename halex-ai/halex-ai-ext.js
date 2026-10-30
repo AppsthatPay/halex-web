@@ -25,6 +25,16 @@
     return null;
   }
 
+  function loadPlugins() {
+    if (typeof globalThis !== 'undefined' && globalThis.HalexAIPlugins) {
+      return globalThis.HalexAIPlugins;
+    }
+    if (typeof window !== 'undefined' && window.HalexAIPlugins) {
+      return window.HalexAIPlugins;
+    }
+    return null;
+  }
+
   var Knowledge = loadKnowledge();
 
   function getModelConfig(storageLike) {
@@ -73,8 +83,8 @@
       status: 'live local check against the canonical HALEX list'
     },
     {
-      name: 'zinium_lesson_lookup',
-      description: 'Look up a lesson in the bundled ZINIUM lesson index.',
+      name: 'lesson_lookup',
+      description: 'Look up a lesson in the bundled lesson index.',
       status: 'live local lookup in the bundled lesson index'
     },
     {
@@ -116,16 +126,16 @@
   function runToolStub(name, arg) {
     var toolName = String(name || '').trim();
     var input = arg == null ? '' : String(arg);
-    if (toolName === 'zinium_lesson_lookup') {
+    if (toolName === 'lesson_lookup') {
       var knowledge = Knowledge || loadKnowledge();
       if (!knowledge || typeof knowledge.searchLessons !== 'function') {
-        return 'Tool result (zinium_lesson_lookup): the bundled lesson index is not available in this build, so no lesson lookup was performed and no lesson was invented.';
+        return 'Tool result (lesson_lookup): the bundled lesson index is not available in this build, so no lesson lookup was performed and no lesson was invented.';
       }
       var hits = knowledge.searchLessons(input);
       if (!hits.length) {
-        return 'Tool result (zinium_lesson_lookup): no lesson in the bundled index matches: ' + (input || '(empty query)') + '. Try words like gate, suite, staging chain, or ORLI.';
+        return 'Tool result (lesson_lookup): no lesson in the bundled index matches: ' + (input || '(empty query)') + '. Try words like gate, suite, staging chain, or ORLI.';
       }
-      return 'Tool result (zinium_lesson_lookup):\n' + formatLesson(hits[0]);
+      return 'Tool result (lesson_lookup):\n' + formatLesson(hits[0]);
     }
     if (toolName === 'web_research') {
       return 'Tool result (web_research): stub, not wired in this build. Web research is not wired here, so no web search was run and no web results are claimed. Use the local facts and lesson lookup on this page, or ask on the main staging page.';
@@ -146,11 +156,22 @@
     var input = String(text || '').trim();
     if (!input) {
       return {
-        text: 'Ask a question about HALEX-AI, what it can do, HALEX-AI vs HALEX-M, how to contribute, the confirmation gate, ZINIUM and ORLI, the code suite, or its hard limits. Local knowledge works offline.',
+        text: 'Ask a question about what this assistant can do, this assistant vs HALEX-M, how to contribute, the confirmation gate, the lesson index and ORLI, the code suite, or its hard limits. Local knowledge works offline.',
         source: 'fallback'
       };
     }
     var low = input.toLowerCase();
+
+    // Greetings are not knowledge questions: answer them directly instead
+    // of falling through to the honest-miss path. This is an identity and
+    // orientation reply, not a fabricated fact.
+    var greetOnly = low.replace(/[^a-z ]/g, '').replace(/\s+/g, ' ').trim();
+    if (greetOnly === 'hello' || greetOnly === 'hi' || greetOnly === 'hey' || greetOnly === 'howdy' || greetOnly === 'hello there' || greetOnly === 'hi there' || greetOnly === 'say hello' || greetOnly === 'say hi' || greetOnly === 'good morning' || greetOnly === 'good afternoon' || greetOnly === 'good evening') {
+      return {
+        text: 'Hello. I am the local assistant on this page. I can answer from bundled packs, for example: tell me about mice, what is HALEX-AI, or how does the confirmation gate work. For open questions, set your own model under Settings. What would you like to know?',
+        source: 'greeting'
+      };
+    }
 
     if (low.indexOf('brand guard') !== -1 || low.indexOf('brand_guard') !== -1) {
       return { text: runToolStub('brand_guard_check', input), source: 'tool' };
@@ -172,10 +193,34 @@
       }
     }
 
+    // Plugin packs first for topic questions: the old fact-first order let
+    // any single common word in a fact win, so "what are mice" returned a
+    // HALEX-AI fact instead of the mice pack. A plugin hit must clear the
+    // ranked threshold (10) to win here; otherwise facts still run below.
+    var earlyPlugins = loadPlugins();
+    if (earlyPlugins && typeof earlyPlugins.answer === 'function') {
+      var earlyAns = earlyPlugins.answer(input);
+      if (earlyAns && earlyAns.source === 'plugin') {
+        return { text: earlyAns.text, source: 'plugin' };
+      }
+    }
+
     if (knowledge && typeof knowledge.searchFacts === 'function') {
       var factHits = knowledge.searchFacts(input);
       if (factHits.length) {
         return { text: factHits[0].text, source: 'fact' };
+      }
+    }
+
+    // Plugin packs extend coverage beyond the bundled facts. Ranked
+    // retrieval picks the best entry, and the engine itself guards against
+    // repeating the identical answer twice in a row for one question.
+    var plugins = loadPlugins();
+    var pluginAns = null;
+    if (plugins && typeof plugins.answer === 'function') {
+      pluginAns = plugins.answer(input);
+      if (pluginAns && pluginAns.source === 'plugin') {
+        return { text: pluginAns.text, source: 'plugin' };
       }
     }
 
@@ -186,9 +231,15 @@
       }
     }
 
+    // Honest miss: no bundled fact, pack entry, or lesson matches. Never
+    // fall back to generic jargon, and never fake an answer. The plugin
+    // engine already lists the closest topics when any scored above zero.
+    if (pluginAns && pluginAns.source === 'miss') {
+      return { text: pluginAns.text, source: 'miss' };
+    }
     return {
-      text: 'Local knowledge fallback: no bundled fact or lesson matches that closely, and no model is being claimed for this answer. HALEX-AI is a general AI built by AI, for everyone and anything. Try asking what HALEX-AI is, what it can do, how the confirmation gate works, what ZINIUM and ORLI are, or what the code suite contains. Hard limits: advisory only, no funds, no wallet keys or seeds, no live trading, no posting on its own, and per-action confirmation.',
-      source: 'fallback'
+      text: "I don't have that in my library yet — I'll learn it. New knowledge packs arrive with HALEX-AI updates.",
+      source: 'miss'
     };
   }
 
@@ -302,7 +353,7 @@
       if (statusEl) {
         statusEl.textContent = modelConfigured(cfg)
           ? 'Status: model configured in this browser. The key is stored only in browser localStorage and is sent only to the API base URL you set.'
-          : 'Status: offline local mode. No model configured in this browser. HALEX facts and ZINIUM lesson lookup work offline.';
+          : 'Status: offline local mode. No model configured in this browser. HALEX facts and bundled lesson lookup work offline.';
       }
       return cfg;
     }
@@ -331,11 +382,17 @@
       var ans = answerLocal(text);
       var label = ans.source === 'fact'
         ? 'Local knowledge: fact'
+        : ans.source === 'greeting'
+          ? 'Local knowledge: greeting'
         : ans.source === 'lesson'
-          ? 'Local knowledge: ZINIUM lesson'
+          ? 'Local knowledge: lesson'
           : ans.source === 'tool'
             ? 'Local knowledge: tool'
-            : 'Local knowledge: fallback';
+            : ans.source === 'plugin'
+              ? 'Local knowledge: plugin pack'
+              : ans.source === 'miss'
+                ? 'Local knowledge: honest miss'
+                : 'Local knowledge: fallback';
       addMsg(ans.text, 'ext-msg-ai', label);
     }
 
@@ -406,7 +463,7 @@
 
     renderTools();
     refreshStatus();
-    addMsg('HALEX-AI chat extension is ready. Offline local mode answers from bundled HALEX facts and the ZINIUM lesson index. Add your own model key below to ask a configured model instead. Advisory only, no funds, no wallet keys or seeds, no live trading, no posting on its own.', 'ext-msg-ai', 'Local knowledge: welcome');
+    addMsg('Chat is ready. Offline local mode answers from bundled facts and the lesson index. Add your own model key below to ask a configured model instead. Advisory only, no funds, no wallet keys or seeds, no live trading, no posting on its own.', 'ext-msg-ai', 'Local knowledge: welcome');
   }
 
   if (typeof document !== 'undefined') {

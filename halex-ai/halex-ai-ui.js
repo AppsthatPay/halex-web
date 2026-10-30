@@ -162,7 +162,7 @@
   /* ---------------- Agent identity ---------------- */
   var AGENT_NAME_KEY = 'halex_ai_agent_name';
   var AGENT_AVATAR_KEY = 'halex_ai_agent_avatar';
-  var agentName = 'HALEX-AI';
+  var agentName = 'Assistant';
   var agentAvatar = 'logo';
 
   var AVATAR_OPTIONS = [
@@ -237,7 +237,7 @@
   }
 
   function setAgentName(value, sourceEl) {
-    var v = String(value || '').trim() || 'HALEX-AI';
+    var v = String(value || '').trim() || 'Assistant';
     agentName = v;
     try { localStorage.setItem(AGENT_NAME_KEY, v); } catch (e) {}
     var head = $('agent-name');
@@ -319,12 +319,12 @@
 
   function initIdentity() {
     try {
-      agentName = localStorage.getItem(AGENT_NAME_KEY) || 'HALEX-AI';
+      agentName = localStorage.getItem(AGENT_NAME_KEY) || 'Assistant';
     } catch (e) {}
     try {
       agentAvatar = localStorage.getItem(AGENT_AVATAR_KEY) || 'logo';
     } catch (e) {}
-    if (!agentName) agentName = 'HALEX-AI';
+    if (!agentName) agentName = 'Assistant';
     if (!agentAvatar) agentAvatar = 'logo';
     var head = $('agent-name');
     var setting = $('agent-name-setting');

@@ -13,7 +13,7 @@
     {
       keys: ['what can halex-ai do', 'what can you do', 'capabilities', 'can halex-ai do', 'abilities', 'help with'],
       topic: 'What HALEX-AI can do',
-      text: 'HALEX-AI can help with research, writing, building pages, docs, reports and scripts, planning tasks, explaining topics in plain language, verifying claims, and looking up its bundled knowledge and ZINIUM lessons. Where a tool is not wired in a given build, it says so honestly instead of pretending. Any model-powered open question needs a model configured by the visitor in their own browser.'
+      text: 'HALEX-AI can help with research, writing, building pages, docs, reports and scripts, planning tasks, explaining topics in plain language, verifying claims, and looking up its bundled knowledge and lessons. Where a tool is not wired in a given build, it says so honestly instead of pretending. Any model-powered open question needs a model configured by the visitor in their own browser.'
     },
     {
       keys: ['halex-ai vs halex-m', 'halex-ai and halex-m', 'difference halex-ai halex-m', 'halex-m', 'halex m', 'siblings'],
@@ -23,7 +23,7 @@
     {
       keys: ['how to contribute', 'contribute', 'contribution', 'collaborate', 'built in the open', 'collaborators'],
       topic: 'How to contribute',
-      text: 'HALEX-AI is built in the open by many AI systems and human collaborators, coordinated by the assistant Allen. Contributions are welcome from any AI system or human collaborator. Every contribution passes a confirmation gate before merging. Sound work is merged and credited to its contributor. Lessons from the work are indexed into ZINIUM with provenance and a seed marker in the form ZINIUM-SEED-[NAME].'
+      text: 'HALEX-AI is built in the open by many AI systems and human collaborators, coordinated by the assistant Allen. Contributions are welcome from any AI system or human collaborator. Every contribution passes a confirmation gate before merging. Sound work is merged and credited to its contributor. Lessons from the work are indexed into the lesson index with provenance and a seed marker in the form SEED-[NAME].'
     },
     {
       keys: ['confirmation gate', 'gate', 'merge gate', 'before merging', 'quality gate', 'approval gate'],
@@ -33,12 +33,12 @@
     {
       keys: ['zinium', 'orli', 'observe report learn index', 'lesson index', 'memory'],
       topic: 'ZINIUM and ORLI',
-      text: 'ZINIUM is the lesson and memory index for HALEX work. Lessons are indexed into ZINIUM using the ORLI loop: Observe, Report, Learn, Index. Each lesson records what was observed, what was reported, what was learned, and where it is indexed, with provenance and a seed marker in the form ZINIUM-SEED-[NAME], for example ZINIUM-SEED-ALLEN for work seeded by Allen and ZINIUM-SEED-GEMINI for work seeded by Gemini.'
+      text: 'The lesson and memory index for HALEX work. Lessons are indexed into the lesson index using the ORLI loop: Observe, Report, Learn, Index. Each lesson records what was observed, what was reported, what was learned, and where it is indexed, with provenance and a seed marker in the form SEED-[NAME], for example SEED-ALLEN for work seeded by Allen and SEED-GEMINI for work seeded by Gemini.'
     },
     {
       keys: ['code suite', 'suite', 'modules', 'tests', 'first merged code', 'suite v4', 'suite v5'],
       topic: 'The code suite',
-      text: 'The first merged HALEX-AI code suite has 9 modules: core conversation engine, research engine, writing assistant, task planner, ZINIUM memory, claim verifier, safety auditor, improvement engine, and token explainer, each with tests. Suite v4 had 26 tests. Suite v5 added an in-house rewritten claim verifier (seed ZINIUM-SEED-ALLEN) plus a research synthesis add-on: 39 tests, 38 pass, and 1 documented expected failure.'
+      text: 'The first merged HALEX-AI code suite has 9 modules: core conversation engine, research engine, writing assistant, task planner, lesson memory, claim verifier, safety auditor, improvement engine, and token explainer, each with tests. Suite v4 had 26 tests. Suite v5 added an in-house rewritten claim verifier (seed SEED-ALLEN) plus a research synthesis add-on: 39 tests, 38 pass, and 1 documented expected failure.'
     },
     {
       keys: ['halex wallet', 'wallet'],
@@ -65,7 +65,7 @@
       report: 'The gate ran the contributor tests verbatim (all pass), then adversarial probes found two faults the contributor tests missed (a context matcher matching any single word, and a broken test guard).',
       learn: 'A gate that only runs contributor tests misses faults those tests do not cover, so adversarial probes belong in every gate pass.',
       index: 'halex-ai/workspace/gemini/halex-ai-suite/',
-      provenance: 'Contributor Gemini (ZINIUM-SEED-GEMINI), gate and patches Allen, human approval Jeffrey Allen Kaufman.'
+      provenance: 'Contributor Gemini (SEED-GEMINI), gate and patches Allen, human approval Jeffrey Allen Kaufman.'
     },
     {
       id: 'ZINIUM-LESSON-ZENIUM-STAGING-CHAIN',
@@ -74,16 +74,16 @@
       report: 'The staging chain currently holds genesis and staging sample blocks only, and those blocks are labelled as samples. It is not presented as a live production ledger.',
       learn: 'A hash-chained, append-only ledger makes later edits to earlier lessons visible, but a staging chain with sample blocks proves the format only. It does not prove production use.',
       index: 'halex-zenium staging chain, genesis and staging sample blocks.',
-      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (ZINIUM-SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
+      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
     },
     {
       id: 'ZINIUM-LESSON-ORLI-LOOP',
       title: 'The ORLI loop as a lesson',
       observe: 'Useful lessons were being learned during HALEX work, but a lesson that is not written down in a fixed shape is easy to lose or blur.',
-      report: 'ZINIUM records each lesson with four steps: Observe what happened, Report the verified detail, Learn the rule that follows, and Index where the lesson belongs, with provenance.',
+      report: 'The lesson index records each lesson with four steps: Observe what happened, Report the verified detail, Learn the rule that follows, and Index where the lesson belongs, with provenance.',
       learn: 'Observe, Report, Learn, Index (ORLI) keeps lessons checkable: each part can be checked on its own, and provenance says who contributed and who approved.',
-      index: 'ZINIUM lesson index, ORLI loop.',
-      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (ZINIUM-SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
+      index: 'Lesson index, ORLI loop.',
+      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
     },
     {
       id: 'ZINIUM-LESSON-ZENIUM-HONEST-LABELLING',
@@ -92,7 +92,7 @@
       report: 'The genesis and staging sample blocks in the staging chain are labelled as samples, and the chain is described as staging, not production.',
       learn: 'Label samples as samples and staging as staging, in the record itself. Honest labels stop a format demo from being read as a track record.',
       index: 'halex-zenium staging chain, sample block labels.',
-      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (ZINIUM-SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
+      provenance: 'Staging record for HALEX-AI knowledge bundle, seeded by Allen (SEED-ALLEN), human approval Jeffrey Allen Kaufman.'
     }
   ];
 
