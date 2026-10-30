@@ -153,19 +153,31 @@ body.ext-page {
   gap: 8px;
 }
 .ext-tool {
-  background: #161616;
-  border: 1px solid #333;
+  background: #ffffff;
+  color: #222222;
+  border: 1px solid #d8d2c4;
   border-radius: 8px;
   padding: 10px;
   font-size: 14px;
   line-height: 1.5;
 }
 .ext-tool strong {
-  color: #2dd4bf;
+  color: #0f766e;
 }
 .ext-tool-status {
-  color: #d4af37;
+  color: #5b6470;
   font-size: 13px;
+}
+body[data-theme="dark"] .ext-tool {
+  background: #161616;
+  color: #eceef4;
+  border-color: #333;
+}
+body[data-theme="dark"] .ext-tool strong {
+  color: #2dd4bf;
+}
+body[data-theme="dark"] .ext-tool-status {
+  color: #d4af37;
 }
 .ext-page a {
   color: #2dd4bf;

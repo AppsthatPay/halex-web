@@ -307,6 +307,13 @@
     scrollThread();
 
     if (kind === 'image') {
+      try {
+        var dataReader = new FileReader();
+        dataReader.onload = function () {
+          try { window.HalexAIPendingImage = dataReader.result; } catch (e) {}
+        };
+        dataReader.readAsDataURL(file);
+      } catch (e) {}
       var url = null;
       try { url = URL.createObjectURL(file); } catch (e) { url = null; }
       if (!url) { appendAttachmentNote('image', false); return; }

@@ -243,7 +243,7 @@
     };
   }
 
-  function callModel(text, cfg, fetchFn) {
+  function callModel(text, cfg, fetchFn, imageDataUrl) {
     if (!modelConfigured(cfg)) {
       return { ok: false, reason: 'not_configured' };
     }
@@ -260,6 +260,13 @@
     }
     var baseUrl = String(cfg.baseUrl || '').replace(/\/$/, '');
     var systemPrompt = 'You are HALEX-AI, a general AI built by AI, for everyone and anything. Help with research, writing, building, planning, and any field, in plain language. State what is verified and what is not, and do not invent facts. Hard limits: advisory only, no funds, no wallet keys or seeds, no live trading, no posting on its own, per-action confirmation.';
+    var userContent = String(text || '');
+    if (imageDataUrl && typeof imageDataUrl === 'string' && imageDataUrl.indexOf('data:image/') === 0) {
+      userContent = [
+        { type: 'text', text: String(text || 'Describe this image in detail.') },
+        { type: 'image_url', image_url: { url: imageDataUrl } }
+      ];
+    }
     var request = {
       method: 'POST',
       headers: {
@@ -270,7 +277,7 @@
         model: cfg.model,
         messages: [
           { role: 'system', content: systemPrompt },
-          { role: 'user', content: String(text || '') }
+          { role: 'user', content: userContent }
         ]
       })
     };
@@ -283,6 +290,9 @@
         return Promise.resolve(res.json()).then(function (data) {
           var choice = data && data.choices && data.choices[0] ? data.choices[0].message : null;
           var content = choice ? choice.content : '';
+          if (Array.isArray(content)) {
+            content = content.map(function (p) { return p && p.text ? p.text : ''; }).join('');
+          }
           if (!content) return { ok: false, reason: 'empty_response' };
           return { ok: true, text: content, source: 'model' };
         });
@@ -401,8 +411,14 @@
       if (!text) return;
       addMsg(text, 'ext-msg-user', 'You');
       if (qEl) qEl.value = '';
+      var pendingImage = null;
+      try { pendingImage = window.HalexAIPendingImage || null; } catch (e) { pendingImage = null; }
+      try { window.HalexAIPendingImage = null; } catch (e) {}
       var cfg = currentConfig();
       if (!modelConfigured(cfg)) {
+        if (pendingImage) {
+          addMsg('Vision needs a configured vision-capable model: this image was shown in the thread but not interpreted, and it was not sent anywhere. Set a model under Settings to have it described.', 'ext-msg-tool', 'Notice');
+        }
         localReply(text);
         return;
       }
@@ -412,12 +428,12 @@
       } catch (e) {
         fetchFn = null;
       }
-      Promise.resolve(callModel(text, cfg, fetchFn))
+      Promise.resolve(callModel(text, cfg, fetchFn, pendingImage))
         .then(function (result) {
           if (result && result.ok && result.text) {
             addMsg(result.text, 'ext-msg-ai', 'Model output');
           } else {
-            addMsg('The configured model did not return an answer (' + (result && result.reason ? result.reason : 'unknown failure') + '), so this answer comes from local knowledge instead. No model answer was fabricated.', 'ext-msg-tool', 'Notice');
+            addMsg('The configured model did not return an answer (' + (result && result.reason ? result.reason : 'unknown failure') + (pendingImage ? '. If the model is not vision-capable it will reject the image; use a vision model for image questions.' : '') + '), so this answer comes from local knowledge instead. No model answer was fabricated.', 'ext-msg-tool', 'Notice');
             localReply(text);
           }
         })
