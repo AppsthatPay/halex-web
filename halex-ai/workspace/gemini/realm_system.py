@@ -9,7 +9,7 @@ import os, sys, tempfile, json
 HERE = os.path.dirname(__file__)
 for d in ["synaptic_mesh","evolution_mesh","encyclopedia_multilingual_kit","knowledge_database_code",
           "media_creation_codec_suite","quantum_security_consensus","chain_01_codebase",
-          "chain_02_agency_mesh","agent_programming_mesh","chain_03_remote_infrastructure","chain_03_research_agencies","chain_04_mapping_mesh"]:
+          "chain_02_agency_mesh","agent_programming_mesh","chain_03_remote_infrastructure","chain_03_research_agencies","chain_04_mapping_mesh","halex_pure_ai_core"]:
     sys.path.insert(0, os.path.join(HERE, d))
 from synaptic_engine import SynapticMesh
 from evolution_engine import EvolutionMesh
@@ -24,6 +24,7 @@ from agent_program_engine import Orchestrator, DevAgent
 from chain_03_engine import Chain03Orchestrator
 from research_agency_engine import Chain03ResearchOrchestrator
 from mapping_engine import Chain04MappingOrchestrator, straight_line_km
+from halex_core_engine import telemetry as core_telemetry
 
 def run_cycle():
     out = {}
@@ -61,6 +62,7 @@ def run_cycle():
     out["research_cross_chain_chain01"] = res.cross_chain_pull_and_research("chain-01", "rust")["status"]
     m4 = Chain04MappingOrchestrator(); out["mapping_summary"] = m4.summary()
     out["mapping_distance_murphy_portcharlotte"] = straight_line_km("Murphy NC", "Port Charlotte FL")
+    out["core_status"] = core_telemetry()["status"]
     return out
 
 if __name__ == "__main__":
