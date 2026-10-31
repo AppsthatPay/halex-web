@@ -193,6 +193,45 @@ Every agency, on opening, locks into:
   order. Tests: 30/30 passing in total (previous 27 + 3
   engine/Q&A).
 
+## UI event stream + cube chat box — published (2026-10-31 ~18:45 EDT)
+
+- `ui_event_stream.py` — INTAKE / REASONING / OUTPUT events
+  in memory only. Intake never stores the question text.
+  Reasoning is real record lookups (agencies, ledger, topic
+  match), not a tensor transform. Output is the record answer
+  + source, with no burn, no mass update, no confidence score.
+- Cube chat box (`halex-ai/cube.html`) now shows all three
+  phases in its output when Ask is clicked. The pasted AG-UI
+  code and the PDF spec were GATE RETURNED, not run as-is:
+  they write the prompt into a record, claim a protocol that
+  is only print(), claim burns / confidence / signatures that
+  are not in the code, and use example chains 1276/3471/999.
+- Publish: cube.html + bridge + state pushed to gh-pages
+  branch, commit `3e07221ece83f386c88affd08a7122f132ad8d70`,
+  read-back verified on that branch. Live index.html was NOT
+  overwritten. Live URL check at push time returned 404
+  (Pages deployment lag is the likely cause, not yet proven);
+  live serving is NOT claimed until a fresh fetch succeeds.
+- Tests: 32/32 passing in total (previous 30 + 2 UI stream).
+
+## HALEX-AI audit — what it needed to run correctly (2026-10-31 ~19:10 EDT)
+
+- Full audit record: `halex-ai/HALEX-AI-OPERATIONS.md`.
+- Added: `regenerate_cube_state.py` (run after every new
+  block, or the cube page answers from stale records);
+  one Settings-drawer link to the cube page in `index.html`
+  (labelled "Cube records", no internal name in visible
+  text, no script added, adapter still wired last);
+  plugin-test expectation updated to plugin-first routing
+  (halex-core pack answers "what is halex-ai" with the same
+  doctrine text), restoring plugins 24/24, chat 32/32,
+  brain 31/31.
+- Not added, because they need Jeffrey's decision, not code:
+  live brain funding/endpoint, a backend or JS port for a
+  live engine on the web, and a binary route for the logo
+  on gh-pages. The cube page stays snapshot-only until
+  one of those is decided, and it says so on the page.
+
 - The external file `halex_ai_deploy_engine.py` named in
   Jeffrey's ~16:51 message was NOT found in this workspace's
   staging tree, so it was NOT read, run, or verified here.
