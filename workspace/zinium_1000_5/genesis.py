@@ -76,6 +76,7 @@ async def run_genesis():
         agency = AgentNode(
             coordinate=coord, teleological_mandate=MANDATE, execution_load=0.1
         )
+        agency.open_workspace()
         router.register_node(coord, agency.mailbox)
         agencies.append(agency)
 
@@ -140,6 +141,7 @@ async def run_genesis():
                     "coordinate": list(a.coordinate.as_tuple()),
                     "mandate": a.teleological_mandate,
                     "status": a.status,
+                    "operational_state": a.operational_state,
                     "execution_load": a.execution_load,
                     "learning_entry": "genesis: learned cube coordinate and software-system record",
                 }

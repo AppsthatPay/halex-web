@@ -23,7 +23,46 @@ in its middle (chain 500, center corner 500,500,500,500,500).
   (genesis-seeded, gate review pending). Activation is a separate
   gate, as with the 501-agent system and Chain 865.
 
-## What this is NOT
+## Spec 4.2 — Operational Command Standard (record form)
+
+Every agency, on opening, locks into:
+`OPEN WORKSPACE, AWAIT INSTRUCTIONS`
+- Workspace opening: opens a local record store and attaches the
+  token's satoshi sub-chain records. No vector database and no
+  peer-to-peer network is created by this staging code.
+- Awaiting instructions: the agency waits on its mailbox queue
+  until a pulse or instruction arrives.
+- Autonomous execution: an instruction is processed as a RECORD
+  and the agency returns to awaiting. Dynamic Wasm code
+  generation / execution is REFUSED (EXECUTION_REFUSED) by the
+  standing gate — bytecode fields are data only, never executed.
+- State sync: a local sync-version counter, not a global mesh
+  CRDT sync. No network sync exists here.
+
+## Deploy Token and Coin Engine (staging)
+
+- `deploy_engine.py` — Allen's staging implementation of the
+  Token/Coin summary Jeffrey sent ~16:51 EDT.
+- TOKEN: open record. COIN: obscurity-vault record with a
+  SHA3-512 hash reference. A hash is not encryption, and no
+  vault here holds value, keys, or credentials.
+- Satoshi units are integer-unit records with text instruction
+  manifests (knowledge, software systems, neural modeling,
+  robotics, child chain expansion). Manifests are never executed;
+  no robotics, training, or child chain is actually run.
+- Mass scaling is exact: base 1.0 whole + added satoshi units
+  only. Tests: 12/12 passing (6 engine + 6 deploy/operational).
+
+## What this is NOT (continued)
+
+- The external file `halex_ai_deploy_engine.py` named in
+  Jeffrey's ~16:51 message was NOT found in this workspace's
+  staging tree, so it was NOT read, run, or verified here.
+  Upload or paste it and Allen will gate-check it the same way.
+- The 100,000,000 wallet genesis matrix in the other system's
+  summary was NOT built here. What exists is 32 first-cube
+  agencies, counted and tested. 100M is a design ceiling, not
+  a population.
 
 - Not 10^15 live chains. 1000^5 is the design address space;
   only the 32 first-cube records exist.

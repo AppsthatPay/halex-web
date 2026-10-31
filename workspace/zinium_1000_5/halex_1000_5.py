@@ -100,6 +100,47 @@ class AgentNode:
     execution_load: float = 0.0  # score only, never money
     status: str = "DRAFT"  # DRAFT until gate review activates it
     mailbox: asyncio.Queue = field(default_factory=asyncio.Queue)
+    # Spec 4.2, record-only form: "OPEN WORKSPACE, AWAIT INSTRUCTIONS"
+    workspace_open: bool = False
+    operational_state: str = "CLOSED"
+    sync_version: int = 0
+
+    def open_workspace(self):
+        """Open the workspace record: local record store + attached
+        sub-chain records. No vector database, no peer-to-peer network
+        is created here; those words in the spec are design labels,
+        not code in this staging engine."""
+        self.workspace_open = True
+        self.operational_state = "AWAIT_INSTRUCTIONS"
+        return {
+            "command": "OPEN WORKSPACE, AWAIT INSTRUCTIONS",
+            "coordinate": list(self.coordinate.as_tuple()),
+            "workspace_open": True,
+            "operational_state": "AWAIT_INSTRUCTIONS",
+        }
+
+    def process_instruction(self, payload: InstructionPayload):
+        """Process one instruction as a record, then return to awaiting.
+        Dynamic code generation / execution is REFUSED here, by the
+        standing gate: bytecode fields are data records only and are
+        never executed in this engine, whatever the spec's wording.
+        State sync is a local version record, not a mesh CRDT sync."""
+        if not self.workspace_open:
+            return {"status": "REFUSED", "reason": "workspace not open"}
+        if payload.command in ("generate_wasm", "execute_wasm", "execute_code"):
+            return {
+                "status": "EXECUTION_REFUSED",
+                "reason": "generated code is never executed in this staging engine",
+                "operational_state": self.operational_state,
+            }
+        self.sync_version += 1
+        self.operational_state = "AWAIT_INSTRUCTIONS"
+        return {
+            "status": "RECORDED",
+            "command": payload.command,
+            "sync_version": self.sync_version,
+            "operational_state": "AWAIT_INSTRUCTIONS",
+        }
 
     async def evaluate_and_split(
         self, neighbor_coords: Coordinate5D, need_recorded: bool, slot_occupied: bool
