@@ -1,0 +1,78 @@
+{
+  "backlog_dir": "/home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/backlog",
+  "cycle_started": "2026-10-31T05:46:55.244921+00:00",
+  "dry_run": false,
+  "forage": {
+    "indexed": 153,
+    "missing": [],
+    "skipped_duplicates": 1324
+  },
+  "gap_count": 6,
+  "gaps_found": [
+    {
+      "evidence": "module /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/gemini/halex-ai-suite/kernel/system_kernel.py contains claim word(s) ['VERIFIED'] (first: '\"status\": \"ENVELOPE_VERIFIED_AND_SEALED\",') and no existing evidence path is configured for 'system_kernel'",
+      "kind": "UNVERIFIED_CLAIM",
+      "severity": 80,
+      "suggested_spec": {
+        "action": "verify_claim",
+        "claims": [
+          "VERIFIED"
+        ],
+        "module": "system_kernel"
+      },
+      "target": "system_kernel"
+    },
+    {
+      "evidence": "backlog record /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/backlog/kepano-vault-layout-adoption.md contains 'status: open'",
+      "kind": "OPEN_BACKLOG",
+      "severity": 60,
+      "suggested_spec": null,
+      "target": "Adopt the bottom-up vault layout in the ZINIUM knowledge layer"
+    },
+    {
+      "evidence": "backlog record /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/backlog/kepano-flexoki-report-rendering.md contains 'status: open'",
+      "kind": "OPEN_BACKLOG",
+      "severity": 60,
+      "suggested_spec": null,
+      "target": "Apply the flexoki palette to ZINIUM report rendering"
+    },
+    {
+      "evidence": "backlog record /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/backlog/kepano-zinium-skill-publish.md contains 'status: open'",
+      "kind": "OPEN_BACKLOG",
+      "severity": 60,
+      "suggested_spec": null,
+      "target": "Publish the zinium-skill for contributing agents"
+    },
+    {
+      "evidence": "backlog record /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/backlog/kepano-defuddle-harvest-wiring.md contains 'status: open'",
+      "kind": "OPEN_BACKLOG",
+      "severity": 60,
+      "suggested_spec": null,
+      "target": "Wire defuddle into the knowledge-harvest path"
+    },
+    {
+      "evidence": "module /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/gemini/halex-ai-suite/builder/dev_sync_protocol.py has no test_dev_sync_protocol.py / dev_sync_protocol_test.py under /home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/gemini/halex-ai-suite",
+      "kind": "UNTESTED_MODULE",
+      "severity": 50,
+      "suggested_spec": {
+        "action": "write_tests",
+        "module": "dev_sync_protocol"
+      },
+      "target": "dev_sync_protocol"
+    }
+  ],
+  "mirrors": [
+    "/home/runner/work/halex-web/halex-web/tree/halex-ai"
+  ],
+  "modules_root": "/home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/gemini/halex-ai-suite",
+  "note": "Synthesized modules are PROPOSALS in the proposals dir. Integration into the main suite happens only through the confirmation gate, never by this cycle.",
+  "proposals_dir": "/home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals",
+  "registration": null,
+  "seal_chain": {
+    "entries": 1464,
+    "errors": [],
+    "log": "/home/runner/work/halex-web/halex-web/tree/halex-ai/workspace/allen/halex-ai-selfbuild/work/seal-log.jsonl",
+    "verified": true
+  },
+  "synthesis": null
+}
