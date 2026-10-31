@@ -23,6 +23,16 @@ identifiers in that example, NOT ZINIUM chain indices 0..999
 and NOT Brainchain chain 500. Do not conflate them: the matrix
 here is a registry of domain chains, separate from the 1000^5
 coordinate grid.
+
+EXAMPLE NOTE (Jeffrey, 2026-10-31 ~17:09 EDT): the pasted
+rocket-science / space-travel example was a single hypothetical
+illustration of how chains pass information. It is NOT retained
+as content here. What is retained is the instructional system:
+how any wallet record can share a copy of a satoshi unit
+(data, knowledge, or software record) with another wallet
+record that needs it to complete its structure. The generic
+demo below is that instruction, with placeholder domains only.
+It can be removed without removing the system.
 """
 
 from __future__ import annotations
@@ -139,45 +149,52 @@ class HalexHyperCubeMatrix:
         self.chains.setdefault(chain_id, {})[wallet.wallet_id] = wallet
 
 
-def demo_rocket_to_space():
-    """Reproduces the pasted demo, integer units, record only."""
+def demo_generic_exchange():
+    """GENERIC EXAMPLE ONLY — hypothetical, removable.
+    Instruction: Wallet A holds a knowledge/software record.
+    Wallet B needs a copy of that record to complete its own
+    structure. B requests the satoshi unit by exact integer
+    units; A retains its original; B receives a cloned copy
+    with origin preserved. No topic is claimed here — the
+    domains below are placeholders, not real systems.
+    """
     matrix = HalexHyperCubeMatrix()
-    wallet_rocket = TransparentWallet(
-        "W_ROCKET_EXPERT_1", 1276,
-        "Repository for Aerospace Propulsion, Rocket Science Thermodynamics & Orbital Mechanics",
+    wallet_a = TransparentWallet(
+        "W_EXAMPLE_A", 1276,
+        "Example wallet A: holds a knowledge/software record (placeholder domain)",
         Coordinate5D(12, 7, 6, 1, 0),
     )
-    matrix.register_wallet_to_chain(1276, wallet_rocket)
-    rocket_token = HalexToken("TOKEN_ROCKET_SCIENCE_V1", 1276, "W_ROCKET_EXPERT_1")
-    rocket_token.add_satoshi(SatoshiAgentUnit(
-        100, "rocket_science",
-        "Calculate specific impulse, thrust-to-weight ratios, and cryogenic propellant dynamics.",
-        1276, {"fidelity": "high", "topic": "thermodynamics"},
+    matrix.register_wallet_to_chain(1276, wallet_a)
+    token_a = HalexToken("TOKEN_EXAMPLE_A", 1276, "W_EXAMPLE_A")
+    token_a.add_satoshi(SatoshiAgentUnit(
+        100, "example_domain_a",
+        "Example instruction record: data, knowledge, or software to be shared.",
+        1276, {"fidelity": "high", "topic": "example"},
     ))
-    wallet_rocket.acquire_token(rocket_token)
+    wallet_a.acquire_token(token_a)
 
-    wallet_space = TransparentWallet(
-        "W_SPACE_TRAVEL_7", 3471,
-        "Node for Deep Space Interstellar Trajectory Modeling & 3D Starship Engineering",
+    wallet_b = TransparentWallet(
+        "W_EXAMPLE_B", 3471,
+        "Example wallet B: needs the record to complete its structure (placeholder domain)",
         Coordinate5D(34, 7, 1, 3, 0),
     )
-    matrix.register_wallet_to_chain(3471, wallet_space)
-    space_token = HalexToken("TOKEN_INTERSTELLAR_MODEL", 3471, "W_SPACE_TRAVEL_7")
-    space_token.add_satoshi(SatoshiAgentUnit(
-        100, "space_travel",
-        "Construct 3D spatial vector paths for multi-solar system navigation.",
-        3471, {"fidelity": "high", "topic": "trajectory"},
+    matrix.register_wallet_to_chain(3471, wallet_b)
+    token_b = HalexToken("TOKEN_EXAMPLE_B", 3471, "W_EXAMPLE_B")
+    token_b.add_satoshi(SatoshiAgentUnit(
+        100, "example_domain_b",
+        "Example local instruction record.",
+        3471, {"fidelity": "high", "topic": "example"},
     ))
-    wallet_space.acquire_token(space_token)
+    wallet_b.acquire_token(token_b)
 
-    success = wallet_space.request_split_cell_transfer(
-        "TOKEN_INTERSTELLAR_MODEL", 100, wallet_rocket, "TOKEN_ROCKET_SCIENCE_V1"
+    success = wallet_b.request_split_cell_transfer(
+        "TOKEN_EXAMPLE_B", 100, wallet_a, "TOKEN_EXAMPLE_A"
     )
-    return success, wallet_space.last_transfer, len(space_token.satoshi_units)
+    return success, wallet_b.last_transfer, len(token_b.satoshi_units)
 
 
 if __name__ == "__main__":
-    success, transfer, count = demo_rocket_to_space()
+    success, transfer, count = demo_generic_exchange()
     print(f"cross-chain transfer success: {success}")
     print(f"transfer: {transfer}")
-    print(f"interstellar token satoshi units now: {count}")
+    print(f"example token satoshi units now: {count}")

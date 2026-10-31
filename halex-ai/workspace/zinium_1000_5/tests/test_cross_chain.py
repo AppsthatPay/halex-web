@@ -11,21 +11,21 @@ from cross_chain import (  # noqa: E402
     HalexToken,
     SatoshiAgentUnit,
     TransparentWallet,
-    demo_rocket_to_space,
+    demo_generic_exchange,
 )
 from halex_1000_5 import Coordinate5D, UNITS_PER_WHOLE  # noqa: E402
 
 
 class TestCrossChain(unittest.TestCase):
     def test_demo_transfer(self):
-        success, transfer, count = demo_rocket_to_space()
+        success, transfer, count = demo_generic_exchange()
         self.assertTrue(success)
-        self.assertEqual(count, 2)  # original space unit + cloned rocket unit
+        self.assertEqual(count, 2)  # original example unit + cloned example unit
         self.assertEqual(transfer["origin_chain_id"], 1276)
         self.assertEqual(transfer["local_token_total_units"], UNITS_PER_WHOLE + 200)
 
     def test_clone_preserves_origin(self):
-        unit = SatoshiAgentUnit(100, "rocket_science", "impulse", 1276)
+        unit = SatoshiAgentUnit(100, "example_domain_a", "impulse", 1276)
         cloned = unit.clone_for_cross_chain(3471)
         self.assertEqual(cloned.origin_chain_id, 1276)
         self.assertEqual(cloned.current_chain_id, 3471)
@@ -34,10 +34,10 @@ class TestCrossChain(unittest.TestCase):
 
     def test_exact_unit_match_not_float(self):
         matrix = HalexHyperCubeMatrix()
-        src = TransparentWallet("W_SRC", 1276, "rocket", Coordinate5D(0, 0, 0, 0, 0))
+        src = TransparentWallet("W_SRC", 1276, "example", Coordinate5D(0, 0, 0, 0, 0))
         matrix.register_wallet_to_chain(1276, src)
         token = HalexToken("T_SRC", 1276, "W_SRC")
-        token.add_satoshi(SatoshiAgentUnit(100, "rocket_science", "x", 1276))
+        token.add_satoshi(SatoshiAgentUnit(100, "example_domain_a", "x", 1276))
         src.acquire_token(token)
         dst = TransparentWallet("W_DST", 3471, "space", Coordinate5D(1, 0, 0, 0, 0))
         matrix.register_wallet_to_chain(3471, dst)

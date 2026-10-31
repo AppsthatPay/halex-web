@@ -60,12 +60,21 @@ Every agency, on opening, locks into:
   provenance loss fixed (see its header).
 - TransparentWallet meta_label: text explaining what a wallet
   record holds and its domain purpose. A label, not funds/keys.
-- Demo, verified by running it: Chain 1276 rocket wallet
-  (W_ROCKET_EXPERT_1) shares its 100-unit rocket satoshi with
-  Chain 3471 space wallet (W_SPACE_TRAVEL_7); interstellar
-  token goes from 1 to 2 satoshi units, total
-  10,000,000,200 units, origin chain 1276 preserved, source
-  retained (a copy, not a move).
+- EXAMPLE NOTE (Jeffrey ~17:09 EDT): the pasted topic example
+  was a single hypothetical illustration of how chains pass
+  information. It is NOT retained as content. What is retained
+  is the instructional system: how any wallet record can share
+  a copy of a satoshi unit (data, knowledge, or software
+  record) with another wallet record that needs it to complete
+  its structure, for expansion and exchange of data, knowledge,
+  and software. The generic demo in `cross_chain.py` is that
+  instruction, with placeholder domains only, and can be
+  removed without removing the system.
+- Generic demo, verified by running it: example wallet A
+  (chain 1276) shares its 100-unit record with example wallet
+  B (chain 3471); B's token goes from 1 to 2 satoshi units,
+  total 10,000,000,200 units, origin chain 1276 preserved,
+  source retained (a copy, not a move).
 - Chain IDs 1276 / 3471 in that demo are domain-chain
   identifiers, NOT ZINIUM indices 0..999 and NOT Brainchain
   chain 500.
