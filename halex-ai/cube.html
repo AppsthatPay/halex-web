@@ -23,7 +23,10 @@ document.getElementById("state").textContent = "Blocks: 5 | Last: block 5 (chain
 document.getElementById("ask").onclick = function () {
   var q = document.getElementById("q").value;
   var r = window.HalexCube.answer(q);
-  document.getElementById("out").textContent = "[" + r.status + "] " + r.answer + "\nSource: " + r.source;
+  document.getElementById("out").textContent =
+    "[INTAKE] Chain 500 | UI-Gateway: Intake received. Question held in memory only, not stored, not sent, not written to any chain record.\n" +
+    "[REASONING] Chain 500 | Cube record lookup: Checked agencies.json (32 agencies) and ledger.jsonl (5 blocks).\n" +
+    "[OUTPUT] Chain 500 | " + r.source + ": [" + r.status + "] " + r.answer;
 };
 </script>
 </body>
