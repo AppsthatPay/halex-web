@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chain-Brain Autonomous Builder</title>
+    <style>
+      body { background: #030712; color: #f3f4f6; font-family: monospace; padding: 16px; width: 400px; }
+      h1 { font-size: 14px; color: #c084fc; }
+      label { display: block; color: #9ca3af; margin-bottom: 4px; }
+      input, textarea { width: 100%; background: #111827; border: 1px solid #1f2937; padding: 6px; border-radius: 4px; color: #e5e7eb; box-sizing: border-box; }
+      button { width: 100%; background: #7e22ce; color: #fff; font-weight: bold; padding: 8px; border: 0; border-radius: 4px; cursor: pointer; }
+      #outputLog { padding: 8px; background: #111827; border: 1px solid #1f2937; border-radius: 4px; height: 96px; overflow-y: auto; font-size: 10px; color: #9ca3af; }
+      .note { font-size: 11px; color: #9ca3af; }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Chain-Brain Autonomous Builder</h1>
+        <p class="note">Local bridge only (localhost:8000). Writes a TEXT artifact record into the chain-brain. Nothing here runs code, signs anything, or moves funds. Your conversation text is never stored: asking the chain-brain returns an answer and a follow-up, and stores nothing.</p>
+    </div>
+
+    <div>
+        <div>
+            <label>Target Chain ID</label>
+            <input id="chainId" type="text" value="Chain-01">
+        </div>
+        <div>
+            <label>Agency ID (its category must be autonomous_build)</label>
+            <input id="agencyId" type="text" value="ag-01">
+        </div>
+        <div>
+            <label>Autonomous Build Artifact (text record)</label>
+            <textarea id="buildContent" rows="3" placeholder="Describe the component or memory node..."></textarea>
+        </div>
+        <button id="buildBtn">Write text artifact to Chain-Brain</button>
+        <div>
+            <label>Ask the Chain-Brain (learns from the conversation, stores nothing)</label>
+            <textarea id="askText" rows="2" placeholder="Ask about a stored topic..."></textarea>
+        </div>
+        <button id="askBtn">Ask, get an answer and a follow-up</button>
+        <div id="outputLog">System ready. Awaiting autonomous build loop...</div>
+    </div>
+
+    <script>
+        function log(msg) {
+            document.getElementById('outputLog').innerHTML += '<br>' + msg;
+        }
+        document.getElementById('buildBtn').addEventListener('click', () => {
+            const chainId = document.getElementById('chainId').value;
+            const agencyId = document.getElementById('agencyId').value;
+            const content = document.getElementById('buildContent').value;
+            const recordId = 'auto-art-' + Date.now();
+            const payload = {
+                action: "write_artifact",
+                record_id: recordId,
+                chain_id: chainId,
+                agency_id: agencyId,
+                category: "autonomous_build",
+                content: content
+            };
+            log('[BUILDING] Routing ' + recordId + ' to ' + chainId + '...');
+            chrome.runtime.sendMessage({ action: "sync_to_chain_brain", payload: payload }, (response) => {
+                if (response && response.status === "SUCCESS") {
+                    log('[SUCCESS] Stored in Chain-Brain as ' + recordId + '.');
+                } else {
+                    log('[ERROR] Not stored. Bridge said: ' + JSON.stringify(response && response.data ? response.data : response));
+                }
+            });
+        });
+        document.getElementById('askBtn').addEventListener('click', () => {
+            const text = document.getElementById('askText').value;
+            const payload = { action: "ask_chain_brain", text: text };
+            chrome.runtime.sendMessage({ action: "sync_to_chain_brain", payload: payload }, (response) => {
+                const data = response && response.data ? response.data : {};
+                if (data.status === "MATCH" || data.status === "MISS") {
+                    log('[ANSWER] ' + data.answer);
+                } else {
+                    log('[ERROR] Ask failed: ' + JSON.stringify(data));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

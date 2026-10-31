@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-30T23:00:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/chain-brain-expansion.md",
+    "id": "chain-brain-expansion",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-31T00:01:24.061075+00:00",
+  "gate_status": "done",
+  "id": "chain-brain-expansion",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "Ideas only where the license is unknown. No network, wallet, signing, payment, or key code. SuperAllen gate NOT lifted; cycle.py unchanged and does not auto-run the adapter.",
+  "priority": 85,
+  "source": "HALEX-AI chain-brain expansion 2026-10-30 (Gemini suite, Allen-gated)",
+  "summary": "Chain-Brain memory engine (1000 chains, agencies, sharding, division, conversational routing, OLS models, text blueprints) wired into HALEX-AI ZINIUM Chain. Builder adapter chain_brain_adapter.py lets the builder write records and models onto a JSON snapshot under the gate. Knowledge only: the loop never appends to the ZINIUM ledger itself; the gate folds lessons in after review."
+}

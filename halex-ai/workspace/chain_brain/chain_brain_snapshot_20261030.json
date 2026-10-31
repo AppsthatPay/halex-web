@@ -1,0 +1,66 @@
+{
+  "agencies": [
+    {
+      "agency_id": "ag-01",
+      "category": "culinary",
+      "chain_id": "Chain-01",
+      "end": 999,
+      "start": 0
+    },
+    {
+      "agency_id": "ag-ml-01",
+      "category": "machine_learning",
+      "chain_id": "Chain-05",
+      "end": 999,
+      "start": 0
+    }
+  ],
+  "chains": [
+    {
+      "category": "culinary",
+      "id": "Chain-01",
+      "name": "Culinary Master",
+      "space_allotted": 0
+    },
+    {
+      "category": "machine_learning",
+      "id": "Chain-05",
+      "name": "ML Vault",
+      "space_allotted": 0
+    }
+  ],
+  "records": [
+    {
+      "agency_id": "ag-01",
+      "category": "culinary",
+      "chain_id": "Chain-01",
+      "content": "Appalachian Stew Recipe",
+      "id": "rec-01",
+      "provenance": "ZINIUM-SEED-GEMINI"
+    },
+    {
+      "agency_id": "ag-01",
+      "category": "culinary",
+      "chain_id": "Chain-01",
+      "content": "Wine Pairing Guide",
+      "id": "rec-02",
+      "provenance": "ZINIUM-SEED-GEMINI"
+    },
+    {
+      "agency_id": "ag-ml-01",
+      "category": "machine_learning",
+      "chain_id": "Chain-05",
+      "content": "Model model-linear-01 [OLS]: slope=2.0, intercept=0.0, mse=0.0",
+      "id": "model-rec-model-linear-01",
+      "provenance": "internal-training"
+    },
+    {
+      "agency_id": "ag-ml-01",
+      "category": "machine_learning",
+      "chain_id": "Chain-05",
+      "content": "TARGET_CLOUD: AWS\nMODEL_ID: model-linear-01\nALGORITHM: linear_regression_ols\nPARAMETERS: {'slope': 2.0, 'intercept': 0.0}\nDEPLOYMENT_STATUS: READY_FOR_MIGRATION\nCONTAINER_RUNTIME: python:3.11-slim\nSCALING_POLICY: automatic-shard-routing\n",
+      "id": "rec-blueprint-model-linear-01-aws",
+      "provenance": "blueprint-generator"
+    }
+  ]
+}
