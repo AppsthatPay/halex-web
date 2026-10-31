@@ -1,0 +1,60 @@
+{
+  "system": "ZINIUM 1000^5",
+  "status": "STAGING ONLY, not live, not a crypto system",
+  "brainchain_chain": 500,
+  "center": [
+    500,
+    500,
+    500,
+    500,
+    500
+  ],
+  "agencies_count": 32,
+  "agency_status": "DRAFT (gate review pending)",
+  "operational_state": "AWAIT_INSTRUCTIONS",
+  "blocks": 5,
+  "last_block": 5,
+  "last_kind": "chain-engine-cycle",
+  "last_hash": "e2054737eb56bde2b0528fc121a43db46afefb81c60732be47688ac8a8fd1c34",
+  "block_hashes": [
+    "fb8e34022ab5bbd56ad391ccd0e97b7c449831acf068dbf2c3c8090066d405bb",
+    "2340bcc9a8b95dbd0e213514388ab1af9ab8408b0771c01cac57a20cfba13b72",
+    "4ce9049e77d2cecfb06c6064ae978480d28c9513f63c482361f817533d591f66",
+    "38f675bdccdb3dc5378dc62b83938207782008daf9a26b06732e240fd5d2d8d6",
+    "e2054737eb56bde2b0528fc121a43db46afefb81c60732be47688ac8a8fd1c34"
+  ],
+  "tokens": {
+    "think": {
+      "total_units": 10000000100,
+      "block": 4
+    },
+    "TOKEN_FIRST_CHAIN": {
+      "total_units": 10000000500,
+      "block": 3
+    }
+  },
+  "technologies": [
+    "knowledge",
+    "software_systems",
+    "neural_modeling",
+    "robotics",
+    "child_chain_expansion"
+  ],
+  "mandate": "Learn the chain system; write and use the software system.",
+  "qa_note": "Record Q&A only. Answers come from these records. No live LLM, no trained model, no Wasm execution, no keys, no funds.",
+  "qa_topics": [
+    "how many agencies",
+    "center coordinate",
+    "mandate",
+    "operational state",
+    "token think",
+    "first chain token",
+    "technologies",
+    "blocks",
+    "last block",
+    "mitosis",
+    "pruning",
+    "obscurity",
+    "cross-chain sharing"
+  ]
+}
