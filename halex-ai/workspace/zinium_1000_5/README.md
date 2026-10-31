@@ -81,6 +81,26 @@ Every agency, on opening, locks into:
 - Tests: 16/16 passing (6 engine + 6 deploy/operational +
   4 cross-chain).
 
+## Obscurity chain & single-use burn
+
+- `obscurity.py` — staging implementation of the pasted
+  ~17:19 code, with the pasted code NOT run as-is.
+- Defects found, not repeated: single-byte XOR presented as
+  military-grade encryption; decryption with a fresh ephemeral
+  key (not the coin key) would have returned garbage, not the
+  original text; the OTP package shipped a decryption key with
+  the ciphertext; float units and a fixed increment.
+- Staging form: sealed records carry a SHA3-512 integrity hash
+  only, no key material is generated or stored, no plaintext
+  is returned, and no hardware/enclave vault is claimed.
+- Single-use burn, verified: request a sealed 100-unit record,
+  consume it once (coin goes to 10,000,00100 units, 1 sealed
+  unit remains), reuse is refused with an error.
+- Topic manifests in the pasted demo were example content
+  only and are NOT retained; the demo uses placeholder
+  records.
+- Tests: 19/19 passing in total.
+
 - The external file `halex_ai_deploy_engine.py` named in
   Jeffrey's ~16:51 message was NOT found in this workspace's
   staging tree, so it was NOT read, run, or verified here.
