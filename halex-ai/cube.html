@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cube — HALEX-AI (staging)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2em auto;padding:0 1em;line-height:1.5}input{width:100%;padding:.6em;font-size:1em}button{padding:.6em 1em;margin-top:.5em}pre{white-space:pre-wrap;background:#f4f4f4;padding:1em}.note{color:#555;font-size:.9em}</style>
+</head>
+<body>
+<h1>ZINIUM Cube — staging</h1>
+<p class="note">STAGING ONLY. Not live, not a crypto system. This page answers only from cube records. No live model, no trained model, no Wasm execution, no keys, no funds. Questions are handled in your browser only and are never sent anywhere.</p>
+<div id="state"></div>
+<label for="q">Ask the cube (from its records only):</label>
+<input id="q" type="text" placeholder="What is token think?">
+<button id="ask">Ask</button>
+<pre id="out">Try: What is token think? — or — How many agencies are in the first cube?</pre>
+<script id="cube-state" type="application/json">
+{"system":"ZINIUM 1000^5","status":"STAGING ONLY, not live, not a crypto system","brainchain_chain":500,"center":[500,500,500,500,500],"agencies_count":32,"agency_status":"DRAFT (gate review pending)","operational_state":"AWAIT_INSTRUCTIONS","blocks":5,"last_block":5,"last_kind":"chain-engine-cycle","last_hash":"e2054737eb56bde2b0528fc121a43db46afefb81c60732be47688ac8a8fd1c34","technologies":["knowledge","software_systems","neural_modeling","robotics","child_chain_expansion"],"mandate":"Learn the chain system; write and use the software system.","qa_topics":["how many agencies","center coordinate","mandate","operational state","token think","first chain token","technologies","blocks","last block","mitosis","pruning","obscurity","cross-chain sharing"]}
+</script>
+<script src="zinium-cube-bridge.js"></script>
+<script>
+document.getElementById("state").textContent = "Blocks: 5 | Last: block 5 (chain-engine-cycle) | Agencies: 32 | State: AWAIT_INSTRUCTIONS | Center: (500,500,500,500,500)";
+document.getElementById("ask").onclick = function () {
+  var q = document.getElementById("q").value;
+  var r = window.HalexCube.answer(q);
+  document.getElementById("out").textContent = "[" + r.status + "] " + r.answer + "\nSource: " + r.source;
+};
+</script>
+</body>
+</html>

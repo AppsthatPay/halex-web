@@ -132,10 +132,13 @@ class TransparentWallet:
             "status": "CROSS-CHAIN SYNC SUCCESS",
             "from_wallet": source_wallet.wallet_id,
             "from_chain": source_wallet.chain_id,
+            "from_coordinate": list(source_wallet.coordinate.as_tuple()),
             "to_wallet": self.wallet_id,
             "to_chain": self.chain_id,
+            "to_coordinate": list(self.coordinate.as_tuple()),
             "satoshi_units": satoshi_units,
             "origin_chain_id": cloned_unit.origin_chain_id,
+            "origin_coordinate": list(source_wallet.coordinate.as_tuple()),
             "local_token_total_units": local_token.total_units(),
         }
         return True

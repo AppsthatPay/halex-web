@@ -101,6 +101,98 @@ Every agency, on opening, locks into:
   records.
 - Tests: 19/19 passing in total.
 
+## Brainchain runner — the wiring (added 2026-10-31 ~18:xx EDT)
+
+- `brainchain_runner.py` — ONE bounded pass, then it exits.
+  Run: `python3 brainchain_runner.py` from this folder.
+  It loads the 32 genesis agencies, gives the center agency
+  (500,500,500,500,500) and its neighbour (500,500,500,500,501)
+  one unified wallet identity each, deploys TOKEN + COIN to the
+  center wallet, shares a 100-unit knowledge copy center ->
+  neighbour (source retained, origin coordinate preserved),
+  burns one sealed 100-unit record on Chain 865 (reuse refused),
+  instructs all 32 agencies once (all return to
+  AWAIT_INSTRUCTIONS), checks expansion (0: load 0.1 < 0.95,
+  no recorded need) and pruning (1 low-utility sub-chain),
+  then appends block 2 to `ledger.jsonl` (hash-chained from
+  block 1) and a run report to `runs/run-block-2.json`.
+  Running it again appends block 3, and so on. No loop, no daemon.
+- `cross_chain.py` patched in this pass: transfer records now
+  carry `from_coordinate`, `to_coordinate`, and
+  `origin_coordinate`, so a share between genesis agencies is
+  provable by coordinate, not just by wallet + chain id.
+- Chain 865 stacking flag updated in this pass to the confirmed
+  canonical: 1000^5 (was 1000^4 / NEEDS_CONFIRMATION).
+- Tests: 22/22 passing in total (6 engine + 6 deploy/operational
+  + 4 cross-chain + 3 obscurity + 3 brainchain runner).
+
+## First-chain population + AI run — block 3 (2026-10-31 ~18:28 EDT)
+
+- `first_chain_population.py` — ONE bounded pass, then it exits.
+  Run: `python3 first_chain_population.py` from this folder.
+  It creates TOKEN_FIRST_CHAIN (10,000,000,500 units: base whole
+  + 5 x 100-unit technology units), deployed to the center
+  wallet, then shares one split-cell copy to each of the other
+  31 first-cube agencies (source retained, origin coordinate
+  preserved, each local token 1 -> 2 units). Technologies are
+  the deploy manifest keys: knowledge, software_systems,
+  neural_modeling, robotics, child_chain_expansion.
+- AI run, record only: all 32 agencies instructed once and back
+  to AWAIT_INSTRUCTIONS, then a toy linear transform
+  (output[i] = input[i] * weight + 0.01, example weights only)
+  flows through 67 populated units: input [0.5, -0.2, 0.8, 1.2]
+  -> output [0.1007, -0.1569, 0.4669, 7.913]. This is NOT
+  transformer attention, NOT convolution, NOT a trained model.
+- Mitosis: real first cube 0 expansions (load 0.1 < 0.95, no
+  recorded need). Sandbox probe only: load 0.97 + recorded need
+  + empty slot -> one DRAFT daughter, NOT added to the cube.
+- Block 3 hash `4ce9049e77d2cecfb06c6064ae978480d28c9513f63c482361f817533d591f66`,
+  hash-chained from block 2, verified by read-back. Agencies
+  file still 32. Report `runs/run-block-3.json`.
+- Tests: 25/25 passing in total (previous 22 + 3 population).
+  Note: the runner tests were fixed in this pass to be relative
+  to the copied ledger's last block, not hard-coded to block 2,
+  after block 3 made the old absolute expectation fail.
+
+## Token "think" dispersion — block 4 (2026-10-31 ~18:29 EDT)
+
+- `think_token.py` — ONE bounded pass, then it exits.
+  It creates token "think" (10,000,000,100 units: base whole +
+  100-unit instruction unit), deployed to the center wallet,
+  then shares a copy to each of the other 31 agencies (source
+  retained, origin preserved). Each agency writes one dialog
+  record (received think instruction, recorded, returned to
+  AWAIT_INSTRUCTIONS) and remains DRAFT until gate review.
+  Block 4 hash `38f675bdccdb3dc5378dc62b83938207782008daf9a26b06732e240fd5d2d8d6`,
+  hash-chained from block 3, verified by read-back. Agencies
+  file still 32, interactions 37 -> 70 lines, report
+  `runs/run-block-4.json`. Tests: 27/27 passing in total
+  (previous 25 + 2 think).
+
+## Chain engine, record Q&A, app wire — block 5 (2026-10-31 ~18:35 EDT)
+
+- `chain_engine.py` — Engine entrypoint: `status` (read-only),
+  `cycle` (one bounded pass, then exit), `ask` (record Q&A).
+  Block 5 is an engine cycle: 32/32 agencies instructed and
+  back to AWAIT_INSTRUCTIONS, hash
+  `e2054737eb56bde2b0528fc121a43db46afefb81c60732be47688ac8a8fd1c34`.
+- `brainchain_qa.py` — Record Q&A only. Answers from ledger /
+  agencies / run reports, honest MISS otherwise. Questions are
+  processed in memory only, never written to the ledger.
+  First answered question in this system: "What is token
+  think?" -> answered from block 4. A price question -> MISS.
+- `ABACUS_5_BASIS.md` — Basis list for abacus 1000^5, and
+  what is explicitly NOT in it (no Wasm runtime, no trained
+  model, no network, no signing, no funds, no keys).
+- App wire, staging: `halex-ai/cube.html` +
+  `halex-ai/zinium-cube-bridge.js` +
+  `halex-ai/zinium-cube-state.json` (snapshot at block 5).
+  The page answers from the snapshot in the browser only.
+  It does NOT edit the main HALEX-AI index.html chat flow,
+  and it is NOT on gh-pages live until a separate make-live
+  order. Tests: 30/30 passing in total (previous 27 + 3
+  engine/Q&A).
+
 - The external file `halex_ai_deploy_engine.py` named in
   Jeffrey's ~16:51 message was NOT found in this workspace's
   staging tree, so it was NOT read, run, or verified here.
