@@ -1,0 +1,90 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "corpus has exactly 6 entries",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "corpus titles match the pack read 2026-11-01",
+      "pass": true
+    },
+    {
+      "detail": "The house mouse",
+      "name": "Q1 before: returns a real entry, not fallback",
+      "pass": true
+    },
+    {
+      "detail": "related=['House mouse vs its cousins', 'Pet mouse care basics']",
+      "name": "Q1 after: same top entry, plus related neighbours",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "Q1 after: related entries are real corpus entries",
+      "pass": true
+    },
+    {
+      "detail": "GENERIC FALLBACK (no entry)",
+      "name": "Q2 before: generic fallback (no exact pattern-phrase match)",
+      "pass": true
+    },
+    {
+      "detail": "How mice live: senses and habits",
+      "name": "Q2 after: resolves to senses-and-habits entry",
+      "pass": true
+    },
+    {
+      "detail": "related=['The house mouse', 'House mouse vs its cousins']",
+      "name": "Q2 after: related pass appends a neighbour, not a repeat",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "Q2 synonym map is declared in this file, not hidden",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "tuning changes no corpus title",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "baseline function unchanged by tuning (pure functions)",
+      "pass": true
+    }
+  ],
+  "corpus": "animals-mice pack, 6 entries, read 2026-11-01",
+  "failed": 0,
+  "passed": 11,
+  "questions": {
+    "q1": {
+      "after": {
+        "answer": "The house mouse",
+        "related": [
+          "House mouse vs its cousins",
+          "Pet mouse care basics"
+        ]
+      },
+      "before": {
+        "answer": "The house mouse",
+        "related": []
+      }
+    },
+    "q2": {
+      "after": {
+        "answer": "How mice live: senses and habits",
+        "related": [
+          "The house mouse",
+          "House mouse vs its cousins"
+        ]
+      },
+      "before": {
+        "answer": "GENERIC FALLBACK (no entry)",
+        "related": []
+      }
+    }
+  }
+}

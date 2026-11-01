@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "researcher: passes through exactly the stated evidence",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "researcher: empty evidence yields empty findings, no invention",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "verifier: sourced findings verify",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "compiler: draft lists both verified findings",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "builder: bundle names the task and reports draft present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "four stages exist, named researcher/verifier/compiler/builder",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "flow without stages has no stage_results key",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "flow with stages adds stage_results only",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "baseline field 'id' unchanged when stages present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "baseline field 'kind' unchanged when stages present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "baseline field 'notes' unchanged when stages present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "baseline field 'steps' unchanged when stages present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "staged flow ran all four stages",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "input task is not mutated by the flow",
+      "pass": true
+    }
+  ],
+  "failed": 0,
+  "passed": 14
+}

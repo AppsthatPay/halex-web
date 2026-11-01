@@ -1,0 +1,50 @@
+{
+  "checks": [
+    {
+      "name": "template has all required fields",
+      "pass": true
+    },
+    {
+      "name": "template entry has all required fields",
+      "pass": true
+    },
+    {
+      "name": "demo pack conforms to template fields",
+      "pass": true
+    },
+    {
+      "name": "demo pack has at least one real entry",
+      "pass": true
+    },
+    {
+      "name": "demo entry id matches source record id",
+      "pass": true
+    },
+    {
+      "name": "demo entry summary matches source appearance summary",
+      "pass": true
+    },
+    {
+      "name": "demo entry provenance names the source actually read",
+      "pass": true
+    },
+    {
+      "name": "demo pack preserves images NOT READ from source",
+      "pass": true
+    },
+    {
+      "name": "demo pack preserves subspecies NOT READ from source",
+      "pass": true
+    },
+    {
+      "name": "demo pack authorship label intact",
+      "pass": true
+    },
+    {
+      "name": "demo pack status is staging, never live",
+      "pass": true
+    }
+  ],
+  "passed": 11,
+  "failed": 0
+}
