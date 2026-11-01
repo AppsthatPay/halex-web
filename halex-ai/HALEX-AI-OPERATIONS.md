@@ -94,3 +94,29 @@ node --check zinium-cube-bridge.js
   or capabilities, and a key that never leaves the visitor's
   browser. Anything beyond that needs the backend decision
   above, and will be labelled as such when it exists.
+
+## Chat cleanup + new Settings (2026-10-31, staging only, push pending)
+
+- Chat thread is now back-and-forth blocks: user on the right in
+  light sky-blue (#87cefa, dark theme #1e3a5f), AI on the left in
+  bone white (#f9f6ee, dark theme #23231f). No new script file,
+  script order unchanged, adapter still last.
+- New Settings sections, all browser-localStorage only, no server:
+  Music composer (browser tones only, notes A to G, play button
+  gated by the sound-effects toggle); Video and codecs (H.264,
+  H.265, VP9, VP8, AV1, ProRes, DNxHD, MPEG-4, Theora, plus
+  quality preference, preference only, no encoder on the page);
+  Audio and visual (sound on/off, visual pulse on/off,
+  reduce motion, all real toggles); Mapping and location
+  (agreement off by default, no location requested, no map
+  loaded, retention preference only); Privacy (store history
+  on/off, clear on close, plus the honest brain-endpoint
+  exception); Contribute (type + draft, copy button, email
+  button opening the visitor email client, repository link,
+  page sends nothing on its own, never paste keys or seeds).
+- Harnesses after this change: chat 32/32, plugins 24/24,
+  brain 31/31, node check clean on all page scripts.
+- Push to the branches is NOT done in this pass: a GitHub
+  read result during the push check did not pass a safety
+  check, so it was not used to decide the push. Push only
+  after Jeffrey confirms the file list.

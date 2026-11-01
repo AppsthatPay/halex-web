@@ -97,6 +97,91 @@
   </section>
 
   <section class="drawer-section">
+    <h3>Music composer</h3>
+    <p class="drawer-note">Browser only. No audio files, no server, no recording. Notes play in this browser only, using the browser's built-in tone generator.</p>
+    <label class="drawer-label" for="music-mode">Composer mode</label>
+    <select id="music-mode">
+      <option value="off">Off</option>
+      <option value="notes">Simple notes</option>
+    </select>
+    <label class="drawer-label" for="music-notes">Notes (letters A to G, separated by spaces)</label>
+    <input id="music-notes" type="text" placeholder="C E G A" value="C E G A">
+    <div class="btnrow">
+      <button class="btn" id="music-play" type="button">Play notes</button>
+    </div>
+    <p class="ext-status" id="music-status">Composer is off until you pick Simple notes.</p>
+  </section>
+
+  <section class="drawer-section">
+    <h3>Video and codecs</h3>
+    <p class="drawer-note">Rendering preference only. This page does not encode video on its own. The choice is stored in this browser and used when an export feature is added.</p>
+    <label class="drawer-label" for="video-codec">Video codec type</label>
+    <select id="video-codec">
+      <option value="h264">MP4 / H.264</option>
+      <option value="h265">H.265 / HEVC</option>
+      <option value="vp9">WebM / VP9</option>
+      <option value="vp8">WebM / VP8</option>
+      <option value="av1">AV1</option>
+      <option value="prores">ProRes</option>
+      <option value="dnxhd">DNxHD</option>
+      <option value="mpeg4">MPEG-4</option>
+      <option value="theora">Theora</option>
+    </select>
+    <label class="drawer-label" for="video-quality">Video quality preference</label>
+    <select id="video-quality">
+      <option value="720p">720p</option>
+      <option value="1080p">1080p</option>
+      <option value="4k">4K</option>
+    </select>
+  </section>
+
+  <section class="drawer-section">
+    <h3>Audio and visual</h3>
+    <label><input type="checkbox" id="av-sound" checked> Sound effects (browser tones only)</label>
+    <label><input type="checkbox" id="av-visual" checked> Visual effects (pulse monitor)</label>
+    <label><input type="checkbox" id="av-reduce-motion"> Reduce motion</label>
+    <p class="drawer-note">Sound effects are browser tones only, no audio files. Turning visual effects off hides the pulse monitor. These choices are stored in this browser only.</p>
+  </section>
+
+  <section class="drawer-section">
+    <h3>Mapping and location</h3>
+    <label><input type="checkbox" id="map-agree"> Allow location mapping</label>
+    <p class="drawer-note">Agreement only, and off by default. By turning this on, you agree that this page may ask your browser for location, only to show a map, and only in this browser. No location is sent to a server by this page, no map service is loaded, and no location is requested until a map view is added. Turning this on does not, by itself, load a map.</p>
+    <label class="drawer-label" for="map-retention">Location data retention preference</label>
+    <select id="map-retention">
+      <option value="session">Session only</option>
+      <option value="until-cleared">Until cleared</option>
+    </select>
+  </section>
+
+  <section class="drawer-section">
+    <h3>Privacy</h3>
+    <label><input type="checkbox" id="privacy-store-history" checked> Store chat history in this browser</label>
+    <label><input type="checkbox" id="privacy-clear-on-close"> Clear history when I close this tab</label>
+    <p class="drawer-note">History, keys, and all settings on this page live in this browser only, in localStorage. Nothing you type is sent to a server by this page, except this one case: with a brain configured in Model settings, messages go to that endpoint only. With nothing configured, nothing is sent anywhere. Never paste a wallet key, seed phrase, or password into any field on this page.</p>
+  </section>
+
+  <section class="drawer-section">
+    <h3>Contribute</h3>
+    <p class="drawer-note">Contribution port. Submit code, a suggestion, or a collaboration idea. This page does not send anything on its own, and it has no message server. Copy your draft, or send it through your own email client, or open the public repository.</p>
+    <label class="drawer-label" for="contrib-type">Contribution type</label>
+    <select id="contrib-type">
+      <option value="Code">Code</option>
+      <option value="Suggestion">Suggestion</option>
+      <option value="Collaboration">Collaboration</option>
+      <option value="Bug report">Bug report</option>
+    </select>
+    <label class="drawer-label" for="contrib-text">Your code, suggestion, or idea</label>
+    <textarea id="contrib-text" rows="4" placeholder="Paste code or write your suggestion here. Do not paste keys, seeds, or passwords."></textarea>
+    <div class="btnrow">
+      <button class="btn" id="contrib-copy" type="button">Copy draft</button>
+      <button class="btn ghost" id="contrib-email" type="button">Send by email</button>
+    </div>
+    <p class="ext-status" id="contrib-status">Drafts are kept in this browser only until you copy or email them.</p>
+    <p class="drawer-note">Email: <a href="mailto:sharpchefjeff@gmail.com">sharpchefjeff@gmail.com</a> (opens your email client). Repository: <a href="https://github.com/AppsthatPay/halex-web" target="_blank" rel="noopener">AppsthatPay / halex-web on GitHub</a>.</p>
+  </section>
+
+  <section class="drawer-section">
     <h3>About</h3>
     <p class="drawer-note">This assistant answers from bundled knowledge packs stored in the page, so it works offline with no key. It does not run a live model on its own, and it never moves funds, holds wallet keys, trades, or posts on its own. HALEX-AI is a general AI built by AI, for everyone and anything; HALEX-M, the blockchain intelligence app, is its sibling.</p>
   </section>
