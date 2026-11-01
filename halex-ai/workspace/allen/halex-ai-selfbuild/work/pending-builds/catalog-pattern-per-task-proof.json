@@ -1,0 +1,51 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "pattern cited with label",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pattern count is 1 for one cited pattern",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pattern without catalog id refused",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pattern with blank catalog id refused",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "multiple patterns listed in order",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "rendered output contains no agent-action language",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "empty pattern list yields an empty report field, never invented patterns",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "inputs are not mutated",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "output is plain data (dict with list of dicts)",
+      "pass": true
+    }
+  ],
+  "failed": 0,
+  "passed": 9
+}

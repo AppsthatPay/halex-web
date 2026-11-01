@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "intake record readable",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "intake has provenance",
+      "pass": true
+    },
+    {
+      "detail": "deer mouse (Peromyscus maniculatus)",
+      "name": "intake names a species",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pack has exactly the intake-derived entry",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pack entry carries provenance link",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pack entry marks images NOT READ",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pack is marked staging, never live",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "manifest entry matches pack id and count",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "manifest diff is proposed-only, not applied",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "no live pack or page path in outputs",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "written pack re-reads identically",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "written pack has >=1 entry",
+      "pass": true
+    }
+  ],
+  "failed": 0,
+  "intake": "fauna-intake-mammals-deer-mouse.json",
+  "manifest_entry": {
+    "entry_count": 1,
+    "file": "work/pending-builds/pack-pipeline-pack.json",
+    "pack_id": "staging-fauna-deer-mouse",
+    "page_diff": "PROPOSED ONLY: one script line + one manifest entry; not applied in this run."
+  },
+  "pack": "pack-pipeline-pack.json",
+  "passed": 12,
+  "pipeline": "intake -> pack -> page (staging only)"
+}

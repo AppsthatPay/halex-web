@@ -1,0 +1,21 @@
+{
+  "authorship": "HALEX-AI staging draft",
+  "entries": [
+    {
+      "images": "NOT READ",
+      "intake_record": "fauna-intake-mammals-deer-mouse.json",
+      "patterns": [
+        "deer mouse",
+        "peromyscus maniculatus"
+      ],
+      "scientific_name": "Peromyscus maniculatus",
+      "summary": "Small slender mouse, grayish to reddish brown above with white underparts and white feet. The finely haired tail is sharply bicolored, dark above and light below. Large ears with little fur, pointed nose, large black beady eyes, long prominent whiskers, shorter forelimbs than hind limbs.",
+      "title": "deer mouse"
+    }
+  ],
+  "id": "staging-fauna-deer-mouse",
+  "name": "Staging fauna: deer mouse (pipeline demo)",
+  "provenance": "Derived 2026-11-01 from work/pending-builds/fauna-intake-mammals-deer-mouse.json; folding is Allen's review decision.",
+  "status": "STAGING DRAFT - not a live pack, not for page wiring",
+  "version": "0.1.0-staging"
+}

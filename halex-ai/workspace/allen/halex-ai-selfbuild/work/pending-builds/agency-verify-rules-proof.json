@@ -1,0 +1,56 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "2-source pass: two independent sources verify",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "1-source label: exactly one source is single-source, labelled",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "vendor-figure refusal: verdict includes vendor-figure refused",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "vendor-figure refusal: figure is never returned as fact",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "same-name duplicate does not pass as 2 sources",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "0-source unverified",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "vendor source alone never verifies",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "non-independent second source does not corroborate",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "2-source pass stands alongside vendor-figure refusal",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "inputs are not mutated",
+      "pass": true
+    }
+  ],
+  "failed": 0,
+  "passed": 10
+}
