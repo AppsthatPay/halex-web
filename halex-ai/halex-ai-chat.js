@@ -131,7 +131,181 @@
   }
 
   function saveStore() {
+    try {
+      if (localStorage.getItem('halex_ai_privacy_store_history') === '0') return;
+    } catch (e) {}
     try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
+  }
+
+  /* ----- New settings: music, video, audio-visual, mapping,
+     privacy, contribute. All stored in this browser only.
+     No new script file, no server, no location request here. ----- */
+  function getPref(key, fallback) {
+    try { var v = localStorage.getItem(key); return v === null ? fallback : v; } catch (e) { return fallback; }
+  }
+  function setPref(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) {}
+  }
+  function setCheckbox(id, value) {
+    var el = $(id);
+    if (el) el.checked = value;
+  }
+  function playNotes(notesText, statusEl) {
+    var freq = { C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392.00, A: 440.00, B: 493.88 };
+    var notes = (notesText || '').toUpperCase().replace(/[^A-G\s,]/g, '').split(/[\s,]+/).filter(function (n) { return freq[n]; });
+    if (!notes.length) {
+      if (statusEl) statusEl.textContent = 'No valid notes. Use letters A to G, separated by spaces.';
+      return;
+    }
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) {
+      if (statusEl) statusEl.textContent = 'This browser does not support tone playback.';
+      return;
+    }
+    try {
+      var ctx = new AC();
+      var t = ctx.currentTime;
+      notes.forEach(function (n, i) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq[n];
+        gain.gain.setValueAtTime(0.0001, t + i * 0.35);
+        gain.gain.exponentialRampToValueAtTime(0.2, t + i * 0.35 + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.35 + 0.32);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t + i * 0.35);
+        osc.stop(t + i * 0.35 + 0.35);
+      });
+      if (statusEl) statusEl.textContent = 'Playing ' + notes.length + ' notes in this browser only.';
+    } catch (e) {
+      if (statusEl) statusEl.textContent = 'Tone playback failed in this browser.';
+    }
+  }
+  function initNewSettings() {
+    var musicMode = $('music-mode');
+    var musicNotes = $('music-notes');
+    var musicStatus = $('music-status');
+    if (musicMode) {
+      musicMode.value = getPref('halex_ai_music_mode', 'off');
+      if (musicStatus) musicStatus.textContent = musicMode.value === 'notes' ? 'Composer is on. Notes play in this browser only.' : 'Composer is off until you pick Simple notes.';
+      musicMode.addEventListener('change', function () {
+        setPref('halex_ai_music_mode', musicMode.value);
+        if (musicStatus) musicStatus.textContent = musicMode.value === 'notes' ? 'Composer is on. Notes play in this browser only.' : 'Composer is off until you pick Simple notes.';
+      });
+    }
+    if (musicNotes) {
+      musicNotes.value = getPref('halex_ai_music_notes', 'C E G A');
+      musicNotes.addEventListener('change', function () { setPref('halex_ai_music_notes', musicNotes.value); });
+    }
+    var playBtn = $('music-play');
+    if (playBtn) {
+      playBtn.addEventListener('click', function () {
+        if (getPref('halex_ai_av_sound', '1') === '0') {
+          if (musicStatus) musicStatus.textContent = 'Sound effects are off in Audio and visual settings.';
+          return;
+        }
+        if (musicMode && musicMode.value !== 'notes') {
+          if (musicStatus) musicStatus.textContent = 'Pick Simple notes first.';
+          return;
+        }
+        playNotes(musicNotes ? musicNotes.value : '', musicStatus);
+      });
+    }
+    var videoCodec = $('video-codec');
+    if (videoCodec) {
+      videoCodec.value = getPref('halex_ai_video_codec', 'h264');
+      videoCodec.addEventListener('change', function () { setPref('halex_ai_video_codec', videoCodec.value); });
+    }
+    var videoQuality = $('video-quality');
+    if (videoQuality) {
+      videoQuality.value = getPref('halex_ai_video_quality', '720p');
+      videoQuality.addEventListener('change', function () { setPref('halex_ai_video_quality', videoQuality.value); });
+    }
+    var avSound = $('av-sound');
+    if (avSound) {
+      avSound.checked = getPref('halex_ai_av_sound', '1') !== '0';
+      avSound.addEventListener('change', function () { setPref('halex_ai_av_sound', avSound.checked ? '1' : '0'); });
+    }
+    var avVisual = $('av-visual');
+    if (avVisual) {
+      avVisual.checked = getPref('halex_ai_av_visual', '1') !== '0';
+      if (!avVisual.checked) document.body.classList.add('no-visual-effects');
+      avVisual.addEventListener('change', function () {
+        setPref('halex_ai_av_visual', avVisual.checked ? '1' : '0');
+        document.body.classList.toggle('no-visual-effects', !avVisual.checked);
+      });
+    }
+    var avReduce = $('av-reduce-motion');
+    if (avReduce) {
+      avReduce.checked = getPref('halex_ai_av_reduce_motion', '0') === '1';
+      if (avReduce.checked) document.body.classList.add('reduce-motion');
+      avReduce.addEventListener('change', function () {
+        setPref('halex_ai_av_reduce_motion', avReduce.checked ? '1' : '0');
+        document.body.classList.toggle('reduce-motion', avReduce.checked);
+      });
+    }
+    var mapAgree = $('map-agree');
+    if (mapAgree) {
+      mapAgree.checked = getPref('halex_ai_map_agree', '0') === '1';
+      mapAgree.addEventListener('change', function () { setPref('halex_ai_map_agree', mapAgree.checked ? '1' : '0'); });
+    }
+    var mapRetention = $('map-retention');
+    if (mapRetention) {
+      mapRetention.value = getPref('halex_ai_map_retention', 'session');
+      mapRetention.addEventListener('change', function () { setPref('halex_ai_map_retention', mapRetention.value); });
+    }
+    var privacyStore = $('privacy-store-history');
+    if (privacyStore) {
+      privacyStore.checked = getPref('halex_ai_privacy_store_history', '1') !== '0';
+      privacyStore.addEventListener('change', function () { setPref('halex_ai_privacy_store_history', privacyStore.checked ? '1' : '0'); });
+    }
+    var privacyClear = $('privacy-clear-on-close');
+    if (privacyClear) {
+      privacyClear.checked = getPref('halex_ai_privacy_clear_on_close', '0') === '1';
+      privacyClear.addEventListener('change', function () { setPref('halex_ai_privacy_clear_on_close', privacyClear.checked ? '1' : '0'); });
+      window.addEventListener('beforeunload', function () {
+        try {
+          if (localStorage.getItem('halex_ai_privacy_clear_on_close') === '1') localStorage.removeItem(STORE_KEY);
+        } catch (e) {}
+      });
+    }
+    var contribType = $('contrib-type');
+    var contribText = $('contrib-text');
+    var contribStatus = $('contrib-status');
+    var contribCopy = $('contrib-copy');
+    if (contribCopy) {
+      contribCopy.addEventListener('click', function () {
+        var text = (contribText ? contribText.value : '') || '';
+        var type = contribType ? contribType.value : 'Suggestion';
+        var draft = 'HALEX-AI contribution (' + type + '):\n' + text;
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(draft).then(function () {
+              if (contribStatus) contribStatus.textContent = 'Draft copied. Paste it into email or a repository issue.';
+            }, function () {
+              if (contribStatus) contribStatus.textContent = 'Copy failed in this browser. Select the draft text and copy it manually.';
+            });
+          } else if (contribStatus) {
+            contribStatus.textContent = 'Copy is not supported in this browser. Select the draft text and copy it manually.';
+          }
+        } catch (e) {
+          if (contribStatus) contribStatus.textContent = 'Copy failed in this browser.';
+        }
+      });
+    }
+    var contribEmail = $('contrib-email');
+    if (contribEmail) {
+      contribEmail.addEventListener('click', function () {
+        var text = (contribText ? contribText.value : '') || '';
+        var type = contribType ? contribType.value : 'Suggestion';
+        var subject = encodeURIComponent('HALEX-AI contribution: ' + type);
+        var body = encodeURIComponent(text);
+        window.location.href = 'mailto:sharpchefjeff@gmail.com?subject=' + subject + '&body=' + body;
+        if (contribStatus) contribStatus.textContent = 'Opening your email client. This page does not send the draft itself.';
+      });
+    }
   }
 
   function currentConversation() {
@@ -425,6 +599,7 @@
     initPulse();
     initAttach();
     initHistoryControls();
+    initNewSettings();
   }
 
   if (document.readyState === 'loading') {

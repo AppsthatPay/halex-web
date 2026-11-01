@@ -79,30 +79,56 @@ body.is-thinking .pulse-monitor { border-color: #d4af37; background: #fdf6d8; }
 @keyframes pulse-dash { to { stroke-dashoffset: -48; } }
 .pulse-label { font-size: 12px; color: #5b6470; white-space: nowrap; }
 
-/* Thread: message bubbles. */
+/* Thread: message bubbles, back and forth, clean and simple.
+   User blocks are light sky-blue, AI blocks are bone white.
+   User sits on the right, AI on the left, so the conversation
+   reads as alternating blocks, not as one long column. */
 .chat-thread {
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 18px 16px;
   background: #ffffff;
 }
+#ext-log {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
 #ext-log .ext-msg {
-  max-width: 92%;
-  margin: 0 0 12px 0;
-  padding: 10px 12px;
-  border-radius: 12px;
+  max-width: 82%;
+  margin: 0;
+  padding: 10px 14px;
+  border-radius: 14px;
   border: 1px solid #e2e6ea;
   background: #ffffff;
   color: #1c1f24;
   white-space: pre-wrap;
   word-break: break-word;
+  line-height: 1.55;
 }
 #ext-log .ext-msg-user {
   margin-left: auto;
-  background: #e7f0ff;
-  border-color: #c9d9f5;
+  background: #87cefa;
+  border-color: #6fb7e8;
+  border-bottom-right-radius: 4px;
+  color: #10202e;
 }
-#ext-log .ext-msg-ai { margin-right: auto; }
+#ext-log .ext-msg-ai {
+  margin-right: auto;
+  background: #f9f6ee;
+  border-color: #e6ddc3;
+  border-bottom-left-radius: 4px;
+  color: #1c1f24;
+}
+#ext-log .ext-msg-tool {
+  margin-right: auto;
+  background: #f6f7f9;
+  border-color: #e2e6ea;
+}
+/* Audio-visual preference: reduce motion, or hide the pulse. */
+body.reduce-motion .pulse-line,
+body.reduce-motion .thinking-dots { animation: none; }
+body.no-visual-effects .pulse-monitor { display: none; }
 #ext-log .ext-source {
   font-size: 11px;
   color: #8a93a1;
@@ -211,7 +237,8 @@ body[data-theme="dark"] .chat-app { background: #12151d; }
 body[data-theme="dark"] .chat-topbar { background: #171b26; border-color: #2e3547; }
 body[data-theme="dark"] .chat-thread { background: #12151d; }
 body[data-theme="dark"] #ext-log .ext-msg { background: #171b26; border-color: #2e3547; color: #eceef4; }
-body[data-theme="dark"] #ext-log .ext-msg-user { background: #1e2a3d; border-color: #2e4a6b; }
+body[data-theme="dark"] #ext-log .ext-msg-user { background: #1e3a5f; border-color: #2e5a8a; color: #eaf2ff; }
+body[data-theme="dark"] #ext-log .ext-msg-ai { background: #23231f; border-color: #3a3a30; color: #eceef4; }
 body[data-theme="dark"] #ext-log .ext-source,
 body[data-theme="dark"] #ext-log .agent-name,
 body[data-theme="dark"] .history-label,
