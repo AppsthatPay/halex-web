@@ -1,0 +1,89 @@
+{
+  "executor_seeding": "pack-linter, queue-entry validator, draft-formatter",
+  "sandbox": "subprocess argument lists only, no command shell, no network, inputs read-only except this proof file",
+  "results": {
+    "pack_linter_real_pack": {
+      "command": [
+        "/usr/bin/python3",
+        "executor-seeding-pack-linter.py",
+        "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/pending-builds/library-pack-expansion.json"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout_tail": [
+        "LINT OK: /home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/pending-builds/library-pack-expansion.json"
+      ],
+      "stderr_tail": []
+    },
+    "pack_linter_broken_pack_negative_control": {
+      "command": [
+        "/usr/bin/python3",
+        "executor-seeding-pack-linter.py",
+        "/tmp/tmp75dqdljp/broken-pack.json"
+      ],
+      "exit_code": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "stdout_tail": [
+        "FAIL: packs[0] entry 0: missing or empty body/summary",
+        "FAIL: packs[0] entry 0: missing source/docs",
+        "LINT 3 failure(s)"
+      ],
+      "stderr_tail": []
+    },
+    "queue_validator_all": {
+      "command": [
+        "/usr/bin/python3",
+        "executor-seeding-queue-validator.py",
+        "--all",
+        "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/queue"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout_tail": [
+        "OK: tommi-foldin.json",
+        "OK: worktree-isolation-specs-20261031.json",
+        "VALIDATED 32 file(s), 0 failure(s)"
+      ],
+      "stderr_tail": []
+    },
+    "draft_formatter_first_pass": {
+      "command": [
+        "/usr/bin/python3",
+        "executor-seeding-draft-formatter.py",
+        "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/pending-builds/library-pack-wiring.md",
+        "/tmp/tmp75dqdljp/formatted-1.md"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout_tail": [
+        "FORMATTED library-pack-wiring.md -> formatted-1.md"
+      ],
+      "stderr_tail": []
+    },
+    "draft_formatter_second_pass": {
+      "command": [
+        "/usr/bin/python3",
+        "executor-seeding-draft-formatter.py",
+        "/tmp/tmp75dqdljp/formatted-1.md",
+        "/tmp/tmp75dqdljp/formatted-2.md"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout_tail": [
+        "FORMATTED formatted-1.md -> formatted-2.md"
+      ],
+      "stderr_tail": []
+    },
+    "draft_formatter_idempotent": true,
+    "draft_formatter_trailing_ws_lines": [],
+    "draft_formatter_single_trailing_newline": true
+  },
+  "checks_passed": 8,
+  "checks_total": 8,
+  "all_passed": true
+}

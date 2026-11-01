@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "name": "seeded executors: all KEEP",
+      "pass": true
+    },
+    {
+      "name": "seeded executors: none retired",
+      "pass": true
+    },
+    {
+      "name": "seeded executors: records intact",
+      "pass": true
+    },
+    {
+      "name": "retire gone with reason",
+      "pass": true
+    },
+    {
+      "name": "retired gone stays in the record",
+      "pass": true
+    },
+    {
+      "name": "retire gone keeps seeded KEEPs",
+      "pass": true
+    },
+    {
+      "name": "retire broken with reason",
+      "pass": true
+    },
+    {
+      "name": "retired broken stays in the record",
+      "pass": true
+    },
+    {
+      "name": "retire broken keeps seeded KEEPs",
+      "pass": true
+    },
+    {
+      "name": "retire dirty with reason",
+      "pass": true
+    },
+    {
+      "name": "retired dirty stays in the record",
+      "pass": true
+    },
+    {
+      "name": "retire dirty keeps seeded KEEPs",
+      "pass": true
+    },
+    {
+      "name": "empty executor name refused",
+      "pass": true
+    },
+    {
+      "name": "non-list input refused",
+      "pass": true
+    },
+    {
+      "name": "input unmutated",
+      "pass": true
+    }
+  ],
+  "passed": 15,
+  "failed": 0
+}

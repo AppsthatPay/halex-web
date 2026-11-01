@@ -1,0 +1,42 @@
+{
+  "checks": [
+    {
+      "name": "three mappings present",
+      "pass": true
+    },
+    {
+      "name": "all mappings validate",
+      "pass": true
+    },
+    {
+      "name": "session mapping is descriptor-only",
+      "pass": true
+    },
+    {
+      "name": "runtime discovery mapping is descriptor-only",
+      "pass": true
+    },
+    {
+      "name": "vendor execution maps to none, never executed",
+      "pass": true
+    },
+    {
+      "name": "no mapping mentions an API key",
+      "pass": true
+    },
+    {
+      "name": "vendor toolkit count kept as claim only",
+      "pass": true
+    },
+    {
+      "name": "network execution refused",
+      "pass": true
+    },
+    {
+      "name": "empty mapping refused",
+      "pass": true
+    }
+  ],
+  "passed": 9,
+  "failed": 0
+}
