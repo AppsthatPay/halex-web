@@ -1501,7 +1501,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab active" id="tab-home">
   <div class="hero-band">
     <h2>The whole HALEX stack, in one place.</h2>
-    <p>Live market firehose, watched-token research, the RUSTY mint, AI trading wallets, APEX² research reports and the Chaintarium — wired to real public data where it exists, and honestly labeled where a backend is still to come.</p>
+    <p>Live market firehose, token research, AI trading, APEX² reports and the Chaintarium — live public data where it exists, honestly labeled where it doesn't yet.</p>
     <div class="mkt-strip" id="mkt-strip"></div>
     <p class="note" style="margin-top:9px" id="mkt-note"><span class="chip info">LOADING</span>&nbsp; Fetching live majors from DexScreener… if the feed cannot be reached, this strip says so and shows no prices rather than stale ones.</p>
   </div>
@@ -1518,32 +1518,22 @@ nav.tabbar .rail{touch-action:pan-x}
     <span class="agent-dot" aria-hidden="true"></span>
     <div>
       <b>Agent connection — not connected</b>
-      <p class="note" style="margin-top:3px">The launch flow asked for an agent connection and none was made: this sandbox has no agent endpoint wired, so no agent is connected. Browsing, live market data and the Chaintarium all work without one; agent-operated features stay off. See AI Sockets for the interface a connected agent will use.</p>
+      <p class="note" style="margin-top:3px">No agent is connected — this sandbox has no agent endpoint wired. Browsing, live data and the Chaintarium work without one; agent-operated features stay off.</p>
     </div>
   </div>
   <div class="grid c2">
     <div class="card stat"><span>APEX¹ feed</span><b id="home-feed-stat">Standby</b><span>DexScreener + GeckoTerminal, all chains, user-filtered — no gatekeeper. Pump.fun launches stream raw on their own tape.</span></div>
-    <div class="card stat"><span>BCIA council</span><b>Paper-first</b><span>5-agent deliberation layer. Decides, tests, reprograms failing skills. Jeffrey's word is ground truth.</span></div>
-    <div class="card stat"><span>AllenX · Base</span><b class="up" style="font-size:16px">LIVE bridge armed</b><span>Re-armed Oct 17 by direct order. $2 max per trade. Everything else stays paper.</span></div>
+    <div class="card stat"><span>BCIA council</span><b>Paper-first</b><span>5-agent deliberation layer. Decides, tests, reprograms failing skills.</span></div>
     <div class="card stat"><span>Security gates</span><b class="up" style="font-size:16px">UXSS + SHELL passing</b><span>Every Braintree write passes both gates. Verified Oct 18 — details on the Security tab.</span></div>
   </div>
 
-  <div class="sec-title">Game engine — layered systems</div>
-  <div class="layers">
-    <div class="layer"><div class="lnum">L4</div><div><b>World layer — Chaintarium</b><p>The 3D blockchain solar system. Bitcoin is the sun; chains orbit as planets; wallets, pools and tokens live on the surface. Working in this sandbox — open the Chaintarium tab.</p></div></div>
-    <div class="layer"><div class="lnum">L3</div><div><b>Agent layer — BCIA + CIA executors</b><p>Traders run like processes under a central nervous system: every trade reported, tracked, controlled. Winners keep trading; proven losers get reformulated, never mid-position.</p></div></div>
-    <div class="layer"><div class="lnum">L2</div><div><b>Economy layer — RUSTY mints + Launch Feed</b><p>Every launch mints a token and its information page, then publishes to a public launch feed anyone can adopt. Originals are provable from birth — the anti-vamp layer.</p></div></div>
-    <div class="layer"><div class="lnum">L1</div><div><b>Skill layer — Braintree knowledgebase</b><p>Winning trade skills hang categorized in the Braintree, cloned and hot-swapped at decision boundaries. All writes pass the halex-security gates.</p></div></div>
-    <div class="layer"><div class="lnum">L0</div><div><b>Core layer — hardwired HALEX libraries</b><p>Fixed, immutable software. The AI wires components together and operates them through sockets — it never modifies the core. See the AI Sockets tab.</p></div></div>
-  </div>
-  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Layers L0–L3 describe the production architecture. In this sandbox only the Chaintarium (L4) is fully interactive; the rest are status views over real system records.</span></div>
 </section>
 
 <!-- ================= APEX 1 ================= -->
 <section class="tab" id="tab-apex1">
   <div class="tabhead">
     <h2>APEX¹ — Firehose Market Feed</h2>
-    <p>The firehose: live tokens across the total chain catalog, streaming in and refreshing continuously — no backend gatekeeper deciding what you may see. You taper it yourself with the chain filters; every chain HALEX serves is on the rail. The main rail is a <b>trending</b> view — ranked, which means young tokens are filtered out of it by design. Pump.fun tokens live on the bonding curve and almost never trend, so they stream raw and unranked in the <b>Pump.fun launch tape</b> directly below — every launch, seconds old, nothing held back.</p>
+    <p>Live tokens across every chain HALEX serves, streaming and refreshing — no gatekeeper; you filter it yourself. The main rail is a ranked <b>trending</b> view, so young tokens are filtered out by design. Pump.fun launches almost never trend, so they stream raw in the <b>launch tape</b> below.</p>
   </div>
   <div class="hose-bar">
     <span class="hose-dot" id="hose-dot"></span>
@@ -1576,10 +1566,10 @@ nav.tabbar .rail{touch-action:pan-x}
     <div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>
   </div>
   <div class="sec-title">Pump.fun — live launch tape</div>
-  <p class="note" style="margin:-4px 0 10px">Every new pool opening on pump.fun's bonding curve, newest first — read straight from Solana's newest pools, no ranking, no trending filter, no minimum liquidity. This is the raw end of the firehose the trending rail cannot show: most of these die in minutes, which is exactly why they belong in front of you unfiltered, with APEX² one tap away. <span class="pump-live" id="pump-stats"></span></p>
+  <p class="note" style="margin:-4px 0 10px">Every new pump.fun pool, newest first — no ranking, no filter, no minimum liquidity. Most die in minutes; APEX² is one tap away. <span class="pump-live" id="pump-stats"></span></p>
   <div id="apex1-pump"><div class="skel"></div><div class="skel"></div></div>
   <div class="sec-title">Birth tape — newest token profiles</div>
-  <p class="note" style="margin:-4px 0 10px">The newest profiles streaming in as DexScreener indexes them — the youngest end of the firehose. Young tokens are where the impersonation scams live — send anything suspicious to the Research Lab on APEX² before touching it.</p>
+  <p class="note" style="margin:-4px 0 10px">The newest token profiles as DexScreener indexes them. Young tokens are where impersonation scams live — check anything suspicious in APEX² first.</p>
   <div id="apex1-profiles"><div class="skel"></div><div class="skel"></div></div>
 </section>
 
@@ -1587,7 +1577,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-markets">
   <div class="tabhead">
     <h2>Markets — everything HALEX serves</h2>
-    <p>Blockchain is the first market HALEX runs live — it is not the only one on the board. Every market HALEX will serve is listed here: crypto streaming today, and working prototypes of the markets in build, so the shape of each one is visible before its live feed connects.</p>
+    <p>Crypto streams live today. Every other market HALEX will serve is listed here as a working prototype until its live feed connects.</p>
   </div>
 
   <div class="sec-title">Live now</div>
@@ -1687,7 +1677,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-apex2">
   <div class="tabhead">
     <h2>APEX² — Watchlist &amp; Research Lab</h2>
-    <p>Tokens you chose to watch, plus the research bench. APEX² is how HALEX investigates a token: watch one from APEX¹ or paste any contract here and APEX² builds the full report — contract address and on-chain metadata, live price, liquidity and whether a real exit exists, the buy/sell tape, holder and deployer checks, and impersonation screening — with the verdict and the reasons shown.</p>
+    <p>Your watched tokens, plus the research bench. Paste any contract (or watch one from APEX¹) and APEX² builds the full report — price, liquidity, exit, tape, holder and deployer checks, impersonation screening — with the verdict and reasons shown.</p>
   </div>
   <div class="sec-title">Watched tokens</div>
   <div id="watch-list"></div>
@@ -1699,7 +1689,7 @@ nav.tabbar .rail{touch-action:pan-x}
       <input id="lab-input" type="text" placeholder="Paste a contract address (any chain)…" style="flex:1; min-width:200px" autocomplete="off" spellcheck="false" />
       <button class="btn primary" id="lab-go">Run checks</button>
     </div>
-    <p class="note" style="margin:9px 0 0">APEX² Research runs live against market data and reports the way the trading gate reads it: every check named in plain words, grouped, with its evidence value, its source and its read time. The verdict is the gate's own — <b>PASS</b>, <b>WATCH</b>, <b>QUARANTINE</b> or <b>FAIL</b> — with what the desk does about it stated on the banner. Checks this sandbox cannot read are shown as <b>NOT READ</b>: an unread check is never counted as a pass. No verifiable link = guilty until proven innocent.</p>
+    <p class="note" style="margin:9px 0 0">Every check is named in plain words, with its evidence, source and read time. Verdicts: <b>PASS</b>, <b>WATCH</b>, <b>QUARANTINE</b> or <b>FAIL</b>. Checks this page cannot read show as <b>NOT READ</b> — never counted as a pass.</p>
     <div id="lab-result" style="margin-top:6px"></div>
   </div>
 
@@ -1803,7 +1793,7 @@ nav.tabbar .rail{touch-action:pan-x}
       <div class="sec-title">Owner metadata — Founding Minter</div>
       <div class="rusty-card">
         <div class="field"><label class="flabel" for="r-owner">Verified handle (optional)</label><input id="r-owner" type="text" placeholder="@yourhandle" /></div>
-        <p class="note" style="margin:0">The founder's handle is minted with the token, proven by a wallet signature. The wording is always <b>owner-verified</b>, never "official". On-chain stays minimal — a reference, not the data. Optional: permissionless minting doesn't change. Brand Guard verification attaches to this field later without re-minting.</p>
+        <p class="note" style="margin:0">Proven by a wallet signature and minted with the token. The wording is always <b>owner-verified</b>, never "official". Optional — minting works without it.</p>
       </div>
     </div>
 
@@ -1817,7 +1807,7 @@ nav.tabbar .rail{touch-action:pan-x}
           <button data-preset="ocean">Deep Ocean</button>
           <button data-preset="royal">Royal Gold</button>
         </div>
-        <p class="note" style="margin:10px 0 12px">Hybrid by design: the page <i>program</i> is Muse-exclusive — a hardwired template behind the halex-security UXSS gate. Your AI designs through the AI socket with structured design tokens (palette, layout, copy) — never raw code onto a public page.</p>
+        <p class="note" style="margin:10px 0 12px">Your AI designs with structured design tokens (palette, layout, copy) through the AI socket — never raw code on a public page. The page template itself is fixed and security-gated.</p>
         <div class="page-preview" id="r-preview">
           <span class="chip" style="background:rgba(0,0,0,.35); border-color:rgba(255,255,255,.3); color:#fff">Token page preview</span>
           <h3 id="pv-name" style="margin-top:12px">Ember Pup</h3>
@@ -1872,11 +1862,9 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-trading">
   <div class="tabhead">
     <h2>AI Trading</h2>
-    <p>The trader fleet under BCIA. Win rates here are <b>measured, never promised</b> — a system earns live money only at ≥65% over ≥30 closed paper trades, profit factor ≥1.2. Tap any trader or skill for its full report card.</p>
+    <p>The trader fleet under BCIA. Win rates here are <b>measured, never promised</b> — a system earns live money only at ≥65% over ≥30 closed paper trades, profit factor ≥1.2. Tap any skill for its full report card.</p>
   </div>
-  <div class="sec-title">AI wallets</div>
   <div class="grid c3" id="ai-wallets"></div>
-  <p class="note" style="margin-top:8px">Balances pulled Oct 16, 2026. Live balance socket not connected in this build.</p>
   <div id="hm-wm-price"></div>
   <div id="hm-wm-whale"></div>
 
@@ -1885,36 +1873,20 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Desk review — how a trade clears</div>
   <div class="card">
-    <p class="note" style="margin:0 0 6px; font-size:13px">HALEX trades are <b>supervised automation</b>, not manual signing. You set the standing rules once — caps, gates, exit policies — and the desk executes inside them, reviewing every candidate the same way before a single unit moves. If a token meets the bar, the system buys; there is no per-trade trigger for you to pull, and no trade that skips the review.</p>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>1 · Gate verdict first</b><p>Every candidate is stamped PASS, WATCH, QUARANTINE or FAIL before it can become an order. FAIL and QUARANTINE stop here — no size, no exceptions, and the skip is logged loudly.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>2 · Sell simulation at the intended size</b><p>The exit is proven before the entry: a real sell is simulated at the size the desk means to hold. Dust out, or under 90% back, is a hard block — a token you can't leave is not a trade.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>3 · LP custody, proven on-chain</b><p>The pool's position is read on-chain and recomputed to its pool — locker-held or burned passes; deployer-held or unreadable fails closed. Index claims are never taken on faith.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>4 · Caps and tag</b><p>The order carries its paper/live tag and its exit policy with it, and is checked against the wallet's hard caps — enforced in the executor, unoverridable by any agent or council vote.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>5 · Execute, then verify in the wallet</b><p>A transaction hash is never confirmation. Proceeds are verified in the wallet — including after a sell, where the balance itself is checked before the trade is called done. PASS positions then go under runner watch: held longer while buy/sell flow and liquidity stay healthy, hard exits always armed.</p></div></div>
-    <div class="sec-title" style="margin-top:16px">Latest gate decisions — Oct 21</div>
-    <div class="logline"><time>Oct 21</time><p><span class="chip bad">FAIL</span>&nbsp; <b>DIEM</b> <span>— mimic census: established same-ticker original ≈1,400× the candidate's liquidity. Skipped at candidacy.</span></p></div>
-    <div class="logline"><time>Oct 21</time><p><span class="chip bad">FAIL</span>&nbsp; <b>ESSENCE</b> <span>— caught in the gate's live smoke test, alongside DIEM.</span></p></div>
-    <div class="logline"><time>Oct 21</time><p><span class="chip ok">CUSTODY PASS</span>&nbsp; <b>KYRO · SURPLUS · SI276</b> <span>— Clanker locker verified on-chain holding 100% of pool positions; custody leg cleared.</span></p></div>
+    <p class="note" style="margin:0 0 6px; font-size:13px">HALEX trades are <b>supervised automation</b>: you set the standing rules once — caps, gates, exit policies — and every candidate clears the same review before anything moves. No trade skips it.</p>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>1 · Gate verdict first</b><p>Every candidate is stamped PASS, WATCH, QUARANTINE or FAIL first. FAIL and QUARANTINE stop here — no exceptions.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>2 · Sell simulation at the intended size</b><p>A real sell is simulated at the intended size before entry. Under 90% back is a hard block — a token you can't leave is not a trade.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>3 · LP custody, proven on-chain</b><p>Read on-chain and recomputed to its pool: locker-held or burned passes; deployer-held or unreadable fails closed.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>4 · Caps and tag</b><p>The order carries its paper/live tag and exit policy, checked against the wallet's hard caps — no agent can override them.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>5 · Execute, then verify in the wallet</b><p>A transaction hash is never confirmation — proceeds are verified in the wallet before a trade is called done. PASS positions then sit under runner watch, hard exits always armed.</p></div></div>
   </div>
 
-  <div class="sec-title">Verified trade events</div>
-  <div class="card" style="padding-top:6px; padding-bottom:6px">
-    <table class="log">
-      <thead><tr><th>Date</th><th>Event</th><th class="hideS">Detail</th><th>Result</th></tr></thead>
-      <tbody>
-        <tr><td class="mono">Oct 16</td><td>Trade Portal $1 round-trip — B3 (Base)</td><td class="hideS">Buy → verified in wallet → sell → auto-unwrap. Portal failed closed once, correctly, before the fix.</td><td class="mono">$1.00 → $0.96 · 96% retained</td></tr>
-        <tr><td class="mono">Oct 16</td><td>B3 incident — old executor</td><td class="hideS">Silent fallback dumped into a dust pool; quote check only tested &gt; 0. Rule born here: a tx hash is never confirmation — proceeds verified in wallet, or it didn't happen.</td><td class="mono down">Loss · execution, not token</td></tr>
-        <tr><td class="mono">Oct 16</td><td>Sniper1 first milestone</td><td class="hideS">10 shots at the watering hole, all peaked at entry. Fix identified: buy only on positive buy-acceleration, 5-minute time stop.</td><td class="mono">0/10 · parked for rework</td></tr>
-        <tr><td class="mono">Oct 17</td><td>AllenX live bridge re-armed</td><td class="hideS">Sell simulation pre-flight + liquidity gate + holdings verification all passing before re-arm.</td><td class="mono up">LIVE · $2 max</td></tr>
-      </tbody>
-    </table>
-  </div>
   <div class="sec-title">Trading View — chart + bundle flow</div>
   <div id="hm-tv-trading-host"></div>
 
   <div class="sec-title">Talk to HALEX-M AI about trading</div>
   <div class="card">
-    <p class="note" style="margin:0 0 12px; font-size:13px">A chat box in this tab, sharing the SMT draft with the HALEX-M AI tab and the Skills Lab Forge. Ask about a skill, scan a token, or check the paper-test gate — then send a useful answer to the draft with one tap.</p>
+    <p class="note" style="margin:0 0 12px; font-size:13px">Shares the SMT draft with the HALEX-M AI tab and the Skills Lab Forge. Ask about a skill, scan a token, or check the paper-test gate.</p>
     <div class="halexm-optlist" data-context="trading"></div>
     <div class="halexm-log" id="trading-log" aria-live="polite"></div>
     <label class="flabel" for="trading-input">Ask HALEX-M AI</label>
@@ -1932,11 +1904,11 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-skills">
   <div class="tabhead">
     <h2>Skills Lab</h2>
-    <p>Every HALEX skill set in one roll — what it's doing right now, what it has closed, and how it actually works. Skills are versioned reasoning modules filed in the Braintree: they earn their place from measured results, and SMT — the Skills Lab builder — helps you create and organize new ones below.</p>
+    <p>Every HALEX skill set in one roll — what it's doing, what it has closed, and how it works. Skills earn their place from measured results; SMT, the Lab builder, helps you create new ones below.</p>
   </div>
   <div class="sec-title">The skill roll</div>
   <div class="skill-roll" id="skill-roll"></div>
-  <div class="card" style="margin-top:12px"><b>HALEX LABS — Clodds Edge Scan (staging only)</b><p style="font-size:13px">Research skill from HALEX LABS: score a candidate 0-100 on tape, liquidity, confidence, and sell-sim, with veto on one-way tape or sell-sim below 90%. Advisory only, never a trade. Live trades go only through the existing Allen2 bridge gates. See HALEX LABS on GitHub, branch halex-labs, for the full skill, source mapping, and MIT notice.</p></div>
+  <div class="card" style="margin-top:12px"><b>HALEX LABS — Clodds Edge Scan (staging only)</b><p style="font-size:13px">Research skill from HALEX LABS: scores a candidate 0–100 on tape, liquidity, confidence and sell-sim, with a veto on one-way tape or sell-sim below 90%. Advisory only, never a trade. Full skill on GitHub (HALEX LABS).</p></div>
   <p class="note" style="margin-top:8px">Records are the snapshot figures used across this app (balances Oct 16, 2026; events verified Oct 16–17). Win rates are measured, never promised — the proving bar is ≥65% over ≥30 closed paper trades, profit factor ≥1.2, before any live capital.</p>
 
   <div class="sec-title">Skill Shop — ask for a skill set</div>
@@ -1944,7 +1916,7 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Skill Forge — build a skill with HALEX</div>
   <div class="card">
-    <p class="note" style="margin:0 0 12px; font-size:13px">Type your ideas, a prompt you've been carrying, or a wallet address worth watching. HALEX answers with a tactical breakdown and an honest read from its AI intelligence — and keeps the conversation going until the skill is decided. Then the Forge writes it as a copy/paste prompt you can copy, or launch in HALEX. Every forged skill enters the paper arena first: no real capital until it is paper-proven.</p>
+    <p class="note" style="margin:0 0 12px; font-size:13px">Type an idea, a prompt, or a wallet address worth watching. HALEX talks it through with you, then writes the skill as a copy/paste prompt you can copy or launch in HALEX. Every forged skill enters the paper arena first — no real capital until it is paper-proven.</p>
     <div class="forge-log" id="forge-log" aria-live="polite"></div>
     <label class="flabel" for="forge-input">Your idea, prompt, or wallet address</label>
     <textarea id="forge-input" rows="3" placeholder="e.g. I want a skill that watches this wallet and mirrors its fresh buys… or: snipe new Solana pools but only when buys are accelerating…"></textarea>
@@ -1976,13 +1948,13 @@ nav.tabbar .rail{touch-action:pan-x}
   </div>
   <div class="sec-title">SMT draft — what SMT has organized</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">SMT — the Skills Lab builder, the patient librarian of the Lab — keeps one working skill draft for the whole app. The HALEX-M AI chat, this Forge, and the Trading chat all write to it; this card shows what has settled so far. The Q&amp;A builder below writes to the same draft.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">SMT keeps one working skill draft for the whole app. The HALEX-M AI chat, the Forge, the Trading chat and the Q&amp;A builder below all write to it; this card shows what has settled so far.</p>
     <div id="smt-draft-body"></div>
   </div>
 
   <div class="sec-title">Q&amp;A trading-strategy builder — with SMT</div>
   <div class="card" id="qa-builder">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Six questions: chains, strategy type, token contract, size and caps, risk, then paper-test duration and settings. Going back keeps your settings. A contract address is required — its metadata is checked by a live read or marked NOT READ.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Six questions: chain, strategy type, token contract, size and caps, risk, paper-test settings. Going back keeps your settings. A contract is required — checked live or marked NOT READ.</p>
     <div class="halexm-optlist" data-context="skills"></div>
     <div id="qa-body"></div>
     <div class="qa-nav" id="qa-nav"></div>
@@ -1991,9 +1963,9 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="card" id="trading-card" hidden></div>
 
-  <div class="sec-title">Exactly how Allen builds a trade strategy</div>
+  <div class="sec-title">Exactly how HALEX builds a trade strategy</div>
   <div class="card" id="lab-allen-method">
-    <details class="lab-collapse"><summary>Allen's 8-step method — tap to open <span class="note">(each step can be sent into the Q&amp;A draft; nothing here trades or promises a result)</span></summary>
+    <details class="lab-collapse"><summary>The 8-step method — tap to open <span class="note">(each step can be sent into the Q&amp;A draft; nothing here trades or promises a result)</span></summary>
     <div id="lab-method-steps" style="margin-top:10px"></div>
     <p class="note" id="lab-method-note" style="margin-top:10px"></p>
     </details>
@@ -2001,13 +1973,13 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Strategy ideas — pick a shape, not a promise</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Every card below is an IDEA — a starting shape, a template only. None of these is a proven skill, and none carries a win rate or a profit claim. Picking one pre-fills the Q&amp;A builder with that shape; you still write the entry, the exit, and the guards yourself.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Every card below is an IDEA — a template only. None is a proven skill; none carries a win rate or profit claim. Picking one pre-fills the Q&amp;A builder; you still write the entry, exit and guards.</p>
     <div id="lab-ideas"></div>
   </div>
 
   <div class="sec-title">Guided picker — talk it through, then choose</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Open context chat: type freely, not just on rails. This chat asks about your goal, your chain, your risk, your time, and your caps — then suggests two or three strategy shapes WITH their trade-offs, in plain words. It helps you choose; it never chooses for you. Picking a suggestion pre-fills the Q&amp;A.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Type freely. This chat asks about your goal, chain, risk, time and caps, then suggests two or three strategy shapes with their trade-offs. It helps you choose; it never chooses for you.</p>
     <div class="halexm-log" id="lab-picker-log" aria-live="polite"></div>
     <label class="flabel" for="lab-picker-input">Your goal, chain, risk, time, caps — in your own words</label>
     <textarea id="lab-picker-input" rows="3" placeholder="e.g. I want something patient on Base, I can watch it a few hours a day, and I hate big drawdowns…"></textarea>
@@ -2020,27 +1992,27 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">AI trade skill suggestions — from your answers and the Lab roll</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Suggestions built by rules from what you said in the picker and what the Lab already lists — never invented performance, never a promised result. Each one names its reasoning and points at its evidence: your answers, or a Lab roll entry with its measured status.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Built by rules from your picker answers and the Lab roll — never invented performance, never a promised result. Each suggestion names its reasoning and evidence.</p>
     <div id="lab-suggestions"></div>
   </div>
 
   <div class="sec-title">Expanded settings center — more options, each explained</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">More toggles for the Q&amp;A builder, on top of its own settings. Every toggle carries a short explainer: what it does, when it helps, what it risks. Nothing here is unexplained, and nothing here trades — these are paper-test settings that travel with the draft into the trading card and the markup below.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">More toggles for the Q&amp;A builder. Each carries a short explainer — what it does, when it helps, what it risks. These are paper-test settings; nothing here trades.</p>
     <div id="lab-settings"></div>
     <p class="note" id="lab-settings-summary" style="margin-top:10px"></p>
   </div>
 
   <div class="sec-title">Trade tools picker — only tools this page actually has</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Pick the HALEX-M tools this strategy may use. Every tool listed here exists in this page right now — Token DNA, APEX&#178; Research, Chaintarium search, and the reads behind them. Picking a tool adds it to the strategy's toolkit in the draft. A tool the page does not have is never listed.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Pick the tools this strategy may use. Only tools that exist in this page right now are listed — Token DNA, APEX&#178; Research, Chaintarium search and their reads.</p>
     <div id="lab-tools"></div>
     <p class="note" id="lab-tools-summary" style="margin-top:10px"></p>
   </div>
 
   <div class="sec-title">Assimilated into the Lab roll</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Strategies the Lab has absorbed into its own roll, shown under their own Lab names with their own measured status. Forged skills join this roll once they have a paper record; until then they live in the draft, not here. No outside brand is shown in this section — Lab names only.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Strategies absorbed into the Lab roll, under their Lab names with their measured status. Forged skills join once they have a paper record; until then they stay in the draft.</p>
     <div id="lab-assimilated"></div>
   </div>
 
@@ -2055,7 +2027,7 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Markup and deployment options</div>
   <div class="card" id="lab-markup">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Markup is the skill's written form, shown two ways side by side: the copy/paste prompt on the left, the structured config of the same skill on the right. Both are built from the same draft, so they can never disagree. Deployment options sit below: the paper arena (a real local record), the existing wallet pick in the Forge, and live — disabled, honestly.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">The skill's written form, two ways: copy/paste prompt (left) and structured config (right), both built from the same draft. Deployment options are below — paper run, the Forge wallet pick, and live (disabled).</p>
     <div class="lab-markup-grid">
       <div><b style="font-size:13.5px">Copy/paste prompt</b><textarea class="forge-out" id="lab-markup-prompt" rows="14" readonly aria-label="Skill copy/paste prompt"></textarea></div>
       <div><b style="font-size:13.5px">Structured config</b><pre class="lab-config" id="lab-markup-config" aria-label="Skill structured config"></pre></div>
@@ -2082,7 +2054,7 @@ nav.tabbar .rail{touch-action:pan-x}
   </div>
   <div class="sec-title">Braintree — the skill knowledgebase</div>
   <div class="card">
-    <p class="note" style="margin:0 0 12px; font-size:13px">44 skills filed in the Braintree, versioned reasoning modules that earn their place from measured results. Paper is the default; live execution is visitor-wallet client-side signing after a confirmed review, and HALEX-M holds no keys. WalletConnect stays disabled — no project ID has been supplied. The HALEX-AI bridge stays OFF by default; bridge-gated skills render as gated, never as live.</p>
+    <p class="note" style="margin:0 0 12px; font-size:13px">44 skills filed in the Braintree; they earn their place from measured results. Paper is the default. Live execution is visitor-wallet signing after a confirmed review — HALEX-M holds no keys. WalletConnect is disabled (no project ID supplied); the HALEX-AI bridge is OFF by default.</p>
     <div id="hm-bt-root"></div>
   </div>
 </section>
@@ -2091,36 +2063,21 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-research">
   <div class="tabhead">
     <h2>APEX² Research</h2>
-    <p>APEX² Research is HALEX's token investigation view. Search or watch a token and it returns a complete report: contract address, on-chain metadata, current price, liquidity, the buy/sell tape, and community activity — callouts, posts, and the positives and negatives people are posting. Every token also gets the trading gate's verdict — <b>PASS</b>, <b>WATCH</b>, <b>QUARANTINE</b> or <b>FAIL</b> — read from live market structure, with the evidence shown. Impersonation is the dominant scam pattern: never trust a ticker, cross-reference the contract.</p>
+    <p>Search or watch a token for the full report: contract, metadata, price, liquidity, buy/sell tape and community activity, plus the gate's verdict — <b>PASS</b>, <b>WATCH</b>, <b>QUARANTINE</b> or <b>FAIL</b> — with the evidence shown. Never trust a ticker; cross-reference the contract.</p>
   </div>
   <div id="research-list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
   <div class="sec-title">APEX² Research — enhanced result</div>
   <div class="card">
-    <p class="note">The enhanced card below renders a DexScreener read with graphical depth: tape and activity mini-charts, a labelled MODEL exit-impact curve, and a depth meter showing which checks ran. It issues no verdict and no score — the gate verdict stays with the Research Lab report.</p>
+    <p class="note">A DexScreener read with tape and activity mini-charts, a labelled MODEL exit-impact curve, and a meter showing which checks ran. No verdict or score here — that stays with the Research Lab report.</p>
     <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="hm-ar-input" type="text" placeholder="Token contract address" style="flex:1; min-width:200px" /><button class="btn" id="hm-ar-go">Search</button></div>
     <div id="hm-ar-research-output"></div>
   </div>
-  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Verdicts are computed in your browser from live DexScreener pair data: liquidity depth, pair age, buy/sell balance, volume and verifiable links. They are a first-pass screen, not a guarantee — before any buy, the live gate adds the checks this sandbox marks NOT READ: a real sell simulation at size, LP custody proven on-chain, holder and deployer-wallet forensics. An unread check is never counted as a pass.</span></div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Verdicts are computed in your browser from live DexScreener data — a first-pass screen, not a guarantee. Before any buy, the live gate adds the checks marked NOT READ here: sell simulation at size, on-chain LP custody, holder and deployer forensics. An unread check is never a pass.</span></div>
 
-  <div class="sec-title">The Research Record — calls vs outcomes</div>
-  <div class="card" style="padding-top:6px; padding-bottom:6px">
-    <table class="log">
-      <thead><tr><th>When</th><th>The call</th><th>What happened</th></tr></thead>
-      <tbody>
-        <tr><td class="mono">Oct 21</td><td><b>DIEM</b> — gate verdict <span class="chip bad">FAIL</span></td><td>Blocked at the gate: an established same-ticker original held roughly <b>1,400×</b> the candidate's liquidity — a mimic, not a candidate. A paper position opened <i>before</i> the gate existed still closed <span class="mono up">+68.46%</span>. Both facts stay on the record: the money, and the reason it would never be bought now.</td></tr>
-        <tr><td class="mono">Oct 21</td><td><b>ESSENCE</b> — gate verdict <span class="chip bad">FAIL</span></td><td>Blocked at the gate in the same live smoke test. The two tokens the gate caught first are the two that had hurt the desk before it existed.</td></tr>
-        <tr><td class="mono">Oct 21</td><td><b>Clanker launches</b> (KYRO · SURPLUS · SI276) — custody <span class="chip ok">PASS</span></td><td>LP custody proven on-chain: the Clanker locker contract holds 100% of the pool position NFTs, each claim recomputed to its pool. A legitimate fresh launch can clear the gate — it is a filter, not a wall.</td></tr>
-        <tr><td class="mono">Oct 21</td><td><b>JED</b> — paper position</td><td>Closed <span class="mono up">+58.4%</span> on the no-punch exit. A plain win, recorded the same way as the losses.</td></tr>
-        <tr><td class="mono">Oct 21</td><td><b>allen2-base skill</b> — measured record</td><td><span class="mono">55.0%</span> win rate over its last 40 closed trades — <b>below the 65% live bar</b>. It stays on paper. The number is published as measured, not rounded up, not hidden.</td></tr>
-        <tr><td class="mono">Oct 16</td><td><b>Trade Portal</b> — $1 live round-trip (B3, Base)</td><td><span class="mono">$1.00 → $0.96</span> · 96% retained, proceeds verified in the wallet. The portal had failed closed once, correctly, before succeeding.</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="note" style="margin-top:8px">Every verdict the desk issues is kept with what happened next — the wins, the misses, and the calls that cost nothing because the gate said no. A scanner you can't audit is just an opinion; this is the audit trail.</p>
 
   <div class="sec-title">Caller behaviour — what callers do after they call</div>
   <div class="card">
-    <p class="note" style="margin:0 0 10px; font-size:13px">A buy alert tells you what a caller did. HALEX measures what they do <i>next</i>: every wallet on the desk's tracked caller roster is followed for a rolling 30 days after each buy, and three numbers are published from HALEX's own ledger.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">A buy alert tells you what a caller did. HALEX measures what they do <i>next</i>: tracked caller wallets are followed for 30 days after each buy, and three numbers are published from HALEX's own ledger.</p>
     <div class="grid c3">
       <div class="stat"><span>Sold within 15 minutes</span><b>—</b><span>Share of called tokens the caller dumped inside 15 minutes of buying</span></div>
       <div class="stat"><span>Still holding</span><b>—</b><span>Share of called tokens the caller still holds at the 30-day read</span></div>
@@ -2293,11 +2250,11 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-sockets">
   <div class="tabhead">
     <h2>AI Sockets</h2>
-    <p>The hardwired principle: the app and its libraries are fixed, immutable software. The AI is the electrician, not the architect — it wires components together and operates them, and can never modify, add to, or destroy the code.</p>
+    <p>The app and its libraries are fixed software. An AI connects through sockets to operate them — it can never modify the code.</p>
   </div>
   <div class="card" style="border-color:color-mix(in srgb, var(--gold) 40%, var(--line))">
     <b>The socket rule</b>
-    <p class="note" style="margin-top:5px; font-size:13.5px">Read-only on code, execute-only on operations. An AI connected through a socket receives structured capabilities — quote, scan, prepare, publish — and returns structured results. Anything an AI produces for a public surface passes the halex-security gates before it ships. That's how the RUSTY page-design channel works: design tokens in, verified page out.</p>
+    <p class="note" style="margin-top:5px; font-size:13.5px">Read-only on code, execute-only on operations. A connected AI gets structured capabilities — quote, scan, prepare, publish — and anything it produces for a public surface passes the halex-security gates first.</p>
   </div>
   <div class="sec-title">Sockets</div>
   <div class="card" style="padding-top:4px; padding-bottom:4px" id="socket-list"></div>
@@ -2327,41 +2284,33 @@ nav.tabbar .rail{touch-action:pan-x}
     <div class="sec-stats">
       <div class="stat"><span>Integrity index — now</span><b id="sec-idx-now">—</b><span>Composite of the systems below, sampled live</span></div>
       <div class="stat"><span>Market feed</span><b id="sec-feed-now" style="font-size:15px">—</b><span>APEX¹ connection state, read from the live pill</span></div>
-      <div class="stat"><span>Entry</span><b id="sec-pass-now" style="font-size:15px">—</b><span>Supporter gate — a donation of 0.05–0.5 SOL, verified on-chain, or the owner entry unlocks. The Founding 25 preview also opens entry at the gate — free for the first 25 email signups during a 24-hour window from Fri Oct 23, 8:00 PM EDT</span></div>
+      <div class="stat"><span>Entry</span><b id="sec-pass-now" style="font-size:15px">—</b><span>Supporter gate — a 0.05–0.5 SOL donation verified on-chain, an owner entry, or the Founding 25 preview unlocks.</span></div>
     </div>
     <div class="stat" style="border-top:1px solid var(--line); margin-top:10px; padding-top:10px"><span>Airdrop Scout — X account connection</span><b id="sec-scout-now" style="font-size:15px">—</b><span>Whether your X account is linked to your personal AI agent for Airdrop Scout — set on the Airdrop Scout tab; until it is, the Scout board stays locked</span></div>
-    <p class="note" style="margin:10px 0 0">The line is a session integrity index computed in your browser from this page's own real states — both gates on their verified record, the live feed connection, the supporter-gate entry state, wallet-provider presence, and the 3D engine. When a system drops, the line dips. That's the monitor working, not a decoration: nothing here is drawn from invented data.</p>
+    <p class="note" style="margin:10px 0 0">A session integrity index computed in your browser from this page's real states — the gates, the live feed, entry state, wallet presence, the 3D engine. When a system drops, the line dips. Nothing here is invented data.</p>
   </div>
   <div class="sec-title">Lineage — secure behavior this session</div>
   <div class="card" style="padding-top:6px; padding-bottom:6px" id="sec-lineage"></div>
-  <p class="note">The lineage is this session's own trail, written as events happen while you use the app: the gates' standing, the entry state, the feed connecting or dropping. In production the same lineage runs continuously on the backend and is what auditors read.</p>
+  <p class="note">This session's own trail, written as events happen: gate standing, entry state, feed connecting or dropping.</p>
   <div class="sec-title">How security keeps evolving — what to expect</div>
   <div class="card">
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>New attacks become new gate tests</b><p>Every attack pattern the system meets — a new injection trick, a new impersonation shape — is written up, turned into a gate test, and added to the suite. The Oct 18 record below is what that looks like: clean proposals pass, dirty ones are quarantined, tags stay untouched.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Adversarial self-testing never stops</b><p>HALEX red-teams its own fixes on a standing schedule, including overnight rounds. A fix isn't done when it works — it's done when the black-hat pass can't get around it.</p></div></div>
-    <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Expect fail-closed, on purpose</b><p>When something looks wrong, HALEX stops rather than guesses — the Trade Portal already proved that once, correctly, on the $1 B3 round-trip. As monitoring deepens, expect occasional deliberate pauses and more checks asking for your confirmation. A pause is the system protecting you, not breaking.</p></div></div>
-    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>The layers stay separated</b><p>Security sits entirely outside the trading council's command — it gets sanitized status only, and no agent, skill or council vote can weaken a gate, lift a lockdown or rotate a credential. That separation is permanent, and it's why the monitoring above can be trusted to say so if it ever fails.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>New attacks become new gate tests</b><p>Every new attack pattern the system meets becomes a new gate test: clean proposals pass, dirty ones are quarantined, tags stay untouched.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Adversarial self-testing never stops</b><p>HALEX red-teams its own fixes on a standing schedule. A fix isn't done when it works — it's done when the attack pass can't get around it.</p></div></div>
+    <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Expect fail-closed, on purpose</b><p>When something looks wrong, HALEX stops rather than guesses. Expect occasional deliberate pauses and confirmation checks — a pause is the system protecting you, not breaking.</p></div></div>
+    <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>The layers stay separated</b><p>Security sits outside the trading council's command: no agent, skill or council vote can weaken a gate, lift a lockdown or rotate a credential.</p></div></div>
   </div>
   <div class="sec-title">Write path</div>
   <div class="card">
     <p style="margin:0 0 8px"><span class="mono" style="font-size:13px">propose() → UXSS gate → SHELL gate → appended as next R-observation, with provenance</span></p>
-    <p class="note" style="margin:0">Tag lifecycle: <b>Seed → Feed → Verify → Prune → Forge</b>. Direct tag edits that bypass propose() are a violation. Security layers sit entirely outside BCIA command — the council gets sanitized status only, never raw internals, and cannot weaken a gate.</p>
+    <p class="note" style="margin:0">Tag lifecycle: <b>Seed → Feed → Verify → Prune → Forge</b>. Direct tag edits that bypass propose() are a violation.</p>
   </div>
-  <div class="sec-title">Audit log — verified gate tests, Oct 18, 2026</div>
-  <div class="card" style="padding-top:6px; padding-bottom:6px">
-    <div class="logline"><time>06:51</time><p><span class="chip ok">ACCEPTED</span>&nbsp; Clean knowledge proposal <span>— passed UXSS + SHELL, appended as R-observation with provenance.</span></p></div>
-    <div class="logline"><time>06:51</time><p><span class="chip bad">QUARANTINED</span>&nbsp; Proposal carrying a script tag <span>— stopped at the UXSS gate, written to quarantine/, tag untouched.</span></p></div>
-    <div class="logline"><time>06:51</time><p><span class="chip bad">QUARANTINED</span>&nbsp; Proposal carrying a prompt-injection payload <span>— stopped at the SHELL gate, written to quarantine/, tag untouched.</span></p></div>
-    <div class="logline"><time>—</time><p><span class="chip info">POLICY</span>&nbsp; Standing rule <span>— BCIA receives sanitized security status only. It cannot lift lockdowns, override policy, approve releases or rotate credentials.</span></p></div>
-  </div>
-  <p class="note">Log shown is the verified test record from the write-path check. The live audit stream connects with the production backend.</p>
 </section>
 
 <!-- ================= WAR CHEST ================= -->
 <section class="tab" id="tab-warchest">
   <div class="tabhead">
     <h2>War Chest — the HALEX tool box</h2>
-    <p>The working tools, back in the menu. Each tool is listed with its real status: in this sandbox the toolbox shows its true interfaces; execution connects through your HALEX wallet in the production build, and every tool shows its full effect before anything signs.</p>
+    <p>Each tool is listed with its real status. In this sandbox you see the true interfaces; execution connects through your HALEX wallet in the production build, and every tool shows its full effect before anything signs.</p>
   </div>
   <div class="card" style="padding-top:4px; padding-bottom:4px" id="warchest-list"></div>
   <div id="hm-wc-plan" style="margin-top:10px"></div>
@@ -2373,7 +2322,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-scout">
   <div class="tabhead">
     <h2>Airdrop Scout</h2>
-    <p>Your personal AI agent hunts airdrops for you on X — points programs, waitlists, testnets and registrations, real-utility projects first — verifies every find against the project's official account and website, and organizes what it finds on one board. It searches through your own X account, so the connection between your account and your agent comes first.</p>
+    <p>Your personal AI agent hunts airdrops on X — points programs, waitlists, testnets, registrations — verifies each find against the project's official account and website, and organizes them on one board. It searches through your own X account, so connecting comes first.</p>
   </div>
 
   <div class="sec-title">Step 1 — Connect your X account to your agent</div>
@@ -2398,7 +2347,7 @@ nav.tabbar .rail{touch-action:pan-x}
         <input id="scout-handle" type="text" placeholder="@yourhandle" autocomplete="off" spellcheck="false" />
       </div>
       <button class="btn primary block" id="scout-connect">Connect my X account to my agent</button>
-      <p class="note" id="scout-connect-note" style="margin-top:9px">Connecting links this HALEX-M session to your X account through your agent. No password is asked for here, ever — and never give one to any airdrop page. The link is for this session only: nothing is stored, and a reload asks again.</p>
+      <p class="note" id="scout-connect-note" style="margin-top:9px">Links this session to your X account through your agent. No password is asked for here, ever — never give one to any airdrop page. Session only: nothing is stored.</p>
     </div>
     <div id="scout-connected-box" hidden>
       <p style="margin:14px 0 0; font-size:13.5px" id="scout-connected-text"></p>
@@ -2411,7 +2360,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <div class="scout-lockbox">
       <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="10.5" width="14" height="9.5" rx="2"/><path d="M8 10.5V7.5a4 4 0 018 0v3"/></svg>
       <b>The board is locked until you connect</b>
-      <p>Airdrop Scout only works through the connection between your X account and your personal AI agent — that connection is what lets the agent search X as you and act on what it finds. Establish it above and the board unlocks: the Scout Process, the safety rules, and the results of the latest completed run.</p>
+      <p>The Scout only works through the connection between your X account and your agent — it lets the agent search X as you. Connect above and the board unlocks.</p>
     </div>
   </div>
 
@@ -2427,10 +2376,10 @@ nav.tabbar .rail{touch-action:pan-x}
 
     <div class="sec-title">Safety rules — what the agent will and won't do</div>
     <div class="card">
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Form-only signups are the agent's job</b><p>If a signup is just a form — paste a wallet address and submit — your agent can complete it for you. Those are the only signups the agent ever does on its own.</p></div></div>
-      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Wallet connections and signatures are always yours</b><p>Anything that needs a wallet connection, a signed message or transaction, or a claim fee is never done by the agent. It goes on the board as “Needs your hand”, with the reason printed on the card.</p></div></div>
-      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Seed phrases and private keys: never</b><p>No real airdrop ever needs your seed phrase or private key. Any page that asks for one is a scam, full stop — the agent will never enter one anywhere, and neither should you.</p></div></div>
-      <div class="check" style="border-bottom:none"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Aggregator spam is a scam until proven otherwise</b><p>Airdrop aggregator spam and countdown or presale pages are treated as scams until proven otherwise. A find is only trusted once it checks out against the project's official account and website.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Form-only signups are the agent's job</b><p>If a signup is just a form — paste a wallet address and submit — your agent can complete it. Those are the only signups it ever does on its own.</p></div></div>
+      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Wallet connections and signatures are always yours</b><p>Anything needing a wallet connection, a signature, or a claim fee is never done by the agent. It lands on the board as “Needs your hand”, with the reason on the card.</p></div></div>
+      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Seed phrases and private keys: never</b><p>No real airdrop needs your seed phrase or private key. Any page that asks is a scam — the agent will never enter one, and neither should you.</p></div></div>
+      <div class="check" style="border-bottom:none"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Aggregator spam is a scam until proven otherwise</b><p>Aggregator spam and countdown/presale pages are treated as scams until proven otherwise. A find is trusted only once it checks out against the project's official account and website.</p></div></div>
     </div>
 
     <div class="sec-title">Scout board — latest completed run · Oct 22, 2026</div>
@@ -2455,7 +2404,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <b style="display:block; font-size:13.5px; margin-top:12px">Founder Wallets</b>
     <div class="kv"><span class="kl">Solana</span><div class="kvv"><span class="mono ca">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</span></div></div>
     <div class="kv"><span class="kl">EVM</span><div class="kvv"><span class="mono ca">0xE2CF47E4974484A021A72D50e0A2FC7188E2aA38</span></div></div>
-    <p class="note" style="margin-top:10px">Coverage: Solana and all EVM chains are active now — including SEI, which uses the same EVM address. Aptos and SUI Founder Wallets coming — the Hunter flags airdrops on new chains so a wallet can be added.</p>
+    <p class="note" style="margin-top:10px">Coverage: Solana and all EVM chains are active now, including SEI (same EVM address). Aptos and SUI wallets are coming.</p>
     <div class="kv"><span class="kl">Last snapshot</span><div class="kvv"><b id="ww-snap">—</b></div></div>
     <div class="kv"><span class="kl">Arrivals</span><div class="kvv">No airdrops landed yet — snapshots running daily.</div></div>
     <p class="note" style="margin-top:10px">Watching only — funds never move.</p>
@@ -2464,7 +2413,7 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="sec-title">AI Directives</div>
   <div class="card">
     <b style="font-size:15px">Let your own AI do the leg work.</b>
-    <p class="note" style="margin:4px 0 2px">Hand one of these directives to your own AI agent. Fill in the bracketed fields — [email], [SOL], [EVM], [handle] — with your own details first; the rules inside the directive are the safety rules, word for word.</p>
+    <p class="note" style="margin:4px 0 2px">Hand one of these to your own AI agent. Fill in the bracketed fields — [email], [SOL], [EVM], [handle] — first; the rules inside are the safety rules, word for word.</p>
     <div style="margin-top:14px">
       <b style="font-size:13.5px">Connected mode — your X account is connected to your agent</b>
       <textarea class="dir-text" id="dir-a" rows="10" readonly aria-label="Connected mode directive">You are my airdrop agent. My signup email is [email], my Solana address is [SOL], my EVM address is [EVM], my X handle is [handle] and my X account is connected to you. Hunt legitimate airdrops daily and verify each against the project's official site or X before acting. You may: complete email/address-only signups for me, do my X social tasks (follows, likes), and enter comment-to-enter airdrops (max 100/day, every other day, each comment written fresh, 65–85 characters plus my address). You must NEVER: enter my seed phrase or private key anywhere, sign a wallet message or transaction, pay any fee or deposit, or complete KYC — stop and bring those to me. Report every signup with proof.</textarea>
@@ -2489,19 +2438,19 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-know">
   <div class="tabhead">
     <h2>GET TO KNOW HALEX</h2>
-    <p>What HALEX is, how it works, and why it's built the way it is — in plain English. <span class="chip warn">TEMPORARY TAB</span> This orientation page is here while HALEX is young; it will be retired once everyone knows the ropes.</p>
+    <p>What HALEX is and how it works, in plain English. <span class="chip warn">TEMPORARY TAB</span> This orientation page retires once everyone knows the ropes.</p>
   </div>
 
   <div class="sec-title">What HALEX is</div>
   <div class="card">
-    <p style="margin:0; font-size:14px">HALEX is an AI-powered trading and research platform for crypto. It watches every major blockchain at once, investigates tokens before you touch them, runs tested trading skill sets, and keeps your keys on your own device in the <b>HALEX Wallet</b>. Think of it as a whole trading desk — the scanners, the researchers, the traders, the rulebook and the vault — rebuilt as one piece of software with AI woven through it.</p>
+    <p style="margin:0; font-size:14px">HALEX is an AI-powered trading and research platform for crypto: it watches every major blockchain, investigates tokens before you touch them, runs tested trading skill sets, and keeps your keys on your own device in the <b>HALEX Wallet</b> — a whole trading desk in one piece of software.</p>
   </div>
 
   <div class="sec-title">What it does</div>
   <div class="layers">
-    <div class="layer"><div class="lnum">»</div><div><b>Shows you everything</b><p>The APEX¹ firehose streams live tokens across Solana, Ethereum, Base, BNB and many more chains. Nothing is hidden behind an editor's choice — you filter it yourself.</p></div></div>
-    <div class="layer"><div class="lnum">»</div><div><b>Investigates before you buy</b><p>Watch a token and APEX² Research builds the full report: contract, price, liquidity, the buy/sell tape, and what people are saying about it — with an honest verdict and the reasons shown.</p></div></div>
-    <div class="layer"><div class="lnum">»</div><div><b>Trades with proven skill sets</b><p>Trading skills run on paper first and are measured honestly. Only a skill that proves itself — 65%+ measured wins over 30+ closed trades — ever earns real money, and you can build your own in the Skills Lab.</p></div></div>
+    <div class="layer"><div class="lnum">»</div><div><b>Shows you everything</b><p>The APEX¹ firehose streams live tokens across Solana, Ethereum, Base, BNB and more. Nothing is editor-filtered — you filter it yourself.</p></div></div>
+    <div class="layer"><div class="lnum">»</div><div><b>Investigates before you buy</b><p>APEX² Research builds the full report on any watched token: contract, price, liquidity, tape, community — with the verdict and reasons shown.</p></div></div>
+    <div class="layer"><div class="lnum">»</div><div><b>Trades with proven skill sets</b><p>Skills run on paper first. Only one that proves itself — 65%+ measured wins over 30+ closed trades — earns real money. Build your own in the Skills Lab.</p></div></div>
     <div class="layer"><div class="lnum">»</div><div><b>Mints originals that can't be faked</b><p>RUSTY mints a token and its information page in one flow, timestamped at birth — so when the copycats show up, the original is provable.</p></div></div>
     <div class="layer"><div class="lnum">»</div><div><b>Keeps your money yours</b><p>The HALEX Wallet signs on your phone. Keys never leave the device, and HALEX itself never holds your funds.</p></div></div>
   </div>
@@ -2509,42 +2458,33 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="sec-title">How it works — one pass, start to finish</div>
   <div class="layers">
     <div class="layer"><div class="lnum">1</div><div><b>The firehose comes in</b><p>Every new token and trade across the chain catalog flows into one stream. No gatekeeper decides what you're allowed to see.</p></div></div>
-    <div class="layer"><div class="lnum">2</div><div><b>Research checks it</b><p>APEX² Research scores structure, liquidity and identity, and screens for the impersonation scams that dominate new launches.</p></div></div>
+    <div class="layer"><div class="lnum">2</div><div><b>Research checks it</b><p>APEX² Research scores structure, liquidity and identity, and screens for impersonation scams.</p></div></div>
     <div class="layer"><div class="lnum">3</div><div><b>The brain decides</b><p>The Central Nervous System weighs the evidence and makes the call: what to buy or sell, which wallet, what size, and which exit plan.</p></div></div>
-    <div class="layer"><div class="lnum">4</div><div><b>The switchboard routes it</b><p>One dispatcher sends the order to the right wallet — and if that wallet is busy or capped, to a free wallet on the same chain. The exit plan travels with the trade.</p></div></div>
+    <div class="layer"><div class="lnum">4</div><div><b>The switchboard routes it</b><p>One dispatcher sends the order to the right wallet — or a free wallet on the same chain if it's busy or capped. The exit plan travels with the trade.</p></div></div>
     <div class="layer"><div class="lnum">5</div><div><b>Wallets just execute</b><p>Wallets are hands, not brains: they do exactly what they're told, inside hard spending caps they cannot override, and your HALEX Wallet signs on-device.</p></div></div>
     <div class="layer"><div class="lnum">6</div><div><b>Every trade teaches the system</b><p>Win or lose, each closed trade gets an autopsy. The lessons are filed in the Braintree, so the skill sets get sharper instead of repeating mistakes.</p></div></div>
   </div>
 
   <div class="sec-title">The parts, by name</div>
   <div class="card" style="padding-top:4px; padding-bottom:4px">
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div><div style="flex:1"><b>The Central Nervous System</b><p>The brain plus the switchboard. It takes in everything — feeds, signals, research — and makes every call. One brain, one ledger of truth, so no trade is ever doubled or lost. If the brain goes quiet, wallets stop opening new trades and simply manage the exits they already hold: it fails safe, never wild.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V9M12 9C12 5 9 2 4 2c0 5 3 7 8 7zM12 13c0-4 3-7 8-7 0 5-3 7-8 7z"/></svg></div><div style="flex:1"><b>The Braintree Database</b><p>HALEX's living knowledgebase. Winning skill sets hang there, categorized like branches, ready to be cloned and improved. Everything in it is a versioned observation with its source attached — knowledge with receipts, not rumors.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19a2 2 0 012-2h13"/></svg></div><div style="flex:1"><b>BrainData</b><p>The flow of knowledge into the Braintree — trade autopsies, research findings, hard lessons. BrainData is what the system learns; the Braintree is where what it learned lives. Every piece of BrainData enters through a single guarded doorway and passes two security gates before it's allowed to become knowledge.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div><div style="flex:1"><b>DRUM</b> <span class="chip info">FILED SKILL</span><p>A body of hard-won trading knowledge, retired from active duty and filed as a skill in the Braintree. DRUM doesn't run anymore — nothing to crash, nothing to drift. Its knowledge is simply there, clean and retrievable, whenever a skill set or a research question needs it.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v6L4.5 19a2 2 0 001.8 3h11.4a2 2 0 001.8-3L14 9V3"/><path d="M7.5 15h9"/></svg></div><div style="flex:1"><b>SMT</b><p>The Skills Lab builder. SMT helps you create skill sets and keeps the ones you make organized — it's the patient librarian of the Lab, and the partner you talk to in the Skill Forge while your ideas become a working skill.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg></div><div style="flex:1"><b>The CIA micro-processors</b><p>A crew of small, single-job specialists that work for the brain: one watches the feed, one reads the tape, one screens for copycat scams, one sizes trades, one manages exits, one writes the autopsies. Each does one thing, reports back, and never freelances — small processors, tightly supervised.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></div><div style="flex:1"><b>APEX² Research</b><p>The head of research. It runs the investigations — token reports, wallet traces, scam screening — and feeds the machine facts and finished research. Only its findings cross into the app; you see the report, the verdict and the reasons, never a black box.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><div style="flex:1"><b>halex-security</b><p>Two gates — one stops malicious content aimed at the screens, one stops injection aimed at the machine — standing guard over everything written into the Braintree. Security answers to nobody in the trading system. Details and the live monitor are on the Security tab.</p></div></div>
-    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg></div><div style="flex:1"><b>The HALEX Wallet</b><p>Where your money actually lives. A multi-wallet vault on your phone — hundreds of wallets, protected by a 2-of-3 multisig design and an app lock — that signs every trade on-device. HALEX can prepare anything; only your wallet can approve it.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg></div><div style="flex:1"><b>The Central Nervous System</b><p>The brain plus the switchboard: takes in feeds, signals and research, and makes every call. One ledger of truth, so no trade is doubled or lost. If it goes quiet, wallets stop opening trades and manage existing exits — it fails safe.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22V9M12 9C12 5 9 2 4 2c0 5 3 7 8 7zM12 13c0-4 3-7 8-7 0 5-3 7-8 7z"/></svg></div><div style="flex:1"><b>The Braintree Database</b><p>HALEX's living knowledgebase. Winning skill sets hang there, ready to be cloned and improved. Everything in it is a versioned observation with its source attached.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19a2 2 0 012-2h13"/></svg></div><div style="flex:1"><b>BrainData</b><p>The flow of knowledge into the Braintree — trade autopsies, research findings, hard lessons. Every piece passes two security gates before it becomes knowledge.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div><div style="flex:1"><b>DRUM</b> <span class="chip info">FILED SKILL</span><p>Hard-won trading knowledge, retired from active duty and filed as a skill in the Braintree. It doesn't run anymore — its knowledge is simply there when a skill set or research question needs it.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v6L4.5 19a2 2 0 001.8 3h11.4a2 2 0 001.8-3L14 9V3"/><path d="M7.5 15h9"/></svg></div><div style="flex:1"><b>SMT</b><p>The Skills Lab builder. Helps you create skill sets and keeps them organized — the partner you talk to in the Skill Forge.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/></svg></div><div style="flex:1"><b>The CIA micro-processors</b><p>Small, single-job specialists working for the brain: feed watch, tape reading, copycat screening, trade sizing, exit management, autopsies. Each does one thing and reports back.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></div><div style="flex:1"><b>APEX² Research</b><p>The head of research: token reports, wallet traces, scam screening. You see the report, the verdict and the reasons — never a black box.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div><div style="flex:1"><b>halex-security</b><p>Two gates — one stops malicious content aimed at the screens, one stops injection aimed at the machine — guarding everything written into the Braintree. Live monitor on the Security tab.</p></div></div>
+    <div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg></div><div style="flex:1"><b>The HALEX Wallet</b><p>Where your money lives: a multi-wallet vault on your phone, 2-of-3 multisig with an app lock, signing every trade on-device. HALEX can prepare anything; only your wallet approves it.</p></div></div>
   </div>
 
   <div class="sec-title">The skill-set system — logic and reasoning, not just rules</div>
   <div class="card">
-    <p style="margin:0 0 9px; font-size:14px">A HALEX skill set is more than a list of if-then rules. Each skill carries its <b>reasoning</b>: what it's looking for, <i>why</i> that pattern makes money, when it refuses to play, and how it gets out. That's what "logic/reasoning skill sets" means here — the skill can explain itself, and its score card shows its trades so you can judge the reasoning against the record.</p>
-    <p style="margin:0; font-size:14px">Skills are versioned modules filed in the Braintree. Winners keep trading and get cloned. Losers aren't deleted or defended — they're reformulated from the autopsy evidence and re-proven on paper. Changes happen at decision boundaries, never in the middle of an open trade. And with the Skill Forge in the Skills Lab, you can design your own the same way: talk it through, get the tactical breakdown, forge it, paper-prove it.</p>
+    <p style="margin:0 0 9px; font-size:14px">Each skill carries its <b>reasoning</b>: what it's looking for, <i>why</i> that pattern makes money, when it refuses to play, and how it gets out. Its score card shows its trades, so you can judge the reasoning against the record.</p>
+    <p style="margin:0; font-size:14px">Skills are versioned modules in the Braintree. Winners keep trading and get cloned; losers are reformulated from autopsy evidence and re-proven on paper — never changed mid-trade. You can design your own in the Skill Forge.</p>
   </div>
 
-  <div class="sec-title">Software built with AI — and why that's the smart move</div>
-  <div class="card">
-    <p style="margin:0 0 9px; font-size:14px">HALEX's software is <b>hardwired</b>: fixed, tested, immutable. The AI never edits the app — it connects through sockets and <i>operates</i> it, like an electrician working a panel rather than rebuilding the house. That split is the whole trick. The hardwired core gives you safety and predictability: the wallet can't be talked into sending your keys anywhere, because no socket exists that could. The AI layer gives you leverage: research that reads a thousand tokens, skill sets tuned from every autopsy, a research head that never sleeps.</p>
-    <p style="margin:0; font-size:14px">Markets move at machine speed and drown humans in data. A person can't watch twenty chains, screen every launch for copycats, and re-check every exit plan at 3 a.m. The AI can — while the hardwired rules make sure it can only act inside the lines you've approved. Speed where speed helps, stubbornness where safety demands it.</p>
-  </div>
 
-  <div class="sec-title">Why a game engine — Unity — renders the 3D world</div>
-  <div class="card">
-    <p style="margin:0; font-size:14px">The Chaintarium — HALEX's 3D map of the blockchain world, where Bitcoin is the sun, chains are planets and wallets, pools and tokens live on their surfaces — is a lot of graphics for a phone. So it gets its own dedicated GPU layer: a game engine, Unity, whose only job is drawing that world smoothly. The app itself stays light and fast for trading, while the engine does the heavy lifting it's built for — rendering thousands of objects at a steady frame rate on the graphics chip instead of the main processor. Smart division of labor: the trading app never slows down because the universe is pretty, and the universe never stutters because the app is busy.</p>
-  </div>
 
   <div class="sec-title">What makes HALEX different</div>
   <div class="card">
@@ -2555,17 +2495,13 @@ nav.tabbar .rail{touch-action:pan-x}
     <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Your keys never leave your phone</b><p>The HALEX Wallet signs on-device. AI operates the app; it can never touch the vault.</p></div></div>
   </div>
 
-  <div class="sec-title">How it all comes together</div>
-  <div class="card">
-    <p style="margin:0; font-size:14px">Put it together and HALEX is a loop that gets smarter every day it runs. The firehose finds the opportunities. APEX² Research vets them. The Central Nervous System decides, the switchboard routes, and wallets execute inside hard caps — signed by the HALEX Wallet on your device. Every result is autopsied into BrainData, filed in the Braintree behind the security gates, and folded back into skill sets that SMT keeps organized — including the ones you forge yourself. Data in, judgment applied, money moved carefully, lessons kept. That's HALEX.</p>
-  </div>
 </section>
 
 <!-- ================= SWAP ================= -->
 <section class="tab" id="tab-swap">
   <div class="tabhead">
     <h2>Swap</h2>
-    <p>Trade one token for another at the best route HALEX can find. The quote is live, and every cost is printed before you confirm — the network fee, the HALEX fee, and the exact net amount that lands in your wallet, as one all-in number. Solana is live today; every other chain is listed and marked coming soon until it can quote and settle the same way.</p>
+    <p>Trade one token for another at the best route HALEX can find. The quote is live and every cost — network fee, HALEX fee, exact net amount — is printed before you confirm. Solana is live today; other chains are marked coming soon.</p>
   </div>
 
   <div class="sec-title">Chain</div>
@@ -2614,12 +2550,12 @@ nav.tabbar .rail{touch-action:pan-x}
 
     <div class="sec-title">How a HALEX swap is built</div>
     <div class="card" style="padding-top:4px; padding-bottom:4px">
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>One quote, every pool</b><p>When you ask for a quote, HALEX asks a router to search nearly every Solana liquidity pool at once and bring back the best route — sometimes splitting your trade across several pools when that gets you a better price. The quote on this page is that live answer, not an estimate typed in advance.</p></div></div>
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>The fee rides inside the trade</b><p>HALEX charges 0.8% on a swap, and it is taken inside the same transaction as the swap itself — one approval moves everything at once. That means the fee can never be taken without the swap happening: if any part fails, the whole transaction unwinds and nothing moves, fee included.</p></div></div>
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Everything is priced before you confirm</b><p>The quote shows the full cost up front: the network fee Solana charges (a fraction of a cent), the HALEX fee, and the net amount you receive — one all-in number. Confirming re-checks that number; you never approve a swap and find the cost afterwards.</p></div></div>
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Straight to your wallet</b><p>The tokens you receive settle directly into the wallet you swapped from — HALEX never holds them. The HALEX fee is collected by the network into HALEX's own fee accounts as part of the transaction, visible on-chain like everything else here.</p></div></div>
-      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Fail-closed, on purpose</b><p>Before anything is signed, the trade is simulated. If the price has moved beyond your slippage tolerance, the swap stops rather than filling at a worse price — the same rule the Trade Portal proved on its $1 round-trip, where it refused once, correctly, before succeeding.</p></div></div>
-      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Solana first, the rest honestly labeled</b><p>Solana swaps are live on this page today. Each other chain joins one at a time, only when it can quote, show its full cost and settle exactly the same way — until then it stays marked coming soon above, and picking it will tell you the same thing.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>One quote, every pool</b><p>A router searches nearly every Solana pool at once and returns the best route — sometimes splitting your trade across pools for a better price. The quote is that live answer, not an estimate.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>The fee rides inside the trade</b><p>HALEX charges 0.8%, taken inside the same transaction as the swap — one approval moves everything. If any part fails, the whole transaction unwinds and nothing moves, fee included.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Everything is priced before you confirm</b><p>The quote shows the full cost up front — network fee, HALEX fee, net amount — as one all-in number, re-checked when you confirm.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Straight to your wallet</b><p>Received tokens settle directly into your wallet — HALEX never holds them. The fee is collected on-chain as part of the transaction.</p></div></div>
+      <div class="check"><div class="ic pass"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M4 12l5 5L20 6"/></svg></div><div><b>Fail-closed, on purpose</b><p>Before anything is signed, the trade is simulated. If the price moved beyond your slippage tolerance, the swap stops rather than filling worse.</p></div></div>
+      <div class="check"><div class="ic warn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v9M12 18.5v.5"/></svg></div><div><b>Solana first, the rest honestly labeled</b><p>Solana swaps are live today. Each other chain joins only when it can quote, show full cost and settle the same way — until then it stays marked coming soon.</p></div></div>
     </div>
   </div>
 </section>
@@ -2634,14 +2570,14 @@ nav.tabbar .rail{touch-action:pan-x}
     <div style="text-align:center">
       <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="var(--faint)" stroke-width="1.6" style="margin:0 auto 10px"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>
       <b style="font-size:16px" id="wallet-state-title">No wallet connected</b>
-      <p class="note" style="max-width:52ch; margin:6px auto 14px">Discovery is real: HALEX-M scans this browser for injected wallet providers (EIP-1193 / EIP-6963 for EVM, the Wallet Standard / <span class="mono">window.solana</span> for Solana), and the Connect wallet button in the top bar connects the same providers directly. WalletConnect pairing activates once HALEX's own project ID is configured. Only wallets that actually answer are listed — nothing is ever shown as connected that isn't.</p>
+      <p class="note" style="max-width:52ch; margin:6px auto 14px">HALEX-M scans this browser for wallet providers (EVM and Solana) — the top-bar Connect wallet button uses the same scan. Only wallets that actually answer are listed; nothing is shown as connected that isn't.</p>
       <button class="btn primary" id="wallet-connect">Scan for wallets</button>
       <p class="note" id="wallet-connect-note" style="margin-top:10px"></p>
     </div>
     <div id="wallet-results" style="text-align:left"></div>
     <div id="wallet-wc" style="text-align:left; margin-top:16px; border-top:1px solid var(--line); padding-top:14px">
       <b style="font-size:14px">WalletConnect pairing — find the HALEX wallet app</b>
-      <p class="note" style="margin:4px 0 10px">WalletConnect relays a pairing to a wallet app on your phone. It activates in this build once HALEX's own WalletConnect project ID is configured by HALEX. You never need a project ID of your own, and HALEX-M will never ask you to paste one: any page that asks for a project ID, a seed phrase or a private key to "connect" is not this app. Until activation, the browser wallet options above and the Connect wallet button in the top bar work as-is.</p>
+      <p class="note" style="margin:4px 0 10px">WalletConnect pairs with a wallet app on your phone. It activates once HALEX's own project ID is configured — you never need one of your own, and HALEX-M will never ask you to paste one. Any page that asks for a project ID, seed phrase or private key to "connect" is not this app. Until then, the browser wallet options above work as-is.</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <button class="btn" id="wc-pair">WalletConnect pairing</button>
       </div>
@@ -2653,7 +2589,7 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="card">
     <div id="balances-head">
       <b style="font-size:14.5px">Whose balances?</b>
-      <p class="note" style="margin-top:4px">Connect a wallet above and its balances appear here, read live from the chain — every token it holds, what each is worth, and a Swap button on each row that opens the Swap page with that token already in the “You pay” field. Nothing here is cached or invented: if the chain doesn't answer, this panel says so.</p>
+      <p class="note" style="margin-top:4px">Connect a wallet above and its balances appear here, read live from the chain, with a Swap button on each row. Nothing is cached or invented — if the chain doesn't answer, this panel says so.</p>
     </div>
     <div id="balances-list"></div>
     <div style="border-top:1px solid var(--line); margin-top:12px; padding-top:12px">
@@ -2681,12 +2617,12 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-halexmai">
   <div class="tabhead">
     <h2>HALEX-M AI</h2>
-    <p>Crypto-blockchain centric chat, wired into the HALEX-M system that already exists. This AI reads as HALEX-M reads: blockchain thinking, trading-strategy development, and token, wallet, and transaction scans through the public reads this page already uses. It is linked into each chain as a reader only — it holds no keys, signs nothing, and moves no funds. The chat lives in this tab, not in a floating button, and what you build here lands in the same SMT draft the Skills Lab Forge works from.</p>
+    <p>Blockchain-centric chat: trading-strategy development, and token, wallet and transaction scans through this page's public reads. It is a reader only — it holds no keys, signs nothing, and moves no funds. What you build here lands in the same SMT draft the Skills Lab Forge uses.</p>
   </div>
   <div class="sec-title">What you can ask here</div>
   <div class="halexm-optlist" data-context="trading"></div>
   <div class="card">
-    <p class="note" style="margin:0 0 12px; font-size:13px">Answers come from the page's own AI knowledge base plus the blockchain-knowledge topics (blockchain basics, smart contracts, allowances, transfers, gas, liquidity, slippage, paper proving). Token scans read live DexScreener public pairs; Solana wallet and transaction scans read the page's public Solana RPC pattern; anything else answers NOT READ with the reason. No risk score is invented, and nothing here is ever labeled verified on this chat's word.</p>
+    <p class="note" style="margin:0 0 12px; font-size:13px">Answers come from the page's own knowledge base. Token scans read live DexScreener pairs; wallet and transaction scans read the public Solana RPC. Anything it cannot read answers NOT READ with the reason — no score is invented, and nothing is labeled verified on this chat's word.</p>
     <div class="halexm-log" id="halexmai-log" aria-live="polite"></div>
     <label class="flabel" for="halexmai-input">Ask HALEX-M AI — or paste a contract address to scan it</label>
     <textarea id="halexmai-input" rows="3" placeholder="e.g. What does custody mean? · scan token 0x… · scan wallet <Solana address> · scan tx <signature> · build a skill with me"></textarea>
@@ -2695,7 +2631,7 @@ nav.tabbar .rail{touch-action:pan-x}
       <button class="btn" id="halexmai-draft">Add last answer to SMT draft</button>
       <button class="btn" id="halexmai-open-lab">Open the Skills Lab builder</button>
     </div>
-    <p class="note" style="margin:9px 0 0">Chat history lives in this page only — it is not stored, sent, or filed anywhere. The SMT draft is the shared working skill: it is the same draft the Skills Lab shows and the Trading chat writes to.</p>
+    <p class="note" style="margin:9px 0 0">Chat history lives in this page only — never stored, sent, or filed. The SMT draft is the same one the Skills Lab and Trading chat write to.</p>
   </div>
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Advisory only. HALEX-M AI explains and reads; it never trades, never signs, and never moves funds. A scan that cannot read says NOT READ — an unread check is never counted as a pass.</span></div>
 </section>
@@ -4590,65 +4526,18 @@ var TRADE_EVENTS = [
   { date:"Oct 16", title:"Trade Portal $1 round-trip — B3 (Base)", detail:"Buy → verified in wallet → sell → auto-unwrap. Portal failed closed once, correctly, before the fix.", result:"$1.00 → $0.96 · 96% retained", tags:["portal"] },
   { date:"Oct 16", title:"B3 incident — old executor", detail:"Silent fallback dumped into a dust pool; quote check only tested > 0. Rule born here: a tx hash is never confirmation — proceeds verified in wallet, or it didn't happen.", result:"Loss · execution, not token", tags:["portal"] },
   { date:"Oct 16", title:"Sniper1 first milestone", detail:"10 shots at the watering hole, all peaked at entry. Fix identified: buy only on positive buy-acceleration, 5-minute time stop.", result:"0/10 · parked for rework", tags:["sniper1"] },
-  { date:"Oct 17", title:"AllenX live bridge re-armed", detail:"Sell simulation pre-flight + liquidity gate + holdings verification all passing before re-arm.", result:"LIVE · $2 max", tags:["allenx"] }
 ];
-var AI_WALLETS = [
-  { name:"AllenX", chain:"Base", addr:"0x510Bc429F1Ee61a3C54c886aB7049FbE059fa73f", bal:"0.00342 ETH", mode:"LIVE", cls:"bad",
-    desc:"Original AllenX live bridge. Re-armed Oct 17 by direct order after the sell path was proven. $2 max per trade doctrine holds.",
-    report:{ skill:"Allen2 momentum skill set (clone) — AllenX runs it live; Allen2 itself stays untouched on paper",
-      bankroll:"0.00342 ETH — wallet balance, Oct 16 snapshot",
-      open:"None reported in this snapshot",
-      closed:"No closes in the snapshot window — the live bridge was re-armed Oct 17",
-      wr:"Not yet measured on the live bridge",
-      pnl:"—",
-      events:["allenx"] } },
-  { name:"Allen2", chain:"Base", addr:"0xD2958744072f8820f79FCC748d61A8F2a823411e", bal:"0.00496 ETH", mode:"PAPER", cls:"info",
-    desc:"Second-wave momentum trader. Paper until it measures ≥65% win rate over ≥30 closed trades. Separate bankroll, separate circuit breakers.",
-    report:{ skill:"Allen2 — momentum skill set",
-      bankroll:"0.00496 ETH — wallet balance, Oct 16 snapshot · paper bankroll tracked separately",
-      open:"None reported in this snapshot",
-      closed:"0 / 9 live-era closes on the skill record",
-      wr:"— · below the 30-close measuring bar, so no rate is quoted",
-      pnl:"—",
-      events:[] } },
-  { name:"TEST01", chain:"Solana", addr:"6yELZxRmRvwoow8MMGMpwLgGYFLJjRV63guaAAKEX7Kn", bal:"0.01045 SOL", mode:"PAPER", cls:"info",
-    desc:"Solana proving loop + NewAPI signal follower (trust → analyze → judge). Goes live only when the measured bar is met — the tripwire flips it, and reports after.",
-    report:{ skill:"TEST01-NewAPI — signal follower",
-      bankroll:"0.01045 SOL — wallet balance, Oct 16 snapshot",
-      open:"Signal-follower positions accumulate on the paper loop",
-      closed:"Accumulating — per-source records still building",
-      wr:"— · per-source rates publish when the record is big enough to mean something",
-      pnl:"—",
-      events:[] } }
-];
+var AI_WALLETS = [];
 var SKILLS = [
   { name:"Sniper1 — watering-hole sniper", status:"PARKED", cls:"warn", wr:"0%", rec:"0 / 10 closed",
     active:"0 open — parked for rework", closedShort:"10 closed", pnlShort:"No wins in 10 closes",
-    desc:"Bought the top 10 times out of 10 — every entry peaked at 1.00×. Rework is specified: enter only on positive buy-acceleration from the six tracked deployers, 5-minute time stop. Cron disabled until the rework is paper-validated.",
+    desc:"Bought the top 10 times out of 10 — every entry peaked at 1.00×. Rework is specified: enter only on positive buy-acceleration from the six tracked deployers, 5-minute time stop. Parked until the rework is paper-validated.",
     report:{ bankroll:"Paper bankroll — virtual, sandbox only",
-      open:"None — parked, cron disabled until the rework is paper-validated",
+      open:"None — parked until the rework is paper-validated",
       closed:"10 closed",
       wr:"0% measured (0 / 10)",
       pnl:"No wins in 10 closes — every entry peaked at 1.00×",
       events:["sniper1"] } },
-  { name:"TEST01-NewAPI — signal follower", status:"MEASURING", cls:"info", wr:"—", rec:"accumulating",
-    active:"Paper positions accumulating on the signal loop", closedShort:"Accumulating", pnlShort:"—",
-    desc:"Takes outside signals raw on the paper loop — safety gates disarmed by design, because the experiment measures the signal, not our filter. Per-source win rate decides who earns a place. Mayhem-flagged signals are taken and measured here, and only here.",
-    report:{ bankroll:"Runs on TEST01's paper bankroll",
-      open:"Accumulating on the paper loop",
-      closed:"Accumulating — no measured record yet",
-      wr:"— · measured per signal source once the record matures",
-      pnl:"—",
-      events:[] } },
-  { name:"Allen2 — momentum skill set", status:"PAPER", cls:"info", wr:"—", rec:"0 / 9 live-era closes",
-    active:"0 open in this snapshot", closedShort:"0 / 9 live-era", pnlShort:"—",
-    desc:"Cloned into the Braintree as a categorized knowledgebase entry. Its gates are its edge — judged as second-wave momentum, not retrofitted into a sniper.",
-    report:{ bankroll:"Runs on Allen2's paper bankroll — separate bankroll, separate circuit breakers",
-      open:"None reported in this snapshot",
-      closed:"0 / 9 live-era closes",
-      wr:"— · the proving bar is ≥65% over ≥30 closed paper trades; it isn't there yet",
-      pnl:"—",
-      events:[] } },
   { name:"Trade Portal — execution skill", status:"PROVEN", cls:"ok", wr:"96%", rec:"round-trip retained",
     active:"None held — executes, verifies, closes", closedShort:"1 verified round-trip", pnlShort:"−$0.04 on the $1 proof trade",
     desc:"The 7-step fail-closed executor: validate → quote all venues → economic sanity → simulate exact calldata → triple-gated execute → verify balance deltas. Live-proof: $1.00 → $0.96 on the B3 round-trip, proceeds verified in wallet.",
@@ -6157,7 +6046,7 @@ var CHAINS_3D = [
       { name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, note:"Ethereum Classic (2016) — the unforked chain. After the DAO hack, Ethereum rewound history and moved on; Classic kept the original ledger under the banner 'code is law'." }
     ] },
   { id:"solana", name:"Solana", sym:"SOL", color:0x9945ff, born:2020, activity:0.95, orbit:12.5, speed:0.24,
-    info:"The Jupiter of the system — the biggest memecoin gravity well in crypto. The watering hole: tokens are born in its pools by the thousand, and the predators hunt there. TEST01 hunts on this world (paper). 200ms block times now live.",
+    info:"The Jupiter of the system — the biggest memecoin gravity well in crypto. The watering hole: tokens are born in its pools by the thousand, and the predators hunt there. 200ms block times now live.",
     zones:[["The Watering Holes",-0.35,-0.4],["Memecoin Flats",0.5,0.3],["Validator Ridge",-0.1,0.6]] },
   { id:"xrp", name:"XRP Ledger", sym:"XRP", color:0xff5a3c, born:2012, activity:0.5, orbit:16.5, speed:0.13,
     info:"The Mars of the system — red, fast, payments-native. Issuance works by trustline: no contract needed, fractions of a cent in fees. RUSTY mints here with cold/hot wallet issuance and a blackhole option.",
@@ -6168,7 +6057,7 @@ var CHAINS_3D = [
   { id:"tron", name:"Tron", sym:"TRX", color:0xff3b30, born:2018, activity:0.7, orbit:23.5, speed:0.17,
     info:"The stablecoin freight world — more USDT moves across Tron than anywhere else. Cheap, fast, and built around high-throughput transfers." },
   { id:"base", name:"Base", sym:"BASE", color:0x4d7cff, born:2023, activity:0.85, orbit:27, speed:0.21,
-    info:"Coinbase's EVM world and the fleet's home turf: AllenX trades live here ($2 max), Allen2 proves itself here on paper. New-launch discovery runs through the APEX¹ firehose.",
+    info:"Coinbase's EVM world. New-launch discovery runs through the APEX¹ firehose.",
     zones:[["Builder Highlands",-0.3,-0.35],["Launch Flats",0.5,0.25],["The Aerodrome Fields",0,0.6]] },
   { id:"polygon", name:"Polygon", sym:"POL", color:0x8247e5, born:2020, activity:0.55, orbit:30.5, speed:0.2,
     info:"Ethereum's scaling archipelago — sidechains and rollups stitched to the parent world. In the HALEX firehose catalog from day one." },
