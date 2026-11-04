@@ -1,0 +1,111 @@
+/* =====================================================================
+   halex-m-apex-research.css — STAGING ONLY, NOT MERGED.
+   APEX² Research result cards. Every class is prefixed hm-ar- so
+   nothing here collides with the live page's own styles. Touch
+   targets are at least 44px. Animations are CSS-only progressive
+   reveals (content is present from first paint; the animation only
+   fades/slides it in, staggered per section via --hm-ar-delay).
+   Reduced motion is respected: animations are removed, content
+   stays fully visible.
+   ===================================================================== */
+.hm-ar-card {
+  border: 1px solid var(--line, #2a2f3d);
+  border-radius: 14px;
+  padding: 14px;
+  margin: 12px 0;
+  background: var(--panel, #141821);
+  animation: hm-ar-rise .45s ease both;
+}
+.hm-ar-head { display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+.hm-ar-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold, #ffc24b); margin: 0 0 2px; }
+.hm-ar-title { font-size: 17px; margin: 0; line-height: 1.25; }
+.hm-ar-sym { color: var(--gold, #ffc24b); font-size: 13px; }
+.hm-ar-sub { color: var(--muted, #9aa3b5); font-size: 12.5px; margin: 2px 0 0; }
+.hm-ar-addr {
+  font-family: "IBM Plex Mono", monospace; font-size: 11.5px;
+  color: var(--muted, #9aa3b5); word-break: break-all; margin: 4px 0 0;
+}
+.hm-ar-source {
+  margin-left: auto; font-size: 11.5px; font-weight: 600;
+  border: 1px solid var(--line, #2a2f3d); border-radius: 99px; padding: 6px 10px;
+  white-space: nowrap; color: var(--text, #eceef4);
+}
+.hm-ar-freshrow { margin-top: 10px; }
+.hm-ar-fresh { font-size: 12px; color: var(--green, #31c48d); }
+.hm-ar-stale {
+  font-size: 12px; font-weight: 600; color: var(--ember, #f59e0b);
+  border: 1px solid var(--ember, #f59e0b); border-radius: 99px; padding: 4px 9px;
+}
+.hm-ar-note { font-size: 12.5px; color: var(--muted, #9aa3b5); margin: 6px 0; line-height: 1.45; }
+.hm-ar-big { font-size: 22px; font-weight: 700; margin: 4px 0; }
+.hm-ar-link { color: var(--gold, #ffc24b); word-break: break-all; }
+
+/* Depth meter — a checklist, never a score. No percentage anywhere. */
+.hm-ar-depth { border: 1px solid var(--line, #2a2f3d); border-radius: 12px; padding: 10px 12px; margin-top: 12px; }
+.hm-ar-depth-head { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hm-ar-depth-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 6px; }
+.hm-ar-depth-item {
+  display: grid; grid-template-columns: 18px auto auto; gap: 8px; align-items: baseline;
+  font-size: 13px; padding: 6px 4px; border-radius: 8px;
+  animation: hm-ar-rise .4s ease both;
+}
+.hm-ar-depth-item.hm-ar-done .hm-ar-depth-mark { color: var(--green, #31c48d); }
+.hm-ar-depth-item.hm-ar-pending .hm-ar-depth-mark { color: var(--gold, #ffc24b); animation: hm-ar-pulse 1.2s ease-in-out infinite; }
+.hm-ar-depth-item.hm-ar-unrun .hm-ar-depth-mark { color: var(--muted, #9aa3b5); }
+.hm-ar-depth-status { font-size: 11.5px; color: var(--muted, #9aa3b5); }
+.hm-ar-depth-detail { grid-column: 2 / -1; font-size: 12px; color: var(--muted, #9aa3b5); }
+
+/* Sections animate in progressively, staggered by --hm-ar-delay. */
+.hm-ar-section {
+  border-top: 1px solid var(--line, #2a2f3d); margin-top: 12px; padding-top: 10px;
+  opacity: 0; animation: hm-ar-rise .5s ease forwards;
+  animation-delay: var(--hm-ar-delay, 0ms);
+}
+.hm-ar-section-title { font-size: 14.5px; margin: 0 0 6px; }
+.hm-ar-chart { width: 100%; max-width: 420px; height: auto; display: block; }
+.hm-ar-model-vals { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--muted, #9aa3b5); }
+.hm-ar-flag { border-left: 3px solid var(--ember, #f59e0b); padding: 6px 10px; margin: 8px 0; background: rgba(245, 158, 11, .06); border-radius: 0 8px 8px 0; }
+.hm-ar-flag b { display: block; font-size: 13px; }
+.hm-ar-ev { font-family: "IBM Plex Mono", monospace; font-size: 11.5px; color: var(--muted, #9aa3b5); }
+.hm-ar-evidence { margin: 6px 0; padding-left: 20px; font-size: 13px; }
+.hm-ar-evidence li { margin: 4px 0; }
+.hm-ar-ev-time { color: var(--muted, #9aa3b5); font-size: 11.5px; }
+.hm-ar-foot { font-size: 12px; color: var(--muted, #9aa3b5); border-top: 1px solid var(--line, #2a2f3d); margin-top: 12px; padding-top: 8px; }
+
+/* Interactive controls: minimum 44px touch target. */
+.hm-ar-btn, .hm-ar-input {
+  min-height: 44px; font-size: 15px; border-radius: 10px;
+}
+.hm-ar-btn {
+  padding: 0 18px; cursor: pointer; border: 1px solid var(--line, #2a2f3d);
+  background: var(--panel3, #1d2330); color: var(--text, #eceef4);
+  transition: transform .15s ease, background .15s ease;
+}
+.hm-ar-btn:active { transform: scale(.97); }
+.hm-ar-input { padding: 0 12px; width: 100%; border: 1px solid var(--line, #2a2f3d); background: var(--panel, #141821); color: var(--text, #eceef4); }
+
+/* Loading skeleton (shimmer, motion-safe only). */
+.hm-ar-skeleton {
+  height: 18px; border-radius: 8px; margin: 8px 0;
+  background: linear-gradient(90deg, var(--panel3, #1d2330), #2a3247, var(--panel3, #1d2330));
+  background-size: 200% 100%; animation: hm-ar-shimmer 1.4s linear infinite;
+}
+
+@keyframes hm-ar-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes hm-ar-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+@keyframes hm-ar-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-ar-card, .hm-ar-section, .hm-ar-depth-item { animation: none; opacity: 1; }
+  .hm-ar-depth-item.hm-ar-pending .hm-ar-depth-mark { animation: none; }
+  .hm-ar-skeleton { animation: none; }
+  .hm-ar-btn { transition: none; }
+}

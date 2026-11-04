@@ -1284,6 +1284,7 @@ nav.tabbar button span{letter-spacing:.015em}
 <link rel="stylesheet" href="halex-m-ai.css">
 <link rel="stylesheet" href="halex-m-upgrade.css">
 <link rel="stylesheet" href="halex-m-trading-token-view.css">
+<link rel="stylesheet" href="halex-m-apex-research.css">
 <link rel="stylesheet" href="chaintarium-cityscapes.css">
 <script src="halex-zcure.js"></script>
 </head>
@@ -1949,6 +1950,12 @@ nav.tabbar button span{letter-spacing:.015em}
     <p>APEX² Research is HALEX's token investigation view. Search or watch a token and it returns a complete report: contract address, on-chain metadata, current price, liquidity, the buy/sell tape, and community activity — callouts, posts, and the positives and negatives people are posting. Every token also gets the trading gate's verdict — <b>PASS</b>, <b>WATCH</b>, <b>QUARANTINE</b> or <b>FAIL</b> — read from live market structure, with the evidence shown. Impersonation is the dominant scam pattern: never trust a ticker, cross-reference the contract.</p>
   </div>
   <div id="research-list"><div class="skel"></div><div class="skel"></div><div class="skel"></div></div>
+  <div class="sec-title">APEX² Research — enhanced result</div>
+  <div class="card">
+    <p class="note">The enhanced card below renders a DexScreener read with graphical depth: tape and activity mini-charts, a labelled MODEL exit-impact curve, and a depth meter showing which checks ran. It issues no verdict and no score — the gate verdict stays with the Research Lab report.</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="hm-ar-input" type="text" placeholder="Token contract address" style="flex:1; min-width:200px" /><button class="btn" id="hm-ar-go">Search</button></div>
+    <div id="hm-ar-research-output"></div>
+  </div>
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Verdicts are computed in your browser from live DexScreener pair data: liquidity depth, pair age, buy/sell balance, volume and verifiable links. They are a first-pass screen, not a guarantee — before any buy, the live gate adds the checks this sandbox marks NOT READ: a real sell simulation at size, LP custody proven on-chain, holder and deployer-wallet forensics. An unread check is never counted as a pass.</span></div>
 
   <div class="sec-title">The Research Record — calls vs outcomes</div>
@@ -9817,6 +9824,12 @@ initGate();
 <script src="halex-m-upgrade.js"></script>
 <script src="halex-m-lab-expansion.js"></script>
 <script src="halex-m-trading-token-view.js"></script>
+<script src="halex-m-apex-research.js"></script>
+<script>
+  if (window.HalexMApexResearch && window.HalexMApexResearch.mountSearch) {
+    window.HalexMApexResearch.mountSearch({ input: document.getElementById("hm-ar-input"), button: document.getElementById("hm-ar-go"), output: document.getElementById("hm-ar-research-output") });
+  }
+</script>
 <script>
   if (window.HalexMTradingView && window.HalexMTradingView.mountTradingPanel) { window.HalexMTradingView.mountTradingPanel(); }
 </script>
