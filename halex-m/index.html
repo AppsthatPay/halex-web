@@ -1316,6 +1316,41 @@ nav.tabbar .rail{touch-action:pan-x}
 }
 #detail-chart-lw{width:100%; height:200px; display:block}
 @media (min-width:900px){ #detail-chart-lw{height:228px} }
+
+/* ---------- HALEX-M Chaintarium cleanup pass (2026-11-04, Jeffrey's
+   phone verdict): overlay cards closable and collapsed by default,
+   chain list collapsible, color code directly under the stage, the
+   surface-scan sheet on top of the orbit HUD, one-line tick strips,
+   and a Close button inside the tools drawer ---------- */
+#chain-hud-sys{pointer-events:auto}
+#chain-hud-sys .hud-head{display:flex; align-items:center; gap:7px}
+#chain-hud-sys .hud-head b{flex:1; min-width:0}
+.hud-btn{flex:none; width:22px; height:22px; border-radius:50%; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.07); color:#dbe6fa; font-size:11px; line-height:1; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; padding:0}
+#chain-hud-sys.hud-mini .hud-body{display:none}
+#surface.open ~ #chain-hud-sys{display:none}
+.surface-card{position:relative}
+.sc-x{position:absolute; top:6px; right:6px; width:24px; height:24px; border-radius:50%; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.07); color:#dbe6fa; font-size:11px; line-height:1; cursor:pointer; padding:0}
+.surface-scan{z-index:9; pointer-events:auto; padding-right:32px}
+.scan-x{position:absolute; top:5px; right:5px; width:22px; height:22px; border-radius:50%; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.07); color:#ffe1a8; font-size:10px; line-height:1; cursor:pointer; padding:0}
+#chain-activity-tick, #chain-live-status{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.surf-activity-tick{white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:calc(100% - 20px)}
+.chain-list{margin-top:10px; border:1px solid var(--line); border-radius:12px; background:var(--panel); overflow:hidden}
+.chain-list-toggle{display:flex; align-items:center; gap:8px; width:100%; padding:11px 13px; background:none; border:none; color:var(--text); font-size:13.5px; font-weight:700; cursor:pointer; text-align:left}
+.chain-list-toggle .clt-chev{margin-left:auto; color:var(--gold); transition:transform .2s ease}
+.chain-list-toggle[aria-expanded="true"] .clt-chev{transform:rotate(180deg)}
+.chain-list .chain-ctl{padding:0 12px 12px; margin-top:0}
+.chain-lists-note{padding:0 13px 11px}
+.chain-lists-note p{margin:5px 0 0; font-size:12px; color:var(--muted)}
+#surface.open ~ #chain-toolbar #surface-info-btn{display:inline-flex}
+#chain-tools-close{border-color:rgba(255,194,75,.45); color:#ffd98a}
+.chain-toolbar{-webkit-overflow-scrolling:touch}
+/* APEX³ trace: search row + drawn SVG timeline */
+.apex3-searchrow{display:flex; gap:8px; margin-top:10px}
+.apex3-searchrow input{flex:1; min-width:0}
+.apex3-searchrow .btn{flex:none}
+#apex3-timeline{margin-top:12px}
+#apex3-timeline svg{width:100%; height:auto; display:block}
+#apex3-readout-card{margin-top:12px}
 </style>
 </head>
 <body>
@@ -1662,13 +1697,10 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Fund trail — follow the money</div>
   <div class="card">
-    <p class="note" style="margin:0 0 12px; font-size:13px">Paste a Solana wallet and HALEX traces its <b>transfers</b> — not its trades — hop by hop: largest sends first, forward in time, each busy wallet read from the moment the money arrived so older balances never fake a trail. Every trail ends somewhere labelled, with the reason printed: an exchange, a bridge, a pool, a service many wallets use, or a wallet where the money still sits. A trail is a fact about transfers — never a verdict about a person.</p>
+    <p class="note" style="margin:0 0 6px; font-size:13px">Paste a Solana wallet and HALEX traces its funds — <b>transfers and trades</b> — hop by hop, up to <b>12 hops</b>: largest flows first, forward in time, each wallet read from the moment the money arrived so older balances never fake a trail.</p>
+    <p class="note" style="margin:0 0 12px; font-size:13px">A trail is a fact about movements — never a verdict about a person.</p>
     <div style="display:flex; gap:8px; flex-wrap:wrap">
       <input id="trail-input" type="text" placeholder="Solana wallet address…" style="flex:1; min-width:200px" autocomplete="off" spellcheck="false" />
-      <select id="trail-hops" aria-label="Trace depth" style="width:118px; flex:none">
-        <option value="4">4 hops</option><option value="6">6 hops</option><option value="8">8 hops</option>
-        <option value="10" selected>10 hops</option><option value="12">12 hops</option>
-      </select>
       <button class="btn primary" id="trail-go">Trace</button>
     </div>
     <div id="trail-result"></div>
@@ -1678,9 +1710,28 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-apex3">
   <div class="tabhead">
     <h2>APEX³ — theft &amp; stolen-item investigation</h2>
-    <p>APEX³ traces transfers hop by hop across chains and flags wallets tied to reported theft. Every flag is an investigation flag, not a verdict and not a recovery claim — a trail is a fact about transfers, never a verdict about a person.</p>
+    <p>APEX³ traces transfers hop by hop and flags wallets tied to reported theft.</p>
   </div>
-  <div id="hm-apex3-root"></div>
+  <div class="card" id="apex3-search-card">
+    <b>Trace a wallet</b>
+    <p class="note" style="margin-top:4px">Every flag is an investigation flag, not a verdict and not a recovery claim — a trail is a fact about transfers, never a verdict about a person.</p>
+    <div class="apex3-searchrow">
+      <input id="apex3-address" type="text" placeholder="Paste a wallet address…" autocomplete="off" spellcheck="false" />
+      <button class="btn primary" id="apex3-trace-btn">Trace</button>
+    </div>
+    <p class="note" id="apex3-status" style="margin-top:8px">Solana wallets trace live from the public Solana RPC. EVM (0x…) tracing is not wired in this page yet.</p>
+  </div>
+  <div id="hm-apex3-root">
+    <div id="apex3-timeline" aria-label="Traced transfer timeline"></div>
+    <div class="card" id="apex3-readout-card" hidden>
+      <div style="display:flex; align-items:center; gap:8px"><b style="flex:1">Trace readout</b><button class="btn" id="apex3-copy">Copy</button></div>
+      <pre id="apex3-readout" style="white-space:pre-wrap; word-break:break-word; font-size:12px; margin-top:8px"></pre>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px">
+        <button class="btn" id="apex3-dl-txt">Download report (.txt)</button>
+        <button class="btn" id="apex3-dl-svg">Download timeline (.svg)</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ================= RUSTY ================= -->
@@ -2063,7 +2114,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-chaintarium">
   <div class="tabhead">
     <h2>Chaintarium</h2>
-    <p>The Blockchain 3D World Research Engine. Bitcoin is the sun, every chain orbits as a planet, and each world is a living map of its wallets, tokens, pools and farms. The color code, the toolbar guide and how search works live just below the cosmos.</p>
+    <p>Bitcoin is the sun, every chain orbits as a planet, and each world maps its wallets, tokens and pools.</p>
   </div>
   <div class="chain-search">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
@@ -2081,8 +2132,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="btn" id="chain-system-main" aria-pressed="false">Main system</button>
     <button class="btn" id="chain-system-dying" aria-pressed="false">Dying system only</button>
     <button class="btn on" id="chain-system-both" aria-pressed="true">Both systems</button>
-    <span id="chain-live-status">Live-activity feed: model tick only. No live chain-block feed is connected; transfers below are MODEL, not live.</span>
-    <p class="note">Both systems share this one window. The main system orbits Bitcoin (the sun). The second, dying system orbits a blackhole sun and holds lesser-used / dead / R&amp;D chains, labelled as such. Cross-system arcs are drawn only when a transfer exists in the current 15-second window — model transfers until a live feed is wired.</p>
+    <span id="chain-live-status">Transfers shown are a model until a live feed is wired.</span>
   </div>
   <div id="chain-stage" class="tools-closed">
     <canvas id="chain-canvas"></canvas>
@@ -2103,8 +2153,8 @@ nav.tabbar .rail{touch-action:pan-x}
         <div class="hm-cs-tools" id="hm-cs-tools"></div>
         <div class="hm-cs-legend" id="hm-cs-legend"></div>
       </div>
-      <div class="surf-activity-tick" id="surf-activity-tick">Planet view — last 15 seconds: model tick only — no live feed connected.</div>
-      <div class="surf-layers" id="surf-layers"><b>Planet layers: 3 years each</b><span class="note" style="font-size:12px"> The core is the oldest records, the surface is the newest. Pick a layer, or type a year and jump to it.</span><div class="layer-btns" id="surf-layer-btns"></div><div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="surf-layer-date" type="text" inputmode="numeric" placeholder="Year, e.g. 2020" /><button class="btn" id="surf-layer-go">Go to layer</button></div><p class="surf-layer-note" id="surf-layer-note"></p></div>
+      <div class="surf-activity-tick" id="surf-activity-tick">Planet view · MODEL tick — no live feed wired.</div>
+      <div class="surf-layers" id="surf-layers"><b>Planet layers: 3 years each</b><span class="note" style="font-size:12px"> Core is oldest, surface is newest.</span><div class="layer-btns" id="surf-layer-btns"></div><div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="surf-layer-date" type="text" inputmode="numeric" placeholder="Year, e.g. 2020" /><button class="btn" id="surf-layer-go">Go to layer</button></div><p class="surf-layer-note" id="surf-layer-note"></p></div>
       <aside class="surf-feed" id="surf-feed" aria-label="Live chain feed">
         <div class="sf-head"><span class="track-live-dot"></span><b id="sf-title">Live chain feed</b><button id="sf-close" aria-label="Hide the live chain feed">✕</button></div>
         <div class="sf-list" id="sf-list"><div class="sf-empty">Listening…</div></div>
@@ -2130,17 +2180,21 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="btn" id="chain-tools-toggle" aria-expanded="false" aria-controls="chain-toolbar">⚙ Tools</button>
     <div class="chain-toolbar" id="chain-toolbar" aria-label="Chaintarium tools">
       <div class="tb-cap">TOOLS</div>
+      <div class="tb-group tb-system">
+        <button class="btn" id="chain-tools-feed" aria-pressed="true">Live feed on</button>
+        <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
+        <button class="btn" id="chain-tools-deadsys" aria-pressed="true">Dead system on</button>
+      </div>
       <div class="tb-group tb-view">
         <button class="btn" id="chain-tools-overlays" aria-pressed="true">Overlays on</button>
-        <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
         <button class="btn" id="chain-tools-showall" hidden>Show all worlds</button>
+        <button class="btn" id="chain-tools-syscard" aria-pressed="true">System card on</button>
       </div>
       <div class="tb-group tb-unclutter" id="tb-unclutter">
         <div class="tb-cap">UNCLUTTER</div>
         <button class="btn" id="uncl-collapse-inactive" aria-pressed="false">Collapse inactive tokens: off</button>
         <button class="btn" id="uncl-high-signal" aria-pressed="false">High-signal only: off</button>
         <button class="btn" id="uncl-streamline-feed" aria-pressed="false">Streamline tx feed: off</button>
-        <p class="note" style="font-size:11.5px; margin:4px 0 0">Collapse inactive hides tracked tokens and wallets whose last live read failed and that have no data to show. High-signal only keeps platforms, wallets, rugs, and bundles on, and hides transactions, flows, labels, and the scan card — through the same layer switches above. Streamline collapses the live chain feed to its header.</p>
       </div>
       <div class="tb-group tb-window">
         <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
@@ -2161,23 +2215,10 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn lyr-btn" data-layer="labels" aria-pressed="true"><i style="background:#ffe1a8; color:#ffe1a8"></i>Labels</button>
         <button class="btn lyr-btn" data-layer="scan" aria-pressed="true"><i style="background:#ffd98a; color:#ffd98a"></i>Scan card</button>
       </div>
+      <div class="tb-group">
+        <button class="btn" id="chain-tools-close">✕ Close tools</button>
+      </div>
     </div>
-  </div>
-  <div class="chain-ctl" id="chain-chips"></div>
-  <div class="card chain-track" id="chain-track" hidden>
-    <div class="track-head"><span class="track-live-dot"></span><b>Cosmos Tracker</b><span class="note" style="font-size:12px">Tokens and wallets you're following — read live from public chain data, refreshed while you watch. Nothing here is simulated.</span></div>
-    <div id="track-items"></div>
-  </div>
-  <div class="card chain-info" id="chain-info">
-    <b>Bitcoin — the sun</b>
-    <p class="note" style="margin-top:4px">Every chain in the system orbits the original. Search above, tap a planet in the sky, or pick one from the row of worlds to visit it and open its planet view — the world as a sphere. Planet size follows each chain's age and activity; moons are its lesser-known forks.</p>
-  </div>
-  <div class="card" id="chain-activity-card">
-    <b>Live-activity tick — last 15 seconds</b>
-    <p id="chain-activity-tick">Waiting for the first 15-second tick. Source will be labelled here on every tick: live feed if one is wired, otherwise MODEL.</p>
-    <p id="chain-system-note">Model vs live: planet sizes, rods, terrain bands, grids, markers and transfer arcs in this upgrade are a stylized deterministic MODEL (snapshot values), not live chain data. No live host feed is connected. To wire one, a host feed must provide <span class="mono">window.HALEX_CHAIN_FEED.latestTransfers(15)</span> returning [{from, to}] chain ids — until then every transfer shown is explicitly labelled MODEL.</p>
-    <p><b>Main-system planets (top 40 most-listed / used + PIVX):</b> <span id="chain-top40-list"></span></p>
-    <p><b>Dying system (blackhole sun — lesser-used / dead / R&amp;D chains, labelled as such):</b> <span id="chain-dying-list"></span></p>
   </div>
   <div class="chain-below" id="chain-below">
     <div class="card cb-card">
@@ -2195,14 +2236,27 @@ nav.tabbar .rail{touch-action:pan-x}
         <span class="cc-item"><i class="cc-sw round" style="background:#5aa9ff"></i><span><b>Blue</b> a transaction · <b>Teal</b> a token flow</span></span>
       </div>
     </div>
-    <div class="card cb-card">
-      <b>The side toolbar</b>
-      <p>Every Chaintarium tool lives in the slim bar on the right side of the cosmos window. The layer switches turn whole kinds of structures on and off, so you can clear the view and just watch the world turn. Tip: turn your phone sideways while the window is popped out, and the cosmos fills the screen the long way.</p>
+  </div>
+  <div class="chain-list" id="chain-list">
+    <button class="chain-list-toggle" id="chain-list-toggle" aria-expanded="false" aria-controls="chain-chips">Chains · <span id="chain-count">41</span><span class="clt-chev" aria-hidden="true">▾</span></button>
+    <div class="chain-ctl" id="chain-chips" hidden></div>
+    <div class="chain-lists-note" id="chain-lists-note" hidden>
+      <p><b>Main system:</b> <span id="chain-top40-list"></span></p>
+      <p><b>Dying system (blackhole sun):</b> <span id="chain-dying-list"></span></p>
     </div>
-    <div class="card cb-card">
-      <b>How search works</b>
-      <p>One bar searches everything. A chain name flies you to its planet. A token name or contract starts live tracking and opens that token's planetarium. A pasted wallet address opens the wallet's own moon system. The search inside a planet does all of that too, and also finds the structures standing on that world.</p>
-    </div>
+  </div>
+  <div class="card chain-track" id="chain-track" hidden>
+    <div class="track-head"><span class="track-live-dot"></span><b>Cosmos Tracker</b><span class="note" style="font-size:12px">Tokens and wallets you're following — read live from public chain data, refreshed while you watch. Nothing here is simulated.</span></div>
+    <div id="track-items"></div>
+  </div>
+  <div class="card chain-info" id="chain-info">
+    <b>Bitcoin — the sun</b>
+    <p class="note" style="margin-top:4px">Search above, or tap a planet to visit it. Planet size follows age and activity; moons are lesser-known forks.</p>
+  </div>
+  <div class="card" id="chain-activity-card">
+    <b>Live activity — last 15 seconds</b>
+    <p id="chain-activity-tick">Waiting for the first tick.</p>
+    <p id="chain-model-line">Transfers shown are a model until a live feed is wired.</p>
   </div>
   <div class="card">
     <b>Ask HALEX-M AI about this cosmos</b>
@@ -4094,56 +4148,273 @@ function runLab(){
 $("#lab-go").addEventListener("click", runLab);
 $("#lab-input").addEventListener("keydown", function(e){ if(e.key === "Enter") runLab(); });
 
-/* ---------------- Fund trail ----------------
-   The trace engine reads wallet histories on the production stack; this
-   sandbox does not read them, simulates nothing in their place, and says
-   so on the panel. What renders here is the reading method itself — the
-   same map a live trace draws from real transfers. */
-function trailDiagramSVG(){
-  var box = function(x, y, w, h, stroke, title, sub){
-    return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="9" fill="#12151d" stroke="'+stroke+'" stroke-width="1.4"/>' +
-      '<text x="'+(x + w/2)+'" y="'+(y + 22)+'" fill="#eceef4" font-size="11.5" font-weight="600" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">'+title+"</text>" +
-      '<text x="'+(x + w/2)+'" y="'+(y + 38)+'" fill="#9aa3b5" font-size="9.5" text-anchor="middle" font-family="IBM Plex Sans, sans-serif">'+sub+"</text>";
+/* ---------------- Fund trail (APEX²) ----------------
+   LIVE in this page (2026-11-04): Solana movements traced client-side
+   from the public Solana RPC (keyless) — transfers AND trades. Each
+   action is parsed from the transaction's effect on the traced
+   wallet: SOL balance delta plus SPL pre/post token balance deltas.
+   One asset out + one asset in = a trade (BUY / SELL / SWAP; venue
+   named only when a known program id is invoked: Jupiter, Raydium,
+   Orca, pump.fun). One direction only = a transfer. Deltas that
+   cannot be reconciled are counted as unread movements, never
+   guessed. Cap: 12 hops total. Largest flows first, forward in
+   time, each wallet read from the moment the money arrived. EVM
+   addresses get the honest not-wired line — nothing is faked. */
+(function(){
+  var RPC = "https://api.mainnet-beta.solana.com";
+  var MAX_HOPS = 12, MAX_TX = 25;
+  var VENUES = {
+    "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4": "Jupiter",
+    "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8": "Raydium",
+    "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc": "Orca",
+    "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P": "pump.fun"
   };
-  var line = function(x1, y1, x2, y2){
-    return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#2dd4bf" stroke-width="1.3" stroke-opacity=".65"/>' +
-      '<circle cx="'+x2+'" cy="'+y2+'" r="2.6" fill="#ffc24b"/>';
+  var KNOWN = {
+    "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4": "swap service (Jupiter)",
+    "wormDTUJ6AWPNvk59vGQbDvGJmqbDTdgWgAqcLBCgUb": "bridge (Wormhole)",
+    "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8": "pool (Raydium AMM)",
+    "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc": "pool (Orca Whirlpool)",
+    "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P": "service (pump.fun)"
   };
-  return '<svg viewBox="0 0 660 352" role="img" aria-label="Fund trail method diagram: a source wallet, two hops read largest-send-first and from arrival time, and four labelled endpoints">' +
-    box(8, 138, 128, 56, "#ffc24b", "Source wallet", "where the trail starts") +
-    box(196, 138, 128, 56, "#2dd4bf", "Hop 1", "largest send first") +
-    box(384, 138, 128, 56, "#2dd4bf", "Hop 2", "read from arrival time") +
-    line(136, 166, 196, 166) + line(324, 166, 384, 166) +
-    box(540, 12, 112, 52, "#5aa9ff", "Exchange", "stops: shared venue") +
-    box(540, 100, 112, 52, "#5aa9ff", "Bridge", "stops: left the chain") +
-    box(540, 188, 112, 52, "#5aa9ff", "Pool", "stops: in liquidity") +
-    box(540, 276, 112, 52, "#31c48d", "Still holding", "the money sits here") +
-    line(512, 158, 540, 38) + line(512, 162, 540, 126) + line(512, 170, 540, 214) + line(512, 176, 540, 302) +
-    '<text x="8" y="330" fill="#6b7488" font-size="10.5" font-family="IBM Plex Sans, sans-serif">Transfers only — trades are left out. A busy wallet is read from the moment</text>' +
-    '<text x="8" y="346" fill="#6b7488" font-size="10.5" font-family="IBM Plex Sans, sans-serif">the money arrived, so older balances never fake a trail.</text>' +
-  "</svg>";
-}
-function runTrail(){
-  var q = $("#trail-input").value.trim();
-  var box = $("#trail-result");
-  var hops = $("#trail-hops").value;
-  if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(q)){
-    box.innerHTML = '<p class="note" style="margin-top:10px">That doesn\'t parse as a Solana wallet address — check it and try again.</p>';
-    return;
+  var QUOTES = { "SOL": 1, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v": 1, "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB": 1 };
+  var inEl = document.getElementById("trail-input"), goEl = document.getElementById("trail-go"), box = document.getElementById("trail-result");
+  if(!inEl || !goEl || !box) return;
+  function trunc(a){ a = String(a || ""); return a.length > 10 ? a.slice(0, 4) + "…" + a.slice(-4) : a; }
+  function fmtAmt(v){
+    if(v == null || isNaN(v)) return "amount unknown";
+    v = Number(v);
+    if(v !== 0 && Math.abs(v) < 0.000001) return v.toPrecision(3);
+    var s = v.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+    return (s === "" || s === "-0") ? "0" : s;
   }
-  box.innerHTML =
-    '<div class="trail-wrap">' + trailDiagramSVG() + "</div>" +
-    '<p class="note" style="margin-top:10px"><b style="color:var(--text)">Trace depth set: ' + hops + ' hops.</b> The trace engine runs on the production stack — this sandbox does not read wallet histories, and nothing is simulated in their place. The map above is the reading method, drawn once: a live trace renders this same map from real transfers, every transfer also listed in a table, and every end labelled with why the trail stopped.</p>' +
-    '<div class="legend">' +
-      '<span class="chip info">Exchange — money entered a shared venue</span>' +
-      '<span class="chip info">Bridge — value left the chain</span>' +
-      '<span class="chip info">Pool — value sits in liquidity</span>' +
-      '<span class="chip ok">Still holding — the money is here</span>' +
-    "</div>" +
-    '<p style="font-size:13px; margin:11px 0 0">Meanwhile, the raw record is public: <a href="https://solscan.io/account/' + esc(q) + '" target="_blank" rel="noopener">inspect this wallet on Solscan</a> — every transfer the trail would read, unfiltered.</p>';
-}
-$("#trail-go").addEventListener("click", runTrail);
-$("#trail-input").addEventListener("keydown", function(e){ if(e.key === "Enter") runTrail(); });
+  function fmtTs(sec){ return sec ? new Date(sec * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC" : "time unknown"; }
+  function rpc(method, params){
+    return fetch(RPC, { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
+      .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
+      .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+  }
+  function txEffects(tx, wallet){
+    if(!tx || !tx.meta || !tx.transaction || !tx.transaction.message) return null;
+    var msg = tx.transaction.message, meta = tx.meta;
+    var keys = (msg.accountKeys || []).map(function(k){ return typeof k === "string" ? k : (k && k.pubkey) || ""; });
+    var wi = keys.indexOf(wallet);
+    if(wi < 0) return null;
+    var pre = meta.preBalances || [], post = meta.postBalances || [];
+    var solDelta = (post[wi] || 0) - (pre[wi] || 0);
+    if(wi === 0) solDelta += (meta.fee || 0);
+    var outs = [], ins = [], anyChange = false;
+    if(solDelta < 0){ outs.push({ id: "SOL", asset: "SOL", amount: -solDelta / 1e9, score: -solDelta }); anyChange = true; }
+    else if(solDelta > 0){ ins.push({ id: "SOL", asset: "SOL", amount: solDelta / 1e9, score: solDelta }); anyChange = true; }
+    var solRecipient = "";
+    if(solDelta < 0){
+      var bestG = 0;
+      for(var j = 0; j < keys.length; j++){
+        if(j === wi) continue;
+        var g = (post[j] || 0) - (pre[j] || 0);
+        if(g > bestG){ bestG = g; solRecipient = keys[j]; }
+      }
+    }
+    var preMap = {}, postMap = {};
+    (meta.preTokenBalances || []).forEach(function(b){ preMap[b.accountIndex + "|" + b.mint] = b; });
+    (meta.postTokenBalances || []).forEach(function(b){ postMap[b.accountIndex + "|" + b.mint] = b; });
+    var mints = {};
+    Object.keys(preMap).forEach(function(k){ mints[preMap[k].mint] = 1; });
+    Object.keys(postMap).forEach(function(k){ mints[postMap[k].mint] = 1; });
+    var mintRecipient = {};
+    Object.keys(mints).forEach(function(mint){
+      var myDelta = 0, myDec = 0, bestOwner = "", bestAmt = 0;
+      var seen = {};
+      Object.keys(preMap).concat(Object.keys(postMap)).forEach(function(k){
+        if(seen[k]) return; seen[k] = 1;
+        var pb = preMap[k], ob = postMap[k], e = ob || pb;
+        if(!e || e.mint !== mint) return;
+        var owner = e.owner || keys[e.accountIndex] || "";
+        var d = (ob ? Number(ob.uiTokenAmount.amount) || 0 : 0) - (pb ? Number(pb.uiTokenAmount.amount) || 0 : 0);
+        if(!d) return;
+        if(owner === wallet){ myDelta += d; myDec = e.uiTokenAmount.decimals || 0; }
+        else if(d > bestAmt){ bestAmt = d; bestOwner = owner; }
+      });
+      if(myDelta < 0){ outs.push({ id: mint, asset: "SPL " + trunc(mint), amount: -myDelta / Math.pow(10, myDec), score: -myDelta }); mintRecipient[mint] = bestOwner; anyChange = true; }
+      else if(myDelta > 0){ ins.push({ id: mint, asset: "SPL " + trunc(mint), amount: myDelta / Math.pow(10, myDec), score: myDelta }); anyChange = true; }
+    });
+    var programs = [];
+    function grabP(list){ (list || []).forEach(function(ix){ if(ix && ix.programId) programs.push(ix.programId); }); }
+    grabP(msg.instructions);
+    (meta.innerInstructions || []).forEach(function(ii){ grabP(ii.instructions); });
+    return { outs: outs, ins: ins, anyChange: anyChange, programs: programs, solRecipient: solRecipient, mintRecipient: mintRecipient };
+  }
+  function actionFromTx(tx, wallet){
+    var fx = txEffects(tx, wallet);
+    if(!fx) return { unread: true };
+    if(!fx.outs.length && !fx.ins.length) return fx.anyChange ? { unread: true } : null;
+    function largest(arr){ return arr.slice().sort(function(a, b){ return b.score - a.score; })[0]; }
+    if(fx.outs.length && fx.ins.length){
+      var o = largest(fx.outs), i2 = largest(fx.ins);
+      var venue = "";
+      for(var p = 0; p < fx.programs.length; p++){ if(VENUES[fx.programs[p]]){ venue = VENUES[fx.programs[p]]; break; } }
+      var type = "SWAP";
+      if(QUOTES[o.id] && !QUOTES[i2.id]) type = "BUY";
+      else if(!QUOTES[o.id] && QUOTES[i2.id]) type = "SELL";
+      return { kind: "trade", type: type, outAmount: o.amount, outAsset: o.asset, outId: o.id, inAmount: i2.amount, inAsset: i2.asset, inId: i2.id, venue: venue, score: o.score };
+    }
+    if(fx.outs.length){
+      var o2 = largest(fx.outs);
+      var to = o2.id === "SOL" ? fx.solRecipient : (fx.mintRecipient[o2.id] || "");
+      if(!to) return { unread: true };
+      return { kind: "transfer", to: to, amount: o2.amount, asset: o2.asset, assetId: o2.id, score: o2.score };
+    }
+    return null;
+  }
+  function readActions(wallet, sinceTs, stats){
+    return rpc("getSignaturesForAddress", [wallet, { limit: MAX_TX }]).then(function(sigs){
+      var list = (sigs || []).filter(function(s){ return s && !s.err; });
+      var actions = [], chain = Promise.resolve();
+      list.forEach(function(s){
+        chain = chain.then(function(){
+          return rpc("getTransaction", [s.signature, { encoding: "jsonParsed", maxSupportedTransactionVersion: 0 }]).then(function(tx){
+            stats.read++;
+            if(!tx){ stats.unreadTx++; return; }
+            var ts = tx.blockTime || s.blockTime || 0;
+            if(sinceTs && ts && ts < sinceTs) return;
+            var a = actionFromTx(tx, wallet);
+            if(a && a.unread){ stats.unreadMovements++; return; }
+            if(a){ a.ts = ts; actions.push(a); }
+          }).catch(function(){ stats.unreadTx++; });
+        });
+      });
+      return chain.then(function(){ return actions; });
+    });
+  }
+  function traceA2(start){
+    var stats = { read: 0, unreadTx: 0, unreadMovements: 0 };
+    var steps = [], current = start, assetId = null, arrivedAt = 0, endReason = "still", visited = {};
+    visited[start] = true;
+    function step(){
+      if(steps.length >= MAX_HOPS){ endReason = "cap"; return Promise.resolve(); }
+      return readActions(current, arrivedAt, stats).then(function(actions){
+        var pool = assetId ? actions.filter(function(a){ return a.kind === "transfer" ? a.assetId === assetId : a.outId === assetId; }) : actions;
+        if(!pool.length){ endReason = "still"; return; }
+        pool.sort(function(a, b){ return b.score - a.score; });
+        var a = pool[0];
+        a.from = current;
+        steps.push(a);
+        arrivedAt = a.ts || arrivedAt;
+        if(a.kind === "transfer"){
+          if(visited[a.to]){ endReason = "loop"; current = a.to; return; }
+          visited[a.to] = true;
+          current = a.to; assetId = a.assetId;
+        } else { assetId = a.inId; }
+        return step();
+      });
+    }
+    return step().then(function(){
+      return { steps: steps, endpoint: current, endReason: endReason, stats: stats };
+    });
+  }
+  function endpointLabelA2(res){
+    if(res.endReason === "loop") return "trail loops back here";
+    if(KNOWN[res.endpoint]) return KNOWN[res.endpoint];
+    if(res.endReason === "cap") return "trail stopped at the 12-hop cap — funds may move further";
+    return "still in wallet";
+  }
+  function renderA2(res, start, readAt){
+    var NH = 48, TGAP = 36, BAND = 30;
+    var heights = [NH];
+    res.steps.forEach(function(s){ heights.push(s.kind === "transfer" ? TGAP + NH : 10 + BAND + 4); });
+    var H = 16; heights.forEach(function(h){ H += h; });
+    var W = 360, parts = [], y = 8, lastNodeBottom = 0;
+    function node(addr, isEnd){
+      var stroke = isEnd ? "#ffc24b" : "rgba(46,230,200,.55)";
+      parts.push('<rect x="24" y="' + y + '" width="312" height="' + NH + '" rx="12" fill="#0d1524" stroke="' + stroke + '" stroke-width="' + (isEnd ? 2 : 1.2) + '"/>');
+      parts.push('<circle cx="52" cy="' + (y + NH / 2) + '" r="13" fill="none" stroke="' + stroke + '" stroke-width="1.2"/><text x="52" y="' + (y + NH / 2 + 4.5) + '" text-anchor="middle" font-size="12" fill="' + stroke + '">⬢</text>');
+      parts.push('<text x="76" y="' + (y + NH / 2 - 1) + '" font-family="monospace" font-size="13.5" fill="#e8ecf4">' + esc(trunc(addr)) + '</text>');
+      var sub = KNOWN[addr] || (isEnd ? endpointLabelA2(res) : "");
+      if(sub) parts.push('<text x="76" y="' + (y + NH / 2 + 15) + '" font-size="10.5" fill="#93a4c4">' + esc(sub) + '</text>');
+      if(isEnd) parts.push('<rect x="282" y="' + (y + 6) + '" width="46" height="16" rx="8" fill="#ffc24b"/><text x="305" y="' + (y + 17.5) + '" text-anchor="middle" font-size="9.5" font-weight="700" fill="#171106">NOW</text>');
+      lastNodeBottom = y + NH;
+      y += NH;
+    }
+    node(start, res.steps.length === 0);
+    res.steps.forEach(function(s, i){
+      var isLast = i === res.steps.length - 1;
+      if(s.kind === "transfer"){
+        var ay = y, by = y + TGAP;
+        parts.push('<line x1="180" y1="' + ay + '" x2="180" y2="' + (by - 4) + '" stroke="#ffc24b" stroke-width="1.6"/><path d="M174 ' + (by - 10) + ' L186 ' + (by - 10) + ' L180 ' + by + ' Z" fill="#ffc24b"/>');
+        parts.push('<text x="192" y="' + (ay + TGAP / 2 + 4) + '" font-size="11" fill="#ffd98a">' + esc("TRANSFER · " + fmtAmt(s.amount) + " " + s.asset) + '</text>');
+        y = by;
+        node(s.to, isLast);
+      } else {
+        y += 10;
+        var label = s.type + " · " + fmtAmt(s.outAmount) + " " + s.outAsset + " → " + fmtAmt(s.inAmount) + " " + s.inAsset + (s.venue ? " · " + s.venue : "");
+        parts.push('<rect x="24" y="' + y + '" width="312" height="' + BAND + '" rx="9" fill="#131a0c" stroke="#ffc24b" stroke-width="1.1" stroke-dasharray="5 3"/>');
+        parts.push('<text x="180" y="' + (y + BAND / 2 + 4) + '" text-anchor="middle" font-size="10.5" fill="#ffd98a">' + esc(label) + '</text>');
+        y += BAND + 4;
+        if(isLast){
+          parts.push('<rect x="282" y="' + (lastNodeBottom - 22) + '" width="46" height="16" rx="8" fill="#ffc24b"/><text x="305" y="' + (lastNodeBottom - 10.5) + '" text-anchor="middle" font-size="9.5" font-weight="700" fill="#171106">NOW</text>');
+        }
+      }
+    });
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Traced movement timeline" style="width:100%; height:auto; display:block; background:#070b14; border:1px solid rgba(90,110,160,.25); border-radius:14px">' + parts.join("") + "</svg>";
+    var lines = [];
+    lines.push("APEX² movement trail — " + start);
+    lines.push("Source: public Solana RPC (api.mainnet-beta.solana.com) · read at " + readAt);
+    if(!res.steps.length) lines.push("No onward movements found for this wallet in the read window — nothing invented.");
+    res.steps.forEach(function(s, i){
+      if(s.kind === "transfer") lines.push((i + 1) + ". " + trunc(s.from) + " → " + trunc(s.to) + " · TRANSFER · " + fmtAmt(s.amount) + " " + s.asset + " · " + fmtTs(s.ts));
+      else lines.push((i + 1) + ". " + trunc(s.from) + " · " + s.type + " · " + fmtAmt(s.outAmount) + " " + s.outAsset + " → " + fmtAmt(s.inAmount) + " " + s.inAsset + (s.venue ? " · via " + s.venue : "") + " · " + fmtTs(s.ts));
+    });
+    var lastAmt = "amount not read";
+    if(res.steps.length){
+      var ls = res.steps[res.steps.length - 1];
+      lastAmt = ls.kind === "transfer" ? (fmtAmt(ls.amount) + " " + ls.asset + " arrived") : (fmtAmt(ls.inAmount) + " " + ls.inAsset + " now held");
+    }
+    lines.push("Funds now: " + trunc(res.endpoint) + " (" + endpointLabelA2(res) + ") · " + lastAmt);
+    lines.push("Limits: " + res.steps.length + " step(s) shown · cap 12 hops · " + res.stats.read + " transactions read · " + res.stats.unreadMovements + " unread movement(s) counted (never guessed) · " + res.stats.unreadTx + " transactions unread");
+    lines.push("A trail is a fact about movements — never a verdict about a person.");
+    box.innerHTML =
+      '<div style="margin-top:12px">' + svg + "</div>" +
+      '<div class="card" style="margin-top:12px"><div style="display:flex; align-items:center; gap:8px"><b style="flex:1">Trail readout</b><button class="btn" id="trail-copy">Copy</button></div>' +
+      '<pre id="trail-readout" style="white-space:pre-wrap; word-break:break-word; font-size:12px; margin-top:8px"></pre></div>';
+    document.getElementById("trail-readout").textContent = lines.join("\n");
+    var cp = document.getElementById("trail-copy");
+    cp.addEventListener("click", function(){
+      var txt = lines.join("\n");
+      function done(){ cp.textContent = "Copied"; setTimeout(function(){ cp.textContent = "Copy"; }, 1600); }
+      function fallback(){
+        try {
+          var pre = document.getElementById("trail-readout");
+          var rg = document.createRange(); rg.selectNodeContents(pre);
+          var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(rg);
+          document.execCommand("copy"); done();
+        } catch(e){}
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(fallback);
+      else fallback();
+    });
+  }
+  function runTrail(){
+    var q = inEl.value.trim();
+    if(/^0x[0-9a-fA-F]{40}$/.test(q)){
+      box.innerHTML = '<p class="note" style="margin-top:10px">That is an EVM address. EVM tracing needs the host feed and is not wired in this page yet — nothing was traced and nothing was invented.</p>';
+      return;
+    }
+    if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(q)){
+      box.innerHTML = '<p class="note" style="margin-top:10px">That doesn\'t parse as a Solana wallet address — check it and try again.</p>';
+      return;
+    }
+    goEl.disabled = true;
+    box.innerHTML = '<p class="note" style="margin-top:10px">Tracing movements…</p>';
+    var readAt = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+    traceA2(q).then(function(res){
+      renderA2(res, q, readAt);
+    }).catch(function(){
+      box.innerHTML = '<p class="note" style="margin-top:10px">Trace could not be read right now — the public Solana RPC did not answer. Nothing was invented; try again in a moment.</p>';
+    }).then(function(){ goEl.disabled = false; });
+  }
+  goEl.addEventListener("click", runTrail);
+  inEl.addEventListener("keydown", function(e){ if(e.key === "Enter") runTrail(); });
+})();
 
 /* ---------------- Research tab ---------------- */
 var researchRendered = false;
@@ -5941,6 +6212,7 @@ function chaintariumModelTransfers(){
   return out;
 }
 function chaintariumActivityTick(){
+  if(window.halexmFeedPaused) return "Live feed paused";
   var live = chaintariumLiveFeedAvailable();
   var transfers = [];
   if(live){
@@ -5952,11 +6224,11 @@ function chaintariumActivityTick(){
   chaintariumLive.lastWindow = transfers;
   chaintariumLive.modelTick++;
   chaintariumLive.lastTickAt = Date.now();
-  var label = chaintariumLive.source + " · tick " + chaintariumLive.modelTick + " · " + transfers.length + " cross-system transfer(s) in the last 15 s: " +
-    (transfers.length ? transfers.map(function(x){ return (x.source === "MODEL" ? "MODEL " : "") + x.from + " → " + x.to + (x.modelUnits != null ? " (" + x.modelUnits + " model units)" : ""); }).join("; ") : "none in window");
-  var a = document.getElementById("chain-live-status"); if(a) a.textContent = "Live-activity feed: " + label;
+  var label = (chaintariumLive.feedAvailable ? "LIVE feed" : "MODEL tick — no live feed wired") + " · tick " + chaintariumLive.modelTick + " · " + transfers.length + " cross-system transfer(s) in the last 15 s: " +
+    (transfers.length ? transfers.map(function(x){ return x.from + " → " + x.to; }).join("; ") : "none in window");
+  var a = document.getElementById("chain-live-status"); if(a) a.textContent = label;
   var b = document.getElementById("chain-activity-tick"); if(b) b.textContent = label;
-  var c2 = document.getElementById("surf-activity-tick"); if(c2) c2.textContent = "Planet view — last 15 seconds: " + label;
+  var c2 = document.getElementById("surf-activity-tick"); if(c2) c2.textContent = "Planet view · " + label;
   return label;
 }
 if(typeof window !== "undefined" && !window._chaintariumTickStarted){
@@ -5974,6 +6246,7 @@ var ch = { started:false, focus:null, systemView:"both" };
       var el = document.getElementById(pr[0]); if(!el) return;
       var on = pr[1] === v; el.classList.toggle("on", on); el.setAttribute("aria-pressed", on ? "true" : "false");
     });
+    if(window.halexmSyncDeadToggle) window.halexmSyncDeadToggle();
   }
   var m = document.getElementById("chain-system-main"); if(m) m.addEventListener("click", function(){ setView("main"); });
   var d = document.getElementById("chain-system-dying"); if(d) d.addEventListener("click", function(){ setView("dying"); });
@@ -5995,6 +6268,7 @@ function chainInfoHTML(c){
     '<button class="btn primary" data-visit="'+c.id+'" style="margin-top:12px">Visit '+esc(c.name)+' — open planet view</button>';
 }
 function renderChainChips(){
+  var cnt = document.getElementById("chain-count"); if(cnt) cnt.textContent = CHAINS_3D.length;
   $("#chain-chips").innerHTML = CHAINS_3D.map(function(c){
     return '<button data-chain3d="'+c.id+'" class="'+(ch.focus===c.id?"on":"")+'">'+c.name+"</button>";
   }).join("");
@@ -6405,11 +6679,24 @@ function startChaintarium(){
   /* floating HUD glass — the system's vitals, top-left; and a data card
      that rides with the world you're focused on */
   var hudSys = document.createElement("div");
-  hudSys.className = "chain-hud"; hudSys.id = "chain-hud-sys";
-  hudSys.innerHTML = "<b>CHAINTARIUM — LIVE SYSTEM</b>" +
-    '<span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
-    '<span class="dim">Light pulses are transfers in flight between chains — MODEL until a live feed is wired. Tap any world to dive in and walk its surface. Zoom out to see both systems.</span>';
+  hudSys.className = "chain-hud hud-mini"; hudSys.id = "chain-hud-sys";
+  hudSys.innerHTML = '<div class="hud-head"><b>CHAINTARIUM — LIVE SYSTEM</b>' +
+    '<button class="hud-btn" id="hud-sys-expand" aria-expanded="false" aria-label="Expand system info">▾</button>' +
+    '<button class="hud-btn" id="hud-sys-close" aria-label="Close system card">✕</button></div>' +
+    '<div class="hud-body"><span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
+    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface.</span></div>';
   stage.appendChild(hudSys);
+  var hudExp = hudSys.querySelector("#hud-sys-expand"), hudX = hudSys.querySelector("#hud-sys-close");
+  if(hudExp) hudExp.addEventListener("click", function(){
+    var mini = hudSys.classList.toggle("hud-mini");
+    hudExp.textContent = mini ? "▾" : "▴";
+    hudExp.setAttribute("aria-expanded", mini ? "false" : "true");
+  });
+  if(hudX) hudX.addEventListener("click", function(){
+    hudSys.style.display = "none";
+    var scb = document.getElementById("chain-tools-syscard");
+    if(scb){ scb.textContent = "System card off"; scb.setAttribute("aria-pressed", "false"); }
+  });
   var hudFocus = document.createElement("div");
   hudFocus.className = "chain-hud"; hudFocus.id = "chain-hud-focus"; hudFocus.style.display = "none";
   labelsBox.appendChild(hudFocus);
@@ -7018,7 +7305,9 @@ function openSurface(c, moonName){
       return '<button data-moon="'+esc(m.name)+'">◐ '+esc(m.name)+"</button>";
     }).join("") + "</div>" + '<p id="surface-moon-note"></p>';
   }
-  $("#surface-card").innerHTML =
+  var scard = $("#surface-card"); scard.style.display = "";
+  scard.innerHTML =
+    '<button class="sc-x" id="surface-card-x" aria-label="Close planet card">✕</button>' +
     "<b>"+esc(c.name)+' <span class="mono" style="color:var(--gold); font-size:12px">$'+esc(c.sym)+"</span></b>" +
     '<div class="sstats">Orbiting the '+esc(c.name)+' sphere · a circuit-city raised from age × activity<br>' +
     "Born <b>"+c.born+"</b> · Age <b>"+(2026 - c.born)+" yrs</b> · Activity <b>"+c.activity.toFixed(2)+"</b>" +
@@ -7027,6 +7316,8 @@ function openSurface(c, moonName){
   $$("#surface-card [data-moon]").forEach(function(b){
     b.addEventListener("click", function(){ showMoonNote(c, b.getAttribute("data-moon")); });
   });
+  var scx = $("#surface-card-x");
+  if(scx) scx.addEventListener("click", function(){ scard.style.display = "none"; });
   if(moonName) showMoonNote(c, moonName);
   surfaceTrackStrip(c);
   renderSurfLayers(c);
@@ -7302,16 +7593,17 @@ function disposeScene(sc){
 var _surfWinTex = null;
 function surfWindowTexture(){
   if(_surfWinTex) return _surfWinTex;
-  var cv = document.createElement("canvas"); cv.width = 64; cv.height = 128;
+  var cv = document.createElement("canvas"); cv.width = 128; cv.height = 256;
   var g = cv.getContext("2d");
-  g.fillStyle = "#000"; g.fillRect(0, 0, 64, 128);
-  for(var wy = 0; wy < 16; wy++){
-    for(var wx = 0; wx < 6; wx++){
+  g.fillStyle = "#000"; g.fillRect(0, 0, 128, 256);
+  for(var wy = 0; wy < 32; wy++){
+    for(var wx = 0; wx < 12; wx++){
       var r = sHash2(wx * 3 + wy * 17, 131, 17);
-      if(r > 0.45){
-        var b = 140 + Math.floor(r * 115);
+      if(r > 0.42){
+        var b = 110 + Math.floor(r * 145);
+        if(r < 0.52) b = Math.floor(b * 0.5);
         g.fillStyle = "rgb(" + b + "," + b + "," + b + ")";
-        g.fillRect(3 + wx * 10, 4 + wy * 8, 5, 4);
+        g.fillRect(2 + wx * 10, 2 + wy * 8, 6, 5);
       }
     }
   }
@@ -7472,9 +7764,9 @@ function buildSurfaceScene(c, stage){
      calls, which is what keeps it smooth on a phone GPU. */
   var goldMats = [], tealMats = [], litMats = [], hubPts = [], blockMats = [];
   var dummy = new THREE.Object3D(), upAxis = new THREE.Vector3(0, 1, 0), quat = new THREE.Quaternion();
-  var target = Math.round((3400 + c.activity * 4400) * surfLayerDensity), placed = 0;
-  for(var k = 0; k < 34000 && placed < target; k++){
-    var fy = 1 - (k / 33999) * 2;
+  var target = Math.round((4300 + c.activity * 5400) * surfLayerDensity), placed = 0;
+  for(var k = 0; k < 46000 && placed < target; k++){
+    var fy = 1 - (k / 45999) * 2;
     var frad = Math.sqrt(Math.max(0, 1 - fy * fy));
     var th = k * 2.39996 + sHash2(k, 5, seed) * 0.9;
     var dx = Math.cos(th) * frad, dz = Math.sin(th) * frad, dy = fy;
@@ -7814,10 +8106,15 @@ function buildSurfaceScene(c, stage){
     scanEl.className = "surface-scan"; scanEl.id = "surface-scan";
     $("#surface").appendChild(scanEl);
   }
-  scanEl.innerHTML = "<b>SURFACE SCAN — " + esc(c.name.toUpperCase()) + "</b>" +
+  scanEl.innerHTML = '<button class="scan-x" id="surface-scan-x" aria-label="Close surface scan">✕</button>' + "<b>SURFACE SCAN — " + esc(c.name.toUpperCase()) + "</b>" +
     '<span class="mono">' + placed.toLocaleString("en-US") + " towers lit</span> · " + hubPts.length + " network hubs · " + arcCount + " light routes · " + tracePaths.length + " circuit traces<br>" +
     "Activity " + c.activity.toFixed(2) + " · Born " + c.born + " · City density follows age × activity";
   scanEl.innerHTML += "<br>" + chainLayerRangeText(c, surfLayerIdxNow) + " · " + surfStructCounts.towers + " token towers (gold = liquidity and good standing, black triangles = rugged or dead) · " + surfStructCounts.wallets + " wallet buildings colored by the wallet color code · " + surfStructCounts.funding + " funding lines · " + surfStructCounts.dumps + " red dump lines · towers and buildings are stylized map markers, not live holdings";
+  var scanX = scanEl.querySelector("#surface-scan-x");
+  if(scanX) scanX.addEventListener("click", function(){
+    if(typeof chainLayers !== "undefined") chainLayers.scan = false;
+    if(typeof applyChainLayers === "function") applyChainLayers();
+  });
 
   /* surface activity — pools, wallets and tokens as glowing dots scattered over the land */
   function dotField(count, color, size, seedOff){
@@ -7835,8 +8132,8 @@ function buildSurfaceScene(c, stage){
     g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
     return new THREE.Points(g, new THREE.PointsMaterial({ color: color, size: size, sizeAttenuation: true, transparent: true, opacity: 0.78, blending: THREE.AdditiveBlending, depthWrite: false }));
   }
-  world.add(dotField(Math.round(90 + c.activity * 240), 0xffc24b, 0.45, 3));
-  world.add(dotField(Math.round(60 + c.activity * 130), 0x2ee6c8, 0.65, 21));
+  world.add(dotField(Math.round(130 + c.activity * 330), 0xffc24b, 0.45, 3));
+  world.add(dotField(Math.round(90 + c.activity * 185), 0x2ee6c8, 0.65, 21));
 
   /* zone labels — anchored on the sphere's surface */
   labelsBox.innerHTML = "";
@@ -9146,12 +9443,37 @@ function syncChainTools(){
     tr.textContent = ch.transfersOff ? "Transfers off" : "Transfers on";
     tr.setAttribute("aria-pressed", ch.transfersOff ? "false" : "true");
   }
+  var fd = $("#chain-tools-feed");
+  if(fd){
+    fd.textContent = window.halexmFeedPaused ? "Live feed off" : "Live feed on";
+    fd.setAttribute("aria-pressed", window.halexmFeedPaused ? "false" : "true");
+  }
+  var ds = $("#chain-tools-deadsys");
+  if(ds){
+    var dOn = ch.systemView !== "main";
+    ds.textContent = dOn ? "Dead system on" : "Dead system off";
+    ds.setAttribute("aria-pressed", dOn ? "true" : "false");
+  }
 }
 (function initChainTools(){
   var ov = $("#chain-tools-overlays"), tr = $("#chain-tools-transfers"), sa = $("#chain-tools-showall"), stage = $("#chain-stage");
   if(ov && stage) ov.addEventListener("click", function(){ stage.classList.toggle("overlays-off"); syncChainTools(); });
   if(tr) tr.addEventListener("click", function(){ ch.transfersOff = !ch.transfersOff; syncChainTools(); });
   if(sa) sa.addEventListener("click", function(){ ch.isolated = null; syncChainTools(); });
+  var fd2 = $("#chain-tools-feed");
+  if(fd2) fd2.addEventListener("click", function(){
+    window.halexmFeedPaused = !window.halexmFeedPaused;
+    if(window.halexmFeedPaused){
+      ["chain-live-status","chain-activity-tick"].forEach(function(id){ var e = document.getElementById(id); if(e) e.textContent = "Live feed paused."; });
+      var st = document.getElementById("surf-activity-tick"); if(st) st.textContent = "Planet view · live feed paused.";
+    } else { try { chaintariumActivityTick(); } catch(e){} }
+    syncChainTools();
+  });
+  var ds2 = $("#chain-tools-deadsys");
+  if(ds2) ds2.addEventListener("click", function(){
+    if(window.chaintariumSetSystem) window.chaintariumSetSystem(ch.systemView === "main" ? "both" : "main");
+    syncChainTools();
+  });
   syncChainTools();
 })();
 
@@ -9164,7 +9486,7 @@ function syncChainTools(){
    switches exactly as they left them. */
 var chainLayers = window.ChainMoons ? ChainMoons.defaultLayerState()
   : { platforms:true, wallets:true, transactions:true, flows:true, rugs:true, bundles:true, labels:true, scan:true };
-chainLayers.scan = false; /* rebuild pass: the surface-scan card no longer sits on the view by default — structure info opens on tap (feat card), and the Scan card layer in Tools re-enables the HUD when wanted */
+chainLayers.scan = true; /* cleanup pass 2026-11-04: the surface-scan sheet SHOWS when a planet opens (Jeffrey never saw it while it defaulted off). Its own ✕ button turns the scan layer off, and the Scan card layer switch in Tools re-enables it. */
 var surfLayerGroups = {};
 function layerKeyForFeat(type){
   return { platform:"platforms", wallet:"wallets", transaction:"transactions", movement:"flows", rug:"rugs", bundle:"bundles" }[type] || "flows";
@@ -10281,11 +10603,352 @@ initGate();
       }).catch(function(e){ mcOut.textContent = "Search failed: " + e.message; });
     });
   }
-  var a3 = document.getElementById("hm-apex3-root");
-  if(a3){
-    a3.innerHTML = "<p class=\"note\">No transfer records have been supplied on this page, so APEX³ has no hops to investigate. This tab states its gap: it never invents hops, origins, or verdicts. Investigations render here from host-supplied public chain reads, and every flag is an investigation flag, not a verdict or a recovery claim.</p>" +
-      (window.HalexMApex3 ? "<p class=\"note\">APEX³ engine loaded: hop graphs, funding traces, and theft flags are available once records arrive.</p>" : "<p class=\"note\">APEX³ engine did not load.</p>");
-  }
+  /* APEX³ trace v2 (2026-11-04): Solana TRANSFERS traced client-side
+     from the public Solana RPC (keyless). Fund-trail semantics:
+     largest sends first, forward in time, each wallet read from the
+     moment the money arrived. Multi-asset: the traced wallet's main
+     assets branch (up to 4 branches) under one shared cap of 25
+     hops; up to 100 transactions parsed per wallet; unparsable
+     transactions are counted as unread, never invented. One backward
+     hop reads the funding source. Endpoint labels are pattern
+     matches from the in-page list — never person claims, and no
+     predictions are made. EVM is honestly gated. Host records via
+     window.HALEX_APEX3_FEED take precedence when supplied. Report
+     and timeline downloads render from the last trace, offline. */
+  (function(){
+    var RPC = "https://api.mainnet-beta.solana.com";
+    var MAX_HOPS = 25, MAX_TX = 100, MAX_BRANCHES = 4;
+    var KNOWN = {
+      "JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4": "swap service (Jupiter)",
+      "wormDTUJ6AWPNvk59vGQbDvGJmqbDTdgWgAqcLBCgUb": "bridge (Wormhole)",
+      "675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8": "pool (Raydium AMM)",
+      "whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc": "pool (Orca Whirlpool)",
+      "6EF8rrecthR5Dkzon8Nwu78hRvfCKubJ14M5uBEwF6P": "service (pump.fun)",
+      "11111111111111111111111111111111": "System Program",
+      "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA": "SPL Token Program",
+      "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL": "Associated Token Program"
+    };
+    var inEl = document.getElementById("apex3-address"), goEl = document.getElementById("apex3-trace-btn"),
+        stEl = document.getElementById("apex3-status"), tlEl = document.getElementById("apex3-timeline"),
+        rcEl = document.getElementById("apex3-readout-card"), roEl = document.getElementById("apex3-readout"),
+        cpEl = document.getElementById("apex3-copy"),
+        dlTxtEl = document.getElementById("apex3-dl-txt"), dlSvgEl = document.getElementById("apex3-dl-svg");
+    if(!inEl || !goEl || !tlEl || !roEl) return;
+    var lastTrace = null;
+    function trunc(a){ a = String(a || ""); return a.length > 10 ? a.slice(0, 4) + "…" + a.slice(-4) : a; }
+    function fmtAmt(v){
+      if(v == null || isNaN(v)) return "amount unknown";
+      v = Number(v);
+      if(v !== 0 && Math.abs(v) < 0.000001) return v.toPrecision(3);
+      var s = v.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+      return (s === "" || s === "-0") ? "0" : s;
+    }
+    function fmtTs(sec){ return sec ? new Date(sec * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC" : "time unknown"; }
+    function labelFor(addr, res){ return (res && res.labels && res.labels[addr]) || KNOWN[addr] || ""; }
+    function flagFor(addr, res){
+      var f = res && res.flags ? res.flags[addr] : null;
+      if(!f) return "";
+      return typeof f === "string" ? f : ((f.reason || "flagged") + (f.source ? " (" + f.source + ")" : ""));
+    }
+    function endpointId(addr, res){
+      var lab = labelFor(addr, res);
+      return lab ? ("pattern match: " + lab) : "no pattern match in the in-page list";
+    }
+    function branchEndLabel(br, res){
+      if(br.endReason === "loop") return "trail loops back here";
+      var known = labelFor(br.endpoint, res);
+      if(known) return known;
+      if(br.endReason === "cap") return "trail stopped at the 25-hop cap — funds may move further";
+      return "still in wallet";
+    }
+    function rpc(method, params){
+      return fetch(RPC, { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
+        .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
+        .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+    }
+    function effectsFromTx(tx, wallet){
+      var sends = [], receives = [];
+      if(!tx || !tx.meta || !tx.transaction || !tx.transaction.message) return { sends: sends, receives: receives };
+      var keys = (tx.transaction.message.accountKeys || []).map(function(k){ return typeof k === "string" ? k : (k && k.pubkey) || ""; });
+      var meta = tx.meta, pre = meta.preBalances || [], post = meta.postBalances || [], i, j;
+      var wi = keys.indexOf(wallet), myDelta = wi >= 0 ? (post[wi] || 0) - (pre[wi] || 0) : 0;
+      if(myDelta < -5000){
+        for(j = 0; j < keys.length; j++){
+          if(j === wi) continue;
+          var g = (post[j] || 0) - (pre[j] || 0);
+          if(g > 0) sends.push({ to: keys[j], amount: g / 1e9, asset: "SOL", score: g });
+        }
+      } else if(myDelta > 0){
+        var bestL = 0, bestFrom = "";
+        for(j = 0; j < keys.length; j++){
+          if(j === wi) continue;
+          var l = (pre[j] || 0) - (post[j] || 0);
+          if(l > bestL){ bestL = l; bestFrom = keys[j]; }
+        }
+        if(bestFrom) receives.push({ from: bestFrom, amount: myDelta / 1e9, asset: "SOL", score: myDelta });
+      }
+      var preT = {};
+      (meta.preTokenBalances || []).forEach(function(b){ preT[b.accountIndex + "|" + b.mint] = Number(b.uiTokenAmount.amount) || 0; });
+      var byMint = {};
+      (meta.postTokenBalances || []).forEach(function(b){
+        var dRaw = (Number(b.uiTokenAmount.amount) || 0) - (preT[b.accountIndex + "|" + b.mint] || 0);
+        if(!dRaw) return;
+        (byMint[b.mint] = byMint[b.mint] || []).push({ owner: b.owner || keys[b.accountIndex] || "", dRaw: dRaw, dec: b.uiTokenAmount.decimals || 0 });
+      });
+      Object.keys(byMint).forEach(function(mint){
+        var arr = byMint[mint], myOut = 0, myIn = 0, myDec = 0;
+        arr.forEach(function(e){ if(e.owner === wallet){ if(e.dRaw < 0) myOut = -e.dRaw; else myIn = e.dRaw; myDec = e.dec; } });
+        if(myOut){
+          arr.forEach(function(e){
+            if(e.owner && e.owner !== wallet && e.dRaw > 0) sends.push({ to: e.owner, amount: e.dRaw / Math.pow(10, e.dec), asset: "SPL " + trunc(mint), score: e.dRaw });
+          });
+        } else if(myIn){
+          var bf = "", ba = 0;
+          arr.forEach(function(e){ if(e.owner && e.owner !== wallet && e.dRaw < 0 && -e.dRaw > ba){ ba = -e.dRaw; bf = e.owner; } });
+          if(bf) receives.push({ from: bf, amount: myIn / Math.pow(10, myDec), asset: "SPL " + trunc(mint), score: myIn });
+        }
+      });
+      return { sends: sends, receives: receives };
+    }
+    function makeRpcSource(){
+      var cache = {};
+      return {
+        label: "public Solana RPC (api.mainnet-beta.solana.com)", flags: {}, labels: {},
+        getWallet: function(wallet, stats){
+          if(cache[wallet]) return cache[wallet];
+          var p = rpc("getSignaturesForAddress", [wallet, { limit: MAX_TX }]).then(function(sigs){
+            var list = (sigs || []).filter(function(s){ return s && !s.err; });
+            var sends = [], receives = [], chain = Promise.resolve();
+            list.forEach(function(s){
+              chain = chain.then(function(){
+                return rpc("getTransaction", [s.signature, { encoding: "jsonParsed", maxSupportedTransactionVersion: 0 }]).then(function(tx){
+                  stats.read++;
+                  if(!tx){ stats.unread++; return; }
+                  var ts = tx.blockTime || s.blockTime || 0;
+                  var fx = effectsFromTx(tx, wallet);
+                  fx.sends.forEach(function(sd){ sd.ts = ts; sends.push(sd); });
+                  fx.receives.forEach(function(rv){ rv.ts = ts; receives.push(rv); });
+                }).catch(function(){ stats.unread++; });
+              });
+            });
+            return chain.then(function(){ return { sends: sends, receives: receives }; });
+          });
+          cache[wallet] = p;
+          return p;
+        }
+      };
+    }
+    function makeFeedSource(feed, transfers){
+      var edges;
+      if(window.HalexMApex3) edges = window.HalexMApex3.buildHopGraph(transfers).edges;
+      else edges = transfers.slice().sort(function(a, b){ return (Number(a.ts) || 0) - (Number(b.ts) || 0); });
+      function tsSec(t){ t = Number(t) || 0; return t > 1e12 ? Math.floor(t / 1000) : Math.floor(t); }
+      return {
+        label: "host-supplied records (window.HALEX_APEX3_FEED)", flags: (feed && feed.flags) || {}, labels: (feed && feed.labels) || {}, recordCount: edges.length,
+        getWallet: function(wallet){
+          var sends = [], receives = [];
+          edges.forEach(function(e){
+            if(e.from === wallet) sends.push({ to: e.to, amount: e.amount != null ? Number(e.amount) : null, asset: e.token || "units", ts: tsSec(e.ts), score: Math.abs(Number(e.amount) || 0) });
+            if(e.to === wallet) receives.push({ from: e.from, amount: e.amount != null ? Number(e.amount) : null, asset: e.token || "units", ts: tsSec(e.ts), score: Math.abs(Number(e.amount) || 0) });
+          });
+          return Promise.resolve({ sends: sends, receives: receives });
+        }
+      };
+    }
+    function resolveFeed(feed, start){
+      var getT = null;
+      if(typeof feed === "function") getT = feed;
+      else if(feed && typeof feed.transfersFor === "function") getT = feed.transfersFor;
+      else if(feed && typeof feed.getTransfers === "function") getT = feed.getTransfers;
+      var p = getT ? Promise.resolve(getT(start)) : (feed && Array.isArray(feed.transfers) ? Promise.resolve(feed.transfers) : Promise.resolve(null));
+      return p.then(function(t){ return Array.isArray(t) ? makeFeedSource(feed, t) : null; });
+    }
+    function walkBranches(source, start, startFx, stats){
+      var totals = {};
+      startFx.sends.forEach(function(s){ totals[s.asset] = (totals[s.asset] || 0) + (s.score || 0); });
+      var assets = Object.keys(totals).sort(function(a, b){ return totals[b] - totals[a]; });
+      var picked = assets.slice(0, MAX_BRANCHES);
+      var dropped = assets.length - picked.length;
+      var budget = MAX_HOPS, branches = [], idx = 0;
+      function nextBranch(){
+        if(idx >= picked.length) return Promise.resolve();
+        var asset = picked[idx++];
+        if(budget <= 0){ dropped++; return nextBranch(); }
+        var br = { asset: asset, hops: [], endpoint: start, endReason: "still" };
+        branches.push(br);
+        var current = start, arrivedAt = 0, visited = {};
+        visited[start] = true;
+        function hopStep(){
+          if(budget <= 0){ br.endReason = "cap"; br.endpoint = current; return Promise.resolve(); }
+          var fxP = current === start ? Promise.resolve(startFx) : source.getWallet(current, stats);
+          return fxP.then(function(fx){
+            var sends = fx.sends.filter(function(s){ return s.asset === asset && (!arrivedAt || !s.ts || s.ts >= arrivedAt); });
+            if(!sends.length){ br.endReason = "still"; br.endpoint = current; return; }
+            sends.sort(function(a, b){ return (b.score || 0) - (a.score || 0); });
+            var s = sends[0];
+            br.hops.push({ from: current, to: s.to, amount: s.amount, asset: s.asset, ts: s.ts || 0 });
+            budget--;
+            if(visited[s.to]){ br.endReason = "loop"; br.endpoint = s.to; return; }
+            visited[s.to] = true;
+            arrivedAt = s.ts || arrivedAt;
+            current = s.to;
+            br.endpoint = current;
+            return hopStep();
+          });
+        }
+        return hopStep().then(nextBranch);
+      }
+      return nextBranch().then(function(){
+        var funding = null;
+        startFx.receives.slice().sort(function(a, b){ return (b.score || 0) - (a.score || 0); }).forEach(function(r){ if(!funding) funding = r; });
+        return { branches: branches, droppedBranches: dropped, funding: funding, totalHops: branches.reduce(function(n, b){ return n + b.hops.length; }, 0) };
+      });
+    }
+    function renderTimeline(res, startAddr){
+      var W = 360, NH = 48, GAP = 36, HDR = 24;
+      var ordered = [];
+      if(res.funding) ordered.push({ t: "node", addr: res.funding.from, sub: labelFor(res.funding.from, res) || "funding source" });
+      if(res.funding) ordered.push({ t: "arrow", label: "funded · " + fmtAmt(res.funding.amount) + " " + res.funding.asset, dashed: true });
+      ordered.push({ t: "node", addr: startAddr, sub: "traced wallet", end: !res.branches.length });
+      res.branches.forEach(function(br, bi){
+        ordered.push({ t: "header", label: "BRANCH " + (bi + 1) + " — " + br.asset });
+        ordered.push({ t: "node", addr: startAddr, sub: "branch start" });
+        br.hops.forEach(function(h, hi){
+          ordered.push({ t: "arrow", label: fmtAmt(h.amount) + " " + h.asset });
+          ordered.push({ t: "node", addr: h.to, end: hi === br.hops.length - 1, branchEnd: true, br: br });
+        });
+        if(!br.hops.length) ordered.push({ t: "note", label: "no onward " + br.asset + " transfer found in the read window" });
+      });
+      var H = 16;
+      ordered.forEach(function(it){ H += it.t === "node" ? NH : (it.t === "arrow" ? GAP : (it.t === "header" ? HDR + 8 : 20)); });
+      var parts = [], y = 8;
+      ordered.forEach(function(it){
+        if(it.t === "header"){
+          parts.push('<text x="24" y="' + (y + 16) + '" font-size="11" font-weight="700" fill="#ffc24b">' + esc(it.label) + '</text>');
+          y += HDR + 8;
+        } else if(it.t === "note"){
+          parts.push('<text x="24" y="' + (y + 13) + '" font-size="10.5" fill="#93a4c4">' + esc(it.label) + '</text>');
+          y += 20;
+        } else if(it.t === "arrow"){
+          parts.push('<line x1="180" y1="' + y + '" x2="180" y2="' + (y + GAP - 4) + '" stroke="#ffc24b" stroke-width="1.6"' + (it.dashed ? ' stroke-dasharray="4 3"' : "") + '/><path d="M174 ' + (y + GAP - 10) + ' L186 ' + (y + GAP - 10) + ' L180 ' + (y + GAP) + ' Z" fill="#ffc24b"/>');
+          parts.push('<text x="192" y="' + (y + GAP / 2 + 4) + '" font-size="11.5" fill="#ffd98a">' + esc(it.label) + '</text>');
+          y += GAP;
+        } else {
+          var fl = flagFor(it.addr, res), known = labelFor(it.addr, res);
+          var isEnd = !!it.end;
+          var stroke = fl ? "#ff5148" : (isEnd ? "#ffc24b" : "rgba(46,230,200,.55)");
+          var glyph = fl ? "⚠" : (known ? "⬣" : "⬢");
+          var cy = y + NH / 2;
+          var sub = it.sub || "";
+          if(it.branchEnd && isEnd) sub = fl ? ("FLAGGED — " + fl) : branchEndLabel(it.br, res);
+          else if(fl) sub = "FLAGGED — " + fl;
+          else if(known && !it.sub) sub = known;
+          parts.push('<rect x="24" y="' + y + '" width="312" height="' + NH + '" rx="12" fill="#0d1524" stroke="' + stroke + '" stroke-width="' + (isEnd || fl ? 2 : 1.2) + '"/>');
+          parts.push('<circle cx="52" cy="' + cy + '" r="13" fill="none" stroke="' + stroke + '" stroke-width="1.2"/><text x="52" y="' + (cy + 4.5) + '" text-anchor="middle" font-size="12" fill="' + stroke + '">' + glyph + '</text>');
+          parts.push('<text x="76" y="' + (cy - 1) + '" font-family="monospace" font-size="13.5" fill="#e8ecf4">' + esc(trunc(it.addr)) + '</text>');
+          if(sub) parts.push('<text x="76" y="' + (cy + 15) + '" font-size="10.5" fill="' + (fl ? "#ff8a84" : "#93a4c4") + '">' + esc(sub) + '</text>');
+          if(isEnd) parts.push('<rect x="282" y="' + (y + 6) + '" width="46" height="16" rx="8" fill="#ffc24b"/><text x="305" y="' + (y + 17.5) + '" text-anchor="middle" font-size="9.5" font-weight="700" fill="#171106">NOW</text>');
+          y += NH;
+        }
+      });
+      tlEl.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Traced transfer timeline" style="background:#070b14; border:1px solid rgba(90,110,160,.25); border-radius:14px">' + parts.join("") + "</svg>";
+    }
+    function renderReadout(res, startAddr, readAt){
+      var lines = [];
+      lines.push("APEX³ fund trail — " + startAddr);
+      lines.push("Source: " + res.source + " · read at " + readAt);
+      if(res.funding) lines.push("Funding source: " + trunc(res.funding.from) + " → this wallet · " + fmtAmt(res.funding.amount) + " " + res.funding.asset + " · " + fmtTs(res.funding.ts) + (labelFor(res.funding.from, res) ? " · " + endpointId(res.funding.from, res) : ""));
+      else lines.push("Funding source: none found in the read window (one backward hop read).");
+      if(!res.branches.length) lines.push("No onward transfers found for this wallet in the read window — nothing invented.");
+      res.branches.forEach(function(br, bi){
+        lines.push("Branch " + (bi + 1) + " — " + br.asset + " (" + br.hops.length + " hop(s))");
+        br.hops.forEach(function(h, i){
+          var lab = flagFor(h.to, res) ? ("FLAGGED — " + flagFor(h.to, res)) : (labelFor(h.to, res) || (i === br.hops.length - 1 ? branchEndLabel(br, res) : ""));
+          lines.push((i + 1) + ". " + trunc(h.from) + " → " + trunc(h.to) + " · " + fmtAmt(h.amount) + " " + h.asset + " · " + fmtTs(h.ts) + (lab ? " · " + lab : ""));
+        });
+        var lastAmt = br.hops.length ? (fmtAmt(br.hops[br.hops.length - 1].amount) + " " + br.hops[br.hops.length - 1].asset + " arrived") : "amount not read";
+        lines.push("Funds now (branch " + (bi + 1) + "): " + trunc(br.endpoint) + " (" + branchEndLabel(br, res) + ") · " + lastAmt);
+        lines.push("Endpoint ID (branch " + (bi + 1) + "): " + endpointId(br.endpoint, res));
+      });
+      lines.push("Branches: " + res.branches.length + " followed · " + res.droppedBranches + " dropped at the caps");
+      lines.push("Limits: " + res.totalHops + " hop(s) shown · cap " + MAX_HOPS + " hops · " + res.stats.read + " transactions read · " + res.stats.unread + " unread (skipped, never invented) · cap " + MAX_TX + " transactions per wallet, " + MAX_BRANCHES + " branches");
+      lines.push("A trail is a fact about transfers, never a verdict about a person.");
+      roEl.textContent = lines.join("\n");
+      rcEl.hidden = false;
+      return lines.join("\n");
+    }
+    function stampFor(d){
+      function p(n){ return (n < 10 ? "0" : "") + n; }
+      return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + "-" + p(d.getHours()) + p(d.getMinutes());
+    }
+    function download(name, content, mime){
+      try {
+        var blob = new Blob([content], { type: mime });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url; a.download = name;
+        document.body.appendChild(a); a.click();
+        setTimeout(function(){ try { document.body.removeChild(a); URL.revokeObjectURL(url); } catch(e){} }, 800);
+      } catch(e){}
+    }
+    function runTrace(){
+      var addr = (inEl.value || "").trim();
+      tlEl.innerHTML = ""; rcEl.hidden = true; lastTrace = null;
+      if(!addr){ stEl.textContent = "Paste a wallet address first."; return; }
+      if(/^0x[0-9a-fA-F]{40}$/.test(addr)){ stEl.textContent = "That is an EVM address. EVM tracing needs the host feed and is not wired in this page yet — nothing was traced and nothing was invented."; return; }
+      if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(addr)){ stEl.textContent = "That does not look like a Solana or EVM wallet address."; return; }
+      goEl.disabled = true;
+      stEl.textContent = "Tracing transfers…";
+      var readAt = new Date().toISOString().replace("T", " ").slice(0, 19) + " UTC";
+      var stats = { read: 0, unread: 0 };
+      var feed = window.HALEX_APEX3_FEED;
+      var srcP = feed ? resolveFeed(feed, addr) : Promise.resolve(null);
+      srcP.then(function(src){
+        var source = src || makeRpcSource();
+        if(source.recordCount != null) stats.read = source.recordCount;
+        return source.getWallet(addr, stats).then(function(startFx){
+          return walkBranches(source, addr, startFx, stats).then(function(w){
+            return { branches: w.branches, droppedBranches: w.droppedBranches, funding: w.funding, totalHops: w.totalHops, stats: stats, source: source.label, flags: source.flags, labels: source.labels };
+          });
+        });
+      }).then(function(res){
+        renderTimeline(res, addr);
+        var text = renderReadout(res, addr, readAt);
+        lastTrace = { text: text, addr: addr, stamp: stampFor(new Date()) };
+        stEl.textContent = res.totalHops ? "Trace complete — the drawn timeline, the copyable readout and the downloads are below." : "Trace complete — no onward transfers were found in the read window.";
+      }).catch(function(){
+        stEl.textContent = "Trace could not be read right now — the public Solana RPC did not answer. Nothing was invented; try again in a moment.";
+      }).then(function(){ goEl.disabled = false; });
+    }
+    goEl.addEventListener("click", runTrace);
+    inEl.addEventListener("keydown", function(e){ if(e.key === "Enter") runTrace(); });
+    if(cpEl) cpEl.addEventListener("click", function(){
+      var txt = roEl.textContent || "";
+      function done(){ cpEl.textContent = "Copied"; setTimeout(function(){ cpEl.textContent = "Copy"; }, 1600); }
+      function fallback(){
+        try {
+          var rg = document.createRange(); rg.selectNodeContents(roEl);
+          var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(rg);
+          document.execCommand("copy"); done();
+        } catch(e){}
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done).catch(fallback);
+      else fallback();
+    });
+    if(dlTxtEl) dlTxtEl.addEventListener("click", function(){
+      if(!lastTrace) return;
+      download("apex3-trail-" + lastTrace.addr.slice(0, 6) + "-" + lastTrace.stamp + ".txt", lastTrace.text, "text/plain");
+    });
+    if(dlSvgEl) dlSvgEl.addEventListener("click", function(){
+      if(!lastTrace) return;
+      var svg = tlEl.querySelector("svg");
+      if(!svg) return;
+      var clone = svg.cloneNode(true);
+      clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      download("apex3-trail-" + lastTrace.addr.slice(0, 6) + "-" + lastTrace.stamp + ".svg", new XMLSerializer().serializeToString(clone), "image/svg+xml");
+    });
+  })();
 })();
 </script>
 <script>
@@ -10314,6 +10977,39 @@ initGate();
       lbtn.setAttribute("aria-expanded", on ? "true" : "false");
     });
   }
+  /* cleanup pass 2026-11-04: chain list collapsible (closed by default),
+     a Close button inside the tools drawer, the System card toggle that
+     re-opens the orbit HUD card, and Planet info doubling as the
+     surface-card show/hide outside pop mode */
+  var clt = document.getElementById("chain-list-toggle");
+  if(clt){
+    clt.addEventListener("click", function(){
+      var wasOpen = clt.getAttribute("aria-expanded") === "true";
+      clt.setAttribute("aria-expanded", wasOpen ? "false" : "true");
+      var chips = document.getElementById("chain-chips"); if(chips) chips.hidden = wasOpen;
+      var note = document.getElementById("chain-lists-note"); if(note) note.hidden = wasOpen;
+    });
+  }
+  var tclose = document.getElementById("chain-tools-close");
+  if(tclose && tgl) tclose.addEventListener("click", function(){ tgl.click(); });
+  var sysBtn = document.getElementById("chain-tools-syscard");
+  if(sysBtn){
+    sysBtn.addEventListener("click", function(){
+      var hs = document.getElementById("chain-hud-sys"); if(!hs) return;
+      var show = hs.style.display === "none";
+      hs.style.display = show ? "" : "none";
+      sysBtn.textContent = show ? "System card on" : "System card off";
+      sysBtn.setAttribute("aria-pressed", show ? "true" : "false");
+    });
+  }
+  window.halexmSyncDeadToggle = function(){ if(typeof syncChainTools === "function") syncChainTools(); };
+  var pib = document.getElementById("surface-info-btn");
+  if(pib) pib.addEventListener("click", function(){
+    var stg = document.getElementById("chain-stage");
+    if(stg && stg.classList.contains("pop")) return; /* pop mode: the info-on class handler owns the card */
+    var card = document.getElementById("surface-card");
+    if(card) card.style.display = (card.style.display === "none") ? "" : "none";
+  });
 })();
 </script>
 </body>

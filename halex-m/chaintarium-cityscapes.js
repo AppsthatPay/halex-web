@@ -130,13 +130,13 @@
       case "deployer-rug-funded-trace": return { w:0.26, h:0.32, d:0.26 };
       case "token-miniscule": return { w:0.12, h:0.18, d:0.12 };
       case "token-tiny": return { w:0.28, h:0.55, d:0.28 };
-      case "token-macro": return { w:0.70, h:1.60, d:0.70 };
+      case "token-macro": return { w:0.80, h:1.95, d:0.80 };
       case "transfer-street": case "market-maker-roadway": case "theft-fund-trace":
         return { w:2.20, h:0.06, d:0.30 };
       case "swap-intersection": return { w:0.60, h:0.08, d:0.60 };
-      case "market-maker-tower": return { w:0.60, h:1.50, d:0.60 };
+      case "market-maker-tower": return { w:0.66, h:1.85, d:0.66 };
       case "theft-hex-dome": return { w:0.35, h:0.50, d:0.35 };
-      case "whale-pyramid": return { w:1.40, h:1.10, d:1.40 };
+      case "whale-pyramid": return { w:1.75, h:1.35, d:1.75 };
       case "exchange-tower": case "basket-tower": return { w:0.18, h:0.45, d:0.18 };
       case "dex-capital": case "dex-bad-flag": return { w:0.55, h:0.42, d:0.38 };
       case "offramp-hex": return { w:0.30, h:0.38, d:0.30 };
@@ -152,6 +152,14 @@
     var list = items && items.length ? items : LEGEND.map(function(t, i){
       return { type: t.id, label: t.label, source: "MODEL" };
     });
+    if(!items || !items.length){
+      /* cleanup pass 2026-11-04: a denser MODEL district — extra macro
+         structures join the one-of-each set so the patch reads as a
+         built-up city district, not a single row of samples */
+      ["whale-pyramid", "market-maker-tower", "token-macro", "token-macro", "token-tiny", "token-tiny", "dex-capital"].forEach(function(tid){
+        var t = legendById(tid); if(t) list.push({ type: t.id, label: t.label, source: "MODEL" });
+      });
+    }
     var out = [], i, it, leg, tierId;
     for(i = 0; i < list.length; i++){
       it = list[i] || {};
