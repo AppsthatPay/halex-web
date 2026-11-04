@@ -1283,6 +1283,7 @@ nav.tabbar button span{letter-spacing:.015em}
 </style>
 <link rel="stylesheet" href="halex-m-ai.css">
 <link rel="stylesheet" href="halex-m-upgrade.css">
+<link rel="stylesheet" href="halex-m-wallet-modules.css">
 <link rel="stylesheet" href="halex-m-trading-token-view.css">
 <link rel="stylesheet" href="halex-m-apex-research.css">
 <link rel="stylesheet" href="chaintarium-cityscapes.css">
@@ -1758,6 +1759,8 @@ nav.tabbar button span{letter-spacing:.015em}
   <div class="sec-title">AI wallets</div>
   <div class="grid c3" id="ai-wallets"></div>
   <p class="note" style="margin-top:8px">Balances pulled Oct 16, 2026. Live balance socket not wired in the sandbox.</p>
+  <div id="hm-wm-price"></div>
+  <div id="hm-wm-whale"></div>
 
   <div class="sec-title">Skillsets — the proving program</div>
   <div class="card" id="skillsets" style="padding-top:4px; padding-bottom:4px"></div>
@@ -2217,6 +2220,7 @@ nav.tabbar button span{letter-spacing:.015em}
     <p>The working tools, back in the menu. Each tool is listed with its real status: in this sandbox the toolbox shows its true interfaces; execution connects through your HALEX wallet in the production build, and every tool shows its full effect before anything signs.</p>
   </div>
   <div class="card" style="padding-top:4px; padding-bottom:4px" id="warchest-list"></div>
+  <div id="hm-wm-funds"></div>
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>House rule for every tool in the chest: preview first, sign second. A tool shows exactly what it will do — accounts closed, tokens burned, SOL reclaimed — before your wallet is ever asked to approve it.</span></div>
 </section>
 
@@ -2516,6 +2520,8 @@ nav.tabbar button span{letter-spacing:.015em}
       <p class="note" style="margin-top:8px">Viewing is read-only — it never connects or signs anything. Swap buttons still work from a viewed address: the quote is real, and in production the swap settles into whichever wallet you actually connect.</p>
     </div>
   </div>
+
+  <div id="hm-wm-trading"></div>
 
   <div class="sec-title">What connects when it's live</div>
   <div class="grid c2">
@@ -9822,6 +9828,7 @@ initGate();
 <script src="halex-m-ai.js"></script>
 <script src="halex-m-blockchain-knowledge.js"></script>
 <script src="halex-m-upgrade.js"></script>
+<script src="halex-m-wallet-modules.js"></script>
 <script src="halex-m-lab-expansion.js"></script>
 <script src="halex-m-trading-token-view.js"></script>
 <script src="halex-m-apex-research.js"></script>
@@ -9832,6 +9839,11 @@ initGate();
 </script>
 <script>
   if (window.HalexMTradingView && window.HalexMTradingView.mountTradingPanel) { window.HalexMTradingView.mountTradingPanel(); }
+</script>
+<script>
+  if (window.HalexMWalletModules && window.HalexMWalletModules.mountAll) {
+    window.HalexMWalletModules.mountAll();
+  }
 </script>
 </body>
 </html>

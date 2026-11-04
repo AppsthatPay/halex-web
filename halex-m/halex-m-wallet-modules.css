@@ -1,0 +1,101 @@
+/* halex-m-wallet-modules.css — STAGING ONLY, NOT MERGED.
+ * Every selector is hm-wm- prefixed so this sheet cannot restyle the
+ * existing HALEX-M page. Touch targets are at least 44px tall.
+ * Animation respects prefers-reduced-motion and can be paused per
+ * module with its Pause button (class hm-wm-paused). */
+.hm-wm-panel {
+  border: 1px solid var(--line, #2a2f3a);
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+  background: var(--panel2, #141821);
+  color: var(--text, #eef1f6);
+}
+.hm-wm-title { font-size: 16px; margin: 0 0 10px; line-height: 1.3; }
+.hm-wm-sec { font-size: 14px; font-weight: 700; margin: 16px 0 8px; }
+.hm-wm-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  margin-bottom: 10px;
+}
+.hm-wm-badge-live { color: #35d465; background: rgba(53, 212, 101, 0.12); }
+.hm-wm-badge-fallback { color: #ffd23e; background: rgba(255, 210, 62, 0.12); }
+.hm-wm-badge-local { color: #7db4ff; background: rgba(125, 180, 255, 0.12); }
+.hm-wm-badge-model { color: #ff9f2e; background: rgba(255, 159, 46, 0.12); }
+.hm-wm-note { font-size: 13px; line-height: 1.5; color: var(--muted, #9aa3b2); margin: 8px 0; }
+.hm-wm-status { font-size: 13.5px; line-height: 1.5; margin: 10px 0; }
+.hm-wm-label { display: block; font-size: 13px; font-weight: 700; margin: 12px 0 6px; }
+.hm-wm-input {
+  width: 100%;
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line2, #3a4152);
+  background: var(--panel, #0f131b);
+  color: var(--text, #eef1f6);
+  font-size: 15px;
+  font-family: "IBM Plex Mono", monospace;
+}
+.hm-wm-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+.hm-wm-btn {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line2, #3a4152);
+  background: var(--panel2, #1a2030);
+  color: var(--text, #eef1f6);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.hm-wm-btn-primary { background: var(--gold, #d4a017); color: #141414; border-color: var(--gold, #d4a017); }
+.hm-wm-btn-small { min-height: 44px; padding: 10px 12px; font-size: 13px; }
+.hm-wm-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line, #2a2f3a);
+  font-size: 14px;
+}
+.hm-wm-stat span { color: var(--muted, #9aa3b2); }
+.hm-wm-stat b { text-align: right; word-break: break-all; }
+.hm-wm-watchrow { justify-content: space-between; border-bottom: 1px solid var(--line, #2a2f3a); padding-bottom: 10px; }
+.hm-wm-taperow { justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--line, #2a2f3a); padding-bottom: 8px; }
+.hm-wm-svg { width: 100%; max-width: 420px; height: auto; display: block; margin: 12px auto 4px; }
+.hm-wm-node { fill: #1a2030; stroke: #7db4ff; stroke-width: 2; }
+.hm-wm-node-pool { stroke: #d4a017; }
+.hm-wm-node-empty { fill: none; stroke: #3a4152; stroke-width: 2; stroke-dasharray: 5 4; }
+.hm-wm-svg-text { fill: #eef1f6; font-size: 12px; font-weight: 700; }
+.hm-wm-svg-label { fill: #9aa3b2; font-size: 11px; }
+.hm-wm-flowline { stroke: #3a4152; stroke-width: 2; }
+.hm-wm-flow-dot { fill: #35d465; animation: hm-wm-flow 3.2s linear infinite; }
+.hm-wm-flow-dot-late { animation-delay: 1.6s; }
+.hm-wm-paused .hm-wm-flow-dot { animation-play-state: paused; }
+@keyframes hm-wm-flow {
+  from { transform: translateX(48px); }
+  to { transform: translateX(272px); }
+}
+.hm-wm-bar { height: 14px; border-radius: 7px; background: #232a38; overflow: hidden; margin: 4px 0 10px; }
+.hm-wm-bar i { display: block; height: 100%; background: #7db4ff; animation: hm-wm-bar-grow 0.6s ease-out; }
+.hm-wm-bar-buy { background: #35d465 !important; }
+.hm-wm-bar-sell { background: #ff5148 !important; }
+.hm-wm-barlabel { font-size: 12.5px; color: var(--muted, #9aa3b2); margin-top: 8px; }
+@keyframes hm-wm-bar-grow {
+  from { transform: scaleX(0); transform-origin: left; }
+  to { transform: scaleX(1); transform-origin: left; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hm-wm-flow-dot, .hm-wm-bar i { animation: none !important; }
+}
+@media (max-width: 560px) {
+  .hm-wm-panel { padding: 12px; }
+  .hm-wm-row { flex-direction: column; align-items: stretch; }
+  .hm-wm-btn { width: 100%; }
+}
