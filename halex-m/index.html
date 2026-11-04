@@ -15,6 +15,7 @@
      below as a module; ensureThree() in the boot script waits for it and
      retries the same vendored file once if it has not registered. No CDN
      engine copy is ever substituted: the engine ships with the page. -->
+<script type="importmap">{"imports":{"three":"./vendor/three.module.min.js","three/addons/":"./vendor/addons/"}}</script>
 <script type="module">import * as THREE from "./vendor/three.module.min.js"; window.THREE = THREE;</script>
 <style>
 :root{
@@ -6385,16 +6386,32 @@ function startChaintarium(){
         startChaintarium();
       }).catch(function(){
         ch.loading = false;
-        stage.innerHTML = '<div class="empty" style="margin:16px">The 3D engine (Three.js CDN) did not load — check your connection and reopen this tab.</div>';
+        stage.innerHTML = '<div class="empty" style="margin:16px">The vendored 3D engine did not load — reopen this tab to try again.</div>';
       });
     }
     return;
   }
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+  } catch(e) {
+    /* new-look night pass: WebGL-failure fallback — no context, no
+       black box: a plain message, and ch.started stays false so
+       leaving and reopening this tab retries. */
+    stage.innerHTML = '<div class="empty" style="margin:16px">WebGL is not available on this device or browser, so the 3D city cannot render. The rest of HALEX-M still works — reopen this tab if WebGL becomes available.</div>';
+    return;
+  }
   ch.started = true;
-  var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
   var scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x030409, 0.0016); /* rebuild pass: gentle depth falloff across the system */
+  scene.background = new THREE.Color(0x040918); /* new-look night pass: deep blue night behind the system */
+  scene.fog = new THREE.FogExp2(0x050b1e, 0.0016); /* new-look night pass: fog matched to the night background */
+  /* new-look night pass: a dark ground plane under the system, drawn
+     as a subtle polar grid — the orbits already lie in this plane */
+  var sysGrid = new THREE.PolarGridHelper(84, 16, 10, 64, 0x2a4a7f, 0x16294d);
+  sysGrid.position.y = -3.2;
+  sysGrid.material.transparent = true; sysGrid.material.opacity = 0.32; sysGrid.material.depthWrite = false;
+  scene.add(sysGrid);
   var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
@@ -7695,18 +7712,51 @@ function buildSurfaceScene(c, stage){
   surfPillars = [];
   var canvas = $("#surface-canvas"), labelsBox = $("#surface-labels");
   if(!surf.renderer){
-    surf.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+    try {
+      surf.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+    } catch(e) {
+      /* new-look night pass: WebGL-failure fallback for the city surface */
+      if(labelsBox) labelsBox.innerHTML = '<div class="empty" style="margin:16px">WebGL is not available on this device or browser, so the 3D city cannot render.</div>';
+      return;
+    }
     surf.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   }
   var renderer = surf.renderer;
+  var surfComposer = null; /* new-look night pass: bloom composer, set asynchronously when the vendored post-processing modules load; null keeps the plain renderer */
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
   var camEulS = new THREE.Euler(0, 0, 0, "YXZ"); /* same full-360 rig as the system view — the up vector rides the rotation over the poles */
-  scene.add(new THREE.AmbientLight(0x8fa3c8, 0.38));
-  scene.add(new THREE.HemisphereLight(0xbdd3ff, 0x141210, 0.5)); /* rebuild pass: sky/ground shading so towers shade like solid buildings, not flat cutouts */
-  scene.fog = new THREE.FogExp2(0x04060a, 0.0048); /* rebuild pass: the far side of the world falls off into atmosphere */
-  var dl = new THREE.DirectionalLight(0xfff2dd, 1.28); dl.position.set(30, 26, 18); scene.add(dl);
+  scene.add(new THREE.AmbientLight(0x6378ab, 0.34)); /* new-look night pass: cooler, dimmer ambient — the light on this world comes from its windows and traces */
+  scene.add(new THREE.HemisphereLight(0x7d94cc, 0x0a0c14, 0.45)); /* new-look night pass: night sky/ground shading so towers shade like solid buildings, not flat cutouts */
+  scene.background = new THREE.Color(0x050b1e); /* new-look night pass: deep blue night behind the city */
+  scene.fog = new THREE.FogExp2(0x050b1e, 0.0048); /* new-look night pass: fog matched to the night background, the far side of the world falls off into it */
+  var dl = new THREE.DirectionalLight(0xc3d4ff, 0.95); dl.position.set(30, 26, 18); scene.add(dl); /* new-look night pass: moonlight, not daylight */
   var rim = new THREE.PointLight(0x2ee6c8, 0.7, 0); rim.decay = 0; rim.position.set(-36, -16, -24); scene.add(rim);
+  /* new-look night pass: real bloom for the city — the vendored
+     three r170 post-processing modules (vendor/addons/, MIT), loaded
+     lazily as ES modules through the head import map. Any failure
+     (older WebView without import maps, a missing file) leaves
+     surfComposer null and the plain renderer in place: the scene
+     keeps its emissive materials and additive glow sprites and never
+     renders a black box. Wired into this surface loop only. */
+  (function initSurfBloom(){
+    var P = "./vendor/addons/postprocessing/";
+    Promise.all([
+      import(P + "EffectComposer.js"),
+      import(P + "RenderPass.js"),
+      import(P + "UnrealBloomPass.js"),
+      import(P + "OutputPass.js")
+    ]).then(function(mods){
+      if(stopped || surf.chain !== c) return;
+      var composer = new mods[0].EffectComposer(renderer);
+      composer.addPass(new mods[1].RenderPass(scene, camera));
+      composer.addPass(new mods[2].UnrealBloomPass(
+        new THREE.Vector2(Math.max(2, stage.clientWidth), Math.max(2, stage.clientHeight)), 0.85, 0.55, 0.6));
+      composer.addPass(new mods[3].OutputPass());
+      surfComposer = composer;
+      resize();
+    }).catch(function(){ surfComposer = null; });
+  })();
 
   var seed = (hueFor(c.id) % 89) + 3;
   var surfLayerIdxNow = (typeof surfLayerIdx !== "undefined" ? surfLayerIdx : 0);
@@ -8289,6 +8339,8 @@ function buildSurfaceScene(c, stage){
      buttons are added — the legend meshes join those groups and the
      existing switches hide/show them. */
   var surfCsFlashers = [];
+  var surfCsTrailers = []; /* new-look night pass: street light trails from the legend builder */
+  var surfCsPulsers = []; /* new-look night pass: swap-intersection glow pulsers from the legend builder */
   (function buildLegendCityscape(){
     var CS = window.HalexMChaintariumCityscapes;
     if(!CS || !CS.buildCityscape || !CS.buildMeshes) return;
@@ -8311,6 +8363,8 @@ function buildSurfaceScene(c, stage){
       featPick.push(m);
     });
     surfCsFlashers = built.flashers || [];
+    surfCsTrailers = built.trails || [];
+    surfCsPulsers = built.pulsers || [];
     /* legend panel: one MODEL row per legend type, filled once */
     var legEl = $("#hm-cs-legend");
     if(legEl && !legEl.hasChildNodes() && CS.LEGEND){
@@ -8528,6 +8582,7 @@ function buildSurfaceScene(c, stage){
   function resize(){
     var w = stage.clientWidth, h = stage.clientHeight;
     renderer.setSize(w, h, false);
+    if(surfComposer){ try{ surfComposer.setPixelRatio(renderer.getPixelRatio()); surfComposer.setSize(w, h); }catch(e){} }
     camera.aspect = w / h; camera.updateProjectionMatrix();
   }
   resize();
@@ -8622,6 +8677,14 @@ function buildSurfaceScene(c, stage){
     if(window.HalexMChaintariumCityscapes && surfCsFlashers && surfCsFlashers.length && !reduceMotion){
       window.HalexMChaintariumCityscapes.updateFlash(performance.now() * 0.001, surfCsFlashers);
     }
+    /* new-look night pass: street light trails flow along the legend
+       district's transfer streets, and its swap intersections glow */
+    if(window.HalexMChaintariumCityscapes && !reduceMotion){
+      if(surfCsTrailers && surfCsTrailers.length && window.HalexMChaintariumCityscapes.updateTrails)
+        window.HalexMChaintariumCityscapes.updateTrails(performance.now() * 0.001, surfCsTrailers);
+      if(surfCsPulsers && surfCsPulsers.length && window.HalexMChaintariumCityscapes.updatePulse)
+        window.HalexMChaintariumCityscapes.updatePulse(performance.now() * 0.001, surfCsPulsers);
+    }
     /* tracked beacons breathe — a slow pulse of light so the eye finds
        the wallet or token you're following on the surface */
     if(surfPillars.length && !reduceMotion){
@@ -8653,7 +8716,7 @@ function buildSurfaceScene(c, stage){
     if(!reduceMotion){
       var ltn = performance.now() * 0.001;
       dl.position.set(Math.cos(ltn * 0.05) * 34, 24 + Math.sin(ltn * 0.037) * 6, Math.sin(ltn * 0.05) * 34);
-      dl.intensity = 1.16 + Math.sin(ltn * 0.05) * 0.2;
+      dl.intensity = 0.88 + Math.sin(ltn * 0.05) * 0.14; /* new-look night pass: moonlight drift, was the day/night drift */
     }
     /* rebuild pass: adaptive quality — long frames step the pixel
        ratio down a rung; recovered frames step it back up */
@@ -8668,7 +8731,7 @@ function buildSurfaceScene(c, stage){
     camera.position.set(0, 0, radius).applyEuler(camEulS);
     camera.up.set(0, 1, 0).applyEuler(camEulS);
     camera.lookAt(0, 0, 0);
-    renderer.render(scene, camera);
+    if(surfComposer){ surfComposer.render(); } else { renderer.render(scene, camera); }
     var w = stage.clientWidth, h = stage.clientHeight;
     var camDir = camera.position.clone().normalize(), wp = new THREE.Vector3();
     zoneObjs.forEach(function(z){
@@ -8712,6 +8775,7 @@ function buildSurfaceScene(c, stage){
     canvas.removeEventListener("wheel", onWheel);
     canvas.removeEventListener("touchmove", onTouch);
     canvas.removeEventListener("touchend", onTouchEnd);
+    if(surfComposer){ try{ if(surfComposer.dispose) surfComposer.dispose(); }catch(e){} surfComposer = null; }
     disposeScene(scene);
   };
 }
@@ -9226,7 +9290,13 @@ function buildMoonScene(){
   if(!canvas || !window.THREE) return;
   if(moonV._stop){ moonV._stop(); moonV._stop = null; }
   if(!moonV.renderer){
-    moonV.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+    try {
+      moonV.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+    } catch(e) {
+      /* new-look night pass: WebGL-failure fallback for the moon view */
+      if(labelsBox) labelsBox.innerHTML = '<div class="empty" style="margin:16px">WebGL is not available on this device or browser, so this 3D view cannot render.</div>';
+      return;
+    }
     moonV.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   }
   var renderer = moonV.renderer;

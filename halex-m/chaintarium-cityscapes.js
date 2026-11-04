@@ -218,20 +218,20 @@
   }
 
   /* Three.js builder. THREE is supplied by the caller (the page's
-     r128 build); in tests a stub with the same constructors works.
+     vendored r170 build); in tests a stub with the same constructors works.
      Returns { group, clickables, flashers }. Every mesh gets
      userData.structure = its descriptor, so raycast clicks resolve. */
   function buildMeshes(THREE, city, opts){
     var group = new THREE.Group();
-    var clickables = [], flashers = [];
+    var clickables = [], flashers = [], trails = [], pulsers = [];
     /* opts.windowTexture (a THREE CanvasTexture of a lit-window grid)
        is applied as the emissive map on tower-class structures, so
        their emissive colour reads as lit windows. Optional: callers
        without a texture (tests, stubs) get the original materials. */
     var winTex = (opts && opts.windowTexture) || null;
-    function mat(hex, emissive, ei, tex){
+    function mat(hex, emissive, ei, tex, winTint){
       var p = { color: hex, emissive: emissive, emissiveIntensity: ei, roughness: 0.5, metalness: 0.55 };
-      if(tex && winTex) p.emissiveMap = winTex;
+      if(tex && winTex){ p.emissiveMap = winTex; if(winTint) p.emissive = winTint; }
       return new THREE.MeshStandardMaterial(p);
     }
     function put(mesh, st){
@@ -291,7 +291,7 @@
         lamp.position.set(x, s.h + 0.05, z);
         put(lamp, st);
       } else if(st.shape === "tower-black-red"){
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.w), mat(col.body, col.body, 0.2, true));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.w), mat(col.body, col.body, 0.55, true, 0xffb27a));
         base.position.set(x, s.h / 2, z);
         put(base, st);
         var trim = new THREE.Mesh(new THREE.BoxGeometry(s.w * 1.08, s.h * 0.08, s.w * 1.08), mat(col.trim, col.trim, 0.5));
@@ -303,7 +303,7 @@
         put(found, st);
         flashers.push({ material: foundMat, phase: idx * 0.7 });
       } else if(st.shape === "capital-rectangle" || st.shape === "capital-flagged"){
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.2, true));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.55, true, 0xdfe9ff));
         base.position.set(x, s.h / 2, z);
         put(base, st);
         var roof = new THREE.Mesh(new THREE.BoxGeometry(s.w * 1.1, 0.08, s.d * 1.1), mat(col.trim, col.trim, 0.4));
@@ -325,28 +325,69 @@
         base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.2));
         base.position.set(x, s.h / 2, z);
         put(base, st);
+        /* new-look night pass: a lit strip runs the length of the
+           street, and a bright pulse rides it in the direction of
+           flow (the street's +x). The pulse is a child of the street
+           mesh, so the page's surface transform carries it along.
+           updateTrails() below advances the pulses. */
+        var strip = new THREE.Mesh(new THREE.BoxGeometry(s.w * 0.96, 0.02, s.d * 0.42),
+          new THREE.MeshBasicMaterial({ color: col.light, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false }));
+        strip.position.set(0, s.h / 2 + 0.02, 0);
+        base.add(strip);
+        var pulse = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.05, s.d * 0.85),
+          new THREE.MeshBasicMaterial({ color: col.light, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
+        pulse.position.set(-(s.w - 0.34) / 2, s.h / 2 + 0.05, 0);
+        base.add(pulse);
+        trails.push({ node: pulse, len: s.w - 0.34, speed: 0.22 + (idx % 5) * 0.05, phase: (idx * 0.37) % 1 });
       } else if(st.shape === "intersection"){
         base = new THREE.Mesh(new THREE.CylinderGeometry(s.w / 2, s.w / 2, s.h, 16), mat(col.body, col.trim, 0.4));
         base.position.set(x, s.h / 2, z);
         put(base, st);
+        /* new-look night pass: swaps glow — an additive disc on top
+           of the crossing, breathing via updatePulse() below. */
+        var glowMat = new THREE.MeshBasicMaterial({ color: col.light, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false });
+        var glow = new THREE.Mesh(new THREE.CylinderGeometry(s.w * 0.62, s.w * 0.62, 0.03, 16), glowMat);
+        glow.position.set(0, s.h / 2 + 0.03, 0);
+        base.add(glow);
+        pulsers.push({ material: glowMat, speed: 1.6, phase: idx * 0.9 });
       } else if(st.shape === "trace-line"){
         var tg = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(x, 0.05, z), new THREE.Vector3(x + 1.4, 0.05, z - 0.5)]);
         var tl = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: col.light, transparent: true, opacity: 0.85 }));
         put(tl, st);
       } else {
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.25, true));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.55, true, 0xffc98a));
         base.position.set(x, s.h / 2, z);
         put(base, st);
       }
     });
-    return { group: group, clickables: clickables, flashers: flashers };
+    return { group: group, clickables: clickables, flashers: flashers, trails: trails, pulsers: pulsers };
+  }
+
+  /* New-look night pass: advance the street light trails. Each trail
+     is a bright pulse riding its street in the flow direction; the
+     position is the street's local +x, so the page's baked surface
+     transform aims it along the street on the world. */
+  function updateTrails(t, trails){
+    (trails || []).forEach(function(tr){
+      if(!tr.node) return;
+      var f = (t * (tr.speed || 0.25) + (tr.phase || 0)) % 1;
+      tr.node.position.x = -tr.len / 2 + f * tr.len;
+    });
+  }
+  /* New-look night pass: breathe the swap-intersection glow discs. */
+  function updatePulse(t, pulsers){
+    (pulsers || []).forEach(function(p){
+      if(!p.material) return;
+      p.material.opacity = 0.35 + 0.3 * (0.5 + 0.5 * Math.sin(t * (p.speed || 1.6) + (p.phase || 0)));
+    });
   }
 
   var api = {
     LEGEND: LEGEND, legendById: legendById, tokenTier: tokenTier,
     sizeFor: sizeFor, buildCityscape: buildCityscape,
     buildDyingSystem: buildDyingSystem, updateFlash: updateFlash,
-    buildMeshes: buildMeshes
+    buildMeshes: buildMeshes, updateTrails: updateTrails,
+    updatePulse: updatePulse
   };
   if(typeof module !== "undefined" && module.exports) module.exports = api;
   if(typeof window !== "undefined") window.HalexMChaintariumCityscapes = api;

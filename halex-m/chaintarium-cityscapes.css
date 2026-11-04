@@ -3,7 +3,7 @@
    glass. Touch targets >=44px. No hover-only controls. */
 .hm-cs-wrap{background:#05070a;color:#e8edf7;font-family:"IBM Plex Sans",system-ui,sans-serif;padding:16px}
 .hm-cs-wrap h2{color:#ffd23e}
-.hm-cs-canvas{width:100%;height:420px;display:block;background:#05070a;touch-action:none;cursor:grab;border:1px solid rgba(255,255,255,.14);border-radius:12px}
+.hm-cs-canvas{width:100%;height:420px;display:block;background:#050b1e;touch-action:none;cursor:grab;border:1px solid rgba(255,255,255,.14);border-radius:12px}
 .hm-cs-canvas:active{cursor:grabbing}
 .hm-cs-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 .hm-cs-tools button{min-height:44px;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#11161f;color:#e8edf7;font-size:14px;cursor:pointer}
