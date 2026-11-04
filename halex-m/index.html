@@ -1363,6 +1363,43 @@ nav.tabbar .rail{touch-action:pan-x}
 #surface.open ~ #chain-toolbar #surface-info-btn{display:inline-flex}
 #chain-tools-close{border-color:rgba(255,194,75,.45); color:#ffd98a}
 .chain-toolbar{-webkit-overflow-scrolling:touch}
+
+/* ---------- Chaintarium fix pass (2026-11-04, Jeffrey's phone
+   review of the live page): nothing overlaps anything else, the
+   tools drawer scrolls the whole list, Back to orbit is one
+   obvious tap in planet view ----------
+   1) The planet HUD was a no-wrap flex row: the planet card and the
+      search tools (flex-basis:100%) crushed into each other and the
+      search slid under the card and the tools drawer. It is now a
+      column: Back button, planet card, then the search + Legend row,
+      each on its own line, nothing stacked on anything. */
+.surface-hud{flex-direction:column; align-items:stretch; gap:8px}
+.surface-hud .surface-card{align-self:flex-start}
+.surf-tools{flex-basis:auto; width:100%; margin-top:0; display:flex; flex-direction:column; gap:6px}
+#hm-cs-legend-btn{align-self:flex-start}
+/* Back to orbit lives in the planet HUD now (it was buried at the
+   bottom of the tools drawer): gold outline, always visible while a
+   planet is open, one tap home. */
+#surface-back{align-self:flex-start; margin:0; pointer-events:auto; font-weight:700; color:#ffd98a; border:1px solid rgba(255,194,75,.55); background:rgba(8,10,16,.88); box-shadow:0 0 14px rgba(255,194,75,.15)}
+/* the legend sheet lifts clear of the activity tick and the
+   surface note along the bottom edge */
+#surface.legend-open #hm-cs-legend{bottom:68px}
+/* 2) the tools drawer: a visible thin scrollbar, contained overscroll
+      so the list end never yanks the page, grouped caps line up */
+.chain-toolbar{overscroll-behavior:contain; scrollbar-width:thin}
+.chain-toolbar::-webkit-scrollbar{display:block; width:4px}
+.chain-toolbar::-webkit-scrollbar-thumb{background:rgba(255,217,138,.35); border-radius:99px}
+.tb-group .tb-cap{margin-bottom:1px}
+/* 3) popped window on a phone: the cosmos search row leaves the
+      tools column clear, and the Tools button drops below the search
+      row instead of sitting on top of Record */
+@media (max-width:640px){
+  #chain-stage.pop .chain-search{width:calc(100% - 134px)}
+  #chain-stage.pop #chain-tools-toggle{top:56px}
+  /* the planet activity tick stops short of the app AI button that
+     floats over the bottom-right corner of the screen */
+  .surf-activity-tick{max-width:calc(100% - 150px)}
+}
 /* APEX³ trace: search row + drawn SVG timeline */
 .apex3-searchrow{display:flex; gap:8px; margin-top:10px}
 .apex3-searchrow input{flex:1; min-width:0}
@@ -2123,6 +2160,7 @@ nav.tabbar .rail{touch-action:pan-x}
       <canvas id="surface-canvas"></canvas>
       <div id="surface-labels"></div>
       <div class="surface-hud">
+        <button class="btn" id="surface-back">← Back to orbit</button>
         <div class="surface-card" id="surface-card"></div>
         <div class="surf-tools">
           <div class="surf-search">
@@ -2163,11 +2201,13 @@ nav.tabbar .rail{touch-action:pan-x}
     <div class="chain-toolbar" id="chain-toolbar" aria-label="Chaintarium tools">
       <div class="tb-cap">TOOLS</div>
       <div class="tb-group tb-system">
+        <div class="tb-cap">SYSTEM</div>
         <button class="btn" id="chain-tools-feed" aria-pressed="true">Live feed on</button>
         <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
         <button class="btn" id="chain-tools-deadsys" aria-pressed="true">Dead system on</button>
       </div>
       <div class="tb-group tb-view">
+        <div class="tb-cap">VIEW</div>
         <button class="btn" id="chain-tools-overlays" aria-pressed="true">Overlays on</button>
         <button class="btn" id="chain-tools-showall" hidden>Show all worlds</button>
         <button class="btn" id="chain-tools-syscard" aria-pressed="true">System card on</button>
@@ -2179,15 +2219,17 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn" id="uncl-streamline-feed" aria-pressed="false">Streamline tx feed: off</button>
       </div>
       <div class="tb-group tb-window">
+        <div class="tb-cap">WINDOW</div>
         <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
         <button class="btn" id="chain-pop-close"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg>Pop back in</button>
       </div>
       <div class="tb-group tb-planet">
+        <div class="tb-cap">PLANET</div>
         <button class="btn" id="surface-info-btn">Planet info</button>
-        <button class="btn" id="surface-back">← Back to orbit</button>
         <button class="btn" id="surf-feed-open" aria-pressed="false"><span class="track-live-dot"></span>Live chain feed</button>
       </div>
       <div class="tb-group tb-layers" id="tb-layers">
+        <div class="tb-cap">LAYERS</div>
         <button class="btn lyr-btn" data-layer="platforms" aria-pressed="true"><i style="background:#b45cff; color:#b45cff"></i>Platforms</button>
         <button class="btn lyr-btn" data-layer="wallets" aria-pressed="true"><i style="background:#35d465; color:#35d465"></i>Wallets</button>
         <button class="btn lyr-btn" data-layer="transactions" aria-pressed="true"><i style="background:#5aa9ff; color:#5aa9ff"></i>Transactions</button>
@@ -2220,7 +2262,7 @@ nav.tabbar .rail{touch-action:pan-x}
     </div>
   </div>
   <div class="chain-list" id="chain-list">
-    <button class="chain-list-toggle" id="chain-list-toggle" aria-expanded="false" aria-controls="chain-chips">Chains · <span id="chain-count">41</span><span class="clt-chev" aria-hidden="true">▾</span></button>
+    <button class="chain-list-toggle" id="chain-list-toggle" aria-expanded="false" aria-controls="chain-chips">Chains · <span id="chain-count">36</span><span class="clt-chev" aria-hidden="true">▾</span></button>
     <div class="chain-ctl" id="chain-chips" hidden></div>
     <div class="chain-lists-note" id="chain-lists-note" hidden>
       <p><b>Main system:</b> <span id="chain-top40-list"></span></p>
@@ -6039,110 +6081,107 @@ var CHAINS_3D = [
       { name:"Bitcoin Cash", sym:"BCH", color:0x8dc351, born:2017, note:"Bitcoin Cash (2017) — the big-block fork. Split from Bitcoin at block 478,558 over the block-size war: bigger blocks, cheaper payments, a smaller world than the parent." },
       { name:"Bitcoin SV", sym:"BSV", color:0xeab300, born:2018, note:"Bitcoin SV (2018) — a fork of a fork: Bitcoin Cash split again, and SV ('Satoshi Vision') took the maximalist big-block path. The least-known moon in Bitcoin's sky." }
     ] },
-  { id:"ethereum", name:"Ethereum", sym:"ETH", color:0x8a9cff, born:2015, activity:0.85, orbit:8, speed:0.16,
-    info:"The first smart-contract world. Deep DeFi continents, the Glamsterdam upgrade scheduled for Hoodi testnet Oct 26, 2026. Wallet coverage: native in HALEX wallet 0.10.x.",
-    zones:[["DeFi Highlands",-0.45,0.2],["The Rollup Terraces",0.5,-0.35],["NFT Old Town",0.05,0.6]],
-    moons:[
-      { name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, note:"Ethereum Classic (2016) — the unforked chain. After the DAO hack, Ethereum rewound history and moved on; Classic kept the original ledger under the banner 'code is law'." }
-    ] },
-  { id:"solana", name:"Solana", sym:"SOL", color:0x9945ff, born:2020, activity:0.95, orbit:12.5, speed:0.24,
+  { id:"solana", name:"Solana", sym:"SOL", color:0x9945ff, born:2020, activity:0.95, orbit:9, speed:0.24,
     info:"The Jupiter of the system — the biggest memecoin gravity well in crypto. The watering hole: tokens are born in its pools by the thousand, and the predators hunt there. 200ms block times now live.",
     zones:[["The Watering Holes",-0.35,-0.4],["Memecoin Flats",0.5,0.3],["Validator Ridge",-0.1,0.6]] },
-  { id:"xrp", name:"XRP Ledger", sym:"XRP", color:0xff5a3c, born:2012, activity:0.5, orbit:16.5, speed:0.13,
-    info:"The Mars of the system — red, fast, payments-native. Issuance works by trustline: no contract needed, fractions of a cent in fees. RUSTY mints here with cold/hot wallet issuance and a blackhole option.",
-    zones:[["Payments Corridor",0,-0.5],["Trustline Plains",-0.5,0.35],["Issuer Shoals",0.55,0.45]] },
-  { id:"bsc", name:"BNB Chain", sym:"BNB", color:0xf0b90b, born:2020, activity:0.8, orbit:20, speed:0.19,
-    info:"A high-volume EVM world. One ERC-20 template covers it in RUSTY; native in the HALEX wallet today.",
-    zones:[["Pancake Flats",-0.4,0.1],["Yield Terraces",0.45,-0.4],["Bridge Crossings",0.2,0.55]] },
-  { id:"tron", name:"Tron", sym:"TRX", color:0xff3b30, born:2018, activity:0.7, orbit:23.5, speed:0.17,
-    info:"The stablecoin freight world — more USDT moves across Tron than anywhere else. Cheap, fast, and built around high-throughput transfers." },
-  { id:"base", name:"Base", sym:"BASE", color:0x4d7cff, born:2023, activity:0.85, orbit:27, speed:0.21,
+  { id:"base", name:"Base", sym:"BASE", color:0x4d7cff, born:2023, activity:0.85, orbit:12.3, speed:0.21,
     info:"Coinbase's EVM world. New-launch discovery runs through the APEX¹ firehose.",
     zones:[["Builder Highlands",-0.3,-0.35],["Launch Flats",0.5,0.25],["The Aerodrome Fields",0,0.6]] },
-  { id:"polygon", name:"Polygon", sym:"POL", color:0x8247e5, born:2020, activity:0.55, orbit:30.5, speed:0.2,
-    info:"Ethereum's scaling archipelago — sidechains and rollups stitched to the parent world. In the HALEX firehose catalog from day one." },
-  { id:"avalanche", name:"Avalanche", sym:"AVAX", color:0xe84142, born:2020, activity:0.5, orbit:34, speed:0.18,
-    info:"A subnet world — chains spun off chains, each with its own rules, all settling back to the primary network." },
-  { id:"arbitrum", name:"Arbitrum", sym:"ARB", color:0x28a0f0, born:2021, activity:0.6, orbit:37.5, speed:0.22,
-    info:"The busiest Ethereum rollup — a whole DeFi continent lifted off the parent planet and set in a close orbit of its own." },
-  { id:"cardano", name:"Cardano", sym:"ADA", color:0x3468d1, born:2017, activity:0.4, orbit:41, speed:0.12,
-    info:"The research-first world: peer-reviewed, deliberately slow-moving, with terrain that changes by era rather than by hype cycle." },
-  { id:"sui", name:"Sui", sym:"SUI", color:0x4da2ff, born:2023, activity:0.65, orbit:44.5, speed:0.27,
+  { id:"ethereum", name:"Ethereum", sym:"ETH", color:0x8a9cff, born:2015, activity:0.85, orbit:15.6, speed:0.16,
+    info:"The first smart-contract world. Deep DeFi continents, the Glamsterdam upgrade scheduled for Hoodi testnet Oct 26, 2026. Wallet coverage: native in HALEX wallet 0.10.x.",
+    zones:[["DeFi Highlands",-0.45,0.2],["The Rollup Terraces",0.5,-0.35],["NFT Old Town",0.05,0.6]],
+    moons:[] },
+  { id:"bsc", name:"BNB Chain", sym:"BNB", color:0xf0b90b, born:2020, activity:0.8, orbit:18.9, speed:0.19,
+    info:"A high-volume EVM world. One ERC-20 template covers it in RUSTY; native in the HALEX wallet today.",
+    zones:[["Pancake Flats",-0.4,0.1],["Yield Terraces",0.45,-0.4],["Bridge Crossings",0.2,0.55]] },
+  { id:"tron", name:"Tron", sym:"TRX", color:0xff3b30, born:2018, activity:0.7, orbit:22.2, speed:0.17,
+    info:"The stablecoin freight world — more USDT moves across Tron than anywhere else. Cheap, fast, and built around high-throughput transfers." },
+  { id:"sui", name:"Sui", sym:"SUI", color:0x4da2ff, born:2023, activity:0.65, orbit:25.5, speed:0.27,
     info:"A Move-language world. RUSTY mints via the Move Currency Standard — TreasuryCap stays burnable, so supply discipline is enforceable on-chain." },
-  { id:"cosmos", name:"Cosmos", sym:"ATOM", color:0x6f7390, born:2019, activity:0.35, orbit:48, speed:0.15,
-    info:"The internet-of-blockchains hub — sovereign chains linked by IBC ferries rather than bridges." },
-  { id:"polkadot", name:"Polkadot", sym:"DOT", color:0xe6007a, born:2020, activity:0.3, orbit:51.5, speed:0.14,
-    info:"A relay world: parachains slot into the parent and share its security umbrella." },
-  { id:"sei", name:"Sei", sym:"SEI", color:0xd84a6b, born:2023, activity:0.35, orbit:55, speed:0.3,
-    info:"A trading-optimized EVM world on the outer orbit of the HALEX catalog — covered by the same ERC-20 adapter as the rest of the EVM family." },
-  { id:"fantom", name:"Fantom", sym:"FTM", color:0x1969ff, born:2019, activity:0.25, orbit:58.5, speed:0.23,
-    info:"A DAG-based EVM world from the 2019 generation — quiet now, but still turning in the outer catalog." },
-  { id:"ink", name:"Ink", sym:"INK", color:0x7132f5, born:2024, activity:0.3, orbit:62, speed:0.26,
-    info:"Kraken's Ethereum L2 — one of the youngest worlds in the system, still mostly unmapped coastline." },
-  { id:"cronos", name:"Cronos", sym:"CRO", color:0x2e4d8f, born:2021, activity:0.2, orbit:65.5, speed:0.19,
-    info:"Crypto.com's EVM world — an exchange chain in the outer orbits of the HALEX catalog." },
-  { id:"thundercore", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, activity:0.1, orbit:69, speed:0.21,
-    info:"A fast, mobile-first EVM world at the far edge of the catalog — small, quick, and easy to overlook." },
-  { id:"litecoin", name:"Litecoin", sym:"LTC", color:0x345d9d, born:2011, activity:0.45, orbit:79.5, speed:0.16,
-    info:"Litecoin — the standalone LTC world. It also rides as a moon of Bitcoin, where it was born from Bitcoin's code; this planet is the same chain mapped on its own, with the same tower, wallet-building and line system as every other world. No live LTC token feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
-    zones:[["Silver Flats",-0.4,-0.3],["Scrypt Highlands",0.45,-0.45],["The Four-Minute Fields",0.05,0.55]] },
-  { id:"nano", name:"Nano", sym:"NANO", color:0x4a90e2, born:2015, activity:0.3, orbit:83, speed:0.2,
-    info:"Nano — a feeless, block-lattice world: each account carries its own chain, and transfers settle without miners or fees. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live NANO feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
-    zones:[["Lattice Flats",-0.4,-0.3],["Representative Ridge",0.45,-0.4],["Zero-Fee Plains",0.05,0.55]] },
-  { id:"stellar", name:"Stellar", sym:"XLM", color:0x08b5e5, born:2014, activity:0.4, orbit:86.5, speed:0.18,
-    info:"Stellar — a payments and anchors world: assets move by trustline, and anchors bridge the ledger to banks and stablecoins. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live XLM feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
-    zones:[["Anchor Harbours",-0.4,-0.3],["Trustline Terraces",0.45,-0.4],["Payments Corridor",0.05,0.55]] },
-  { id:"digibyte", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, activity:0.2, orbit:72.5, speed:0.17,
-    info:"A UTXO payments chain from the 2014 generation — Bitcoin's codebase hardened with five mining algorithms and 15-second blocks, built for fast, cheap everyday payments. DigiByte is not part of the live APEX¹ firehose: this world is on the map for research, and no live token feed runs behind it.",
-    zones:[["Payments Flats",-0.4,-0.3],["DigiShield Highlands",0.45,-0.45],["The Five Mines",0.05,0.55]] },
-  { id:"dogecoin", name:"Dogecoin", sym:"DOGE", color:0xc2a633, born:2013, activity:0.55, orbit:76, speed:0.15,
+  { id:"arbitrum", name:"Arbitrum", sym:"ARB", color:0x28a0f0, born:2021, activity:0.6, orbit:28.8, speed:0.22,
+    info:"The busiest Ethereum rollup — a whole DeFi continent lifted off the parent planet and set in a close orbit of its own." },
+  { id:"optimism", name:"Optimism", sym:"OP", color:0xff0420, born:2021, activity:0.6, orbit:32.1, speed:0.22, info:"Model planet — Optimism, an Ethereum rollup. Surface is a stylized model, not live chain data." },
+  { id:"dogecoin", name:"Dogecoin", sym:"DOGE", color:0xc2a633, born:2013, activity:0.55, orbit:35.4, speed:0.15,
     info:"The original memecoin — a 2013 fork of the Litecoin line that turned a joke into one of the longest-lived payment chains in crypto, still running on its own UTXO ledger with one-minute blocks and a famously loyal community. Dogecoin is not part of the live APEX¹ firehose: this world is on the map for research, and no live token feed runs behind it.",
     zones:[["Shibe Flats",-0.35,-0.35],["The Moon Fields",0.5,0.25],["Tipping Plains",0,0.6]] },
-  { id:"optimism", name:"Optimism", sym:"OP", color:0xff0420, born:2021, activity:0.6, orbit:90, speed:0.22, info:"Model planet — Optimism, an Ethereum rollup. Surface is a stylized model, not live chain data." },
-  { id:"zksync", name:"zkSync Era", sym:"ZK", color:0x8c8dfc, born:2023, activity:0.45, orbit:93, speed:0.2, info:"Model planet — zkSync Era, a ZK rollup. Surface is a stylized model, not live chain data." },
-  { id:"starknet", name:"Starknet", sym:"STRK", color:0x0c0c4f, born:2021, activity:0.4, orbit:96, speed:0.18, info:"Model planet — Starknet, a ZK rollup. Surface is a stylized model, not live chain data." },
-  { id:"aptos", name:"Aptos", sym:"APT", color:0x00e0a4, born:2022, activity:0.5, orbit:99, speed:0.24, info:"Model planet — Aptos, a Move-language chain. Surface is a stylized model, not live chain data." },
-  { id:"near", name:"NEAR Protocol", sym:"NEAR", color:0x00ec97, born:2020, activity:0.45, orbit:102, speed:0.19, info:"Model planet — NEAR Protocol. Surface is a stylized model, not live chain data." },
-  { id:"hedera", name:"Hedera", sym:"HBAR", color:0x0ac6a5, born:2019, activity:0.4, orbit:105, speed:0.17, info:"Model planet — Hedera. Surface is a stylized model, not live chain data." },
-  { id:"algorand", name:"Algorand", sym:"ALGO", color:0x000000, born:2019, activity:0.35, orbit:108, speed:0.16, info:"Model planet — Algorand. Surface is a stylized model, not live chain data." },
-  { id:"tezos", name:"Tezos", sym:"XTZ", color:0x2c7df7, born:2018, activity:0.35, orbit:111, speed:0.15, info:"Model planet — Tezos. Surface is a stylized model, not live chain data." },
-  { id:"monero", name:"Monero", sym:"XMR", color:0xff6600, born:2014, activity:0.4, orbit:114, speed:0.14, info:"Model planet — Monero, a privacy chain. Surface is a stylized model, not live chain data." },
-  { id:"unichain", name:"Unichain", sym:"UNI", color:0xff007a, born:2024, activity:0.45, orbit:117, speed:0.26, info:"Model planet — Unichain, a Uniswap L2. Surface is a stylized model, not live chain data." },
-  { id:"hyperliquid", name:"Hyperliquid", sym:"HYPE", color:0x00d4a6, born:2023, activity:0.55, orbit:120, speed:0.27, info:"Model planet — Hyperliquid. Surface is a stylized model, not live chain data." },
-  { id:"linea", name:"Linea", sym:"LINEA", color:0x61dfff, born:2023, activity:0.4, orbit:123, speed:0.21, info:"Model planet — Linea, an Ethereum rollup. Surface is a stylized model, not live chain data." },
-  { id:"scroll", name:"Scroll", sym:"SCR", color:0xffeeda, born:2023, activity:0.35, orbit:126, speed:0.2, info:"Model planet — Scroll, a ZK rollup. Surface is a stylized model, not live chain data." },
-  { id:"blast", name:"Blast", sym:"BLAST", color:0xfcfc03, born:2024, activity:0.35, orbit:129, speed:0.23, info:"Model planet — Blast, an Ethereum L2. Surface is a stylized model, not live chain data." },
-  { id:"mantle", name:"Mantle", sym:"MNT", color:0x000000, born:2023, activity:0.4, orbit:132, speed:0.22, info:"Model planet — Mantle, an Ethereum L2. Surface is a stylized model, not live chain data." },
-  { id:"berachain", name:"Berachain", sym:"BERA", color:0x6b3f1d, born:2024, activity:0.35, orbit:135, speed:0.25, info:"Model planet — Berachain. Surface is a stylized model, not live chain data." },
-  { id:"pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, activity:0.25, orbit:138, speed:0.18, info:"Model planet — PIVX, a privacy-focused proof-of-stake chain. It also appears in the dying system as a fading world, labelled as such. Surface is a stylized model, not live chain data." }
+  { id:"hyperliquid", name:"Hyperliquid", sym:"HYPE", color:0x00d4a6, born:2023, activity:0.55, orbit:38.7, speed:0.27, info:"Model planet — Hyperliquid. Surface is a stylized model, not live chain data." },
+  { id:"polygon", name:"Polygon", sym:"POL", color:0x8247e5, born:2020, activity:0.55, orbit:42, speed:0.2,
+    info:"Ethereum's scaling archipelago — sidechains and rollups stitched to the parent world. In the HALEX firehose catalog from day one." },
+  { id:"aptos", name:"Aptos", sym:"APT", color:0x00e0a4, born:2022, activity:0.5, orbit:45.3, speed:0.24, info:"Model planet — Aptos, a Move-language chain. Surface is a stylized model, not live chain data." },
+  { id:"avalanche", name:"Avalanche", sym:"AVAX", color:0xe84142, born:2020, activity:0.5, orbit:48.6, speed:0.18,
+    info:"A subnet world — chains spun off chains, each with its own rules, all settling back to the primary network." },
+  { id:"xrp", name:"XRP Ledger", sym:"XRP", color:0xff5a3c, born:2012, activity:0.5, orbit:51.9, speed:0.13,
+    info:"The Mars of the system — red, fast, payments-native. Issuance works by trustline: no contract needed, fractions of a cent in fees. RUSTY mints here with cold/hot wallet issuance and a blackhole option.",
+    zones:[["Payments Corridor",0,-0.5],["Trustline Plains",-0.5,0.35],["Issuer Shoals",0.55,0.45]] },
+  { id:"litecoin", name:"Litecoin", sym:"LTC", color:0x345d9d, born:2011, activity:0.45, orbit:55.2, speed:0.16,
+    info:"Litecoin — the standalone LTC world. It also rides as a moon of Bitcoin, where it was born from Bitcoin's code; this planet is the same chain mapped on its own, with the same tower, wallet-building and line system as every other world. No live LTC token feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Silver Flats",-0.4,-0.3],["Scrypt Highlands",0.45,-0.45],["The Four-Minute Fields",0.05,0.55]] },
+  { id:"near", name:"NEAR Protocol", sym:"NEAR", color:0x00ec97, born:2020, activity:0.45, orbit:58.5, speed:0.19, info:"Model planet — NEAR Protocol. Surface is a stylized model, not live chain data." },
+  { id:"unichain", name:"Unichain", sym:"UNI", color:0xff007a, born:2024, activity:0.45, orbit:61.8, speed:0.26, info:"Model planet — Unichain, a Uniswap L2. Surface is a stylized model, not live chain data." },
+  { id:"zksync", name:"zkSync Era", sym:"ZK", color:0x8c8dfc, born:2023, activity:0.45, orbit:65.1, speed:0.2, info:"Model planet — zkSync Era, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"cardano", name:"Cardano", sym:"ADA", color:0x3468d1, born:2017, activity:0.4, orbit:68.4, speed:0.12,
+    info:"The research-first world: peer-reviewed, deliberately slow-moving, with terrain that changes by era rather than by hype cycle." },
+  { id:"hedera", name:"Hedera", sym:"HBAR", color:0x0ac6a5, born:2019, activity:0.4, orbit:71.7, speed:0.17, info:"Model planet — Hedera. Surface is a stylized model, not live chain data." },
+  { id:"linea", name:"Linea", sym:"LINEA", color:0x61dfff, born:2023, activity:0.4, orbit:75, speed:0.21, info:"Model planet — Linea, an Ethereum rollup. Surface is a stylized model, not live chain data." },
+  { id:"mantle", name:"Mantle", sym:"MNT", color:0x000000, born:2023, activity:0.4, orbit:78.3, speed:0.22, info:"Model planet — Mantle, an Ethereum L2. Surface is a stylized model, not live chain data." },
+  { id:"monero", name:"Monero", sym:"XMR", color:0xff6600, born:2014, activity:0.4, orbit:81.6, speed:0.14, info:"Model planet — Monero, a privacy chain. Surface is a stylized model, not live chain data." },
+  { id:"starknet", name:"Starknet", sym:"STRK", color:0x0c0c4f, born:2021, activity:0.4, orbit:84.9, speed:0.18, info:"Model planet — Starknet, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"stellar", name:"Stellar", sym:"XLM", color:0x08b5e5, born:2014, activity:0.4, orbit:88.2, speed:0.18,
+    info:"Stellar — a payments and anchors world: assets move by trustline, and anchors bridge the ledger to banks and stablecoins. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live XLM feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Anchor Harbours",-0.4,-0.3],["Trustline Terraces",0.45,-0.4],["Payments Corridor",0.05,0.55]] },
+  { id:"algorand", name:"Algorand", sym:"ALGO", color:0x000000, born:2019, activity:0.35, orbit:91.5, speed:0.16, info:"Model planet — Algorand. Surface is a stylized model, not live chain data." },
+  { id:"berachain", name:"Berachain", sym:"BERA", color:0x6b3f1d, born:2024, activity:0.35, orbit:94.8, speed:0.25, info:"Model planet — Berachain. Surface is a stylized model, not live chain data." },
+  { id:"blast", name:"Blast", sym:"BLAST", color:0xfcfc03, born:2024, activity:0.35, orbit:98.1, speed:0.23, info:"Model planet — Blast, an Ethereum L2. Surface is a stylized model, not live chain data." },
+  { id:"cosmos", name:"Cosmos", sym:"ATOM", color:0x6f7390, born:2019, activity:0.35, orbit:101.4, speed:0.15,
+    info:"The internet-of-blockchains hub — sovereign chains linked by IBC ferries rather than bridges." },
+  { id:"scroll", name:"Scroll", sym:"SCR", color:0xffeeda, born:2023, activity:0.35, orbit:104.7, speed:0.2, info:"Model planet — Scroll, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"sei", name:"Sei", sym:"SEI", color:0xd84a6b, born:2023, activity:0.35, orbit:108, speed:0.3,
+    info:"A trading-optimized EVM world on the outer orbit of the HALEX catalog — covered by the same ERC-20 adapter as the rest of the EVM family." },
+  { id:"tezos", name:"Tezos", sym:"XTZ", color:0x2c7df7, born:2018, activity:0.35, orbit:111.3, speed:0.15, info:"Model planet — Tezos. Surface is a stylized model, not live chain data." },
+  { id:"ink", name:"Ink", sym:"INK", color:0x7132f5, born:2024, activity:0.3, orbit:114.6, speed:0.26,
+    info:"Kraken's Ethereum L2 — one of the youngest worlds in the system, still mostly unmapped coastline." },
+  { id:"nano", name:"Nano", sym:"NANO", color:0x4a90e2, born:2015, activity:0.3, orbit:117.9, speed:0.2,
+    info:"Nano — a feeless, block-lattice world: each account carries its own chain, and transfers settle without miners or fees. Mapped the same way as every other world: token towers, square wallet buildings, funding lines and red dump lines. No live NANO feed runs behind this world in the sandbox: its surface is a stylized research map, and any unavailable data is labelled in development.",
+    zones:[["Lattice Flats",-0.4,-0.3],["Representative Ridge",0.45,-0.4],["Zero-Fee Plains",0.05,0.55]] },
+  { id:"polkadot", name:"Polkadot", sym:"DOT", color:0xe6007a, born:2020, activity:0.3, orbit:121.2, speed:0.14,
+    info:"A relay world: parachains slot into the parent and share its security umbrella." }
+
 ];
 CHAINS_3D.forEach(function(c){
   if(!c.size) c.size = Math.round((0.45 + (2026 - c.born) * 0.03 + c.activity * 1.15) * 100) / 100;
   if(!c.zones) c.zones = [["Core Settlements",-0.4,-0.25],["DeFi Highlands",0.45,-0.4],["The Outer Flats",0.05,0.55]];
   c.moons = c.moons || [];
 });
-/* ---------------- Chaintarium upgrade 2026-10-31 (staging) ----------------
-   TOP-40 + PIVX: CHAINS_3D above now holds 41 planets (24 original + 17
-   added: Optimism, zkSync Era, Starknet, Aptos, NEAR, Hedera, Algorand,
-   Tezos, Monero, Unichain, Hyperliquid, Linea, Scroll, Blast, Mantle,
-   Berachain, PIVX). Names are listed here and in #chain-top40-list.
-   DYING SYSTEM: DYING_CHAINS_3D below is a SECOND solar system, not new
-   chains — dying-system renderings of lesser-used / dead / R&D chains.
-   A dying entry with a mainId also exists as a main planet; the dying
-   rendering is the same chain shown fading toward the blackhole. */
+/* ---------------- Chaintarium systems, organized 2026-11-04 ----------------
+   TWO SYSTEMS, ranked by the activity index in the chain data (the
+   popularity proxy; no live popularity feed is wired). Names are
+   listed here and in #chain-top40-list.
+   MAIN SYSTEM: CHAINS_3D above holds 36 worlds (Bitcoin the sun plus
+   35 planets), every one with activity 0.30 or higher. Orbits are
+   re-spaced by activity rank, most active closest in, so every planet
+   visibly rides the sun's ring system inside the polar grid.
+   DYING SYSTEM: DYING_CHAINS_3D below orbits the blackhole sun. The
+   five lowest-activity catalog chains (activity under 0.30:
+   ThunderCore, Cronos, DigiByte, Fantom, PIVX) live ONLY here now,
+   alongside the dead / R&D chains (Ethereum Classic, Plasma,
+   Namecoin, Peercoin, Vertcoin, Feathercoin, Primecoin, Terra
+   Classic). No chain stands in both systems, and none floats
+   outside one. */
 var DYING_CHAINS_3D = [
   { id:"dying-etc", name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, status:"dying chain", mainId:null, note:"Dying-system rendering — Ethereum Classic, the unforked chain, shown fading toward the blackhole. Labelled dying, not a new chain." },
-  { id:"dying-dgb", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, status:"dying chain", mainId:"digibyte", note:"Dying-system rendering of DigiByte (also a main planet). Labelled dying." },
-  { id:"dying-pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, status:"dying chain", mainId:"pivx", note:"Dying-system rendering of PIVX (also a main planet). Labelled dying." },
-  { id:"dying-thunder", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, status:"dying chain", mainId:"thundercore", note:"Dying-system rendering of ThunderCore (also a main planet). Labelled dying." },
-  { id:"dying-nano", name:"Nano", sym:"NANO", color:0x4a90e2, born:2015, status:"dying chain", mainId:"nano", note:"Dying-system rendering of Nano (also a main planet). Labelled dying." },
+  { id:"dying-dgb", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, status:"dying chain", mainId:null, note:"Dying-system rendering of DigiByte — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
+  { id:"dying-pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, status:"dying chain", mainId:null, note:"Dying-system rendering of PIVX — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
+  { id:"dying-thunder", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, status:"dying chain", mainId:null, note:"Dying-system rendering of ThunderCore — the lowest-activity chain in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
   { id:"dying-plasma", name:"Plasma", sym:"PLASMA", color:0x7a5cff, born:2019, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Plasma, a scaling R&D design, labelled dead / R&D chain." },
   { id:"dying-namecoin", name:"Namecoin", sym:"NMC", color:0x8a8a8a, born:2011, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Namecoin, an early naming R&D chain, labelled dead / R&D." },
   { id:"dying-peercoin", name:"Peercoin", sym:"PPC", color:0x3cb054, born:2012, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Peercoin, an early proof-of-stake R&D chain, labelled dead / R&D." },
   { id:"dying-vertcoin", name:"Vertcoin", sym:"VTC", color:0x1b3448, born:2014, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Vertcoin, labelled dead / R&D." },
   { id:"dying-feathercoin", name:"Feathercoin", sym:"FTC", color:0x2c7df7, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Feathercoin, labelled dead / R&D." },
   { id:"dying-primecoin", name:"Primecoin", sym:"XPM", color:0xc0c0c0, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Primecoin, a prime-number proof-of-work R&D chain, labelled dead / R&D." },
-  { id:"dying-terraclassic", name:"Terra Classic", sym:"LUNC", color:0x5496ff, born:2018, status:"dead chain", mainId:null, note:"Dying-system rendering — Terra Classic, labelled dead chain." }
+  { id:"dying-terraclassic", name:"Terra Classic", sym:"LUNC", color:0x5496ff, born:2018, status:"dead chain", mainId:null, note:"Dying-system rendering — Terra Classic, labelled dead chain." },
+  { id:"dying-fantom", name:"Fantom", sym:"FTM", color:0x1969ff, born:2019, status:"dying chain", mainId:null, note:"Dying-system rendering of Fantom — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
+  { id:"dying-cronos", name:"Cronos", sym:"CRO", color:0x2e4d8f, born:2021, status:"dying chain", mainId:null, note:"Dying-system rendering of Cronos — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." }
+
 ];
 /* Micro-structure sizing — rods that stick up as MODULAR structures, not
    just scaled boxes. Input modelValue is a MODEL / SNAPSHOT value in
@@ -6175,7 +6214,15 @@ function chaintariumLiveFeedAvailable(){
   try { return !!(window.HALEX_CHAIN_FEED && typeof window.HALEX_CHAIN_FEED.latestTransfers === "function"); } catch(e){ return false; }
 }
 function chaintariumModelTransfers(){
-  var pairs = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-nano"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
+  /* MODEL transfer pairs stay inside the system(s) on screen: a main
+     view never reports transfers to dying worlds, a dying view never
+     reports main worlds, and cross-system pairs appear only in the
+     Both view (fix pass 2026-11-04, Jeffrey's phone review). */
+  var view = (typeof ch !== "undefined" && ch.systemView) || "both";
+  var mainPairs = [["ethereum","base"],["solana","base"],["ethereum","arbitrum"],["bsc","tron"],["solana","sui"],["base","polygon"]];
+  var dyingPairs = [["dying-etc","dying-terraclassic"],["dying-dgb","dying-pivx"],["dying-thunder","dying-fantom"],["dying-namecoin","dying-peercoin"],["dying-vertcoin","dying-feathercoin"],["dying-plasma","dying-primecoin"]];
+  var crossPairs = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-fantom"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
+  var pairs = view === "main" ? mainPairs : (view === "dying" ? dyingPairs : crossPairs.concat(mainPairs.slice(0, 3)));
   var tick = chaintariumLive.modelTick, out = [];
   for(var i = 0; i < 3; i++){
     var pr = pairs[(tick + i) % pairs.length];
@@ -6196,7 +6243,7 @@ function chaintariumActivityTick(){
   chaintariumLive.lastWindow = transfers;
   chaintariumLive.modelTick++;
   chaintariumLive.lastTickAt = Date.now();
-  var label = (chaintariumLive.feedAvailable ? "LIVE feed" : "MODEL tick — no live feed wired") + " · tick " + chaintariumLive.modelTick + " · " + transfers.length + " cross-system transfer(s) in the last 15 s: " +
+  var label = (chaintariumLive.feedAvailable ? "LIVE feed" : "MODEL tick — no live feed wired") + " · tick " + chaintariumLive.modelTick + " · " + transfers.length + " transfer(s) in the last 15 s: " +
     (transfers.length ? transfers.map(function(x){ return x.from + " → " + x.to; }).join("; ") : "none in window");
   var a = document.getElementById("chain-live-status"); if(a) a.textContent = label;
   var b = document.getElementById("chain-activity-tick"); if(b) b.textContent = label;
@@ -6261,7 +6308,17 @@ function startChaintarium(){
        non-passive preventDefault covers WebViews that still hand a
        downward drag to the page scroller and reload the page. */
     var stEl = $("#chain-stage");
-    if(stEl) stEl.addEventListener("touchmove", function(e){ e.preventDefault(); }, { passive:false });
+    if(stEl) stEl.addEventListener("touchmove", function(e){
+      /* Fix pass 2026-11-04: touches that start inside a scrollable
+         overlay (the tools drawer, the live-feed list, the legend
+         sheet, suggestion lists, cards) belong to that overlay — the
+         old blanket preventDefault killed the drawer's scroll, which
+         is why the toggle list would not move on a phone. Only canvas
+         gestures are claimed here. */
+      var t = e.target;
+      if(t && t.closest && t.closest(".chain-toolbar, .sf-list, #hm-cs-legend, .chain-suggest, .surface-card, #chain-track")) return;
+      e.preventDefault();
+    }, { passive:false });
   }
   if(ch.started) return;
   var canvas = $("#chain-canvas"), stage = $("#chain-stage"), labelsBox = $("#chain-labels");
@@ -6300,15 +6357,15 @@ function startChaintarium(){
   scene.fog = new THREE.FogExp2(0x050b1e, 0.0016); /* new-look night pass: fog matched to the night background */
   /* new-look night pass: a dark ground plane under the system, drawn
      as a subtle polar grid — the orbits already lie in this plane */
-  var sysGrid = new THREE.PolarGridHelper(84, 16, 10, 64, 0x2a4a7f, 0x16294d);
+  var sysGrid = new THREE.PolarGridHelper(126, 16, 10, 64, 0x2a4a7f, 0x16294d);
   sysGrid.position.y = -3.2;
   sysGrid.material.transparent = true; sysGrid.material.opacity = 0.32; sysGrid.material.depthWrite = false;
   scene.add(sysGrid);
-  var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
+  var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 900); /* far plane widened (fix pass 2026-11-04): free pan and zoom-out can carry the eye far from the origin */
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
   /* fit distance: how far the camera must sit for the whole system to
-     fit — outermost orbit (76) plus a world radius, over the camera's
+     fit — outermost orbit (121) plus a world radius, over the camera's
      55° field, worst case over every drag orientation and aspect. The
      old fixed cap (115) clipped the outer worlds on phones; pinch and
      wheel now stop at this computed distance instead, so pinching all
@@ -6411,7 +6468,7 @@ function startChaintarium(){
     c._obj = mesh;
     var glow = addGlow(mesh, c.color, c.size * (c.orbit===0 ? 5.2 : 3.6), c.orbit===0 ? 0.34 : 0.2);
     if(c.orbit===0) sunGlow = glow;
-    dressCity(mesh, c, c.size, 60 + c.size * 60 + c.activity * 150);
+    dressCity(mesh, c, c.size, 90 + c.size * 75 + c.activity * 200); /* denser circuit cities (fix pass 2026-11-04) */
     if(c.orbit > 0){
       var ringGeo = new THREE.RingGeometry(c.orbit-0.035, c.orbit+0.035, 128);
       var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:c.color, side:THREE.DoubleSide, transparent:true, opacity:0.2 }));
@@ -6447,13 +6504,13 @@ function startChaintarium(){
   }
 
   /* the asteroid belt — a slow river of rock and dust riding the gap
-     between Avalanche and Arbitrum, where no planet's orbit runs */
+     in a gap in the re-spaced orbit ladder, where no planet's orbit runs */
   var belt = null;
   (function(){
     var bn = 1100, bp = new Float32Array(bn * 3), bc2 = new Float32Array(bn * 3);
     var dust = new THREE.Color(0x9a8a70), glint = new THREE.Color(0xffd98a), tc2 = new THREE.Color();
     for(var bi = 0; bi < bn; bi++){
-      var ba = Math.random() * Math.PI * 2, br = 35.3 + Math.random() * 1.5;
+      var ba = Math.random() * Math.PI * 2, br = 36.6 + Math.random() * 0.8;
       bp[bi * 3] = Math.cos(ba) * br; bp[bi * 3 + 1] = (Math.random() - 0.5) * 0.55; bp[bi * 3 + 2] = Math.sin(ba) * br;
       tc2.copy(Math.random() > 0.86 ? glint : dust).multiplyScalar(0.4 + Math.random() * 0.6);
       bc2[bi * 3] = tc2.r; bc2[bi * 3 + 1] = tc2.g; bc2[bi * 3 + 2] = tc2.b;
@@ -6553,7 +6610,7 @@ function startChaintarium(){
      live chain data. Cross-system arcs use the same live-position
      redraw as main routes; their pulses are MODEL until a live feed
      is wired (see chaintariumLive), and their labels say MODEL. */
-  var DYING_CENTER = new THREE.Vector3(62, -48, -98);
+  var DYING_CENTER = new THREE.Vector3(52, -30, -72);
   var dyingGroup = new THREE.Group(); dyingGroup.position.copy(DYING_CENTER); world.add(dyingGroup);
   var blackhole = new THREE.Mesh(new THREE.SphereGeometry(3.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
   dyingGroup.add(blackhole);
@@ -6581,7 +6638,7 @@ function startChaintarium(){
     var dlabel = document.createElement("div"); dlabel.className = "planet-label dying"; dlabel.textContent = dc.name + " (dying)"; labelsBox.appendChild(dlabel);
     dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: 6 + di * 2.4, speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9 });
   });
-  var CROSS_ROUTES = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-nano"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
+  var CROSS_ROUTES = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-fantom"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
   var crossRoutes = [], crossPulseGeo = null, crossPulsePts = null;
   (function buildCrossRoutes(){
     var tmpGeo = new THREE.BufferGeometry();
@@ -6672,7 +6729,7 @@ function startChaintarium(){
     '<button class="hud-btn" id="hud-sys-expand" aria-expanded="false" aria-label="Expand system info">▾</button>' +
     '<button class="hud-btn" id="hud-sys-close" aria-label="Close system card">✕</button></div>' +
     '<div class="hud-body"><span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
-    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface.</span></div>';
+    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface. Drag to orbit, two-finger drag to pan anywhere, pinch to zoom; double-tap recentres.</span></div>';
   stage.appendChild(hudSys);
   var hudExp = hudSys.querySelector("#hud-sys-expand"), hudX = hudSys.querySelector("#hud-sys-close");
   if(hudExp) hudExp.addEventListener("click", function(){
@@ -6702,13 +6759,51 @@ function startChaintarium(){
   resize();
   window.addEventListener("resize", resize);
 
-  /* controls: drag rotate, wheel + pinch zoom */
+  /* controls: drag rotate, wheel + pinch zoom, and (fix pass
+     2026-11-04) free pan: two-finger drag, right-drag or Shift-drag
+     moves the eye anywhere in the galaxy, double-tap/double-click
+     recentres. Nothing clamps the orbit axes, and nothing pulls the
+     camera back to the middle on its own. */
   var drag = null, pinchD = 0;
+  var pan = new THREE.Vector3(), panT = new THREE.Vector3();
+  var activePtrs = {}, lastMid = null;
+  var _panEul = new THREE.Euler(0, 0, 0, "YXZ"), _panR = new THREE.Vector3(), _panU = new THREE.Vector3();
+  function panBy(dx, dy){
+    var hPx = Math.max(1, canvas.clientHeight || 400);
+    var s = 2 * dist * Math.tan(55 * Math.PI / 360) / hPx;
+    _panEul.set(-tRotX, tRotY, 0);
+    _panR.set(1, 0, 0).applyEuler(_panEul);
+    _panU.set(0, 1, 0).applyEuler(_panEul);
+    panT.addScaledVector(_panR, -dx * s).addScaledVector(_panU, dy * s);
+    if(panT.length() > 230) panT.setLength(230);
+    if(ch.focus) ch.focus = null;
+  }
   var lastTouch = performance.now(), hoverNDC = null, hoverTick = 0;
   function pt(e){ var r = canvas.getBoundingClientRect(); return { x: e.clientX-r.left, y: e.clientY-r.top }; }
-  canvas.addEventListener("pointerdown", function(e){ lastTouch = performance.now(); drag = { p: pt(e), moved: 0 }; canvas.setPointerCapture(e.pointerId); });
+  canvas.addEventListener("pointerdown", function(e){
+    lastTouch = performance.now();
+    activePtrs[e.pointerId] = pt(e);
+    if(Object.keys(activePtrs).length === 2){
+      var ids = Object.keys(activePtrs);
+      lastMid = { x: (activePtrs[ids[0]].x + activePtrs[ids[1]].x) / 2, y: (activePtrs[ids[0]].y + activePtrs[ids[1]].y) / 2 };
+      drag = null;
+      return;
+    }
+    drag = { p: pt(e), moved: 0, pan: (e.button === 2 || e.shiftKey) };
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener("contextmenu", function(e){ e.preventDefault(); });
+  canvas.addEventListener("dblclick", function(){ panT.set(0, 0, 0); });
   canvas.addEventListener("pointermove", function(e){
     lastTouch = performance.now();
+    if(activePtrs[e.pointerId]) activePtrs[e.pointerId] = pt(e);
+    if(Object.keys(activePtrs).length === 2){
+      var ids2 = Object.keys(activePtrs);
+      var mid = { x: (activePtrs[ids2[0]].x + activePtrs[ids2[1]].x) / 2, y: (activePtrs[ids2[0]].y + activePtrs[ids2[1]].y) / 2 };
+      if(lastMid) panBy(mid.x - lastMid.x, mid.y - lastMid.y);
+      lastMid = mid;
+      return;
+    }
     if(!drag){
       var rr = canvas.getBoundingClientRect();
       hoverNDC = { x: ((e.clientX - rr.left) / rr.width) * 2 - 1, y: -((e.clientY - rr.top) / rr.height) * 2 + 1 };
@@ -6717,24 +6812,32 @@ function startChaintarium(){
     var p = pt(e);
     var dx = p.x - drag.p.x, dy = p.y - drag.p.y;
     drag.moved += Math.abs(dx) + Math.abs(dy);
-    tRotY += dx * 0.005; tRotX += dy * 0.004;
+    if(drag.pan) panBy(dx, dy);
+    else { tRotY += dx * 0.005; tRotX += dy * 0.004; }
     /* no clamp, ever: both axes orbit a full 360° and beyond, and the
        camera stays exactly where the drag leaves it */
     drag.p = p;
   });
   canvas.addEventListener("pointerup", function(e){
-    if(drag && drag.moved < 6) pick(e);
+    delete activePtrs[e.pointerId];
+    if(Object.keys(activePtrs).length < 2) lastMid = null;
+    if(drag && drag.moved < 6 && !drag.pan) pick(e);
+    drag = null;
+  });
+  canvas.addEventListener("pointercancel", function(e){
+    delete activePtrs[e.pointerId];
+    if(Object.keys(activePtrs).length < 2) lastMid = null;
     drag = null;
   });
   canvas.addEventListener("wheel", function(e){
     e.preventDefault();
     lastTouch = performance.now();
-    targetDist = Math.max(9, Math.min(chainFitDist(), targetDist + e.deltaY*0.03));
+    targetDist = Math.max(9, Math.min(chainFitDist() * 1.35, targetDist + e.deltaY*0.03));
   }, { passive:false });
   canvas.addEventListener("touchmove", function(e){
     if(e.touches.length === 2){
       var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-      if(pinchD) targetDist = Math.max(9, Math.min(chainFitDist(), targetDist - (d-pinchD)*0.08));
+      if(pinchD) targetDist = Math.max(9, Math.min(chainFitDist() * 1.35, targetDist - (d-pinchD)*0.08));
       pinchD = d;
     }
   }, { passive:true });
@@ -6769,6 +6872,7 @@ function startChaintarium(){
     if(reduceMotionSys){ visitChain(c); return; }
     diving = true;
     ch.focus = c.id;
+    panT.set(0, 0, 0); pan.set(0, 0, 0); /* a dive always starts from the system centre */
     /* gentler tap zoom: the dive stops at distance 20 (was 11) with a
        wider frame per world size, so a planet tap no longer rushes
        the camera into the world's face before the sphere opens */
@@ -6851,9 +6955,10 @@ function startChaintarium(){
     if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys && !ch.isolated && !ch.transfersOff;
     rotY += (tRotY-rotY)*0.07; rotX += (tRotX-rotX)*0.07;
     dist += (targetDist-dist)*0.06;
+    pan.lerp(panT, 0.08);
     var focusObj = null;
     planets.forEach(function(p){ if(p.c.id === ch.focus) focusObj = p.mesh; });
-    if(focusObj && ch.focus !== "bitcoin"){
+    if(focusObj && ch.focus !== "bitcoin" && panT.lengthSq() < 0.04){
       focusObj.getWorldPosition(focusPos);
       world.position.lerp(new THREE.Vector3(-focusPos.x, -focusPos.y*0.4, -focusPos.z), 0.05);
     } else {
@@ -6881,9 +6986,9 @@ function startChaintarium(){
       canvas.style.cursor = ray.intersectObjects(hitMeshes, false).length ? "pointer" : "";
     }
     camEul.set(-rotX, rotY, 0);
-    camera.position.set(0, 0, dist).applyEuler(camEul);
+    camera.position.set(0, 0, dist).applyEuler(camEul).add(pan);
     camera.up.set(0, 1, 0).applyEuler(camEul);
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(pan.x, pan.y, pan.z);
     renderer.render(scene, camera);
     /* labels — moons are named only for the world you're visiting/focused on;
        under a search isolation, only the isolated world's labels stay */
@@ -7653,7 +7758,7 @@ function buildSurfaceScene(c, stage){
   var seed = (hueFor(c.id) % 89) + 3;
   var surfLayerIdxNow = (typeof surfLayerIdx !== "undefined" ? surfLayerIdx : 0);
   var surfLayerDensity = surfLayerIdxNow === 0 ? 1 : (surfLayerIdxNow === 1 ? 0.6 : 0.35);
-  var R = 15, amp = 1.5 + c.activity * 3.6;
+  var R = 15, amp = 1.3 + c.activity * 2.9; /* gentler relief (fix pass 2026-11-04): the old amplitude spiked the rim into a misshapen silhouette; cities sit better on the rounder world */
   var world = new THREE.Group(); scene.add(world);
 
   /* side-toolbar layers: one group per kind of structure, so a
@@ -7748,7 +7853,7 @@ function buildSurfaceScene(c, stage){
     /* Modular micro-structures: rods that stick up as base + shaft +
        stacked modules + cap, sized by chaintariumMicroSize(modelValue)
        where modelValue is a MODEL snapshot value, not a live holding. */
-    for(var mi = 0; mi < 22; mi++){
+    for(var mi = 0; mi < 30; mi++){
       var mv = 5 + sHash2(mi, 901, seed) * 9000;
       var sz = chaintariumMicroSize(mv);
       var u = sHash2(mi, 903, seed), v = sHash2(mi, 905, seed);
@@ -7785,7 +7890,7 @@ function buildSurfaceScene(c, stage){
      calls, which is what keeps it smooth on a phone GPU. */
   var goldMats = [], tealMats = [], litMats = [], hubPts = [], blockMats = [];
   var dummy = new THREE.Object3D(), upAxis = new THREE.Vector3(0, 1, 0), quat = new THREE.Quaternion();
-  var target = Math.round((4300 + c.activity * 5400) * surfLayerDensity), placed = 0;
+  var target = Math.round((5400 + c.activity * 5800) * surfLayerDensity), placed = 0; /* fuller coverage (fix pass 2026-11-04): fewer bare patches between districts */
   for(var k = 0; k < 46000 && placed < target; k++){
     var fy = 1 - (k / 45999) * 2;
     var frad = Math.sqrt(Math.max(0, 1 - fy * fy));
@@ -7794,8 +7899,8 @@ function buildSurfaceScene(c, stage){
     var hh = surfHeight(dx, dy, dz, seed, amp), hh01 = hh / amp;
     if(hh01 < 0.07) continue;
     var city = fbm3(dx * 1.15 + seed, dy * 1.15, dz * 1.15 - seed, seed + 31);
-    if(city < 0.35 + hh01 * 0.08) continue;
-    if(sHash2(k, 77, seed) > 0.5 + hh01 * 0.72) continue;
+    if(city < 0.30 + hh01 * 0.06) continue;
+    if(sHash2(k, 77, seed) > 0.60 + hh01 * 0.62) continue;
     dir.set(dx, dy, dz);
     quat.setFromUnitVectors(upAxis, dir);
     dummy.position.copy(dir).multiplyScalar(R + hh - 0.05);
@@ -7803,7 +7908,11 @@ function buildSurfaceScene(c, stage){
     /* solid, not spindly: shorter and broader than the old needles,
        with a squarer footprint — buildings, not pins */
     var tall = (0.30 + Math.pow(sHash2(k, 91, seed), 1.7) * 2.0) * (0.55 + hh01 * 0.85);
-    var wide = 0.105 + sHash2(k, 55, seed) * 0.13;
+    var wide = 0.10 + sHash2(k, 55, seed) * 0.16;
+    /* landmark spires (fix pass 2026-11-04): a few towers per district
+       rise well clear of the roofline, narrower and taller, so the
+       skyline reads as a built place instead of a uniform field */
+    if(sHash2(k, 93, seed) > 0.93){ tall *= 1.45; wide *= 0.8; }
     dummy.scale.set(wide, tall, wide * (0.7 + sHash2(k, 63, seed) * 0.7));
     dummy.updateMatrix();
     var fam = sHash2(k, 99, seed);
@@ -7832,7 +7941,7 @@ function buildSurfaceScene(c, stage){
        Slabs now land three times as often, turn to varied angles,
        and every fourth cluster gets a raised sub-block, so the block
        structure reads much finer up close. */
-    if(placed % 9 === 0){
+    if(placed % 7 === 0){
       var slab = new THREE.Object3D();
       slab.position.copy(dir).multiplyScalar(R + hh - 0.03);
       slab.quaternion.copy(quat);
@@ -9515,6 +9624,9 @@ function syncChainTools(){
     if(window.chaintariumSetSystem) window.chaintariumSetSystem(ch.systemView === "main" ? "both" : "main");
     syncChainTools();
   });
+  /* the sysbar's setView() calls this hook so the Dead system toggle
+     label stays truthful when the view changes from the sysbar */
+  window.halexmSyncDeadToggle = syncChainTools;
   syncChainTools();
 })();
 
