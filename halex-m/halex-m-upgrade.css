@@ -12,8 +12,19 @@
 .halexm-optlist .btn{font-size:13px}
 .qa-step{margin-top:10px}
 .qa-step label.flabel{display:block; margin:9px 0 4px}
-.qa-check{display:flex; gap:8px; align-items:flex-start; margin:6px 0; font-size:13.5px; line-height:1.45}
-.qa-check input{margin-top:3px}
+/* Checkbox/radio alignment (2026-11-04 fix): the page's global
+   input{width:100%} stretched checkboxes into a floating center
+   column and pushed their labels to the edge. Checkboxes and radios
+   always size to the box itself, immediately left of their label. */
+input[type="checkbox"],input[type="radio"]{width:auto; flex:none; padding:0; margin:0}
+.qa-check{display:flex; gap:9px; align-items:center; margin:7px 0; font-size:13.5px; line-height:1.4}
+.qa-check input{width:17px; height:17px; accent-color:var(--orange)}
+.lab-toggle-top input{width:17px; height:17px; margin:0; accent-color:var(--orange)}
+
+/* Collapsed-by-default explainer sections in the Skills Lab tab
+   (2026-11-04 condense): one-line summary, content on tap. */
+details.lab-collapse>summary{cursor:pointer; font-size:13.5px; font-weight:600; color:var(--text); padding:2px 0; list-style-position:outside}
+details.lab-collapse>summary .note{font-weight:400}
 .qa-nav{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
 .qa-note{margin-top:9px}
 .tcard{border:1px solid var(--gold); border-radius:12px; padding:14px; margin-top:12px; background:var(--panel2)}

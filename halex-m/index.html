@@ -1154,6 +1154,24 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px color-mix(in srgb, 
 /* APEX² report card on the token sheet */
 .report-card{margin-top:14px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:13px}
 .report-card h4{margin:0; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold)}
+/* report rows (2026-11-04 fix): the header is one full-width line — status
+   icon, then the check name taking the space it needs, then the evidence
+   value right-aligned and allowed to wrap inside its own share. The
+   explanation is a normal full-width paragraph under the header. No
+   narrow label columns, no nowrap evidence squeezing the name. */
+.rc-row{padding:9px 0; border-bottom:1px solid var(--line)}
+.rc-row:last-child{border-bottom:none}
+.rc-head{display:flex; align-items:flex-start; gap:8px}
+.rc-head .ic{flex:none; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-top:1px}
+.rc-head .ic.pass{background:color-mix(in srgb, var(--green) 18%, transparent); color:var(--green)}
+.rc-head .ic.warn{background:color-mix(in srgb, var(--gold) 18%, transparent); color:var(--gold)}
+.rc-head .ic.fail{background:color-mix(in srgb, var(--red) 18%, transparent); color:var(--red)}
+.rc-head .ic.unknown{background:color-mix(in srgb, var(--faint) 16%, transparent); color:var(--muted)}
+.rc-head .ic.ctx{background:color-mix(in srgb, var(--blue) 14%, transparent); color:var(--blue)}
+.rc-head b{flex:1 1 auto; min-width:0; font-size:13.5px; line-height:1.35}
+.rc-head .ev{flex:0 1 auto; max-width:46%; margin-left:auto; text-align:right; font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; color:var(--text); white-space:normal; overflow-wrap:break-word; line-height:1.35}
+.rc-row p{margin:3px 0 0; font-size:12.5px; color:var(--muted); line-height:1.45}
+.rc-row .src{display:block; margin-top:3px; font-size:11px; color:var(--faint)}
 
 /* token charts get more room to breathe */
 #detail-chart{height:228px}
@@ -1960,7 +1978,7 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Q&amp;A trading-strategy builder — with SMT</div>
   <div class="card" id="qa-builder">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Six questions, asked in order, answered with you: chains, strategy type, token contract, size and caps, risk, then paper-test duration and settings. Going back keeps every setting you already set — nothing you chose is thrown away for changing your mind. When you agree, SMT shows the trading card: the full config, the paper-test plan, and the paper-test gate. Proper token knowledge is asked for every skill: a contract address is required, and its metadata is checked by a live read or marked NOT READ.</p>
+    <p class="note" style="margin:0 0 10px; font-size:13px">Six questions: chains, strategy type, token contract, size and caps, risk, then paper-test duration and settings. Going back keeps your settings. A contract address is required — its metadata is checked by a live read or marked NOT READ.</p>
     <div class="halexm-optlist" data-context="skills"></div>
     <div id="qa-body"></div>
     <div class="qa-nav" id="qa-nav"></div>
@@ -1971,9 +1989,10 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">Exactly how Allen builds a trade strategy</div>
   <div class="card" id="lab-allen-method">
-    <p class="note" style="margin:0 0 10px; font-size:13px">Allen's method, plainly, no hype, no promised returns. Eight steps in order. Each step explains itself, and "Use this step" puts that step into your Q&amp;A draft so you can review it in the builder below. Nothing here trades, nothing here promises a result.</p>
-    <div id="lab-method-steps"></div>
+    <details class="lab-collapse"><summary>Allen's 8-step method — tap to open <span class="note">(each step can be sent into the Q&amp;A draft; nothing here trades or promises a result)</span></summary>
+    <div id="lab-method-steps" style="margin-top:10px"></div>
     <p class="note" id="lab-method-note" style="margin-top:10px"></p>
+    </details>
   </div>
 
   <div class="sec-title">Strategy ideas — pick a shape, not a promise</div>
@@ -2023,9 +2042,11 @@ nav.tabbar .rail{touch-action:pan-x}
 
   <div class="sec-title">How the pieces work — read before you deploy</div>
   <div class="card" id="lab-info">
+    <details class="lab-collapse"><summary>How the pieces work — tap to open <span class="note">(the paper-test gate, what paper execution is, what live execution needs)</span></summary>
     <div class="lab-info-panel"><b>The paper-test gate</b><p>A skill is paper-proven only when it measures a win rate of &#8805;65% over &#8805;30 closed paper trades, with a profit factor of &#8805;1.2 — all three, from recorded paper trades. Live capital is not even offered until that gate is proven. A skill below any one of the three stays on paper, however good it feels.</p></div>
     <div class="lab-info-panel"><b>What paper execution is</b><p>Paper execution in this page is a local simulation and record: the run is written to this browser's local storage with its config and start time. No fills are simulated here, no contract is deployed, and no real funds move. Closed trades stay at 0 and the gate stays NOT PROVEN until real paper results are recorded from the desk.</p></div>
     <div class="lab-info-panel"><b>What live execution needs</b><p>Live execution needs two things that are not present in this static page: the paper-test gate proven above, AND a real signed executor. HALEX-M holds no keys, signs nothing, and moves no funds; wallet connect here is read-only. Until a signed executor exists, the live switch stays disabled — that is a safety fact, not a missing button.</p></div>
+    </details>
   </div>
 
   <div class="sec-title">Markup and deployment options</div>
@@ -2256,7 +2277,6 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="card" id="chain-activity-card">
     <b>Live activity — last 15 seconds</b>
     <p id="chain-activity-tick">Waiting for the first tick.</p>
-    <p id="chain-model-line">Transfers shown are a model until a live feed is wired.</p>
   </div>
   <div class="card">
     <b>Ask HALEX-M AI about this cosmos</b>
@@ -2966,11 +2986,12 @@ function updateHoseBar(){
 function renderHomeHose(){
   var box = $("#home-hose"); if(!box) return;
   /* newest pump.fun launches lead the home stream, then the trending rail —
-     deduped, six rows in all. */
+     deduped, four rows in all (condensed home preview, 2026-11-04); the full
+     stream lives behind the "Open the full firehose" button. */
   var merged = [], mSeen = {};
   pumpTokens.slice(0, 3).concat(feedTokens).forEach(function(t){
     var k = feedKey(t);
-    if(mSeen[k] || merged.length >= 6) return;
+    if(mSeen[k] || merged.length >= 4) return;
     mSeen[k] = 1; merged.push(t);
   });
   if(!merged.length){
@@ -3304,14 +3325,59 @@ var labSeries = null, labRange = "24h", labHover = -1, labPairRef = null;
 function ohlcvAgg(range){
   return { "1h": ["minute",15,16], "24h": ["hour",1,24], "7d": ["hour",4,42], "30d": ["day",1,30] }[range] || ["hour",1,24];
 }
-function fetchOhlcv(network, pairAddress, range){
+function fetchOhlcv(network, pairAddress, range, tokenAddress){
   var agg = ohlcvAgg(range);
-  return fetch("https://api.geckoterminal.com/api/v2/networks/"+gtSlug(network)+"/pools/"+pairAddress+"/ohlcv/"+agg[0]+"?aggregate="+agg[1]+"&limit="+agg[2])
-    .then(function(r){ return r.json(); })
-    .then(function(j){
-      var list = (j.data && j.data.attributes && j.data.attributes.ohlcv_list) || [];
-      return list.map(function(row){ return { t: row[0], o: row[1], h: row[2], l: row[3], v: row[4], vol: row[5] }; }).reverse();
-    });
+  var slug = gtSlug(network);
+  function fromPool(pool){
+    return fetchJsonResilient("https://api.geckoterminal.com/api/v2/networks/"+slug+"/pools/"+pool+"/ohlcv/"+agg[0]+"?aggregate="+agg[1]+"&limit="+agg[2], { attempts: 3, timeoutMs: 12000 })
+      .then(function(j){
+        var list = (j.data && j.data.attributes && j.data.attributes.ohlcv_list) || [];
+        return list.map(function(row){ return { t: row[0], o: row[1], h: row[2], l: row[3], v: row[4], vol: row[5] }; }).reverse();
+      });
+  }
+  return fromPool(pairAddress).then(function(series){
+    if(series.length >= 2 || !tokenAddress) return series;
+    /* The pair address a caller holds is not always a pool
+       GeckoTerminal tracks (new DEX versions, migrated pools, a
+       DexScreener pair GT indexes under a different pool). Fall back
+       to the token's own top pool on GeckoTerminal and read the
+       candles from there — real data or an honest empty, never a
+       guess. */
+    return fetchJsonResilient("https://api.geckoterminal.com/api/v2/networks/"+slug+"/tokens/"+tokenAddress+"/pools?page=1", { attempts: 2, timeoutMs: 12000 })
+      .then(function(j){
+        var pools = (j && j.data) || [];
+        var top = pools[0] && pools[0].attributes && pools[0].attributes.address;
+        if(!top || String(top).toLowerCase() === String(pairAddress).toLowerCase()) return series;
+        return fromPool(top);
+      })
+      .catch(function(){ return series; });
+  });
+}
+/* One compact line inside the chart frame when a range has no candles —
+   never a giant empty box, never invented data. */
+function paintChartEmpty(c, msg){
+  if(!c) return;
+  c.style.height = "46px";
+  var dpr = window.devicePixelRatio || 1;
+  var W = c.clientWidth, H = 46;
+  if(!W) return;
+  c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+  var ctx = c.getContext("2d"); if(!ctx) return;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, W, H);
+  ctx.font = "12px 'IBM Plex Sans', sans-serif";
+  ctx.fillStyle = "rgba(170,182,205,.92)";
+  ctx.textAlign = "center"; ctx.textBaseline = "middle";
+  ctx.fillText(msg, W / 2, H / 2);
+  ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+}
+function resetLW(){
+  if(lwState && lwState.div){
+    try{ lwState.chart.remove(); }catch(e){}
+    if(lwState.div.parentNode) lwState.div.parentNode.removeChild(lwState.div);
+  }
+  lwState = null;
+  var cv = $("#detail-chart"); if(cv) cv.style.display = "";
 }
 function fmtClock(ts, range){
   var d = new Date(ts*1000);
@@ -3657,19 +3723,22 @@ function initLabReplay(){
 
 function loadChart(network, pairAddress){
   portalSeries = null; chartHover = -1;
+  resetLW();
   var note = $("#chart-note");
   if(note){ note.style.display = ""; note.textContent = "Loading live price history…"; }
-  fetchOhlcv(network, pairAddress, portalRange)
+  var cv0 = $("#detail-chart"); if(cv0) cv0.style.height = "";
+  fetchOhlcv(network, pairAddress, portalRange, (sheetToken && sheetToken.pairAddress === pairAddress) ? sheetToken.address : null)
     .then(function(series){
       portalSeries = series;
-      var n = $("#chart-note");
-      if(portalSeries.length >= 2){ if(n) n.style.display = "none"; drawChart(); }
-      else if(n){ n.textContent = "No price history returned for this pair and range — the chart is left empty rather than drawn from invented data."; }
+      var n = $("#chart-note"), cv = $("#detail-chart");
+      if(portalSeries.length >= 2){ if(n) n.style.display = "none"; if(cv) cv.style.height = ""; drawChart(); }
+      else { if(n) n.style.display = "none"; paintChartEmpty(cv, "No price history returned for this range — nothing invented."); }
     })
     .catch(function(){
       portalSeries = null;
       var n = $("#chart-note");
-      if(n) n.textContent = "Price history unavailable from GeckoTerminal right now — the rest of this token's data below is live.";
+      if(n) n.style.display = "none";
+      paintChartEmpty($("#detail-chart"), "Price history unavailable from GeckoTerminal right now.");
     });
 }
 /* ---------------- Research Lab chart ---------------- */
@@ -3684,21 +3753,23 @@ function loadLabChart(){
   if(!labPairRef) return;
   var note = $("#lab-chart-note");
   if(note){ note.style.display = ""; note.textContent = "Loading live price history…"; }
-  fetchOhlcv(labPairRef.network, labPairRef.pair, labRange)
+  var cv0 = $("#lab-chart"); if(cv0) cv0.style.height = "";
+  fetchOhlcv(labPairRef.network, labPairRef.pair, labRange, labPairRef.token || null)
     .then(function(series){
       labSeries = series;
-      var n = $("#lab-chart-note");
-      if(labSeries.length >= 2){ if(n) n.style.display = "none"; drawLabChart(); }
-      else if(n){ n.textContent = "No price history returned for this pair and range — the chart is left empty rather than drawn from invented data."; }
+      var n = $("#lab-chart-note"), cv = $("#lab-chart");
+      if(labSeries.length >= 2){ if(n) n.style.display = "none"; if(cv) cv.style.height = ""; drawLabChart(); }
+      else { if(n) n.style.display = "none"; paintChartEmpty(cv, "No price history returned for this range — nothing invented."); }
     })
     .catch(function(){
       labSeries = null;
       var n = $("#lab-chart-note");
-      if(n) n.textContent = "Price history unavailable from GeckoTerminal right now — the checks below are live.";
+      if(n) n.style.display = "none";
+      paintChartEmpty($("#lab-chart"), "Price history unavailable from GeckoTerminal right now.");
     });
 }
 function initLabChart(main){
-  labPairRef = { network: main.chainId, pair: main.pairAddress };
+  labPairRef = { network: main.chainId, pair: main.pairAddress, token: main.baseToken ? main.baseToken.address : null };
   labRange = "24h"; labSeries = null; labHover = -1;
   $$("#lab-range-row button").forEach(function(b){
     b.addEventListener("click", function(){
@@ -3772,14 +3843,24 @@ function renderSheet(){
       '<div class="note" style="font-size:12px">'+esc(t.chainId)+" · "+esc(t.dex||"")+" · "+ageStr(t.createdAt)+"</div></div>" +
       '<button class="btn ghost" onclick="closeSheet()" aria-label="Close" style="padding:6px 10px">✕</button></div>' +
     '<div style="display:flex; align-items:baseline; gap:10px; margin-top:12px"><span class="mono" style="font-size:24px; font-weight:600">'+fmtPrice(t.price)+'</span><span class="mono '+chgCls+'">'+fmtPct(t.change24)+" · 24h</span></div>" +
+    (links ? '<p style="font-size:13px; margin:10px 0 0">'+links+"</p>" : '<p class="note" style="margin-top:10px">No verifiable links on this token. Per the house rule, that means guilty until proven innocent — run it through the Research Lab.</p>') +
+    '<div class="portal" style="margin-top:12px"><div class="seg">' +
+      '<button id="seg-buy" class="'+(portalSide==="buy"?"on-buy":"")+'">BUY</button>' +
+      '<button id="seg-sell" class="'+(portalSide==="sell"?"on-sell":"")+'">SELL</button></div>' +
+      '<label class="flabel" for="portal-amt">Amount (USD)</label><input id="portal-amt" type="number" value="25" min="0" step="1" />' +
+      '<div class="amounts"><button data-amt="10">$10</button><button data-amt="25">$25</button><button data-amt="50">$50</button><button data-amt="100">$100</button></div>' +
+      '<p class="note" id="portal-est"></p>' +
+      '<button class="btn block '+(portalSide==="buy"?"buy":"sell")+'" id="portal-go">'+(portalSide==="buy"?"Buy ":"Sell ")+esc(t.symbol)+"</button>" +
+      '<p class="note" style="margin-top:9px">Preview portal — execution is not connected in this build. In production this quote routes through the Trade Portal (all venues quoted, simulated, fail-closed) and signs in your HALEX wallet.</p>' +
+    "</div>" +
     (function(){
       if(!t.gateRes) return "";
       var g = t.gateRes.gate, rk = { fail:0, warn:1, pass:2 };
       var top = t.gateRes.checks.filter(function(c){ return rk[c.st] != null; }).sort(function(a,b){ return rk[a.st]-rk[b.st]; })[0];
       var chipCls = g.key === "pass" ? "ok" : g.key === "watch" ? "warn" : g.key === "quarantine" ? "quar" : "bad";
-      return '<div style="display:flex; gap:9px; align-items:flex-start; margin-top:11px; background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:10px 12px">' +
-        '<span class="chip '+chipCls+'" style="flex:none; margin-top:1px">GATE · '+g.label+" · "+t.gateRes.score+"</span>" +
-        '<span class="note" style="font-size:12.5px">'+(top ? "<b style='color:var(--text)'>"+esc(top.name)+".</b> "+esc(top.d) : "")+' First-pass read from live pair data — the full grouped report is in the Research Lab.</span></div>';
+      return '<div style="margin-top:11px; background:var(--panel); border:1px solid var(--line); border-radius:11px; padding:10px 12px">' +
+        '<span class="chip '+chipCls+'">GATE · '+g.label+" · "+t.gateRes.score+"</span>" +
+        '<p class="note" style="font-size:12.5px; margin:7px 0 0">'+(top ? "<b style='color:var(--text)'>"+esc(top.name)+".</b> "+esc(top.d) : "")+' First-pass read from live pair data — the full grouped report is in the Research Lab.</p></div>';
     })() +
     '<div class="range-row" id="range-row">' +
       ["1h","24h","7d","30d"].map(function(r){ return '<button data-range="'+r+'" class="'+(r===portalRange?"on":"")+'">'+r+"</button>"; }).join("") +
@@ -3820,7 +3901,7 @@ function renderSheet(){
       var barCol = g.gate.key === "pass" ? "var(--green)" : g.gate.key === "watch" ? "var(--gold)" : g.gate.key === "quarantine" ? "var(--ember)" : "var(--red)";
       var rows = top.map(function(c){
         var sym = c.st === "pass" ? "✓" : c.st === "warn" ? "!" : "✕";
-        return '<div class="check" style="padding:7px 0"><div class="ic ' + c.st + '" style="width:19px; height:19px; font-size:10px; font-weight:700">' + sym + '</div><div class="grow"><b style="font-size:12.5px">' + esc(c.name) + '</b><p style="font-size:11.5px">' + esc(c.d) + "</p></div>" + (c.ev ? '<span class="ev">' + esc(c.ev) + "</span>" : "") + "</div>";
+        return '<div class="rc-row"><div class="rc-head"><div class="ic ' + c.st + '" style="width:19px; height:19px; font-size:10px; font-weight:700">' + sym + '</div><b>' + esc(c.name) + "</b>" + (c.ev ? '<span class="ev">' + esc(c.ev) + "</span>" : "") + '</div><p>' + esc(c.d) + "</p></div>";
       }).join("");
       return '<div class="report-card"><div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap"><h4>APEX² Report Card</h4><span class="chip ' + chipCls + '" style="margin-left:auto">' + esc(g.gate.label) + " · " + g.score + '</span></div>' +
         '<div class="scorebar"><i style="width:' + Math.max(0, Math.min(100, g.score)) + "%; background:" + barCol + '"></i></div>' +
@@ -3847,19 +3928,9 @@ function renderSheet(){
       html += '<p class="note" style="font-size:11.5px; margin-top:8px">Part of every token scorecard. Fields this sandbox cannot read are written as not read, never filled in; the live spine dossier computes all seven for real.</p></div>';
       return html;
     })() +
-    (links ? '<p style="font-size:13px; margin:12px 0 0">'+links+"</p>" : '<p class="note" style="margin-top:12px">No verifiable links on this token. Per the house rule, that means guilty until proven innocent — run it through the Research Lab.</p>') +
     '<div style="display:flex; gap:8px; margin-top:14px">' +
       '<button class="btn" id="sheet-watch" style="flex:1">'+(inWatch ? "★ Watching on APEX²" : "☆ Watch → APEX²")+"</button>" +
       '<button class="btn" id="sheet-lab" style="flex:1">Research Lab checks</button>' +
-    "</div>" +
-    '<div class="portal"><div class="seg">' +
-      '<button id="seg-buy" class="'+(portalSide==="buy"?"on-buy":"")+'">BUY</button>' +
-      '<button id="seg-sell" class="'+(portalSide==="sell"?"on-sell":"")+'">SELL</button></div>' +
-      '<label class="flabel" for="portal-amt">Amount (USD)</label><input id="portal-amt" type="number" value="25" min="0" step="1" />' +
-      '<div class="amounts"><button data-amt="10">$10</button><button data-amt="25">$25</button><button data-amt="50">$50</button><button data-amt="100">$100</button></div>' +
-      '<p class="note" id="portal-est"></p>' +
-      '<button class="btn block '+(portalSide==="buy"?"buy":"sell")+'" id="portal-go">'+(portalSide==="buy"?"Buy ":"Sell ")+esc(t.symbol)+"</button>" +
-      '<p class="note" style="margin-top:9px">Preview portal — execution is not connected in this build. In production this quote routes through the Trade Portal (all venues quoted, simulated, fail-closed) and signs in your HALEX wallet.</p>' +
     "</div>";
   $$("#range-row button").forEach(function(b){
     b.addEventListener("click", function(){
@@ -3961,10 +4032,10 @@ function readTimeStr(){
   return "read " + String(n.getHours()).padStart(2,"0") + ":" + String(n.getMinutes()).padStart(2,"0");
 }
 function checkCard(c){
-  return '<div class="check"><div class="ic '+c.st+'">'+CK_ICONS[c.st]+'</div><div class="grow">' +
-    '<div style="display:flex; justify-content:space-between; gap:10px; align-items:baseline"><b>'+esc(c.name)+"</b>" +
+  return '<div class="rc-row"><div class="rc-head"><div class="ic '+c.st+'">'+CK_ICONS[c.st]+"</div>" +
+    "<b>"+esc(c.name)+"</b>" +
     (c.ev ? '<span class="ev">'+esc(c.ev)+"</span>" : "") + "</div>" +
-    "<p>"+esc(c.d)+'</p><span class="src">'+esc(c.src)+"</span></div></div>";
+    "<p>"+esc(c.d)+'</p><span class="src">'+esc(c.src)+"</span></div>";
 }
 var GATE_CONS = {
   pass: "Clears the gate. Under your standing rules the desk may buy without asking per trade — and a PASS position goes under runner watch: held longer while buy/sell flow and liquidity stay healthy, hard exits always armed.",
@@ -4188,11 +4259,19 @@ $("#lab-input").addEventListener("keydown", function(e){ if(e.key === "Enter") r
     return (s === "" || s === "-0") ? "0" : s;
   }
   function fmtTs(sec){ return sec ? new Date(sec * 1000).toISOString().replace("T", " ").slice(0, 19) + " UTC" : "time unknown"; }
+  var RPC_FALLBACK = "https://solana-rpc.publicnode.com";
   function rpc(method, params){
-    return fetch(RPC, { method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
-      .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
-      .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+    function call(url){
+      return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
+        .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
+        .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+    }
+    /* the public mainnet RPC throttles some networks/IPs hard (observed
+       403 from datacenter egress while its CORS preflight passes) — one
+       retry against a second keyless public endpoint before the trace
+       honestly reports itself unread. */
+    return call(RPC).catch(function(){ return call(RPC_FALLBACK); });
   }
   function txEffects(tx, wallet){
     if(!tx || !tx.meta || !tx.transaction || !tx.transaction.message) return null;
@@ -10661,11 +10740,19 @@ initGate();
       if(br.endReason === "cap") return "trail stopped at the 25-hop cap — funds may move further";
       return "still in wallet";
     }
+    var RPC_FALLBACK = "https://solana-rpc.publicnode.com";
     function rpc(method, params){
-      return fetch(RPC, { method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
-        .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
-        .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+      function call(url){
+        return fetch(url, { method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: method, params: params }) })
+          .then(function(r){ if(!r.ok) throw new Error("rpc " + r.status); return r.json(); })
+          .then(function(j){ if(j.error) throw new Error((j.error && j.error.message) || "rpc error"); return j.result; });
+      }
+      /* the public mainnet RPC throttles some networks/IPs hard (observed
+         403 from datacenter egress while its CORS preflight passes) — one
+         retry against a second keyless public endpoint before the trace
+         honestly reports itself unread. */
+      return call(RPC).catch(function(){ return call(RPC_FALLBACK); });
     }
     function effectsFromTx(tx, wallet){
       var sends = [], receives = [];

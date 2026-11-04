@@ -106,3 +106,11 @@
   .hm-sl-card { animation: none; }
   .hm-sl-btn, .hm-sl-toggle { transition: none; }
 }
+
+/* Condensed cards (2026-11-04): stats on one line, gate on one line,
+   the entry rule visible, everything else behind one expand. */
+.hm-sl-stats { font-size: 15.5px; font-weight: 600; margin: 8px 0 2px; }
+.hm-sl-gate { font-size: 13.5px; color: var(--muted, #9aa3b2); margin: 2px 0 6px; }
+.hm-sl-entry { font-size: 15px; margin: 6px 0 2px; }
+.hm-sl-more { margin-top: 8px; border-top: 1px solid var(--line, #2a2f3a); padding-top: 8px; }
+.hm-sl-more > summary { cursor: pointer; font-size: 15px; font-weight: 600; padding: 4px 0 2px; }

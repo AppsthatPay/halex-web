@@ -360,7 +360,7 @@
     var d = DRAFT, step = d.qaStep, html = '';
     function checked(v, arr) { return arr.indexOf(v) !== -1 ? ' checked' : ''; }
     if (step === 0) {
-      html += '<p class="note">Step 1 of 6 — which chain or chains does this skill watch? Paper labels only; a live read for a token on these chains runs through the DexScreener public pairs API.</p>';
+      html += '<p class="note">Step 1 of 6 — which chain or chains does this skill watch?</p>';
       QA_CHAINS.forEach(function (c) {
         html += '<label class="qa-check"><input type="checkbox" data-qa-chain="' + c + '"' + checked(c, d.chains) + '> ' + c + '</label>';
       });
@@ -371,12 +371,12 @@
       });
       html += '<label class="flabel" for="qa-custom">Custom description (only needed for Custom)</label><textarea id="qa-custom" rows="2" placeholder="Describe the entry idea in plain words…">' + escHtml(d.strategyCustom) + '</textarea>';
     } else if (step === 2) {
-      html += '<p class="note">Step 3 of 6 — the token or pair. A contract address is required: no ticker-only skill, because many tokens share one ticker.</p>';
+      html += '<p class="note">Step 3 of 6 — the token. A contract address is required (tickers are shared by many tokens).</p>';
       html += '<label class="flabel" for="qa-addr">Contract address (EVM 0x + 40 hex, or Solana mint)</label><input id="qa-addr" type="text" value="' + escHtml(d.token.address) + '" placeholder="0x… or a Solana mint address" autocomplete="off" spellcheck="false" style="width:100%">';
       html += '<div style="display:flex; gap:8px; margin-top:9px; flex-wrap:wrap"><button class="btn" id="qa-meta" type="button">Check metadata (live read)</button></div>';
       html += '<p class="note" id="qa-meta-line">Metadata: ' + escHtml(d.token.meta) + (d.token.name ? ' · ' + escHtml(d.token.name) + ' ($' + escHtml(d.token.symbol) + ')' : '') + (d.token.metaNote ? ' — ' + escHtml(d.token.metaNote) : '') + '</p>';
     } else if (step === 3) {
-      html += '<p class="note">Step 4 of 6 — size and caps, in the paper run’s own units. These are paper-test settings, not an order.</p>';
+      html += '<p class="note">Step 4 of 6 — size and caps for the paper run (settings, not an order).</p>';
       html += '<label class="flabel" for="qa-size">Paper size per trade</label><input id="qa-size" type="number" min="0" step="any" value="' + escHtml(d.size) + '">';
       html += '<label class="flabel" for="qa-maxper">Max per trade</label><input id="qa-maxper" type="number" min="0" step="any" value="' + escHtml(d.maxPerTrade) + '">';
       html += '<label class="flabel" for="qa-maxcon">Max concurrent paper positions</label><input id="qa-maxcon" type="number" min="0" step="1" value="' + escHtml(d.maxConcurrent) + '">';
@@ -387,9 +387,9 @@
       html += '<label class="flabel" for="qa-slip">Slippage tolerance (%)</label><input id="qa-slip" type="number" min="0" max="100" step="any" value="' + escHtml(d.slippagePct) + '">';
       html += '<label class="flabel" for="qa-gas">Gas reserve (amount + unit, e.g. 0.01 ETH or 0.05 SOL)</label><input id="qa-gas" type="text" value="' + escHtml(d.gasReserve) + '" placeholder="0.01 ETH">';
     } else if (step === 5) {
-      html += '<p class="note">Step 6 of 6 — how long does the paper test run, and which plainly-written settings are on? Going back keeps everything you set.</p>';
+      html += '<p class="note">Step 6 of 6 — paper-test duration, then any optional settings. Going back keeps everything you set.</p>';
       html += '<label class="flabel" for="qa-hours">Paper-test duration (hours)</label><input id="qa-hours" type="number" min="1" step="1" value="' + escHtml(d.paperHours) + '">';
-      html += '<div style="margin-top:10px"><b style="font-size:13.5px">Cascading settings center — toggle each setting on or off</b></div>';
+      html += '<div style="margin-top:10px"><b style="font-size:13.5px">Optional settings</b></div>';
       Object.keys(SETTING_LABELS).forEach(function (k) {
         html += '<label class="qa-check"><input type="checkbox" data-qa-setting="' + k + '"' + (d.settings[k] ? ' checked' : '') + '> ' + escHtml(SETTING_LABELS[k]) + '</label>';
       });

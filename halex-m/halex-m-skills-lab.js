@@ -144,12 +144,21 @@
     if (!w.connected) {
       return '<label class="hm-sl-toggle hm-sl-toggle-live">' +
         '<input type="checkbox" disabled data-hm-sl-live="' + esc(skillKey) + '" aria-label="Live mode for ' + esc(skillKey) + ' (disabled: no wallet connected)"> ' +
-        '<span><b>Live mode — DISABLED</b><span class="hm-sl-toggle-note">No visitor wallet connected, so paper mode is the default. Connect your own wallet in the wallet panel below; HALEX-M never holds keys and never signs. Toggling live alone would never execute a trade — every live trade still needs your explicit confirmation of the exact trade.</span></span></label>';
+        '<span><b>Live mode — DISABLED</b><span class="hm-sl-toggle-note">No wallet connected — paper is the default. HALEX-M never holds keys; any live trade still needs your per-trade confirmation.</span></span></label>';
     }
     return '<label class="hm-sl-toggle hm-sl-toggle-live">' +
       '<input type="checkbox" data-hm-sl-live="' + esc(skillKey) + '"' + (armed ? ' checked' : '') + ' aria-label="Live mode for ' + esc(skillKey) + '"> ' +
-      '<span><b>Live mode — ' + (armed ? 'LIVE-READY (connected, awaiting your per-trade confirmation)' : 'connected, awaiting your choice') + '</b>' +
-      '<span class="hm-sl-toggle-note">Wallet connected (' + esc(w.connector || '—') + '). Live-ready means ready to review a trade — nothing is signed or moved until you confirm the exact amount, token, slippage, and fees for that trade in the wallet panel.</span></span></label>';
+      '<span><b>Live mode — ' + (armed ? 'LIVE-READY (awaiting your per-trade confirmation)' : 'connected, awaiting your choice') + '</b>' +
+      '<span class="hm-sl-toggle-note">Nothing is signed or moved until you confirm the exact trade in the wallet panel.</span></span></label>';
+  }
+
+  /* First sentence of a longer rule — the one line a condensed card
+     shows before the reader chooses to open the full framework. */
+  function firstLine(text) {
+    var s = String(text || '');
+    var cut = s.indexOf('. ');
+    if (cut > 30 && cut < 170) return s.slice(0, cut + 1);
+    return s.length > 160 ? s.slice(0, 157).trim() + '…' : s;
   }
 
   function paperToggleHTML(skillKey) {
@@ -163,18 +172,16 @@
     var ev = evidenceFor(skill.key);
     var statusCls = skill.status === 'TESTED' ? 'hm-sl-chip-tested' : 'hm-sl-chip-idea';
     var delay = (index * 90) + 'ms';
+    /* Condensed card (2026-11-04): name + gate chip + key stats + the
+       one-line entry rule up front; the framework and deeper knowledge
+       sit behind one expand, not inline. */
     return '<article class="hm-sl-card" data-hm-sl-card="' + esc(skill.key) + '" style="--hm-sl-delay:' + esc(delay) + '">' +
       '<div class="hm-sl-card-head"><h3 class="hm-sl-card-name">' + esc(skill.name) + '</h3>' +
       '<span class="hm-sl-chip ' + statusCls + '">' + esc(skill.status) + '</span></div>' +
-      '<p class="hm-sl-evidence-note">Evidence: deterministic paper-test simulator, fixed 40-bar synthetic labelled tape, run 2026-11-01. A logic test — not market performance, not live results.</p>' +
-      '<dl class="hm-sl-evidence">' +
-      '<div><dt>Closed paper trades</dt><dd>' + esc(ev.trades) + '</dd></div>' +
-      '<div><dt>Wins</dt><dd>' + esc(ev.wins) + '</dd></div>' +
-      '<div><dt>Losses</dt><dd>' + esc(ev.losses) + '</dd></div>' +
-      '<div><dt>Win rate</dt><dd>' + pct(ev.winRatePct) + '</dd></div>' +
-      '<div><dt>Profit factor</dt><dd>' + pf(ev.profitFactor) + '</dd></div>' +
-      '<div><dt>Paper-test gate</dt><dd>' + esc(ev.gate) + ' (needs 30+ trades, 65%+, factor 1.2+)</dd></div>' +
-      '</dl>' +
+      '<p class="hm-sl-stats">' + esc(ev.trades) + ' closed paper trades · ' + esc(ev.wins) + 'W / ' + esc(ev.losses) + 'L · ' + pct(ev.winRatePct) + ' win rate · PF ' + pf(ev.profitFactor) + '</p>' +
+      '<p class="hm-sl-gate">Paper-test gate: <b>' + esc(ev.gate) + '</b> (needs 30+ trades, 65%+, factor 1.2+). Evidence: deterministic paper-test simulator, run 2026-11-01 — a logic test, not live results.</p>' +
+      '<p class="hm-sl-entry"><b>Entry:</b> ' + esc(firstLine(skill.entry)) + '</p>' +
+      '<details class="hm-sl-more"><summary>How it works — framework &amp; deeper knowledge</summary>' +
       '<section class="hm-sl-section"><h4>Framework — entry and exit in plain words</h4>' +
       '<p><b>Entry:</b> ' + esc(skill.entry) + '</p>' +
       '<p><b>Exit:</b> ' + esc(skill.exit) + '</p>' +
@@ -183,7 +190,7 @@
       '<p><b>What it watches:</b> ' + esc(skill.watches) + '</p>' +
       '<p><b>What breaks it:</b> ' + esc(skill.breaks) + '</p></section>' +
       '<section class="hm-sl-section"><h4>Suggestion — what to paper-test next</h4>' +
-      '<p>' + esc(skill.suggestion) + '</p></section>' +
+      '<p>' + esc(skill.suggestion) + '</p></section></details>' +
       '<div class="hm-sl-toggles">' + paperToggleHTML(skill.key) + liveToggleHTML(skill.key) + '</div>' +
       '<button class="hm-sl-btn" type="button" data-hm-sl-explain="' + esc(skill.key) + '">Explain this skill in plain words</button>' +
       '</article>';
@@ -196,6 +203,8 @@
       '<div class="hm-sl-card-head"><h3 class="hm-sl-card-name">' + esc(IDEA.name) + '</h3>' +
       '<span class="hm-sl-chip hm-sl-chip-idea">IDEA — template only, not a proven skill</span></div>' +
       '<p class="hm-sl-evidence-note">No win rate attached. No profit claim. A shape earns a record only in the paper arena, under the gate.</p>' +
+      '<p class="hm-sl-entry"><b>Entry:</b> ' + esc(firstLine(IDEA.entry)) + '</p>' +
+      '<details class="hm-sl-more"><summary>How it works — framework &amp; deeper knowledge</summary>' +
       '<section class="hm-sl-section"><h4>Framework — entry and exit in plain words</h4>' +
       '<p><b>Entry:</b> ' + esc(IDEA.entry) + '</p>' +
       '<p><b>Exit:</b> ' + esc(IDEA.exit) + '</p>' +
@@ -204,7 +213,7 @@
       '<p><b>What it watches:</b> ' + esc(IDEA.watches) + '</p>' +
       '<p><b>What breaks it:</b> ' + esc(IDEA.breaks) + '</p></section>' +
       '<section class="hm-sl-section"><h4>Suggestion — what to paper-test next</h4>' +
-      '<p>' + esc(IDEA.suggestion) + '</p></section>' +
+      '<p>' + esc(IDEA.suggestion) + '</p></section></details>' +
       '<div class="hm-sl-toggles">' + paperToggleHTML('idea') + liveToggleHTML('idea') + '</div>' +
       '<button class="hm-sl-btn" type="button" data-hm-sl-explain="idea">Explain this idea in plain words</button>' +
       '</article>';
