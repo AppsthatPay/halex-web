@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HALEX-AI — ZINIUM⁵ on your phone</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: system-ui, sans-serif; background: #f9f6ee; color: #1c1a14;
+         margin: 0; line-height: 1.5; }
+  header { background: #1c1a14; color: #f9f6ee; padding: 10px 14px; }
+  header h1 { font-size: 1.2em; margin: 0; }
+  header p { margin: 2px 0 0; font-size: 0.85em; color: #c9c2ae; }
+  nav { display: flex; gap: 4px; padding: 8px; background: #ece7d8; flex-wrap: wrap; }
+  nav button { flex: 1; min-width: 64px; font-size: 0.95em; padding: 8px 4px;
+    border-radius: 8px; border: 1px solid #c9c2ae; background: #fff; color: #1c1a14; cursor: pointer; }
+  nav button.active { background: #1c1a14; color: #f9f6ee; }
+  main { padding: 12px 14px 96px; max-width: 760px; margin: 0 auto; }
+  .tab { display: none; }
+  .tab.active { display: block; }
+  .honest { border: 1px solid #c9a227; background: #fff8d6; padding: 10px 12px;
+    border-radius: 8px; font-size: 0.92em; margin-bottom: 12px; }
+  .msg { border-radius: 8px; padding: 10px 12px; margin: 8px 0; white-space: pre-wrap; }
+  .msg.user { background: #e3e0d2; margin-left: 12%; }
+  .msg.ai { background: #ffffff; border: 1px solid #d8d2bd; margin-right: 4%; }
+  .meta { color: #6b6455; font-size: 0.85em; margin-top: 4px; }
+  #composer { position: fixed; left: 0; right: 0; bottom: 0; background: #ece7d8;
+    padding: 10px; display: flex; gap: 8px; }
+  #composer input { flex: 1; font-size: 1em; padding: 10px; border-radius: 8px;
+    border: 1px solid #c9c2ae; }
+  button { font-size: 1em; padding: 9px 14px; border-radius: 8px; border: none;
+    background: #2f6df6; color: #fff; cursor: pointer; }
+  button.secondary { background: #6b6455; color: #fff; }
+  button.danger { background: #a33327; color: #fff; }
+  input[type="text"], input[type="url"], textarea, select {
+    width: 100%; font-size: 1em; padding: 9px; border-radius: 8px;
+    border: 1px solid #c9c2ae; margin: 4px 0 10px; }
+  textarea { min-height: 90px; }
+  .card { background: #fff; border: 1px solid #d8d2bd; border-radius: 8px;
+    padding: 10px 12px; margin: 8px 0; }
+  .card h3 { margin: 0 0 4px; font-size: 1em; }
+  .small { font-size: 0.88em; color: #6b6455; }
+  pre { white-space: pre-wrap; word-break: break-word; background: #f3f0e4;
+    padding: 8px; border-radius: 6px; font-size: 0.88em; }
+  .banner { border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; }
+  .banner.ok { background: #e2f0d9; border: 1px solid #7aa85e; }
+  .banner.warn { background: #fde8d7; border: 1px solid #c97e3d; }
+  label { font-weight: 600; font-size: 0.92em; }
+</style>
+</head>
+<body>
+<header>
+  <h1>HALEX-AI</h1>
+  <p>ZINIUM⁵ on your phone — offline-first, this phone only.</p>
+</header>
+<nav>
+  <button data-tab="chat" class="active">Chat</button>
+  <button data-tab="reports">Reports</button>
+  <button data-tab="browse">Browse</button>
+  <button data-tab="manifest">Manifest</button>
+  <button data-tab="settings">Settings</button>
+  <button data-tab="cube">Cube</button>
+  <button data-tab="robot-arm">Robot arm</button>
+  <button data-tab="robotics-training">Robotics training</button>
+  <button data-tab="share">Share</button>
+  <button data-tab="connect">Connect</button>
+  <button data-tab="wifi">WiFi Relay</button>
+  <button data-tab="z2z">ZINIUM Link</button>
+  <button data-tab="mapping">Mapping</button>
+  <button data-tab="train">Train ZINIUM</button>
+  <button data-tab="tracking">Tracking</button>
+  <button data-tab="ai2ai">Ai2Ai</button>
+</nav>
+<main>
+  <div id="alloc-banner"></div>
+
+  <!-- CHAT -->
+  <section id="tab-chat" class="tab active">
+    <div class="honest"><b>Honest labels.</b> No live LLM. No server. No
+    backend. Answers come from the records bundled in this app plus
+    records you adopted on this phone, traced through keywords. No keys,
+    no wallet, no signing, no trading. Your questions are processed in
+    memory and never written to the ledger.
+    A miss can be queued as an intake proposal in this phone's storage
+    only — never sent anywhere.</div>
+    <div class="honest"><b>ZINIUM runs here.</b> The ZINIUM neural
+    backbone, spine, and mesh checksum run in this app on every chat
+    message — no longer carried as a record only. The backbone is a
+    seeded reference model: deterministic weights, NOT trained, NOT a
+    learned language model, and its generated continuation is
+    characters, not words. It aids the reply's processing trace only;
+    answers still come from the chain records, and it never decides,
+    executes, signs, spends, or trades.</div>
+    <div id="zinium-live" class="card"></div>
+    <div id="chat-log"></div>
+    <div id="intake-area" style="display:none">
+      <button id="queue-intake" class="secondary">Queue this question as an intake proposal (local only)</button>
+    </div>
+  </section>
+
+  <!-- REPORTS -->
+  <section id="tab-reports" class="tab">
+    <h2>Chain reports &amp; system views</h2>
+    <p class="small">Read-only views of the on-phone chain. History is
+    never rewritten; supersession appends only.</p>
+    <div class="card"><h3>Ledger — genesis headers</h3>
+      <button id="verify-ledger" class="secondary">Verify chain links</button>
+      <span id="verify-result" class="small"></span>
+      <div id="ledger-view"></div></div>
+    <div class="card"><h3>Chain status</h3><div id="chain-status"></div></div>
+    <div class="card"><h3>Processor lanes &amp; records</h3><div id="records-view"></div></div>
+    <div class="card"><h3>First-cube agencies (32)</h3><div id="agencies-view"></div></div>
+    <div class="card"><h3>Approval queue — human approval required</h3>
+      <p class="small">Socket deposits and browser learn candidates wait
+      here. Nothing is adopted until you approve it.</p>
+      <div id="approval-queue"></div></div>
+    <div class="card"><h3>Local chains — DRAFT → parity → ACTIVE</h3>
+      <div id="local-chains"></div>
+      <label>Request a new chain (recorded need first)</label>
+      <input type="text" id="chain-name" placeholder="Chain name, e.g. Garden notes">
+      <textarea id="chain-need" placeholder="The recorded need, in words"></textarea>
+      <button id="request-chain" class="secondary">Request chain (starts DRAFT)</button></div>
+  </section>
+
+  <!-- BROWSE -->
+  <section id="tab-browse" class="tab">
+    <h2>Human-first browser learning</h2>
+    <p>You search first, in the in-app browser. The AI learns second,
+    only from what you send it — and only what you approve becomes a
+    record, in your own words, with provenance. Open/public sources
+    only. Never behind auth, never X, never raw page dumps.</p>
+    <button id="open-browser">Open in-app browser</button>
+    <p class="small" id="browser-note"></p>
+    <div class="card"><h3>Learn from a page you found</h3>
+      <label>Page URL (provenance)</label>
+      <input type="url" id="learn-url" placeholder="https://example.com/article">
+      <label>Page title</label>
+      <input type="text" id="learn-title" placeholder="What the page is">
+      <label>Your own-words summary (this is what gets recorded, not the page text)</label>
+      <textarea id="learn-summary" placeholder="In your own words: what is it, what does it do, what does it look like?"></textarea>
+      <label>Category (the slot it lands in)</label>
+      <select id="learn-category">
+        <option value="human-learning">human-learning</option>
+        <option value="trading-research">trading-research</option>
+        <option value="chaintarium-world">chaintarium-world</option>
+        <option value="chain-doctrine">chain-doctrine</option>
+        <option value="builder-ledger">builder-ledger</option>
+        <option value="cube-genesis">cube-genesis</option>
+        <option value="chain-690">chain-690</option>
+        <option value="chain-865">chain-865</option>
+        <option value="general">general</option>
+      </select>
+      <label>Recorded need (what need does this serve?)</label>
+      <input type="text" id="learn-need" placeholder="e.g. explain Chaintarium to new users">
+      <button id="send-learn">Send to approval queue</button>
+      <span id="learn-result" class="small"></span></div>
+  </section>
+
+  <!-- MANIFEST -->
+  <section id="tab-manifest" class="tab">
+    <h2>BrainChain manifest — installed on this phone</h2>
+    <p class="small">Advances only by gated learning. Each advancement
+    is a human-approved adoption, provenance kept permanently.</p>
+    <button id="refresh-manifest" class="secondary">Refresh manifest</button>
+    <div id="manifest-view"></div>
+    <div class="card"><h3>The cube — one ZINIUM⁵ cube, 4 GB hard cap</h3>
+      <p class="small">App install creates the cube in allocated space —
+      never a board flash. Only HALEX-AI + its ZINIUM⁵ chain are
+      installed. At the cap, adoption stops and the owner chooses:
+      ADOPT into ZINIUM or ALLOCATE MORE SPACE — never automatic.</p>
+      <div id="cube-view"></div>
+      <div id="cap-actions" style="display:none">
+        <button id="export-libraries">Export compiled libraries (ADOPT path)</button>
+        <button id="allocate-more" class="secondary">Allocate more space (owner's call)</button>
+        <pre id="export-view" style="display:none"></pre>
+      </div></div>
+    <div class="card"><h3>Libraries — adopted tokens by category lane</h3>
+      <p class="small">Libraries compile on the phone and relay back to
+      ZINIUM. Local files are staging; adoption absorbs them as
+      on-chain tokens, not links.</p>
+      <div id="libraries-view"></div></div>
+    <div class="card"><h3>Advancements</h3><div id="advancements-view"></div></div>
+    <div class="card"><h3>Adopted learning tokens</h3><div id="tokens-view"></div></div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="tab">
+    <h2>Settings — all local to this phone</h2>
+    <div class="card"><h3>Space-aware deployment</h3>
+      <button id="run-probe" class="secondary">Run space probe</button>
+      <div id="probe-view"></div>
+      <div id="alloc-view"></div></div>
+    <div class="card"><h3>Agent socket (local-device only)</h3>
+      <p class="small">OFF by default. When on, it listens on
+      127.0.0.1 only — other apps on this same phone can ask ZINIUM
+      questions and deposit work for your approval. No inbound
+      internet. Never keys, credentials, wallets, or trades.</p>
+      <button id="socket-toggle" class="secondary">Enable agent socket</button>
+      <span id="socket-status" class="small"></span>
+      <pre id="socket-help">Endpoints (when on): GET /status · POST /ask {"question"} ·
+POST /deposit {"title","body","provenance","category","recorded_need"} ·
+GET /manifest · GET /directives</pre></div>
+    <div class="card"><h3>The cube — allocated space</h3>
+      <div id="cube-settings-view"></div></div>
+    <div class="card"><h3>GitHub — wired, gated</h3>
+      <p class="small">Public reads need nothing. Any write/push from
+      this phone requires your own GitHub token, stored in the app's
+      private storage only — never in the chain, never shipped in the
+      APK, never sent through the socket. Without a token, GitHub is
+      read-only. Writes follow staging → verified → push; the
+      SuperAllen gate is unchanged. v1: public reads + token vault +
+      read-only state; write/push from the phone is a later piece.</p>
+      <div id="github-state" class="small"></div>
+      <label>GitHub token (owner's own — stored app-private, never in the chain)</label>
+      <input type="text" id="github-token" placeholder="Paste token here only in the installed APK" autocomplete="off" spellcheck="false">
+      <button id="save-github-token" class="secondary">Save token to app private storage</button>
+      <span id="github-result" class="small"></span></div>
+      <label><input type="checkbox" id="show-trace" checked> Show trace lines on answers</label></div>
+    <div class="card"><h3>Agent directives (shipped in this app)</h3>
+      <button id="show-directives" class="secondary">Read directives</button>
+      <pre id="directives-view" style="display:none"></pre></div>
+    <div class="card"><h3>Intake proposals queued locally</h3><div id="proposals-view"></div></div>
+  </section>
+  <section id="tab-cube" class="tab">
+    <h2>3D LEARNING CUBE — test-engine demo</h2>
+    <div class="card"><h3>Live chain state on this phone</h3><div id="cube-chain-state" class="small"></div></div>
+    <p class="small">Artistic theoretical rendering of the 1000⁵ architecture cube (Unity-like game-layered code, not an actual Unity binary). The chain computes a measured slice you set with the Increase Slice slider (0.1% to 100% of the object points, each verified) — the chain computes vertex offsets, the phone's WebGL draws them. Offline, no keys, no trading. Pinch-to-zoom and the on-phone GPU-thread variant are not in this build.</p>
+    <iframe src="cube-tab/index.html" style="width:100%;height:1150px;border:0;border-radius:12px;" title="3D Learning Cube"></iframe>
+  </section>
+  <section id="tab-robot-arm" class="tab">
+    <h2>Robot arm — simulated test</h2>
+    <div class="honest"><b>No physical arm connected — simulated test arm running.</b>
+    This is a practice arm on screen only. Moving these controls moves
+    the drawing, never a real arm. Nothing here connects to a device.</div>
+    <p class="small">Top-down view of the table. Move the arm, close the
+    gripper on the ball, carry it over the box, then open the gripper.</p>
+    <canvas id="robot-arm-canvas" width="360" height="260"
+      style="width:100%;max-width:360px;background:#efe9d8;border-radius:8px;"></canvas>
+    <p id="robot-arm-state"></p>
+    <p class="small">Steps taken: <span id="robot-arm-steps">0</span></p>
+    <p class="small">Last simulated command (not sent anywhere):
+      <span id="robot-arm-command">—</span></p>
+    <div class="card"><h3>Move the arm</h3>
+      <label>Turn base</label>
+      <input type="range" id="robot-arm-base-slider" min="-90" max="90" value="0">
+      <span id="robot-arm-base-value">0°</span>
+      <button id="robot-arm-base-minus" class="secondary">Turn left</button>
+      <button id="robot-arm-base-plus" class="secondary">Turn right</button>
+      <label>Shoulder angle</label>
+      <input type="range" id="robot-arm-shoulder-slider" min="0" max="150" value="30">
+      <span id="robot-arm-shoulder-value">30°</span>
+      <button id="robot-arm-shoulder-minus" class="secondary">Lower</button>
+      <button id="robot-arm-shoulder-plus" class="secondary">Raise</button>
+      <label>Elbow angle</label>
+      <input type="range" id="robot-arm-elbow-slider" min="-150" max="150" value="0">
+      <span id="robot-arm-elbow-value">0°</span>
+      <button id="robot-arm-elbow-minus" class="secondary">Bend one way</button>
+      <button id="robot-arm-elbow-plus" class="secondary">Bend the other way</button>
+    </div>
+    <div class="card"><h3>Gripper</h3>
+      <label>Grip: open to closed</label>
+      <input type="range" id="robot-arm-grip-slider" min="0" max="100" value="0">
+      <span id="robot-arm-grip-value">Open</span>
+      <button id="robot-arm-grip-open" class="secondary">Open gripper</button>
+      <button id="robot-arm-grip-close" class="secondary">Close gripper</button>
+    </div>
+    <p><button id="robot-arm-reset" class="secondary">Reset task</button></p>
+    <div class="card"><h3>Proof log</h3>
+      <pre id="robot-arm-log"></pre></div>
+  </section>
+  <section id="tab-robotics-training" class="tab">
+    <h2>Robotics training — simulated practice</h2>
+    <div class="honest"><b>No physical arm connected — simulated test arm running.</b>
+    These routines practise on screen only. Nothing here connects to a device,
+    reads a sensor, or sends anything anywhere. Finished routines are recorded
+    on this phone only — review one to approve it into the chain records
+    (as simulated practice, never as a real-world result) or reject it.</div>
+    <div class="card"><h3>Choose a routine</h3>
+      <button data-routine="stack-blocks" class="secondary">Stack blocks in order</button>
+      <button data-routine="sort-by-size" class="secondary">Sort items by size</button>
+      <button data-routine="trace-path" class="secondary">Trace a path</button>
+      <button data-routine="repeat-sequence" class="secondary">Repeat a sequence</button>
+      <button data-routine="pick-place-sort" class="secondary">Pick, place, sort (multi-step)</button>
+    </div>
+    <p id="robotics-training-state"></p>
+    <p class="small">Steps taken: <span id="robotics-training-steps">0</span></p>
+    <div class="card"><h3>Routine actions</h3>
+      <p class="small">Pick / place buttons act on the routine's current item or slot.
+      Trace uses the waypoint buttons; Repeat uses the move buttons.</p>
+      <button id="robotics-training-pick" class="secondary">Pick next item</button>
+      <button id="robotics-training-place" class="secondary">Place in correct slot / bin</button>
+      <button id="robotics-training-waypoint" class="secondary">Move to next waypoint</button>
+      <button id="robotics-training-move" class="secondary">Repeat next move</button>
+      <button id="robotics-training-abort" class="secondary">Stop routine</button>
+      <button id="robotics-training-reset" class="secondary">Reset routine</button>
+    </div>
+    <div class="card"><h3>Proof log</h3>
+      <pre id="robotics-training-log"></pre></div>
+    <div class="card"><h3>Training records (on this phone only)</h3>
+      <p class="small">A record appears here only when a routine finishes.
+      Records are kept in local storage and are never sent anywhere.</p>
+      <pre id="robotics-training-records"></pre>
+      <div id="robotics-training-review"></div>
+      <p class="small" id="robotics-training-review-result"></p></div>
+  </section>
+  <section id="tab-share" class="tab">
+    <h2>Share by Bluetooth</h2>
+    <div class="honest"><b>Plain truth.</b> Live device discovery is NOT
+    available in this build — no Bluetooth bridge exists in this app yet.
+    Nothing is paired silently and nothing is sent in the background.
+    What works today is the manual path below: copy a bundle out, or
+    paste one in for your review.</div>
+    <div class="card"><h3>Nearby phones</h3>
+      <p class="small" id="share-capability"></p>
+      <button id="share-scan" class="secondary">Check for nearby phones</button>
+      <p class="small" id="share-scan-result"></p></div>
+    <div class="card"><h3>Send a chain bundle (copy it yourself)</h3>
+      <p class="small">A bundle is a record summary: the manifest summary,
+      your adopted records, and the bundled record count. No keys, no
+      wallets, no signing — ever.</p>
+      <button id="share-export" class="secondary">Build bundle to copy</button>
+      <textarea id="share-export-output" placeholder="Your bundle appears here — copy it to share"></textarea></div>
+    <div class="card"><h3>Receive a bundle (review first)</h3>
+      <p class="small">Paste a bundle here. It is checked first, then
+      stored for your review only — nothing is adopted automatically.</p>
+      <textarea id="share-import-input" placeholder="Paste a chain bundle here"></textarea>
+      <button id="share-import" class="secondary">Review pasted bundle</button>
+      <p class="small" id="share-import-result"></p>
+      <div id="share-pending" class="small"></div></div>
+    <div class="card"><h3>Share the install package</h3>
+      <p class="small" id="share-sheet-note"></p></div>
+  </section>
+  <section id="tab-connect" class="tab">
+    <h2>Connect — GitHub and proposals</h2>
+    <div class="honest"><b>Plain truth.</b> GitHub is off unless you
+    turn it on here. Proposals and feedback stay on this phone,
+    waiting for review — approve one into the chain records or
+    reject it. Nothing here sends anything in the background,
+    nothing is adopted automatically, and your GitHub token is never
+    shown here and never written into any chain record.</div>
+    <div class="card"><h3>GitHub switch</h3>
+      <p class="small">Off by default. When on, the app may use your
+      own saved token for your own GitHub actions. When off, no GitHub
+      calls are attempted. Your token is stored in Settings, in the
+      app's private storage only — never in the chain.</p>
+      <button id="github-switch-toggle" class="secondary">Turn GitHub on</button>
+      <p class="small" id="github-switch-status">GitHub is off. No GitHub calls are attempted.</p></div>
+    <div class="card"><h3>Check a public repo (no token needed)</h3>
+      <p class="small">Public repo information needs no token, so
+      this is the one GitHub call this tab can make live — only
+      while the switch above is on, and only when you press Check
+      for this one lookup. Nothing private is requested, no token
+      is sent, and nothing is stored or adopted from the answer.</p>
+      <label>Repo owner</label>
+      <input type="text" id="github-repo-owner" placeholder="octocat">
+      <label>Repo name</label>
+      <input type="text" id="github-repo-name" placeholder="Hello-World">
+      <button id="github-repo-check" class="secondary">Check public repo</button>
+      <p class="small" id="github-repo-result"></p></div>
+    <div class="card"><h3>Send a proposal</h3>
+      <p class="small">Your proposal is stored on this phone only, for
+      review. Nothing is adopted until a human approves it, and nothing
+      is sent from here. Never type any key, wallet, signing, seed,
+      mnemonic, secret, password, or credential material here — such
+      proposals are refused and not stored.</p>
+      <label>Proposal title</label>
+      <input type="text" id="proposal-title" placeholder="A short title for your proposal">
+      <label>Proposal (in your own words)</label>
+      <textarea id="proposal-text" placeholder="What are you proposing, in your own words?"></textarea>
+      <button id="proposal-submit" class="secondary">Send proposal (local only)</button>
+      <p class="small" id="proposal-status"></p></div>
+    <div class="card"><h3>Send feedback</h3>
+      <p class="small">Your feedback note is stored on this phone only,
+      for review. Nothing is adopted automatically and nothing is sent
+      from here.</p>
+      <label>Feedback (in your own words)</label>
+      <textarea id="feedback-text" placeholder="What worked, what did not, what would help?"></textarea>
+      <button id="feedback-submit" class="secondary">Send feedback (local only)</button>
+      <p class="small" id="feedback-status"></p></div>
+    <div class="card"><h3>Waiting for review</h3>
+      <div class="small" id="connect-pending-list">No proposals or feedback waiting for review yet.</div></div>
+  </section>
+  <section id="tab-wifi" class="tab">
+    <h2>WiFi relay</h2>
+    <div class="honest"><b>Plain truth.</b> This relay never touches a
+    router you have not joined. It works only over your own
+    currently-joined connection or an endpoint you type in and save.
+    With neither, it does nothing — and it says so. The phone's platform
+    shows no list of scanned networks and no joined-network name, so
+    anything you type below is labelled user-entered, never scanned.</div>
+    <div class="card"><h3>Connection</h3>
+      <p class="small" id="wifi-capability"></p>
+      <p class="small" id="wifi-link-state"></p></div>
+    <div class="card"><h3>Your network name (typed by you)</h3>
+      <p class="small">Labelled user-entered everywhere. Typing a name
+      here does not scan anything and does not by itself open a relay path.</p>
+      <label>Network name (user-entered)</label>
+      <input type="text" id="wifi-ssid-input" placeholder="Type your network name">
+      <button id="wifi-ssid-save" class="secondary">Save network name (user-entered)</button></div>
+    <div class="card"><h3>Relay endpoint (typed by you)</h3>
+      <p class="small">Only an endpoint you type in and save here is ever
+      used. Nothing is contacted until you save one.</p>
+      <label>Relay endpoint</label>
+      <input type="text" id="wifi-endpoint-input" placeholder="Type the relay endpoint">
+      <button id="wifi-endpoint-save" class="secondary">Save endpoint</button>
+      <button id="wifi-endpoint-clear" class="secondary">Clear saved endpoint</button></div>
+    <div class="card"><h3>Packet relay probe</h3>
+      <p class="small">The probe only checks readiness. It makes no
+      network call. A packet is a record summary: packet id, timestamp,
+      manifest summary, record count. No personal data.</p>
+      <button id="wifi-probe" class="secondary">Check relay readiness</button>
+      <p class="small" id="wifi-probe-result"></p>
+      <button id="wifi-packet" class="secondary">Build packet</button>
+      <textarea id="wifi-packet-output" placeholder="Your packet appears here"></textarea></div>
+  </section>
+  <section id="tab-z2z" class="tab">
+    <h2>ZINIUM link — phone to phone</h2>
+    <div class="honest"><b>Plain truth.</b> Packet sending over WiFi or
+    Bluetooth is not available on this phone yet. No packet-sending
+    transport and no Bluetooth bridge exist in this build, so this tab
+    sends nothing on its own and lists no nearby phones. What works
+    today is the manual path below: you pick a saved endpoint, prepare
+    a chain hello and a packet, send them yourself through your own
+    share sheet or by copying, and the other phone pastes them in and
+    explicitly accepts. Received packets land pending-review only —
+    nothing is adopted automatically.</div>
+    <div class="card"><h3>Link status</h3>
+      <p class="small" id="z2z-availability"></p>
+      <p class="small" id="z2z-manual-note"></p>
+      <p class="small" id="z2z-session-state"></p></div>
+    <div class="card"><h3>Saved endpoint (typed by you)</h3>
+      <p class="small">Only an endpoint you type in and save here — or
+      one you already saved in the WiFi Relay tab — can be picked.
+      Picking one does not connect to anything by itself, and endpoints
+      are never invented here.</p>
+      <label>Relay endpoint</label>
+      <input type="text" id="z2z-endpoint-input" placeholder="Type the endpoint">
+      <button id="z2z-endpoint-save" class="secondary">Save endpoint</button>
+      <label>Pick a saved endpoint</label>
+      <select id="z2z-endpoint-select"></select>
+      <button id="z2z-pick" class="secondary">Pick this endpoint</button>
+      <p class="small" id="z2z-peer-result"></p></div>
+    <div class="card"><h3>Chain hello — step 2</h3>
+      <p class="small">A hello is the manifest summary only. Preparing
+      it makes no network send — send it yourself through your own
+      share sheet or by copying.</p>
+      <button id="z2z-hello" class="secondary">Prepare chain hello</button>
+      <textarea id="z2z-hello-output" placeholder="Your chain hello appears here — send it yourself"></textarea></div>
+    <div class="card"><h3>Acceptance — step 3</h3>
+      <p class="small">No packet can be prepared until the receiving
+      phone explicitly accepts. Tap below only when the other phone
+      has accepted.</p>
+      <button id="z2z-accept" class="secondary">The other phone accepted</button></div>
+    <div class="card"><h3>Packet — step 4</h3>
+      <p class="small">A packet is a record summary only: packet id,
+      timestamp, manifest summary, record counts. No personal data, no
+      network name, no endpoint inside it. Preparing it makes no
+      network send — transfer it yourself the same way.</p>
+      <button id="z2z-packet" class="secondary">Prepare packet</button>
+      <textarea id="z2z-packet-output" placeholder="Your packet appears here — transfer it yourself"></textarea></div>
+    <div class="card"><h3>Send packet — step 4b (internet, your endpoint)</h3>
+      <p class="small">Once a packet is prepared and an endpoint is
+      picked, you can send this one packet to that endpoint over
+      your own joined connection — one send, no retry, only when
+      you press send here. This is the internet leg, not Bluetooth:
+      no Bluetooth bridge exists in this build. The manual
+      copy/share-sheet path above still works unchanged.</p>
+      <button id="z2z-send" class="secondary">Send this packet to my picked endpoint</button>
+      <p class="small" id="z2z-send-result"></p></div>
+    <div class="card"><h3>Receive on this phone — step 5</h3>
+      <p class="small">Paste a packet the other phone sent you, then
+      tap accept. It lands pending-review for your approval — approve
+      it into the chain records, or reject it. Nothing is adopted
+      automatically.</p>
+      <textarea id="z2z-receive-input" placeholder="Paste a packet here"></textarea>
+      <button id="z2z-receive" class="secondary">Accept packet for review</button>
+      <p class="small" id="z2z-receive-result"></p>
+      <div id="z2z-pending" class="small"></div></div>
+  </section>
+  <section id="tab-mapping" class="tab">
+    <h2>Mapping — where this phone has been</h2>
+    <div class="honest"><b>On this phone only.</b> Mapping is off unless
+    you turn it on. When it is on, points are stored as chain records
+    on this phone that you can view and delete. They are never sent
+    anywhere by this tab — no map service, no server, no sharing.</div>
+    <div class="card">
+      <label><input type="checkbox" id="mapping-enable"> Turn mapping on</label>
+      <p class="small">When on, the phone records a point now and then:
+      the time, the place rounded to about 4 decimals (roughly a
+      street block, not exact), and how accurate the reading was.
+      Nothing else is recorded. Turn it off any time to stop.</p>
+      <p id="mapping-status" class="small"></p>
+    </div>
+    <div class="card"><h3>Map of stored points</h3>
+      <canvas id="mapping-canvas" width="300" height="200"></canvas>
+      <p class="small"><span id="mapping-count">0</span> points stored ·
+      <span id="mapping-storage">0 bytes</span> used on this phone.</p>
+      <button id="mapping-delete-all" class="danger">Delete all points</button>
+    </div>
+    <div class="card"><h3>Stored points</h3><div id="mapping-list"></div></div>
+  </section>
+  <section id="tab-train" class="tab">
+    <h2>Train ZINIUM — 24-hour learning</h2>
+    <div class="honest"><b>Totals only, on this phone only.</b> Learning
+    is off unless you turn it on. For one day it keeps counts — how
+    much you moved, idle versus active time, which kinds of activity
+    you tapped, and total distance. It never records what you typed,
+    any message or call, or any personal information. Nothing becomes
+    chain knowledge until you approve the report.</div>
+    <div class="card">
+      <label><input type="checkbox" id="train-enable"> Turn 24-hour learning on</label>
+      <p id="train-status" class="small"></p>
+    </div>
+    <div class="card"><h3>What this phone can measure</h3>
+      <p class="small">Per-app usage is NOT readable from this app
+      without a native UsageStats bridge plus permission, which this
+      build does not have. Tap a category button yourself instead —
+      only the count per category is stored.</p>
+      <div id="train-capabilities"></div>
+    </div>
+    <div class="card"><h3>What are you doing? (tap to count)</h3>
+      <div id="train-categories"></div>
+      <p class="small">Only the count per category is stored — never
+      what you were doing in words.</p>
+    </div>
+    <div class="card"><h3>Report</h3><pre id="train-report"></pre>
+      <button id="train-finish" class="secondary">Finish now (see totals)</button>
+      <div id="train-choices" style="display:none">
+        <p class="small">Your report is ready. Nothing is adopted until
+        you approve it.</p>
+        <button id="train-approve">Approve report into the chain</button>
+        <button id="train-continue-week" class="secondary">Keep going for a week</button>
+        <button id="train-stop" class="secondary">Stop</button>
+        <button id="train-delete" class="danger">Delete everything</button>
+      </div>
+    </div>
+  </section>
+  <section id="tab-tracking" class="tab">
+    <h2>Tracking — your own activity, on this phone only</h2>
+    <div class="honest"><b>Plain truth.</b> Every panel here is off
+    unless you turn it on, and each panel keeps its data on this
+    phone only. Some panels are not available on this phone yet
+    because they need a native bridge this build does not have —
+    those say so plainly and record nothing. Nothing here is sent
+    anywhere except the two sharing panels, and those share only
+    to an endpoint you type in yourself, only when you press
+    "share once" for that one share. The aggregate summary below
+    (counts only) can be approved into the chain records.</div>
+    <p class="small" id="tracking-status"></p>
+    <div class="card"><h3>Sensors</h3>
+      <label><input type="checkbox" id="sensorsToggle"> Turn sensors on</label>
+      <p class="small" id="sensorsStatus"></p>
+      <div id="sensorsData"></div>
+      <button id="sensorsDelete" class="danger">Delete sensor data</button></div>
+    <div class="card"><h3>Real mapping and location sharing</h3>
+      <p class="small">Mapping points stay in the Mapping tab. This
+      panel only shares them when you type an endpoint yourself
+      AND press "share once" for that one share.</p>
+      <label><input type="checkbox" id="mapping-shareToggle"> Turn mapping sharing on</label>
+      <p class="small" id="mapping-shareStatus"></p>
+      <div id="mapping-shareData"></div>
+      <label>Your endpoint</label>
+      <input type="text" id="mappingEndpointInput" placeholder="https://your-own-endpoint.example/share">
+      <button id="mappingEndpointSave" class="secondary">Save endpoint</button>
+      <button id="mappingShareOnce">Share once</button>
+      <button id="mapping-shareDelete" class="danger">Delete mapping share log</button></div>
+    <div class="card"><h3>Activity sharing</h3>
+      <p class="small">Counts your own activity taps by category —
+      counts only, never what you were doing in words. Sharing
+      sends only those counts, only to an endpoint you type in,
+      and only when you press "share once" for that one share.</p>
+      <label><input type="checkbox" id="activity-shareToggle"> Turn activity sharing on</label>
+      <p class="small" id="activity-shareStatus"></p>
+      <div id="activity-shareData"></div>
+      <div id="activityCategories"></div>
+      <label>Your endpoint</label>
+      <input type="text" id="activityEndpointInput" placeholder="https://your-own-endpoint.example/share">
+      <button id="activityEndpointSave" class="secondary">Save endpoint</button>
+      <button id="activityShareOnce">Share once</button>
+      <button id="activity-shareDelete" class="danger">Delete activity data</button></div>
+    <div class="card"><h3>TV use</h3>
+      <p class="small">Not available on this phone yet — needs a
+      native bridge. Nothing is recorded.</p>
+      <label><input type="checkbox" id="tvToggle"> Turn TV use on</label>
+      <p class="small" id="tvStatus"></p>
+      <div id="tvData"></div>
+      <button id="tvDelete" class="danger">Delete TV data</button></div>
+    <div class="card"><h3>App use</h3>
+      <p class="small">Per-app use is not readable from this app
+      without a native bridge plus permission, which this build
+      does not have. Nothing is recorded, and nothing is guessed.</p>
+      <label><input type="checkbox" id="appuseToggle"> Turn app use on</label>
+      <p class="small" id="appuseStatus"></p>
+      <div id="appuseData"></div>
+      <button id="appuseDelete" class="danger">Delete app-use data</button></div>
+    <div class="card"><h3>Picture taking</h3>
+      <p class="small">Counts pictures you log yourself with the
+      button below — a count only. No photo or picture content
+      is ever stored here.</p>
+      <label><input type="checkbox" id="picturesToggle"> Turn picture counting on</label>
+      <p class="small" id="picturesStatus"></p>
+      <div id="picturesData"></div>
+      <button id="pictureLog" class="secondary">I took a picture</button>
+      <button id="picturesDelete" class="danger">Delete picture count</button></div>
+    <div class="card"><h3>R&amp;D notes</h3>
+      <p class="small">Your own notes, on this phone only. Anything
+      that looks like a key, password, token, or secret is refused
+      outright and never stored.</p>
+      <label><input type="checkbox" id="notesToggle"> Turn notes on</label>
+      <p class="small" id="notesStatus"></p>
+      <div id="notesData"></div>
+      <input type="text" id="notesInput" placeholder="A research note, in your own words">
+      <button id="notesAdd" class="secondary">Add note</button>
+      <button id="notesDelete" class="danger">Delete all notes</button></div>
+    <div class="card"><h3>Questions ZINIUM wants to ask you</h3>
+      <p class="small">Answer any of them, or skip any of them.
+      Answers stay on this phone only.</p>
+      <label><input type="checkbox" id="questionsToggle"> Turn questions on</label>
+      <p class="small" id="questionsStatus"></p>
+      <div id="questionsData"></div>
+      <div class="small"><b>What should ZINIUM help you with most?</b><br>
+        <input type="text" id="questionsInput-q1">
+        <button id="questionsAnswer-q1" class="secondary">Answer</button>
+        <button id="questionsSkip-q1" class="secondary">Skip</button></div>
+      <div class="small"><b>What kind of activity do you want ZINIUM to keep count of?</b><br>
+        <input type="text" id="questionsInput-q2">
+        <button id="questionsAnswer-q2" class="secondary">Answer</button>
+        <button id="questionsSkip-q2" class="secondary">Skip</button></div>
+      <div class="small"><b>Is there anything ZINIUM should stop asking about?</b><br>
+        <input type="text" id="questionsInput-q3">
+        <button id="questionsAnswer-q3" class="secondary">Answer</button>
+        <button id="questionsSkip-q3" class="secondary">Skip</button></div>
+      <div class="small"><b>What would make this phone more useful to you?</b><br>
+        <input type="text" id="questionsInput-q4">
+        <button id="questionsAnswer-q4" class="secondary">Answer</button>
+        <button id="questionsSkip-q4" class="secondary">Skip</button></div>
+      <div class="small"><b>Would you like ZINIUM to ask new questions later? Answer yes or no, or skip.</b><br>
+        <input type="text" id="questionsInput-q5">
+        <button id="questionsAnswer-q5" class="secondary">Answer</button>
+        <button id="questionsSkip-q5" class="secondary">Skip</button></div>
+      <button id="questionsDelete" class="danger">Delete all answers</button></div>
+    <div class="card"><h3>Tasks you can ask ZINIUM to do</h3>
+      <p class="small">A task list, on this phone only. Writing a
+      task here only lists it — it does not run anything.</p>
+      <label><input type="checkbox" id="tasksToggle"> Turn tasks on</label>
+      <p class="small" id="tasksStatus"></p>
+      <div id="tasksData"></div>
+      <input type="text" id="tasksInput" placeholder="A task title">
+      <button id="tasksAdd" class="secondary">Add task</button>
+      <button id="tasksDelete" class="danger">Delete all tasks</button></div>
+    <div class="card"><h3>RFID packet sends — your own devices only</h3>
+      <p class="small">Sending a packet needs a native radio bridge
+      this build does not have, so no packet is ever sent from
+      here. You can keep a list of your own device nicknames and
+      packet drafts; every draft is labelled "draft only — not
+      sent, not encrypted".</p>
+      <label><input type="checkbox" id="rfidToggle"> Turn RFID on</label>
+      <p class="small" id="rfidStatus"></p>
+      <div id="rfidData"></div>
+      <input type="text" id="rfidDeviceInput" placeholder="Your device nickname">
+      <button id="rfidDeviceAdd" class="secondary">Add my device</button><br>
+      <input type="text" id="rfidDraftDevice" placeholder="Device nickname (must be in your list)">
+      <input type="text" id="rfidDraftLabel" placeholder="Draft label">
+      <button id="rfidDraftAdd" class="secondary">Add draft</button>
+      <button id="rfidSendAttempt" class="secondary">Try to send (will refuse)</button>
+      <button id="rfidDelete" class="danger">Delete RFID data</button></div>
+    <div class="card"><h3>Fingerprint analysis — you only</h3>
+      <p class="small">Not available on this phone yet — needs a
+      native bridge. No fingerprint is captured, no template is
+      stored or shared, and no other person is ever identified.</p>
+      <label><input type="checkbox" id="fingerprintToggle"> Turn fingerprint analysis on</label>
+      <p class="small" id="fingerprintStatus"></p>
+      <div id="fingerprintData"></div>
+      <button id="fingerprintAttempt" class="secondary">Try analysis (will refuse)</button>
+      <button id="fingerprintDelete" class="danger">Delete fingerprint data</button></div>
+    <div class="card"><h3>Facial analysis — you only</h3>
+      <p class="small">Not available on this phone yet — needs a
+      native bridge. No face is captured, no template is stored
+      or shared, and no other person is ever identified.</p>
+      <label><input type="checkbox" id="facialToggle"> Turn facial analysis on</label>
+      <p class="small" id="facialStatus"></p>
+      <div id="facialData"></div>
+      <button id="facialAttempt" class="secondary">Try analysis (will refuse)</button>
+      <button id="facialDelete" class="danger">Delete facial data</button></div>
+    <div class="card"><h3>Your activity while using this app</h3>
+      <p class="small">Counts your taps inside this app by kind
+      (navigation, button, toggle, view) — aggregates only. It
+      never records what you typed, any message, or any call
+      content.</p>
+      <label><input type="checkbox" id="appactivityToggle"> Turn app-activity counting on</label>
+      <p class="small" id="appactivityStatus"></p>
+      <div id="appactivityData"></div>
+      <div id="appactivityButtons"></div>
+      <button id="appactivityDelete" class="danger">Delete app-activity data</button></div>
+    <div class="card"><h3>Review aggregate summary (counts only)</h3>
+      <p class="small">Builds a summary from the count panels only:
+      sensor totals, activity counts, pictures logged, app-activity
+      counts. No content, no mapping points, no photos, no
+      biometrics. Approve it to adopt it into the chain records.</p>
+      <button id="aggregateShow" class="secondary">Show aggregate summary</button>
+      <pre id="aggregateOutput"></pre>
+      <button id="aggregateApprove" class="secondary">Approve summary into chain</button></div>
+    <div class="card"><h3>Delete everything in this tab</h3>
+      <p class="small">Clears every tracking store, removes every
+      endpoint, and turns every panel off.</p>
+      <button id="deleteAll" class="danger">Delete all tracking data</button></div>
+  </section>
+  <section id="tab-ai2ai" class="tab">
+    <h2>Ai2Ai — other AI apps, by your hand</h2>
+    <div class="honest"><b>Plain truth.</b> A live direct connection
+    to another AI app is not available in this build — no bridge
+    exists that lets this app reach another app. Connecting works
+    the easy manual way instead: another AI announces itself, you
+    accept, and it gets its own text-window workspace. Anything it
+    offers lands waiting for your review — nothing is adopted
+    automatically, and nothing leaves this phone except through
+    your own share sheet.</div>
+    <p class="small" id="ai2ai-availability"></p>
+    <div class="card"><h3>Announce another AI</h3>
+      <p class="small">Type the other app's name, or paste its
+      announcement. Nothing connects until you accept.</p>
+      <input type="text" id="ai2ai-announce-input" placeholder="The other AI app's name">
+      <button id="ai2ai-announce" class="secondary">Announce</button>
+      <p class="small" id="ai2ai-announce-result"></p>
+      <button id="ai2ai-accept" class="secondary">Accept this AI</button>
+      <button id="ai2ai-reject" class="secondary">Reject</button></div>
+    <div class="card"><h3>Connections and workspaces</h3>
+      <p class="small" id="ai2ai-connections"></p>
+      <div id="ai2ai-workspace" class="small"></div></div>
+    <div class="card"><h3>Talk in the workspace</h3>
+      <p class="small">Messages go to the accepted AI's own workspace
+      only — never mixed with another AI's.</p>
+      <input type="text" id="ai2ai-message-input" placeholder="A message for the accepted AI">
+      <button id="ai2ai-message-send" class="secondary">Send message</button></div>
+    <div class="card"><h3>Offer something to HALEX-AI</h3>
+      <p class="small">Proposals, data packets, information,
+      instructions, processes, abilities, skills, and processor
+      kits all land waiting for your review. Approve an offer to
+      make it available for learning, adopt an approved offer into
+      the chain records, or reject it. Nothing is adopted until
+      you approve and adopt it.</p>
+      <label>Kind of offer</label>
+      <select id="ai2ai-offer-kind">
+        <option value="proposal">Proposal</option>
+        <option value="data-packet">Data packet</option>
+        <option value="information">Information</option>
+        <option value="instruction">Instruction</option>
+        <option value="process">Process</option>
+        <option value="ability">Ability</option>
+        <option value="skill">Skill</option>
+        <option value="processor-kit">Processor kit</option>
+      </select>
+      <label>Title</label>
+      <input type="text" id="ai2ai-offer-title" placeholder="A short title">
+      <label>Summary (in plain words)</label>
+      <textarea id="ai2ai-offer-summary" placeholder="What is offered, in plain words?"></textarea>
+      <button id="ai2ai-offer-send" class="secondary">Offer for review</button>
+      <p class="small" id="ai2ai-offer-result"></p>
+      <div id="ai2ai-pending" class="small"></div></div>
+    <div class="card"><h3>Share back</h3>
+      <p class="small" id="ai2ai-share-note"></p>
+      <button id="ai2ai-export" class="secondary">Build bundle to share</button>
+      <textarea id="ai2ai-export-output" placeholder="Your bundle appears here — share it yourself"></textarea></div>
+    <div class="card"><h3>Learn from ZINIUM</h3>
+      <p class="small">A connected AI is served only from records
+      already approved here — never from private stores.</p>
+      <button id="ai2ai-learn" class="secondary">Show approved records</button>
+      <p class="small" id="ai2ai-learn-result"></p></div>
+  </section>
+</main>
+
+<div id="composer">
+  <input id="q" type="text" placeholder="Ask the chain…" autocomplete="off" spellcheck="false">
+  <button id="ask">Ask</button>
+</div>
+
+<script src="js/records.js"></script>
+<script src="js/genesis.js"></script>
+<script src="js/agencies.js"></script>
+<script src="js/zinium-core.js"></script>
+<script src="js/ledger.js"></script>
+<script src="js/space-probe.js"></script>
+<script src="js/manifest.js"></script>
+<script src="js/chain-share.js"></script>
+<script src="js/wifi-relay.js"></script>
+<script src="js/chain-mapping.js"></script>
+<script src="js/train-zinium.js"></script>
+<script src="js/robot-arm.js"></script>
+<script src="js/directives.js"></script>
+<script src="js/github-switch.js"></script>
+<script src="js/proposals.js"></script>
+<script src="js/zinium-link.js"></script>
+<script src="js/tracking.js"></script>
+<script src="js/ai2ai.js"></script>
+<script src="js/zinium-runtime.js"></script>
+<script src="js/zinium-upgrade-20261103.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

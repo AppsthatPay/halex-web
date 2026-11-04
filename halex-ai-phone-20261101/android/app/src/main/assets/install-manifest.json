@@ -1,0 +1,73 @@
+{
+ "package": "HALEX-AI phone \u2014 ZINIUM\u2075 single deployment",
+ "application_id": "com.halex.halexai",
+ "version": "0.1.0-debug",
+ "contains": [
+  "HALEX-AI app (chat UI)",
+  "ZINIUM\u2075 Intelligence Chain (bundled records + genesis headers + locally adopted records answerable in chat)",
+  "UI interface (chat + chain reports/system views + in-app browser)",
+  "working agent sockets (local-device, loopback, opt-in)",
+  "README.MD agent directives (shipped in APK, socket-readable)",
+  "3D LEARNING CUBE test-engine demo tab (artistic theoretical rendering, Increase Slice slider 0.1%-100% with per-point verified chain offsets, offline, no keys, no trading)",
+  "Robot arm simulated test tab (canvas 2D practice arm, no physical arm connected)",
+  "Bluetooth share tab (manual chain-bundle copy/paste with human review; live discovery not available)",
+  "WiFi relay probe tab (readiness check only, no sending, never touches an unjoined router)",
+  "Mapping tab (opt-in, on-phone-only location records, viewable and deletable)",
+  "Train ZINIUM tab (opt-in 24-hour totals only, human-approved adoption, delete clears all)",
+  "Robotics training tab (simulated routines only, no physical arm, finished routines recorded on-phone only; review approves a record into the chain records as simulated practice, or rejects it)",
+  "Connect tab (GitHub ON/OFF switch, gate + status only for token actions; public repo check live while the switch is on, no token sent, nothing stored; proposal and feedback boxes, local pending-review only, review approves into the chain records or rejects)",
+  "ZINIUM Link tab (manual phone-to-phone hello/packet path; live packet send posts exactly once to a user-picked endpoint on an explicit send press; received packets reviewed — approve into the chain records or reject; no Bluetooth bridge, nothing sent automatically)",
+  "Tracking tab (13 opt-in panels, on-phone only; two sharing panels share only counts or mapping points to a user-typed endpoint on an explicit share-once press; aggregate summary counts only, review approves it into the chain records; TV/app-use/biometric panels unavailable, record nothing)",
+  "Ai2Ai tab (manual announce + explicit accept, per-AI text-window workspaces, offers pending-review only; approve makes an offer available for learning, adopt moves an approved offer into the chain records, reject drops it; no live direct connection to another app)",
+  "ZINIUM upgrade 2026-11-03 (RUNNING in-app, not a record only: JS neural backbone — seeded reference model, deterministic weights, untrained, not a learned LLM — generating on every chat message; JS spine instantiating the chain processor records 500/690/865/656/657 in the app and routing each message through them with errors surfaced; JS mesh packet layer with pure-JS SHA-256 CHECKSUM verified in-app, sniff/clone refused, transfers user-initiated only; no PyTorch, no GPU, CPU only; harness tests/test-zinium-runtime.js)"
+ ],
+ "storage_allocation": {
+  "min_free_space_mb": 100,
+  "ledger_cap_mb": 5,
+  "records_cap_mb": 10,
+  "modules_cap_mb": 20,
+  "total_app_cap_mb": 50,
+  "cube_space_mb": 4096
+ },
+ "cube": {
+  "space_mb": 4096,
+  "hard_cap": true,
+  "no_flash": "app install creates the cube in allocated space, never a board flash",
+  "only_installed": "HALEX-AI + its ZINIUM\u2075 fully agentified intelligence chain, nothing else",
+  "ram": "app sandbox process space, bounded by the small single deployment + intake caps; no fixed RAM reservation is claimed",
+  "at_cap_options": [
+   "ADOPT the compiled libraries into ZINIUM (relay out, then free/continue)",
+   "ALLOCATE MORE SPACE (owner's call)"
+  ],
+  "automatic": "never \u2014 the owner chooses, explicitly"
+ },
+ "github": {
+  "public_reads": "need nothing",
+  "writes": "owner's own GitHub token, stored in the app's private storage only; never in the chain, never shipped in the APK",
+  "no_token": "read-only, stated plainly in the app",
+  "gates": "staging -> verified -> push; SuperAllen gate unchanged",
+  "v1": "public reads via browser + private token vault + read-only state; write/push from the phone is a later piece"
+ },
+ "libraries_relay_absorption": {
+  "modules": "Intelligence modules hold forging/gathering",
+  "libraries": "adopted tokens grouped by category lane; compile on the phone, relay back to ZINIUM",
+  "staging_files": "local files are staging; the chain absorbs them as on-chain tokens (token = record, provenance kept), not links",
+  "at_cap": "owner chooses ADOPT or ALLOCATE MORE SPACE; never automatic",
+  "relay": "export from the app today; the relay the phone reaches out to is future work"
+ },
+ "download_section": {
+  "order": "donation ask FIRST, then the download link",
+  "donation": "voluntary, never a paywall; the download is not locked behind payment",
+  "link_rule": "the download link slot goes live WITH the verified APK only; never publish a dead link before the APK file is verified on disk"
+ },
+ "enforcement": "probe at install/first run; install only what fits within the allocation; overflow queued or refused plainly, never silently overruns the device",
+ "hard_constraints": [
+  "no keys",
+  "no signing",
+  "no private wallets",
+  "no trading execution code",
+  "knowledge-only records",
+  "human-first learning",
+  "history never rewritten"
+ ]
+}
