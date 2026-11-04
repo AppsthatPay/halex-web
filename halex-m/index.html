@@ -1283,6 +1283,7 @@ nav.tabbar button span{letter-spacing:.015em}
 </style>
 <link rel="stylesheet" href="halex-m-ai.css">
 <link rel="stylesheet" href="halex-m-upgrade.css">
+<link rel="stylesheet" href="halex-m-skills-lab.css">
 <link rel="stylesheet" href="halex-m-wallet-modules.css">
 <link rel="stylesheet" href="halex-m-trading-token-view.css">
 <link rel="stylesheet" href="halex-m-apex-research.css">
@@ -1944,6 +1945,9 @@ nav.tabbar button span{letter-spacing:.015em}
     <label class="qa-check live-off" style="margin-top:12px"><input type="checkbox" disabled> Switch to live currency — DISABLED. Live execution is not wired in this static page: HALEX-M holds no keys, signs nothing, and moves no funds, and wallet connect is read-only. Live is not offered until the paper-test gate is proven AND a real signed executor exists.</label>
     <p class="note" id="lab-markup-note" style="margin-top:10px"></p>
   </div>
+  <div class="sec-title">Skills Lab — modernized cards + visitor wallet</div>
+  <div id="hm-sl-root"></div>
+  <div id="hm-sl-wallet"></div>
 </section>
 
 <!-- ================= RESEARCH ================= -->
@@ -9830,6 +9834,9 @@ initGate();
 <script src="halex-m-upgrade.js"></script>
 <script src="halex-m-wallet-modules.js"></script>
 <script src="halex-m-lab-expansion.js"></script>
+<script src="paper-test-simulator.js"></script>
+<script src="halex-m-skills-lab.js"></script>
+<script src="halex-m-skills-lab-wallet.js"></script>
 <script src="halex-m-trading-token-view.js"></script>
 <script src="halex-m-apex-research.js"></script>
 <script>
