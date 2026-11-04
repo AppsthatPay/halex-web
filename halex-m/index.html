@@ -559,6 +559,17 @@ body.chain-pop{overflow:hidden}
 .route-label{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:.02em; color:#ffe1a8; background:rgba(8,10,16,.72); border:1px solid rgba(255,194,75,.45); padding:2px 7px; border-radius:99px; white-space:nowrap}
 .route-label:hover{color:#fff; border-color:var(--gold)}
 
+/* ---------- chaintarium upgrade 2026-10-31 (staging) ---------- */
+.chain-sysbar{display:flex; gap:7px; flex-wrap:wrap; align-items:center; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:9px 12px; margin-bottom:10px}
+.chain-sysbar b{font-size:13px}
+.chain-sysbar .btn{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; border:1px solid var(--line2); background:var(--panel2); color:var(--muted)}
+.chain-sysbar .btn.on{background:var(--text); color:var(--bg)}
+.chain-sysbar .note{flex-basis:100%}
+#chain-live-status{font-size:12px; color:var(--muted)}
+.surf-activity-tick{position:absolute; left:10px; bottom:30px; z-index:6; max-width:min(420px,86vw); background:rgba(8,10,16,.82); border:1px solid rgba(255,194,75,.4); border-radius:10px; padding:7px 10px; font-size:11.5px; color:#c6d2e8; backdrop-filter:blur(6px)}
+#chain-activity-card p{margin:6px 0 0; font-size:12.5px; color:var(--muted)}
+#chain-activity-card .mono{font-size:11.5px}
+.planet-label.dying{border-color:rgba(168,85,247,.7); color:#e9d5ff}
 /* ---------- chaintarium — cosmos tracker ---------- */
 .chain-track{margin-top:10px}
 .track-head{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
@@ -1271,6 +1282,8 @@ nav.tabbar button span{letter-spacing:.015em}
 [hidden]{display:none !important}
 </style>
 <link rel="stylesheet" href="halex-m-ai.css">
+<link rel="stylesheet" href="halex-m-upgrade.css">
+<link rel="stylesheet" href="chaintarium-cityscapes.css">
 <script src="halex-zcure.js"></script>
 </head>
 <body>
@@ -1773,6 +1786,19 @@ nav.tabbar button span{letter-spacing:.015em}
       </tbody>
     </table>
   </div>
+  <div class="sec-title">Talk to HALEX-M AI about trading</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px; font-size:13px">A chat box in this tab, sharing the SMT draft with the HALEX-M AI tab and the Skills Lab Forge. Ask about a skill, scan a token, or check the paper-test gate — then send a useful answer to the draft with one tap.</p>
+    <div class="halexm-optlist" data-context="trading"></div>
+    <div class="halexm-log" id="trading-log" aria-live="polite"></div>
+    <label class="flabel" for="trading-input">Ask HALEX-M AI</label>
+    <textarea id="trading-input" rows="3" placeholder="e.g. Build a trading skill with me · scan token 0x… · explain the paper-test gate"></textarea>
+    <div style="display:flex; gap:8px; margin-top:9px; flex-wrap:wrap">
+      <button class="btn primary" id="trading-send">Send</button>
+      <button class="btn" id="trading-draft">Add last answer to SMT draft</button>
+    </div>
+  </div>
+
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Paper trading runs on the always-on box, not in this page — the sandbox shows the fleet's real status and records. No simulated trades are generated here.</span></div>
 </section>
 
@@ -1819,6 +1845,97 @@ nav.tabbar button span{letter-spacing:.015em}
       <p class="note" id="forge-queue-note" style="margin-top:9px"></p>
     </div>
   </div>
+  <div class="sec-title">SMT draft — what SMT has organized</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">SMT — the Skills Lab builder, the patient librarian of the Lab — keeps one working skill draft for the whole app. The HALEX-M AI chat, this Forge, and the Trading chat all write to it; this card shows what has settled so far. The Q&amp;A builder below writes to the same draft.</p>
+    <div id="smt-draft-body"></div>
+  </div>
+
+  <div class="sec-title">Q&amp;A trading-strategy builder — with SMT</div>
+  <div class="card" id="qa-builder">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Six questions, asked in order, answered with you: chains, strategy type, token contract, size and caps, risk, then paper-test duration and settings. Going back keeps every setting you already set — nothing you chose is thrown away for changing your mind. When you agree, SMT shows the trading card: the full config, the paper-test plan, and the paper-test gate. Proper token knowledge is asked for every skill: a contract address is required, and its metadata is checked by a live read or marked NOT READ.</p>
+    <div class="halexm-optlist" data-context="skills"></div>
+    <div id="qa-body"></div>
+    <div class="qa-nav" id="qa-nav"></div>
+    <p class="note qa-note" id="qa-note"></p>
+  </div>
+
+  <div class="card" id="trading-card" hidden></div>
+
+  <div class="sec-title">Exactly how Allen builds a trade strategy</div>
+  <div class="card" id="lab-allen-method">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Allen's method, plainly, no hype, no promised returns. Eight steps in order. Each step explains itself, and "Use this step" puts that step into your Q&amp;A draft so you can review it in the builder below. Nothing here trades, nothing here promises a result.</p>
+    <div id="lab-method-steps"></div>
+    <p class="note" id="lab-method-note" style="margin-top:10px"></p>
+  </div>
+
+  <div class="sec-title">Strategy ideas — pick a shape, not a promise</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Every card below is an IDEA — a starting shape, a template only. None of these is a proven skill, and none carries a win rate or a profit claim. Picking one pre-fills the Q&amp;A builder with that shape; you still write the entry, the exit, and the guards yourself.</p>
+    <div id="lab-ideas"></div>
+  </div>
+
+  <div class="sec-title">Guided picker — talk it through, then choose</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Open context chat: type freely, not just on rails. This chat asks about your goal, your chain, your risk, your time, and your caps — then suggests two or three strategy shapes WITH their trade-offs, in plain words. It helps you choose; it never chooses for you. Picking a suggestion pre-fills the Q&amp;A.</p>
+    <div class="halexm-log" id="lab-picker-log" aria-live="polite"></div>
+    <label class="flabel" for="lab-picker-input">Your goal, chain, risk, time, caps — in your own words</label>
+    <textarea id="lab-picker-input" rows="3" placeholder="e.g. I want something patient on Base, I can watch it a few hours a day, and I hate big drawdowns…"></textarea>
+    <div style="display:flex; gap:8px; margin-top:9px; flex-wrap:wrap">
+      <button class="btn primary" id="lab-picker-send">Send</button>
+      <button class="btn" id="lab-picker-skip">Skip this question</button>
+    </div>
+    <div id="lab-picker-picks" style="margin-top:12px"></div>
+  </div>
+
+  <div class="sec-title">AI trade skill suggestions — from your answers and the Lab roll</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Suggestions built by rules from what you said in the picker and what the Lab already lists — never invented performance, never a promised result. Each one names its reasoning and points at its evidence: your answers, or a Lab roll entry with its measured status.</p>
+    <div id="lab-suggestions"></div>
+  </div>
+
+  <div class="sec-title">Expanded settings center — more options, each explained</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">More toggles for the Q&amp;A builder, on top of its own settings. Every toggle carries a short explainer: what it does, when it helps, what it risks. Nothing here is unexplained, and nothing here trades — these are paper-test settings that travel with the draft into the trading card and the markup below.</p>
+    <div id="lab-settings"></div>
+    <p class="note" id="lab-settings-summary" style="margin-top:10px"></p>
+  </div>
+
+  <div class="sec-title">Trade tools picker — only tools this page actually has</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Pick the HALEX-M tools this strategy may use. Every tool listed here exists in this page right now — Token DNA, APEX&#178; Research, Chaintarium search, and the reads behind them. Picking a tool adds it to the strategy's toolkit in the draft. A tool the page does not have is never listed.</p>
+    <div id="lab-tools"></div>
+    <p class="note" id="lab-tools-summary" style="margin-top:10px"></p>
+  </div>
+
+  <div class="sec-title">Assimilated into the Lab roll</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Strategies the Lab has absorbed into its own roll, shown under their own Lab names with their own measured status. Forged skills join this roll once they have a paper record; until then they live in the draft, not here. No outside brand is shown in this section — Lab names only.</p>
+    <div id="lab-assimilated"></div>
+  </div>
+
+  <div class="sec-title">How the pieces work — read before you deploy</div>
+  <div class="card" id="lab-info">
+    <div class="lab-info-panel"><b>The paper-test gate</b><p>A skill is paper-proven only when it measures a win rate of &#8805;65% over &#8805;30 closed paper trades, with a profit factor of &#8805;1.2 — all three, from recorded paper trades. Live capital is not even offered until that gate is proven. A skill below any one of the three stays on paper, however good it feels.</p></div>
+    <div class="lab-info-panel"><b>What paper execution is</b><p>Paper execution in this page is a local simulation and record: the run is written to this browser's local storage with its config and start time. No fills are simulated here, no contract is deployed, and no real funds move. Closed trades stay at 0 and the gate stays NOT PROVEN until real paper results are recorded from the desk.</p></div>
+    <div class="lab-info-panel"><b>What live execution needs</b><p>Live execution needs two things that are not present in this static page: the paper-test gate proven above, AND a real signed executor. HALEX-M holds no keys, signs nothing, and moves no funds; wallet connect here is read-only. Until a signed executor exists, the live switch stays disabled — that is a safety fact, not a missing button.</p></div>
+  </div>
+
+  <div class="sec-title">Markup and deployment options</div>
+  <div class="card" id="lab-markup">
+    <p class="note" style="margin:0 0 10px; font-size:13px">Markup is the skill's written form, shown two ways side by side: the copy/paste prompt on the left, the structured config of the same skill on the right. Both are built from the same draft, so they can never disagree. Deployment options sit below: the paper arena (a real local record), the existing wallet pick in the Forge, and live — disabled, honestly.</p>
+    <div class="lab-markup-grid">
+      <div><b style="font-size:13.5px">Copy/paste prompt</b><textarea class="forge-out" id="lab-markup-prompt" rows="14" readonly aria-label="Skill copy/paste prompt"></textarea></div>
+      <div><b style="font-size:13.5px">Structured config</b><pre class="lab-config" id="lab-markup-config" aria-label="Skill structured config"></pre></div>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap">
+      <button class="btn" id="lab-markup-refresh">Refresh markup from draft</button>
+      <button class="btn primary" id="lab-markup-paper">Start paper run (local record)</button>
+      <button class="btn" id="lab-markup-wallet">Go to the Forge wallet pick</button>
+    </div>
+    <label class="qa-check live-off" style="margin-top:12px"><input type="checkbox" disabled> Switch to live currency — DISABLED. Live execution is not wired in this static page: HALEX-M holds no keys, signs nothing, and moves no funds, and wallet connect is read-only. Live is not offered until the paper-test gate is proven AND a real signed executor exists.</label>
+    <p class="note" id="lab-markup-note" style="margin-top:10px"></p>
+  </div>
 </section>
 
 <!-- ================= RESEARCH ================= -->
@@ -1856,6 +1973,11 @@ nav.tabbar button span{letter-spacing:.015em}
     </div>
     <p class="note" style="margin:10px 0 0">The roster measurement runs on the always-on desk. Nothing is printed here until HALEX's own ledger has measured it — no borrowed statistics, no other platform's numbers dressed as ours.</p>
   </div>
+  <div class="card">
+    <b>Ask HALEX-M AI about this research</b>
+    <p class="note" style="margin-top:4px">These options open the HALEX-M AI tab with the question ready — the agent answers there, not in this tab.</p>
+    <div class="halexm-optlist" data-context="research"></div>
+  </div>
 </section>
 
 <!-- ================= CHAINTARIUM ================= -->
@@ -1875,6 +1997,14 @@ nav.tabbar button span{letter-spacing:.015em}
     <button class="btn" id="chain-pop-open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg>Pop out</button>
   </div>
   <div id="chain-scrim" aria-hidden="true"></div>
+  <div class="chain-sysbar" id="chain-sysbar" aria-label="Chaintarium solar systems">
+    <b>Solar systems</b>
+    <button class="btn" id="chain-system-main" aria-pressed="false">Main system</button>
+    <button class="btn" id="chain-system-dying" aria-pressed="false">Dying system only</button>
+    <button class="btn on" id="chain-system-both" aria-pressed="true">Both systems</button>
+    <span id="chain-live-status">Live-activity feed: not wired yet — model tick only. No live chain-block feed is connected; transfers below are MODEL, not live.</span>
+    <p class="note">Both systems share this one window. The main system orbits Bitcoin (the sun). The second, dying system orbits a blackhole sun and holds lesser-used / dead / R&amp;D chains, labelled as such. Cross-system arcs are drawn only when a transfer exists in the current 15-second window — model transfers until a live feed is wired.</p>
+  </div>
   <div id="chain-stage">
     <canvas id="chain-canvas"></canvas>
     <div id="chain-labels"></div>
@@ -1890,7 +2020,10 @@ nav.tabbar button span{letter-spacing:.015em}
             <div class="chain-suggest" id="surf-suggest"></div>
           </div>
         </div>
+        <div class="hm-cs-tools" id="hm-cs-tools"></div>
+        <div class="hm-cs-legend" id="hm-cs-legend"></div>
       </div>
+      <div class="surf-activity-tick" id="surf-activity-tick">Planet view — last 15 seconds: model tick only, no live feed wired yet.</div>
       <div class="surf-layers" id="surf-layers"><b>Planet layers: 3 years each</b><span class="note" style="font-size:12px"> The core is the oldest records, the surface is the newest. Pick a layer, or type a year and jump to it.</span><div class="layer-btns" id="surf-layer-btns"></div><div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="surf-layer-date" type="text" inputmode="numeric" placeholder="Year, e.g. 2020" /><button class="btn" id="surf-layer-go">Go to layer</button></div><p class="surf-layer-note" id="surf-layer-note"></p></div>
       <aside class="surf-feed" id="surf-feed" aria-label="Live chain feed">
         <div class="sf-head"><span class="track-live-dot"></span><b id="sf-title">Live chain feed</b><button id="sf-close" aria-label="Hide the live chain feed">✕</button></div>
@@ -1920,6 +2053,14 @@ nav.tabbar button span{letter-spacing:.015em}
         <button class="btn" id="chain-tools-overlays" aria-pressed="true">Overlays on</button>
         <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
         <button class="btn" id="chain-tools-showall" hidden>Show all worlds</button>
+      </div>
+      <div class="tb-group tb-unclutter" id="tb-unclutter">
+        <div class="tb-cap">UNCLUTTER</div>
+        <button class="btn" id="uncl-hide-empty" disabled title="NOT WIRED — the cosmos is a stylized deterministic model with no per-shard address counts to filter on">Hide empty shards: NOT WIRED</button>
+        <button class="btn" id="uncl-collapse-inactive" aria-pressed="false">Collapse inactive tokens: off</button>
+        <button class="btn" id="uncl-high-signal" aria-pressed="false">High-signal only: off</button>
+        <button class="btn" id="uncl-streamline-feed" aria-pressed="false">Streamline tx feed: off</button>
+        <p class="note" style="font-size:11.5px; margin:4px 0 0">Collapse inactive hides tracked tokens and wallets whose last live read failed and that have no data to show. High-signal only keeps platforms, wallets, rugs, and bundles on, and hides transactions, flows, labels, and the scan card — through the same layer switches above. Streamline collapses the live chain feed to its header.</p>
       </div>
       <div class="tb-group tb-window">
         <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
@@ -1951,6 +2092,13 @@ nav.tabbar button span{letter-spacing:.015em}
     <b>Bitcoin — the sun</b>
     <p class="note" style="margin-top:4px">Every chain in the system orbits the original. Search above, tap a planet in the sky, or pick one from the row of worlds to visit it and open its planet view — the world as a sphere. Planet size follows each chain's age and activity; moons are its lesser-known forks.</p>
   </div>
+  <div class="card" id="chain-activity-card">
+    <b>Live-activity tick — last 15 seconds</b>
+    <p id="chain-activity-tick">Waiting for the first 15-second tick. Source will be labelled here on every tick: live feed if one is wired, otherwise MODEL.</p>
+    <p id="chain-system-note">Model vs live: planet sizes, rods, terrain bands, grids, markers and transfer arcs in this upgrade are a stylized deterministic MODEL (snapshot values), not live chain data. A live feed is NOT wired yet. To wire one, a host feed must provide <span class="mono">window.HALEX_CHAIN_FEED.latestTransfers(15)</span> returning [{from, to}] chain ids — until then every transfer shown is explicitly labelled MODEL.</p>
+    <p><b>Main-system planets (top 40 most-listed / used + PIVX):</b> <span id="chain-top40-list"></span></p>
+    <p><b>Dying system (blackhole sun — lesser-used / dead / R&amp;D chains, labelled as such):</b> <span id="chain-dying-list"></span></p>
+  </div>
   <div class="chain-below" id="chain-below">
     <div class="card cb-card">
       <b>Color code</b>
@@ -1975,6 +2123,11 @@ nav.tabbar button span{letter-spacing:.015em}
       <b>How search works</b>
       <p>One bar searches everything. A chain name flies you to its planet. A token name or contract starts live tracking and opens that token's planetarium. A pasted wallet address opens the wallet's own moon system. The search inside a planet does all of that too, and also finds the structures standing on that world.</p>
     </div>
+  </div>
+  <div class="card">
+    <b>Ask HALEX-M AI about this cosmos</b>
+    <p class="note" style="margin-top:4px">The HALEX-M AI tab answers from this app's own knowledge and reads — it does not live in every tab. These options open that tab with the question ready.</p>
+    <div class="halexm-optlist" data-context="chaintarium"></div>
   </div>
 </section>
 
@@ -2362,6 +2515,29 @@ nav.tabbar button span{letter-spacing:.015em}
   </div>
 </section>
 
+<!-- ================= HALEX-M AI ================= -->
+<section class="tab" id="tab-halexmai">
+  <div class="tabhead">
+    <h2>HALEX-M AI</h2>
+    <p>Crypto-blockchain centric chat, wired into the HALEX-M system that already exists. This AI reads as HALEX-M reads: blockchain thinking, trading-strategy development, and token, wallet, and transaction scans through the public reads this page already uses. It is linked into each chain as a reader only — it holds no keys, signs nothing, and moves no funds. The chat lives in this tab, not in a floating button, and what you build here lands in the same SMT draft the Skills Lab Forge works from.</p>
+  </div>
+  <div class="sec-title">What you can ask here</div>
+  <div class="halexm-optlist" data-context="trading"></div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px; font-size:13px">Answers come from the page's own AI knowledge base plus the blockchain-knowledge topics (blockchain basics, smart contracts, allowances, transfers, gas, liquidity, slippage, paper proving). Token scans read live DexScreener public pairs; Solana wallet and transaction scans read the page's public Solana RPC pattern; anything else answers NOT READ with the reason. No risk score is invented, and nothing here is ever labeled verified on this chat's word.</p>
+    <div class="halexm-log" id="halexmai-log" aria-live="polite"></div>
+    <label class="flabel" for="halexmai-input">Ask HALEX-M AI — or paste a contract address to scan it</label>
+    <textarea id="halexmai-input" rows="3" placeholder="e.g. What does custody mean? · scan token 0x… · scan wallet <Solana address> · scan tx <signature> · build a skill with me"></textarea>
+    <div style="display:flex; gap:8px; margin-top:9px; flex-wrap:wrap">
+      <button class="btn primary" id="halexmai-send">Send</button>
+      <button class="btn" id="halexmai-draft">Add last answer to SMT draft</button>
+      <button class="btn" id="halexmai-open-lab">Open the Skills Lab builder</button>
+    </div>
+    <p class="note" style="margin:9px 0 0">Chat history lives in this page only — it is not stored, sent, or filed anywhere. The SMT draft is the shared working skill: it is the same draft the Skills Lab shows and the Trading chat writes to.</p>
+  </div>
+  <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Advisory only. HALEX-M AI explains and reads; it never trades, never signs, and never moves funds. A scan that cannot read says NOT READ — an unread check is never counted as a pass.</span></div>
+</section>
+
 <p class="footer-note">HALEX-M Sandbox · a test build. Live data: DexScreener + GeckoTerminal public APIs. Anything not yet wired says so on its face.</p>
 </main>
 
@@ -2378,6 +2554,7 @@ nav.tabbar button span{letter-spacing:.015em}
 <nav class="tabbar"><div class="rail" id="tabbar"></div></nav>
 
 <script src="chaintarium-moons.js"></script>
+<script src="chaintarium-cityscapes.js"></script>
 <script>
 "use strict";
 /* ============================================================
@@ -2442,7 +2619,8 @@ var TABS = [
   {id:"scout",  label:"Airdrop Scout", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2.5a8.5 8.5 0 018.5 8.5h-17A8.5 8.5 0 0112 2.5z"/><path d="M4.6 11l5 4.2M19.4 11l-5 4.2M12 11v4.2"/><rect x="9.4" y="15.2" width="5.2" height="5" rx="1"/></svg>'},
   {id:"know",   label:"Know HALEX", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19a2 2 0 012-2h13"/></svg>'},
   {id:"swap",   label:"Swap",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h13M13.5 3.5L17 7l-3.5 3.5M20 17H7M10.5 13.5L7 17l3.5 3.5"/></svg>'},
-  {id:"wallet", label:"Wallet",  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>'}
+  {id:"wallet", label:"Wallet",  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>'},
+  {id:"halexmai", label:"HALEX-M AI", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'}
 ];
 var currentTab = "home";
 /* Infinite looping tab rail: the tab set is rendered three times and the
@@ -5346,16 +5524,134 @@ var CHAINS_3D = [
     zones:[["Payments Flats",-0.4,-0.3],["DigiShield Highlands",0.45,-0.45],["The Five Mines",0.05,0.55]] },
   { id:"dogecoin", name:"Dogecoin", sym:"DOGE", color:0xc2a633, born:2013, activity:0.55, orbit:76, speed:0.15,
     info:"The original memecoin — a 2013 fork of the Litecoin line that turned a joke into one of the longest-lived payment chains in crypto, still running on its own UTXO ledger with one-minute blocks and a famously loyal community. Dogecoin is not part of the live APEX¹ firehose: this world is on the map for research, and no live token feed runs behind it.",
-    zones:[["Shibe Flats",-0.35,-0.35],["The Moon Fields",0.5,0.25],["Tipping Plains",0,0.6]] }
+    zones:[["Shibe Flats",-0.35,-0.35],["The Moon Fields",0.5,0.25],["Tipping Plains",0,0.6]] },
+  { id:"optimism", name:"Optimism", sym:"OP", color:0xff0420, born:2021, activity:0.6, orbit:90, speed:0.22, info:"Model planet — Optimism, an Ethereum rollup. Surface is a stylized model, not live chain data." },
+  { id:"zksync", name:"zkSync Era", sym:"ZK", color:0x8c8dfc, born:2023, activity:0.45, orbit:93, speed:0.2, info:"Model planet — zkSync Era, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"starknet", name:"Starknet", sym:"STRK", color:0x0c0c4f, born:2021, activity:0.4, orbit:96, speed:0.18, info:"Model planet — Starknet, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"aptos", name:"Aptos", sym:"APT", color:0x00e0a4, born:2022, activity:0.5, orbit:99, speed:0.24, info:"Model planet — Aptos, a Move-language chain. Surface is a stylized model, not live chain data." },
+  { id:"near", name:"NEAR Protocol", sym:"NEAR", color:0x00ec97, born:2020, activity:0.45, orbit:102, speed:0.19, info:"Model planet — NEAR Protocol. Surface is a stylized model, not live chain data." },
+  { id:"hedera", name:"Hedera", sym:"HBAR", color:0x0ac6a5, born:2019, activity:0.4, orbit:105, speed:0.17, info:"Model planet — Hedera. Surface is a stylized model, not live chain data." },
+  { id:"algorand", name:"Algorand", sym:"ALGO", color:0x000000, born:2019, activity:0.35, orbit:108, speed:0.16, info:"Model planet — Algorand. Surface is a stylized model, not live chain data." },
+  { id:"tezos", name:"Tezos", sym:"XTZ", color:0x2c7df7, born:2018, activity:0.35, orbit:111, speed:0.15, info:"Model planet — Tezos. Surface is a stylized model, not live chain data." },
+  { id:"monero", name:"Monero", sym:"XMR", color:0xff6600, born:2014, activity:0.4, orbit:114, speed:0.14, info:"Model planet — Monero, a privacy chain. Surface is a stylized model, not live chain data." },
+  { id:"unichain", name:"Unichain", sym:"UNI", color:0xff007a, born:2024, activity:0.45, orbit:117, speed:0.26, info:"Model planet — Unichain, a Uniswap L2. Surface is a stylized model, not live chain data." },
+  { id:"hyperliquid", name:"Hyperliquid", sym:"HYPE", color:0x00d4a6, born:2023, activity:0.55, orbit:120, speed:0.27, info:"Model planet — Hyperliquid. Surface is a stylized model, not live chain data." },
+  { id:"linea", name:"Linea", sym:"LINEA", color:0x61dfff, born:2023, activity:0.4, orbit:123, speed:0.21, info:"Model planet — Linea, an Ethereum rollup. Surface is a stylized model, not live chain data." },
+  { id:"scroll", name:"Scroll", sym:"SCR", color:0xffeeda, born:2023, activity:0.35, orbit:126, speed:0.2, info:"Model planet — Scroll, a ZK rollup. Surface is a stylized model, not live chain data." },
+  { id:"blast", name:"Blast", sym:"BLAST", color:0xfcfc03, born:2024, activity:0.35, orbit:129, speed:0.23, info:"Model planet — Blast, an Ethereum L2. Surface is a stylized model, not live chain data." },
+  { id:"mantle", name:"Mantle", sym:"MNT", color:0x000000, born:2023, activity:0.4, orbit:132, speed:0.22, info:"Model planet — Mantle, an Ethereum L2. Surface is a stylized model, not live chain data." },
+  { id:"berachain", name:"Berachain", sym:"BERA", color:0x6b3f1d, born:2024, activity:0.35, orbit:135, speed:0.25, info:"Model planet — Berachain. Surface is a stylized model, not live chain data." },
+  { id:"pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, activity:0.25, orbit:138, speed:0.18, info:"Model planet — PIVX, a privacy-focused proof-of-stake chain. It also appears in the dying system as a fading world, labelled as such. Surface is a stylized model, not live chain data." }
 ];
 CHAINS_3D.forEach(function(c){
   if(!c.size) c.size = Math.round((0.45 + (2026 - c.born) * 0.03 + c.activity * 1.15) * 100) / 100;
   if(!c.zones) c.zones = [["Core Settlements",-0.4,-0.25],["DeFi Highlands",0.45,-0.4],["The Outer Flats",0.05,0.55]];
   c.moons = c.moons || [];
 });
+/* ---------------- Chaintarium upgrade 2026-10-31 (staging) ----------------
+   TOP-40 + PIVX: CHAINS_3D above now holds 41 planets (24 original + 17
+   added: Optimism, zkSync Era, Starknet, Aptos, NEAR, Hedera, Algorand,
+   Tezos, Monero, Unichain, Hyperliquid, Linea, Scroll, Blast, Mantle,
+   Berachain, PIVX). Names are listed here and in #chain-top40-list.
+   DYING SYSTEM: DYING_CHAINS_3D below is a SECOND solar system, not new
+   chains — dying-system renderings of lesser-used / dead / R&D chains.
+   A dying entry with a mainId also exists as a main planet; the dying
+   rendering is the same chain shown fading toward the blackhole. */
+var DYING_CHAINS_3D = [
+  { id:"dying-etc", name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, status:"dying chain", mainId:null, note:"Dying-system rendering — Ethereum Classic, the unforked chain, shown fading toward the blackhole. Labelled dying, not a new chain." },
+  { id:"dying-dgb", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, status:"dying chain", mainId:"digibyte", note:"Dying-system rendering of DigiByte (also a main planet). Labelled dying." },
+  { id:"dying-pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, status:"dying chain", mainId:"pivx", note:"Dying-system rendering of PIVX (also a main planet). Labelled dying." },
+  { id:"dying-thunder", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, status:"dying chain", mainId:"thundercore", note:"Dying-system rendering of ThunderCore (also a main planet). Labelled dying." },
+  { id:"dying-nano", name:"Nano", sym:"NANO", color:0x4a90e2, born:2015, status:"dying chain", mainId:"nano", note:"Dying-system rendering of Nano (also a main planet). Labelled dying." },
+  { id:"dying-plasma", name:"Plasma", sym:"PLASMA", color:0x7a5cff, born:2019, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Plasma, a scaling R&D design, labelled dead / R&D chain." },
+  { id:"dying-namecoin", name:"Namecoin", sym:"NMC", color:0x8a8a8a, born:2011, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Namecoin, an early naming R&D chain, labelled dead / R&D." },
+  { id:"dying-peercoin", name:"Peercoin", sym:"PPC", color:0x3cb054, born:2012, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Peercoin, an early proof-of-stake R&D chain, labelled dead / R&D." },
+  { id:"dying-vertcoin", name:"Vertcoin", sym:"VTC", color:0x1b3448, born:2014, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Vertcoin, labelled dead / R&D." },
+  { id:"dying-feathercoin", name:"Feathercoin", sym:"FTC", color:0x2c7df7, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Feathercoin, labelled dead / R&D." },
+  { id:"dying-primecoin", name:"Primecoin", sym:"XPM", color:0xc0c0c0, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Primecoin, a prime-number proof-of-work R&D chain, labelled dead / R&D." },
+  { id:"dying-terraclassic", name:"Terra Classic", sym:"LUNC", color:0x5496ff, born:2018, status:"dead chain", mainId:null, note:"Dying-system rendering — Terra Classic, labelled dead chain." }
+];
+/* Micro-structure sizing — rods that stick up as MODULAR structures, not
+   just scaled boxes. Input modelValue is a MODEL / SNAPSHOT value in
+   abstract units (NOT a live holding, price or balance) until a live
+   feed is wired. Height is log-clamped so one value cannot break the
+   scene; module count grows with value, so size reads as structure,
+   not mere scale. Returns part sizes in scene units. */
+function chaintariumMicroSize(modelValue){
+  var v = (typeof modelValue === "number" && isFinite(modelValue)) ? Math.max(0, modelValue) : 0;
+  var log = v > 0 ? Math.log10(v + 1) : 0;
+  var t = Math.max(0, Math.min(1, log / 6));
+  return {
+    modelValue: v, t: t,
+    baseW: 0.22 + t * 0.38, baseH: 0.10,
+    shaftH: 0.35 + t * 1.55, shaftW: 0.10 + t * 0.10,
+    modules: 1 + Math.round(t * 5),
+    moduleH: 0.16 + t * 0.10, moduleW: 0.20 + t * 0.22,
+    capH: 0.18 + t * 0.22, capW: 0.16 + t * 0.14,
+    totalH: 0.10 + (0.35 + t * 1.55) + (1 + Math.round(t * 5)) * (0.16 + t * 0.10) + (0.18 + t * 0.22)
+  };
+}
+/* Live-activity feed contract (NOT wired yet). If a host page provides
+   window.HALEX_CHAIN_FEED = { latestTransfers: function(seconds){
+   return [{from:"ethereum", to:"digibyte"}]; } }, this consumes it and
+   labels ticks LIVE. Otherwise ticks are MODEL and say so. Never claim
+   a model transfer is live. No chain-block RPC, wallet-credential or transaction-signing
+   code lives here. */
+var chaintariumLive = { feedAvailable:false, source:"model tick — no live feed wired", lastWindow:[], modelTick:0, lastTickAt:0 };
+function chaintariumLiveFeedAvailable(){
+  try { return !!(window.HALEX_CHAIN_FEED && typeof window.HALEX_CHAIN_FEED.latestTransfers === "function"); } catch(e){ return false; }
+}
+function chaintariumModelTransfers(){
+  var pairs = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-nano"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
+  var tick = chaintariumLive.modelTick, out = [];
+  for(var i = 0; i < 3; i++){
+    var pr = pairs[(tick + i) % pairs.length];
+    out.push({ from: pr[0], to: pr[1], source:"MODEL", modelUnits: 10 + ((tick * 7 + i * 13) % 90) });
+  }
+  return out;
+}
+function chaintariumActivityTick(){
+  var live = chaintariumLiveFeedAvailable();
+  var transfers = [];
+  if(live){
+    try { var got = window.HALEX_CHAIN_FEED.latestTransfers(15); if(Array.isArray(got)) transfers = got; } catch(e){ transfers = []; }
+  }
+  if(!live || !transfers.length) { if(!live) transfers = chaintariumModelTransfers(); }
+  chaintariumLive.feedAvailable = live && transfers.length > 0;
+  chaintariumLive.source = (live && transfers.length > 0) ? "LIVE feed (window.HALEX_CHAIN_FEED, last 15 s)" : "MODEL tick — no live feed wired";
+  chaintariumLive.lastWindow = transfers;
+  chaintariumLive.modelTick++;
+  chaintariumLive.lastTickAt = Date.now();
+  var label = chaintariumLive.source + " · tick " + chaintariumLive.modelTick + " · " + transfers.length + " cross-system transfer(s) in the last 15 s: " +
+    (transfers.length ? transfers.map(function(x){ return (x.source === "MODEL" ? "MODEL " : "") + x.from + " → " + x.to + (x.modelUnits != null ? " (" + x.modelUnits + " model units)" : ""); }).join("; ") : "none in window");
+  var a = document.getElementById("chain-live-status"); if(a) a.textContent = "Live-activity feed: " + label;
+  var b = document.getElementById("chain-activity-tick"); if(b) b.textContent = label;
+  var c2 = document.getElementById("surf-activity-tick"); if(c2) c2.textContent = "Planet view — last 15 seconds: " + label;
+  return label;
+}
+if(typeof window !== "undefined" && !window._chaintariumTickStarted){
+  window._chaintariumTickStarted = true;
+  setInterval(chaintariumActivityTick, 15000);
+  try { chaintariumActivityTick(); } catch(e){}
+}
 function chainById(id){ return CHAINS_3D.filter(function(x){ return x.id===id; })[0] || null; }
 function hexCss(hex){ return "#" + ("000000" + hex.toString(16)).slice(-6); }
-var ch = { started:false, focus:null };
+var ch = { started:false, focus:null, systemView:"both" };
+(function chaintariumSystemUI(){
+  function setView(v){
+    ch.systemView = v;
+    [["chain-system-main","main"],["chain-system-dying","dying"],["chain-system-both","both"]].forEach(function(pr){
+      var el = document.getElementById(pr[0]); if(!el) return;
+      var on = pr[1] === v; el.classList.toggle("on", on); el.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  var m = document.getElementById("chain-system-main"); if(m) m.addEventListener("click", function(){ setView("main"); });
+  var d = document.getElementById("chain-system-dying"); if(d) d.addEventListener("click", function(){ setView("dying"); });
+  var b = document.getElementById("chain-system-both"); if(b) b.addEventListener("click", function(){ setView("both"); });
+  var tl = document.getElementById("chain-top40-list"); if(tl) tl.textContent = CHAINS_3D.map(function(c){ return c.name; }).join(", ");
+  var dl = document.getElementById("chain-dying-list"); if(dl) dl.textContent = DYING_CHAINS_3D.map(function(c){ return c.name + " (" + c.status + ")"; }).join(", ");
+  window.chaintariumSetSystem = setView;
+})();
 function chainInfoHTML(c){
   var age = 2026 - c.born;
   var moonTxt = c.moons.length ? c.moons.map(function(m){ return m.name; }).join(", ") : "None known";
@@ -5427,7 +5723,7 @@ function startChaintarium(){
   function chainFitDist(){
     var r = canvas.getBoundingClientRect();
     var a = r.width / Math.max(1, r.height);
-    return Math.ceil(82 / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+    return Math.ceil(138 / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
   }
   camera.position.set(0, 20, 46);
 
@@ -5657,6 +5953,98 @@ function startChaintarium(){
   pulseGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(Math.max(1, routes.length * 2) * 3), 3));
   var pulsePts = new THREE.Points(pulseGeo, new THREE.PointsMaterial({ color: 0xfff3d6, size: 1.3, sizeAttenuation: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, map: glowTex, alphaTest: 0.01 }));
   world.add(pulsePts);
+  /* ---- second dying solar system (staging upgrade) ----
+     One window, two systems: a blackhole sun at a fixed offset from the
+     main sun, with dying-system worlds orbiting it. Dying worlds are
+     dim, small and fade toward the blackhole — a stylized MODEL, not
+     live chain data. Cross-system arcs use the same live-position
+     redraw as main routes; their pulses are MODEL until a live feed
+     is wired (see chaintariumLive), and their labels say MODEL. */
+  var DYING_CENTER = new THREE.Vector3(62, -48, -98);
+  var dyingGroup = new THREE.Group(); dyingGroup.position.copy(DYING_CENTER); world.add(dyingGroup);
+  var blackhole = new THREE.Mesh(new THREE.SphereGeometry(3.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
+  dyingGroup.add(blackhole);
+  /* Chaintarium upgrade: the blackhole sun itself is a card target, so
+     clicking it opens the dying-system card (previously only dying
+     worlds routed to showDyingInfo). "—" marks fields with no value;
+     nothing here claims a live feed from a dead chain. */
+  blackhole.userData.dying = { name:"Blackhole sun", sym:"—", status:"dying system", born:"—", mainId:null,
+    note:"The dying system's sun. Clicking a dying world opens its card; no live feed is claimed from a dead chain." };
+  var bhRing = new THREE.Mesh(new THREE.RingGeometry(4.2, 7.5, 64), new THREE.MeshBasicMaterial({ color: 0xa855f7, side: THREE.DoubleSide, transparent: true, opacity: 0.55 }));
+  bhRing.rotation.x = Math.PI / 2.4; dyingGroup.add(bhRing);
+  addGlow(blackhole, 0xa855f7, 22, 0.35);
+  var bhLabel = document.createElement("div"); bhLabel.className = "planet-label dying"; bhLabel.textContent = "Blackhole sun — dying system"; labelsBox.appendChild(bhLabel);
+  var dyingPlanets = [];
+  var dyingModel = (window.HalexMChaintariumCityscapes && window.HalexMChaintariumCityscapes.buildDyingSystem)
+    ? window.HalexMChaintariumCityscapes.buildDyingSystem(DYING_CHAINS_3D) : null;
+  DYING_CHAINS_3D.forEach(function(dc, di){
+    var dm = dyingModel ? dyingModel[di] : null;
+    var dr = 0.55 + di * 0.05;
+    var dmesh = new THREE.Mesh(new THREE.SphereGeometry(dr, 24, 24),
+      new THREE.MeshStandardMaterial({ color: new THREE.Color(dc.color).multiplyScalar(0.3).lerp(new THREE.Color(0x111111), 0.45), roughness: 0.7, metalness: 0.4, emissive: dc.color, emissiveIntensity: dm ? 0.08 * dm.dim : 0.08, transparent: true, opacity: dm ? dm.opacity : 0.85 }));
+    if(dm) dmesh.scale.setScalar(dm.crumble);
+    dmesh.userData.dying = dc;
+    dyingGroup.add(dmesh);
+    var dlabel = document.createElement("div"); dlabel.className = "planet-label dying"; dlabel.textContent = dc.name + " (dying)"; labelsBox.appendChild(dlabel);
+    dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: 6 + di * 2.4, speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9 });
+  });
+  var CROSS_ROUTES = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-nano"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
+  var crossRoutes = [], crossPulseGeo = null, crossPulsePts = null;
+  (function buildCrossRoutes(){
+    var tmpGeo = new THREE.BufferGeometry();
+    tmpGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(CROSS_ROUTES.length * 3), 3));
+    crossPulseGeo = tmpGeo;
+    crossPulsePts = new THREE.Points(tmpGeo, new THREE.PointsMaterial({ color: 0xffd98a, size: 1.4, sizeAttenuation: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, map: glowTex, alphaTest: 0.01 }));
+    world.add(crossPulsePts);
+    CROSS_ROUTES.forEach(function(cr, ri){
+      var ca = chainById(cr[0]); if(!ca || !ca._obj) return;
+      var dp = null; dyingPlanets.forEach(function(x){ if(x.d.id === cr[1]) dp = x; }); if(!dp) return;
+      var g = new THREE.BufferGeometry();
+      g.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEG + 1) * 3), 3));
+      var line = new THREE.Line(g, new THREE.LineBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+      world.add(line);
+      var midObj = new THREE.Object3D(); world.add(midObj);
+      var lab = document.createElement("div"); lab.className = "route-label"; lab.textContent = ca.sym + " → " + dp.d.sym + " · MODEL";
+      lab.title = "Cross-system transfer (MODEL — no live feed wired): " + ca.name + " → " + dp.d.name + " (" + dp.d.status + ")";
+      lab.addEventListener("click", function(){
+        var info = document.getElementById("chain-info"); if(!info) return;
+        info.innerHTML = "<b>Cross-system transfer — MODEL</b><p class=\"note\" style=\"margin-top:4px\">Model transfer between systems, not live transfer data. No live chain-block feed is wired yet.</p>" +
+          '<div class="kv"><span>From (main)</span><b>' + esc(ca.name) + "</b></div>" +
+          '<div class="kv"><span>To (dying)</span><b>' + esc(dp.d.name) + " (" + esc(dp.d.status) + ")</b></div>";
+      });
+      labelsBox.appendChild(lab);
+      crossRoutes.push({ a: ca._obj, bMesh: dp.mesh, bEntry: dp, geo: g, line: line, label: lab, midObj: midObj, pulses: [(ri * 0.31) % 1], speed: 0.04 + (ri % 3) * 0.01 });
+    });
+  })();
+  var _cva = new THREE.Vector3(), _cvb = new THREE.Vector3(), _cvm = new THREE.Vector3();
+  function updateCrossRoutes(t){
+    if(!crossPulseGeo) return;
+    var pp = crossPulseGeo.attributes.position.array, pi = 0;
+    var liveNow = !!(chaintariumLive && chaintariumLive.feedAvailable);
+    if(crossPulsePts) crossPulsePts.material.color.setHex(liveNow ? 0x31c48d : 0xffd98a);
+    crossRoutes.forEach(function(rt){
+      rt.a.getWorldPosition(_cva); world.worldToLocal(_cva);
+      rt.bMesh.getWorldPosition(_cvb); world.worldToLocal(_cvb);
+      _cvm.copy(_cva).add(_cvb).multiplyScalar(0.5);
+      var lift = _cva.distanceTo(_cvb);
+      _cvm.multiplyScalar(1 + Math.min(0.22, lift * 0.006 + 0.05)); _cvm.y += lift * 0.10;
+      if(rt.midObj) rt.midObj.position.copy(_cvm);
+      rt.curve = new THREE.QuadraticBezierCurve3(_cva.clone(), _cvm.clone(), _cvb.clone());
+      var lp = rt.geo.attributes.position.array;
+      for(var s2 = 0; s2 <= ARC_SEG; s2++){ var pt = rt.curve.getPoint(s2 / ARC_SEG); lp[s2 * 3] = pt.x; lp[s2 * 3 + 1] = pt.y; lp[s2 * 3 + 2] = pt.z; }
+      rt.geo.attributes.position.needsUpdate = true;
+      rt.pulses.forEach(function(p0){ var pt2 = rt.curve.getPoint((p0 + t * rt.speed) % 1); pp[pi * 3] = pt2.x; pp[pi * 3 + 1] = pt2.y; pp[pi * 3 + 2] = pt2.z; pi++; });
+    });
+    crossPulseGeo.attributes.position.needsUpdate = true;
+  }
+  function showDyingInfo(dc){
+    var info = document.getElementById("chain-info"); if(!info) return;
+    var visitBtn = dc.mainId ? '<button class="btn primary" data-visit="' + dc.mainId + '" style="margin-top:12px">Visit ' + esc(dc.name) + " (main planet)</button>" : "";
+    info.innerHTML = "<b>" + esc(dc.name) + ' <span class="mono" style="color:var(--gold); font-size:12px">$' + esc(dc.sym) + "</span> — dying system</b>" +
+      '<p class="note" style="margin-top:4px">' + esc(dc.note) + " This is a stylized model rendering, not live chain data.</p>" +
+      '<div class="kv"><span>Status</span><b>' + esc(dc.status) + "</b></div>" +
+      '<div class="kv"><span>Born</span><b>' + dc.born + "</b></div>" + visitBtn;
+  }
   var _va = new THREE.Vector3(), _vb = new THREE.Vector3(), _vm = new THREE.Vector3();
   function updateRoutes(t){
     var pp = pulseGeo.attributes.position.array, pi = 0;
@@ -5688,8 +6076,8 @@ function startChaintarium(){
   var hudSys = document.createElement("div");
   hudSys.className = "chain-hud"; hudSys.id = "chain-hud-sys";
   hudSys.innerHTML = "<b>CHAINTARIUM — LIVE SYSTEM</b>" +
-    '<span class="mono">' + CHAINS_3D.length + " worlds · " + routes.length + ' cross-chain routes</span><br>' +
-    '<span class="dim">Light pulses are transfers in flight between chains. Tap any world to dive in and walk its surface.</span>';
+    '<span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
+    '<span class="dim">Light pulses are transfers in flight between chains — MODEL until a live feed is wired. Tap any world to dive in and walk its surface. Zoom out to see both systems.</span>';
   stage.appendChild(hudSys);
   var hudFocus = document.createElement("div");
   hudFocus.className = "chain-hud"; hudFocus.id = "chain-hud-focus"; hudFocus.style.display = "none";
@@ -5754,11 +6142,14 @@ function startChaintarium(){
     ray.setFromCamera(mouse, camera);
     var pickables = [];
     planets.forEach(function(p){ pickables.push(p.mesh); p.moons.forEach(function(mn){ pickables.push(mn.mesh); }); });
+    if(typeof dyingPlanets !== "undefined") dyingPlanets.forEach(function(dp){ pickables.push(dp.mesh); });
+    if(typeof blackhole !== "undefined") pickables.push(blackhole);
     var hits = ray.intersectObjects(pickables, true);
     if(hits.length){
       /* a tap can land on a city's towers or the planet's halo — walk
          up to the world that owns them */
       var ho = hits[0].object, hc = ho.userData.chain || (ho.parent && ho.parent.userData.chain);
+      if(ho.userData.dying){ showDyingInfo(ho.userData.dying); return; }
       if(hc) diveTo(hc);
     }
   }
@@ -5812,16 +6203,31 @@ function startChaintarium(){
         mn.mesh.rotation.y = t*0.25;
       });
       /* search isolation: only the isolated world (and its moons and orbit ring) stays visible */
-      var isoVis = !ch.isolated || p.c.id === ch.isolated;
+      var isoVis = (!ch.isolated || p.c.id === ch.isolated) && ch.systemView !== "dying";
       p.mesh.visible = isoVis;
       if(p.c._ring) p.c._ring.visible = isoVis;
       p.moons.forEach(function(mn){ mn.mesh.visible = isoVis; });
     });
     updateRoutes(t);
+    if(typeof dyingPlanets !== "undefined"){
+      dyingPlanets.forEach(function(dp){
+        var da = dp.angle + t * dp.speed;
+        dp.mesh.position.set(Math.cos(da) * dp.orbit, Math.sin(da * 1.3) * 0.5, Math.sin(da) * dp.orbit);
+        dp.mesh.rotation.y = t * 0.2;
+      });
+      if(typeof dyingGroup !== "undefined") dyingGroup.visible = ch.systemView !== "main" && !ch.isolated;
+      if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
+    }
+    if(typeof updateCrossRoutes === "function") updateCrossRoutes(t);
     /* cross-chain transfer routes: visible unless the transfers layer
        is off or the view is isolated to one world; pulses ride with them */
     var transfersOn = !ch.transfersOff && !ch.isolated;
-    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn; });
+    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn && ch.systemView !== "dying"; });
+    if(typeof crossRoutes !== "undefined"){
+      var crossOn = transfersOn && ch.systemView === "both";
+      crossRoutes.forEach(function(rt){ if(rt.line) rt.line.visible = crossOn; });
+      if(typeof crossPulsePts !== "undefined" && crossPulsePts) crossPulsePts.visible = crossOn;
+    }
     if(pulsePts) pulsePts.visible = transfersOn;
     if(sunGlow) sunGlow.material.opacity = 0.32 + Math.sin(t * 1.4) * 0.05; /* the sun breathes — slow, restrained */
     if(belt) belt.rotation.y = t * 0.008; /* the belt crawls around the sun */
@@ -5887,10 +6293,24 @@ function startChaintarium(){
        routes when transfers are off or the view is isolated */
     routes.forEach(function(rt){
       if(rt.label){
-        if(transfersOn && rt.midObj) placeLabel(rt.midObj, rt.label);
+        if(transfersOn && ch.systemView !== "dying" && rt.midObj) placeLabel(rt.midObj, rt.label);
         else rt.label.style.display = "none";
       }
     });
+    if(typeof dyingPlanets !== "undefined" && typeof dyingGroup !== "undefined" && dyingGroup.visible){
+      if(typeof bhLabel !== "undefined" && typeof blackhole !== "undefined") placeLabel(blackhole, bhLabel);
+      dyingPlanets.forEach(function(dp){
+        if(ch.systemView !== "main" && !ch.isolated) placeLabel(dp.mesh, dp.label); else dp.label.style.display = "none";
+      });
+    } else if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
+    if(typeof crossRoutes !== "undefined"){
+      crossRoutes.forEach(function(rt){
+        if(rt.label){
+          if(transfersOn && ch.systemView === "both" && rt.midObj) placeLabel(rt.midObj, rt.label);
+          else rt.label.style.display = "none";
+        }
+      });
+    }
     /* the focus HUD rides above the world you're locked onto */
     var hudC = chainById(ch.focus || "bitcoin");
     if(hudC && hudC._obj){
@@ -6620,6 +7040,69 @@ function buildSurfaceScene(c, stage){
     })
   );
   scene.add(atmo);
+  /* ---- Chaintarium upgrade: surface detail (MODEL rendering) ----
+     Terrain bands (latitude rings), a lat/long grid, zone markers and
+     modular micro-structures. All of it is a deterministic model
+     rendering of the chain's age/activity profile — not live data. */
+  (function surfaceDetail(){
+    function ringPoints(latDeg, radius, segments){
+      var pts = [], lat = latDeg * Math.PI / 180;
+      for(var i = 0; i <= segments; i++){
+        var a = i / segments * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * Math.cos(lat) * radius, Math.sin(lat) * radius, Math.sin(a) * Math.cos(lat) * radius));
+      }
+      return pts;
+    }
+    [-60, -30, 0, 30, 60].forEach(function(lat){
+      var g = new THREE.BufferGeometry().setFromPoints(ringPoints(lat, R + 0.9, 72));
+      world.add(new THREE.LineLoop(g, new THREE.LineBasicMaterial({ color: c.color, transparent: true, opacity: 0.35 })));
+    });
+    for(var lon = 0; lon < 360; lon += 30){
+      var pts = [], lr = lon * Math.PI / 180;
+      for(var la = -90; la <= 90; la += 6){
+        var r2 = la * Math.PI / 180;
+        pts.push(new THREE.Vector3(Math.cos(r2) * Math.cos(lr) * (R + 0.5), Math.sin(r2) * (R + 0.5), Math.cos(r2) * Math.sin(lr) * (R + 0.5)));
+      }
+      var gg = new THREE.BufferGeometry().setFromPoints(pts);
+      world.add(new THREE.Line(gg, new THREE.LineBasicMaterial({ color: 0x5aa9ff, transparent: true, opacity: 0.18 })));
+    }
+    (c.zones || []).forEach(function(z){
+      var zx = z[1], zy = z[2], zz = Math.sqrt(Math.max(0, 1 - zx * zx - zy * zy));
+      var dirM = new THREE.Vector3(zx, zy, zz).normalize();
+      var hm = surfHeight(dirM.x, dirM.y, dirM.z, seed, amp);
+      var mk = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 12), new THREE.MeshBasicMaterial({ color: c.color }));
+      mk.position.copy(dirM).multiplyScalar(R + hm + 0.6); world.add(mk);
+    });
+    /* Modular micro-structures: rods that stick up as base + shaft +
+       stacked modules + cap, sized by chaintariumMicroSize(modelValue)
+       where modelValue is a MODEL snapshot value, not a live holding. */
+    for(var mi = 0; mi < 22; mi++){
+      var mv = 5 + sHash2(mi, 901, seed) * 9000;
+      var sz = chaintariumMicroSize(mv);
+      var u = sHash2(mi, 903, seed), v = sHash2(mi, 905, seed);
+      var yy = 1 - u * 2, rr = Math.sqrt(Math.max(0, 1 - yy * yy)), tt = v * Math.PI * 2;
+      var dirS = new THREE.Vector3(Math.cos(tt) * rr, yy, Math.sin(tt) * rr);
+      var hs = surfHeight(dirS.x, dirS.y, dirS.z, seed, amp);
+      var grp = new THREE.Group();
+      grp.position.copy(dirS).multiplyScalar(R + hs - 0.05);
+      grp.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dirS);
+      var col = (mi % 3 === 0) ? 0xffc24b : ((mi % 3 === 1) ? c.color : 0x2ee6c8);
+      function boxPart(w, h, d, y, color){
+        var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color: color, roughness: 0.5, metalness: 0.55, emissive: color, emissiveIntensity: 0.25 }));
+        m.position.y = y; grp.add(m); return m;
+      }
+      var yCur = 0;
+      boxPart(sz.baseW * 2, sz.baseH, sz.baseW * 2, yCur + sz.baseH / 2, 0x11161f); yCur += sz.baseH;
+      boxPart(sz.shaftW, sz.shaftH, sz.shaftW, yCur + sz.shaftH / 2, col); yCur += sz.shaftH;
+      for(var mod = 0; mod < sz.modules; mod++){
+        var mw = sz.moduleW * (1 - mod * 0.06);
+        boxPart(mw, sz.moduleH, mw, yCur + sz.moduleH / 2, (mod % 2 === 0) ? col : 0x1d222e); yCur += sz.moduleH;
+      }
+      var cap = new THREE.Mesh(new THREE.CylinderGeometry(0.01, sz.capW, sz.capH, 4), new THREE.MeshStandardMaterial({ color: 0xffc24b, roughness: 0.4, metalness: 0.6, emissive: 0xffb03a, emissiveIntensity: 0.6 }));
+      cap.position.y = yCur + sz.capH / 2; cap.rotation.y = Math.PI / 4; grp.add(cap);
+      world.add(grp);
+    }
+  })();
 
   /* the circuit city — thousands of solid, blocky towers standing on
      machined city-block slabs. A second, broader noise field picks the
@@ -7052,6 +7535,61 @@ function buildSurfaceScene(c, stage){
      (raycast or label) with its card, and can be found from the
      planet's own search bar — which spins the planet to it. */
   var featPick = [], featFlows = [], spinGoal = null, featHi = null;
+  /* ---------------- Chaintarium upgrade: legend cityscape (MODEL) ----
+     Jeffrey's 20-type legend, built by the staging module
+     (chaintarium-cityscapes.js), laid as a district patch on this
+     world's surface. MODEL markers only: with no caller records,
+     buildCityscape() builds one MODEL example of every legend type.
+     NOTE on the merge map's literal wording: "add the returned group
+     to world" would bury the flat district inside the 15-radius
+     planet sphere, invisible and untappable. The patch is therefore
+     anchored on the surface instead: a deterministic surface
+     direction, base at terrain height, scaled 0.6 so the patch
+     follows the sphere's curve, with the transform baked into each
+     mesh so the meshes can live in the existing surfLayerGroups
+     (the applyChainLayers group pattern) rather than in the patch
+     group. Nothing here deletes the circuit city or the feature
+     markers; the legend sits on top of them. Layer toggles for all
+     five legend layers already exist in #tb-layers, so no duplicate
+     buttons are added — the legend meshes join those groups and the
+     existing switches hide/show them. */
+  var surfCsFlashers = [];
+  (function buildLegendCityscape(){
+    var CS = window.HalexMChaintariumCityscapes;
+    if(!CS || !CS.buildCityscape || !CS.buildMeshes) return;
+    var city = CS.buildCityscape(seed);
+    var built = CS.buildMeshes(THREE, city);
+    var lg = built.group;
+    var lu = sHash2(7, 777, seed), lv = sHash2(7, 817, seed);
+    var ly = 1 - lu * 2, lr = Math.sqrt(Math.max(0, 1 - ly * ly)), lt = lv * Math.PI * 2;
+    var ldir = new THREE.Vector3(Math.cos(lt) * lr, ly, Math.sin(lt) * lr);
+    var lh = surfHeight(ldir.x, ldir.y, ldir.z, seed, amp);
+    lg.scale.setScalar(0.6);
+    lg.position.copy(ldir).multiplyScalar(R + lh + 0.05);
+    lg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), ldir);
+    lg.updateMatrixWorld(true);
+    built.clickables.forEach(function(cb){
+      var m = cb.mesh, st = cb.structure || {};
+      m.applyMatrix4(lg.matrixWorld);
+      (surfLayerGroups[st.layer] || world).add(m);
+      m.userData.structure = st;
+      featPick.push(m);
+    });
+    surfCsFlashers = built.flashers || [];
+    /* legend panel: one MODEL row per legend type, filled once */
+    var legEl = $("#hm-cs-legend");
+    if(legEl && !legEl.hasChildNodes() && CS.LEGEND){
+      CS.LEGEND.forEach(function(t){
+        var d = document.createElement("div");
+        d.className = "item";
+        var hex = "#" + ("000000" + t.colors.body.toString(16)).slice(-6);
+        d.innerHTML = '<span class="sw" style="background:' + hex + '"></span><b>' + esc(t.label) + '</b><br><span style="font-size:12.5px;color:#8fa0bd">' + esc(t.blurb) + "</span>";
+        legEl.appendChild(d);
+      });
+    }
+    /* re-apply the existing layer switches so the new meshes follow them */
+    if(typeof applyChainLayers === "function") applyChainLayers();
+  })();
   (function buildFeatures(){
     var feats = [];
     var placedDirs = [];
@@ -7234,6 +7772,21 @@ function buildSurfaceScene(c, stage){
     rc.setFromCamera(m, camera);
     var hits = rc.intersectObjects(featPick, false);
     if(hits.length && hits[0].object.userData.feature && surf.selectFeature) surf.selectFeature(hits[0].object.userData.feature);
+    else if(hits.length && hits[0].object.userData.structure) openLegendCard(hits[0].object.userData.structure);
+  }
+  /* Chaintarium upgrade: a tap on a legend structure opens its card
+     in the same feat-card the feature markers use. MODEL only. */
+  function openLegendCard(st){
+    var card = $("#feat-card"), body = $("#feat-card-body");
+    if(!card || !body || !st) return;
+    body.innerHTML = "<h3>" + esc(st.label || "Legend structure") + "</h3>" +
+      '<p class="fdesc">' + esc(st.blurb || "") + "</p>" +
+      (st.type ? '<div class="kv"><span>Type</span><b>' + esc(st.type) + "</b></div>" : "") +
+      (st.layer ? '<div class="kv"><span>Layer</span><b>' + esc(st.layer) + "</b></div>" : "") +
+      '<div class="kv"><span>Source</span><b>' + esc(st.source || "MODEL") + "</b></div>" +
+      '<p class="fnote">A marker on the stylized research map — it names a pattern from the cityscape legend, not a live record.</p>';
+    card.hidden = false;
+    var s2 = $("#surface"); if(s2) s2.classList.add("feat-open");
   }
 
   var ang = 0.7, tilt = 0.55, radius = 40, tAng = 0.7, tTilt = 0.55, tRadius = 40, spin = 0;
@@ -7325,6 +7878,11 @@ function buildSurfaceScene(c, stage){
         aarr[ix * 3] = va.x + (vb.x - va.x) * fr2; aarr[ix * 3 + 1] = va.y + (vb.y - va.y) * fr2; aarr[ix * 3 + 2] = va.z + (vb.z - va.z) * fr2;
       });
       surfActionGeo.attributes.position.needsUpdate = true;
+    }
+    /* Chaintarium upgrade: legend market-maker foundations flash slowly
+       (about an 8-second period, never strobing) */
+    if(window.HalexMChaintariumCityscapes && surfCsFlashers && surfCsFlashers.length && !reduceMotion){
+      window.HalexMChaintariumCityscapes.updateFlash(performance.now() * 0.001, surfCsFlashers);
     }
     /* tracked beacons breathe — a slow pulse of light so the eye finds
        the wallet or token you're following on the surface */
@@ -8645,9 +9203,15 @@ function renderTrackPanel(){
   renderChainQuick();
   var panel = $("#chain-track"), box = $("#track-items");
   if(!panel || !box) return;
-  panel.hidden = !trackState.items.length;
-  if(!trackState.items.length){ box.innerHTML = ""; return; }
-  box.innerHTML = trackState.items.map(function(it){
+  /* HALEX-M upgrade: collapse-inactive-tokens hides tracked entries
+     whose last live read failed and that have no data to show. */
+  var trackItems = trackState.items;
+  if(window.HalexMUnclutter && window.HalexMUnclutter.collapseInactive){
+    trackItems = trackItems.filter(function(it){ return !(it.err && !it.snap && !it.data); });
+  }
+  panel.hidden = !trackItems.length;
+  if(!trackItems.length){ box.innerHTML = ""; return; }
+  box.innerHTML = trackItems.map(function(it){
     var inner = it.kind === "token" ? trackTokenHTML(it) : (it.chain === "evm" ? trackWalletEvmHTML(it) : trackWalletSolHTML(it));
     return '<div class="track-item">' + inner + "</div>";
   }).join("");
@@ -9239,5 +9803,8 @@ initLaunch();
 initGate();
 </script>
 <script src="halex-m-ai.js"></script>
+<script src="halex-m-blockchain-knowledge.js"></script>
+<script src="halex-m-upgrade.js"></script>
+<script src="halex-m-lab-expansion.js"></script>
 </body>
 </html>

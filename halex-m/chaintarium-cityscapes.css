@@ -1,0 +1,18 @@
+/* Chaintarium cityscapes — surface tooling (staging). Plain English,
+   deep-space black, neon gold/teal/electric-blue/violet, glowing HUD
+   glass. Touch targets >=44px. No hover-only controls. */
+.hm-cs-wrap{background:#05070a;color:#e8edf7;font-family:"IBM Plex Sans",system-ui,sans-serif;padding:16px}
+.hm-cs-wrap h2{color:#ffd23e}
+.hm-cs-canvas{width:100%;height:420px;display:block;background:#05070a;touch-action:none;cursor:grab;border:1px solid rgba(255,255,255,.14);border-radius:12px}
+.hm-cs-canvas:active{cursor:grabbing}
+.hm-cs-tools{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.hm-cs-tools button{min-height:44px;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#11161f;color:#e8edf7;font-size:14px;cursor:pointer}
+.hm-cs-tools button[aria-pressed="true"]{background:#ffd23e;color:#111}
+.hm-cs-legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin:12px 0}
+.hm-cs-legend .item{border:1px solid rgba(255,255,255,.14);border-radius:10px;padding:10px;background:rgba(255,255,255,.04)}
+.hm-cs-legend .sw{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:8px;vertical-align:middle}
+.hm-cs-card{border:1px solid rgba(255,210,62,.5);border-radius:12px;padding:14px;background:rgba(255,210,62,.06);margin:12px 0}
+.hm-cs-note{font-size:12.5px;color:#8fa0bd}
+.hm-cs-wrap.pop{position:fixed;inset:0;z-index:50;padding:8px}
+.hm-cs-wrap.pop .hm-cs-canvas{height:calc(100vh - 150px)}
+@media (prefers-reduced-motion: reduce){.hm-cs-canvas{transition:none}}

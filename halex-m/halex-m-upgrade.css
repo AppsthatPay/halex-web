@@ -1,0 +1,65 @@
+/* HALEX-M upgrade styles (staging): HALEX-M AI tab, SMT draft, Q&A builder,
+   trading card, Chaintarium unclutter toggles. Plain CSS, no frameworks.
+   Reuses the page variables and the .forge-log/.fmsg chat styles. */
+.halexm-log{display:flex; flex-direction:column; gap:9px; max-height:360px; overflow-y:auto; margin-bottom:11px; padding-right:2px}
+.halexm-msg{max-width:92%; padding:10px 12px; border-radius:12px; font-size:13.5px; line-height:1.5; white-space:pre-wrap; word-break:break-word}
+.halexm-msg .who{display:block; font-size:10.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; margin-bottom:3px}
+.halexm-msg.user{align-self:flex-end; background:var(--panel3); border:1px solid var(--line2)}
+.halexm-msg.user .who{color:var(--muted)}
+.halexm-msg.halex{align-self:flex-start; background:var(--panel2); border:1px solid var(--line)}
+.halexm-msg.halex .who{color:var(--gold)}
+.halexm-optlist{display:flex; gap:8px; flex-wrap:wrap; margin:10px 0 4px}
+.halexm-optlist .btn{font-size:13px}
+.qa-step{margin-top:10px}
+.qa-step label.flabel{display:block; margin:9px 0 4px}
+.qa-check{display:flex; gap:8px; align-items:flex-start; margin:6px 0; font-size:13.5px; line-height:1.45}
+.qa-check input{margin-top:3px}
+.qa-nav{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+.qa-note{margin-top:9px}
+.tcard{border:1px solid var(--gold); border-radius:12px; padding:14px; margin-top:12px; background:var(--panel2)}
+.tcard h3{margin:0 0 8px; font-size:16px}
+.tcard .trow{display:flex; justify-content:space-between; gap:12px; padding:5px 0; border-bottom:1px solid var(--line); font-size:13.5px}
+.tcard .trow span:first-child{color:var(--muted)}
+.tcard .trow b{text-align:right}
+.tcard .live-off{opacity:.65}
+.draft-piece{padding:8px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.draft-piece:last-child{border-bottom:0}
+.draft-piece b{display:block; font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--gold); margin-bottom:2px}
+.tb-unclutter{border-top:1px solid var(--line); margin-top:8px; padding-top:8px}
+.tb-unclutter .tb-cap{font-size:10.5px; letter-spacing:.08em; color:var(--muted); margin-bottom:6px}
+.tb-unclutter .btn{display:block; width:100%; text-align:left; margin-bottom:6px; font-size:12.5px}
+.tb-unclutter .btn[disabled]{opacity:.55; cursor:not-allowed}
+#surf-feed.sf-compact .sf-list{display:none}
+.mono{font-family:ui-monospace, SFMono-Regular, Menlo, monospace}
+
+/* Skills Lab expansion styles (staging): method steps, ideas, picker
+   suggestions, expanded settings, tools picker, assimilated roll, markup. */
+.lab-step{padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-step:last-child{border-bottom:0}
+.lab-step b{display:block; font-size:14px; margin-bottom:3px}
+.lab-step p{margin:0 0 8px}
+.lab-idea{padding:12px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-idea:last-child{border-bottom:0}
+.lab-idea-head{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:4px}
+.lab-idea p{margin:0 0 6px}
+.lab-chip{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.04em; padding:2px 8px; border-radius:999px; border:1px solid var(--gold); color:var(--gold)}
+.lab-sugg{padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-sugg:last-child{border-bottom:0}
+.lab-sugg p{margin:0 0 6px}
+.lab-toggle{display:block; padding:9px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-toggle:last-child{border-bottom:0}
+.lab-toggle-top{display:flex; gap:8px; align-items:flex-start}
+.lab-toggle-top input{margin-top:3px}
+.lab-expl{display:block; margin:4px 0 0 24px; color:var(--muted); font-size:13px}
+.lab-assim{padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-assim:last-child{border-bottom:0}
+.lab-assim p{margin:0 0 4px}
+.lab-info-panel{padding:10px 0; border-bottom:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-info-panel:last-child{border-bottom:0}
+.lab-info-panel b{display:block; font-size:14px; margin-bottom:3px}
+.lab-info-panel p{margin:0}
+.lab-markup-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media (max-width:700px){.lab-markup-grid{grid-template-columns:1fr}}
+.lab-config{margin:0; padding:10px; border:1px solid var(--line); border-radius:8px; background:var(--panel2); font-size:12px; line-height:1.5; white-space:pre-wrap; word-break:break-word; max-height:340px; overflow-y:auto}
+.lab-roll-note{margin-top:12px; padding-top:10px; border-top:1px solid var(--line); font-size:13.5px; line-height:1.5}
+.lab-roll-note p{margin:0 0 6px}
