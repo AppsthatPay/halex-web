@@ -1,0 +1,58 @@
+[
+  {
+    "id": "rent-reclaim",
+    "name": "Solana rent reclaim",
+    "status": "LIVE-VISITOR",
+    "desc": "Sweep the SOL locked up as rent in your empty token accounts back into your wallet.",
+    "go": null
+  },
+  {
+    "id": "bulk-close",
+    "name": "Bulk close accounts",
+    "status": "LIVE-VISITOR",
+    "desc": "Close dozens of empty token accounts in one pass instead of one transaction at a time.",
+    "go": null
+  },
+  {
+    "id": "per-chain-burn",
+    "name": "Per-chain burn",
+    "status": "LIVE-VISITOR",
+    "desc": "Burn worthless, dust or unwanted tokens chain by chain. The burn list is shown in full before you sign.",
+    "go": null
+  },
+  {
+    "id": "evm-toolbox",
+    "name": "EVM toolbox",
+    "status": "LIVE-VISITOR",
+    "desc": "Revoke stale approvals, read contract state, check gas before you commit.",
+    "go": null
+  },
+  {
+    "id": "pl-reports",
+    "name": "P/L reports",
+    "status": "LIVE-LEDGER",
+    "desc": "Profit-and-loss reports across wallets and skill sets, built from the same ledger the score cards read.",
+    "go": null
+  },
+  {
+    "id": "trade-skill-sets",
+    "name": "Trade skill sets",
+    "status": "LIVE HERE",
+    "desc": "Browse the proven and proving skill sets, read their score cards, or forge your own with SMT in the Skills Lab.",
+    "go": "skills"
+  },
+  {
+    "id": "airdrop-scout",
+    "name": "Airdrop Scout",
+    "status": "LIVE HERE",
+    "desc": "Your personal AI agent searches X through your own connected account for airdrops, points programs, waitlists and testnets.",
+    "go": "scout"
+  },
+  {
+    "id": "ai-socket",
+    "name": "AI socket for external agents",
+    "status": "LIVE HERE",
+    "desc": "Plug an outside AI into the tool box through the agent socket. Agents propose; you confirm every fund move; agents can never withdraw.",
+    "go": "sockets"
+  }
+]

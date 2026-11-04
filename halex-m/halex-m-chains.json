@@ -1,0 +1,86 @@
+[
+  {
+    "chainId": "solana",
+    "name": "Solana",
+    "dexChainId": "solana",
+    "explorer": "https://solscan.io/account/{address}",
+    "native": "SOL"
+  },
+  {
+    "chainId": "base",
+    "name": "Base",
+    "dexChainId": "base",
+    "explorer": "https://basescan.org/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "ethereum",
+    "name": "Ethereum",
+    "dexChainId": "ethereum",
+    "explorer": "https://etherscan.io/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "bsc",
+    "name": "BNB Chain",
+    "dexChainId": "bsc",
+    "explorer": "https://bscscan.com/address/{address}",
+    "native": "BNB"
+  },
+  {
+    "chainId": "arbitrum",
+    "name": "Arbitrum",
+    "dexChainId": "arbitrum",
+    "explorer": "https://arbiscan.io/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "optimism",
+    "name": "Optimism",
+    "dexChainId": "optimism",
+    "explorer": "https://optimistic.etherscan.io/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "polygon",
+    "name": "Polygon",
+    "dexChainId": "polygon",
+    "explorer": "https://polygonscan.com/address/{address}",
+    "native": "POL"
+  },
+  {
+    "chainId": "avalanche",
+    "name": "Avalanche",
+    "dexChainId": "avalanche",
+    "explorer": "https://snowtrace.io/address/{address}",
+    "native": "AVAX"
+  },
+  {
+    "chainId": "linea",
+    "name": "Linea",
+    "dexChainId": "linea",
+    "explorer": "https://lineascan.build/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "blast",
+    "name": "Blast",
+    "dexChainId": "blast",
+    "explorer": "https://blastscan.io/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "zksync",
+    "name": "ZKsync",
+    "dexChainId": "zksync",
+    "explorer": "https://explorer.zksync.io/address/{address}",
+    "native": "ETH"
+  },
+  {
+    "chainId": "ink",
+    "name": "Ink",
+    "dexChainId": "ink",
+    "explorer": "https://explorer.inkonchain.com/address/{address}",
+    "native": "ETH"
+  }
+]

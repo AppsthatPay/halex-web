@@ -1621,6 +1621,17 @@ nav.tabbar button span{letter-spacing:.015em}
     <div id="lab-result" style="margin-top:6px"></div>
   </div>
 
+  <div class="sec-title">APEX² multi-chain search</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px; font-size:13px">Search DexScreener across chains from this page. LIVE = public feeds fetched in your browser; missing data renders "—", never an invented number.</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <select id="hm-mc-chain" aria-label="Chain filter" style="flex:none"><option value="all">All chains</option></select>
+      <input id="hm-mc-input" type="text" placeholder="Token name or symbol" style="flex:1; min-width:200px" />
+      <button class="btn primary" id="hm-mc-go">Search</button>
+    </div>
+    <div id="hm-mc-output" style="margin-top:10px"></div>
+  </div>
+
   <div class="sec-title">Fund trail — follow the money</div>
   <div class="card">
     <p class="note" style="margin:0 0 12px; font-size:13px">Paste a Solana wallet and HALEX traces its <b>transfers</b> — not its trades — hop by hop: largest sends first, forward in time, each busy wallet read from the moment the money arrived so older balances never fake a trail. Every trail ends somewhere labelled, with the reason printed: an exchange, a bridge, a pool, a service many wallets use, or a wallet where the money still sits. A trail is a fact about transfers — never a verdict about a person.</p>
@@ -1634,6 +1645,14 @@ nav.tabbar button span{letter-spacing:.015em}
     </div>
     <div id="trail-result"></div>
   </div>
+</section>
+
+<section class="tab" id="tab-apex3">
+  <div class="tabhead">
+    <h2>APEX³ — theft &amp; stolen-item investigation</h2>
+    <p>APEX³ traces transfers hop by hop across chains and flags wallets tied to reported theft. Every flag is an investigation flag, not a verdict and not a recovery claim — a trail is a fact about transfers, never a verdict about a person.</p>
+  </div>
+  <div id="hm-apex3-root"></div>
 </section>
 
 <!-- ================= RUSTY ================= -->
@@ -1948,6 +1967,20 @@ nav.tabbar button span{letter-spacing:.015em}
   <div class="sec-title">Skills Lab — modernized cards + visitor wallet</div>
   <div id="hm-sl-root"></div>
   <div id="hm-sl-wallet"></div>
+  <div class="sec-title">Skill Lab operator — talk to the Lab</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px; font-size:13px">Ask the Skill Lab operator (300-OP-01) to list skills, explain one, toggle one, or build a skills list. The operator refuses key, wallet, signing, seed, and credential requests — always.</p>
+    <div style="display:flex; gap:8px; flex-wrap:wrap">
+      <input id="hm-sl-op-input" type="text" placeholder="e.g. list trading skills" style="flex:1; min-width:200px" />
+      <button class="btn primary" id="hm-sl-op-go">Ask</button>
+    </div>
+    <div id="hm-sl-op-reply" style="margin-top:10px; white-space:pre-wrap"></div>
+  </div>
+  <div class="sec-title">Braintree — the skill knowledgebase</div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px; font-size:13px">44 skills filed in the Braintree, versioned reasoning modules that earn their place from measured results. Paper is the default; live execution is visitor-wallet client-side signing after a confirmed review, and HALEX-M holds no keys. WalletConnect stays disabled — no project ID has been supplied. The HALEX-AI bridge stays OFF by default; bridge-gated skills render as gated, never as live.</p>
+    <div id="hm-bt-root"></div>
+  </div>
 </section>
 
 <!-- ================= RESEARCH ================= -->
@@ -2224,6 +2257,7 @@ nav.tabbar button span{letter-spacing:.015em}
     <p>The working tools, back in the menu. Each tool is listed with its real status: in this sandbox the toolbox shows its true interfaces; execution connects through your HALEX wallet in the production build, and every tool shows its full effect before anything signs.</p>
   </div>
   <div class="card" style="padding-top:4px; padding-bottom:4px" id="warchest-list"></div>
+  <div id="hm-wc-plan" style="margin-top:10px"></div>
   <div id="hm-wm-funds"></div>
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>House rule for every tool in the chest: preview first, sign second. A tool shows exactly what it will do — accounts closed, tokens burned, SOL reclaimed — before your wallet is ever asked to approve it.</span></div>
 </section>
@@ -2573,6 +2607,7 @@ nav.tabbar button span{letter-spacing:.015em}
 
 <!-- bottom nav -->
 <nav class="tabbar"><div class="rail" id="tabbar"></div></nav>
+<div id="hm-tab-workers-strip" class="note" style="text-align:center; padding:6px 12px">Tab workers: not yet ticked.</div>
 
 <script src="chaintarium-moons.js"></script>
 <script src="chaintarium-cityscapes.js"></script>
@@ -2628,6 +2663,7 @@ var TABS = [
   {id:"apex1",  label:"APEX¹",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17l5-6 4 3 6-8 3 4"/><path d="M3 21h18"/></svg>'},
   {id:"markets",label:"Markets", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>'},
   {id:"apex2",  label:"APEX²",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="3"/></svg>'},
+  {id:"apex3",  label:"APEX³",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 17L17 7M9 17h8V9"/></svg>'},
   {id:"rusty",  label:"RUSTY",   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3c1 3-2 4-2 7a4.5 4.5 0 009 0c0-2-1-3-1-3s3 1 3 5a7 7 0 11-14 0c0-5 4-6 5-9z"/></svg>'},
   {id:"news",   label:"News",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h13v14H4zM17 9h3v10h-3M7 9h7M7 13h7M7 17h4"/></svg>'},
   {id:"trading",label:"Trading", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'},
@@ -2723,6 +2759,18 @@ function showTab(id){
     secLog("Security tab opened — live monitoring graph in view, lineage current.");
     drawSecGraph();
   }
+    if(window.HalexMTabsAgentified){
+      try{
+        var _btw = window.HalexMTabsAgentified.defaultWorkers();
+        _btw.tick(id, Date.now());
+        var _strip = document.getElementById("hm-tab-workers-strip");
+        if(_strip){
+          var _working = _btw.statusStrip(Date.now()).filter(function(w){ return w.state === "WORKING"; });
+          _strip.textContent = _working.length ? ("Tab workers: " + _working.map(function(w){ return w.label + " working"; }).join(" · ") + " — workers refresh data only, they never trade or sign.")
+            : "Tab workers: all idle — workers refresh data only, they never trade or sign.";
+        }
+      }catch(e){}
+    }
 }
 function quickGrid(){
   var picks = ["apex1","markets","apex2","rusty","trading","research","chaintarium","sockets","wallet"];
@@ -4286,20 +4334,57 @@ var WARCHEST = [
 ];
 function renderWarChest(){
   var box = $("#warchest-list"); if(!box) return;
-  box.innerHTML = WARCHEST.map(function(t, i){
+  var live = (typeof window !== "undefined" && window.HalexMWarChestLive) ? window.HalexMWarChestLive : null;
+  var tools = live ? live.listTools() : WARCHEST;
+  function chipCls(t){
+    if(t.cls) return t.cls;
+    if(t.status === "LIVE HERE") return "ok";
+    if(t.status === "LIVE-LEDGER") return "info";
+    return "warn";
+  }
+  box.innerHTML = tools.map(function(t, i){
+    var btn = "";
+    if(t.go){ btn = '<button class="btn" data-wc-go="'+t.go+'" style="margin-top:8px">'+esc(t.goLabel || ("Open " + t.name))+'</button>'; }
+    else if(live && t.status === "LIVE-VISITOR"){ btn = '<button class="btn" data-wc-plan="'+t.id+'" style="margin-top:8px">Build preview plan</button>'; }
+    else if(live && t.status === "LIVE-LEDGER"){ btn = '<button class="btn" data-wc-ledger="'+t.id+'" style="margin-top:8px">View report</button>'; }
+    else { btn = '<button class="btn" data-wc-preview="'+i+'" style="margin-top:8px">Preview tool</button>'; }
     return '<div class="socket-row"><div class="port"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14.7 6.3a4.5 4.5 0 00-6 6L3 18l3 3 5.7-5.7a4.5 4.5 0 006-6L14 13l-3-3 3.7-3.7z"/></svg></div>' +
-      '<div style="flex:1; min-width:0"><b>'+esc(t.name)+'</b> <span class="chip '+t.cls+'">'+t.status+'</span><p>'+esc(t.desc)+"</p>" +
-      (t.go ? '<button class="btn" data-wc-go="'+t.go+'" style="margin-top:8px">'+esc(t.goLabel)+'</button>'
-            : '<button class="btn" data-wc-preview="'+i+'" style="margin-top:8px">Preview tool</button>') +
-      "</div></div>";
+      '<div style="flex:1; min-width:0"><b>'+esc(t.name)+'</b> <span class="chip '+chipCls(t)+'">'+t.status+'</span><p>'+esc(t.desc)+"</p>" + btn + "</div></div>";
   }).join("");
   $$("[data-wc-go]", box).forEach(function(b){
     b.addEventListener("click", function(){ showTab(b.getAttribute("data-wc-go")); });
   });
   $$("[data-wc-preview]", box).forEach(function(b){
     b.addEventListener("click", function(){
-      var t = WARCHEST[Number(b.getAttribute("data-wc-preview"))];
+      var t = tools[Number(b.getAttribute("data-wc-preview"))];
       toast(t.name + " is a preview in this sandbox — in production it runs through your HALEX wallet, preview first, signature second.");
+    });
+  });
+  $$("[data-wc-plan]", box).forEach(function(b){
+    b.addEventListener("click", function(){
+      var id = b.getAttribute("data-wc-plan");
+      var plan = null;
+      try{
+        if(id === "rent-reclaim") plan = live.rentReclaimPreview([]);
+        else if(id === "bulk-close") plan = live.bulkClosePreview([]);
+        else if(id === "per-chain-burn") plan = live.burnListPreview([]);
+        else if(id === "evm-toolbox") plan = live.evmRevokePreview([]);
+      }catch(e){ plan = null; }
+      var pane = document.getElementById("hm-wc-plan"); if(!pane) return;
+      if(!plan){ pane.textContent = "Preview could not be built for this tool."; return; }
+      var sum = [];
+      if(typeof plan.emptyCount === "number") sum.push(plan.emptyCount + " empty accounts");
+      if(typeof plan.reclaimSol === "number") sum.push(plan.reclaimSol + " SOL to reclaim");
+      if(typeof plan.burnCount === "number") sum.push(plan.burnCount + " tokens in burn list");
+      if(typeof plan.approvalCount === "number") sum.push(plan.approvalCount + " stale approvals");
+      pane.innerHTML = "<b>" + esc(plan.tool || id) + " — preview plan (unsigned)</b><p class=\"note\">" + esc(sum.length ? sum.join(" · ") : "No items in this preview.") + "</p><p class=\"note\">" + esc(plan.note || "") + " Visitor-wallet signing is disabled on this page (no WalletConnect project ID), so this plan cannot be submitted from here.</p>";
+    });
+  });
+  $$("[data-wc-ledger]", box).forEach(function(b){
+    b.addEventListener("click", function(){
+      var pane = document.getElementById("hm-wc-plan"); if(!pane) return;
+      var rep = null; try{ rep = live.plReport([]); }catch(e){}
+      pane.innerHTML = "<b>P/L reports — live ledger</b><p class=\"note\">" + (rep ? ("Ledger entries on this page: " + rep.entries + " · realized " + rep.realized + " · fees " + rep.fees + " · net " + rep.net + ". A report built from an empty page ledger is empty — no numbers invented.") : "No page ledger is present, so no report can be built here.") + "</p>";
     });
   });
 }
@@ -9837,6 +9922,15 @@ initGate();
 <script src="paper-test-simulator.js"></script>
 <script src="halex-m-skills-lab.js"></script>
 <script src="halex-m-skills-lab-wallet.js"></script>
+<script src="halex-m-braintree.js"></script>
+<script src="halex-m-agents.js"></script>
+<script src="halex-m-skills-lab-upgrade.js"></script>
+<script src="halex-m-tabs-agentified.js"></script>
+<script src="halex-m-warchest-live.js"></script>
+<script src="halex-m-multichain.js"></script>
+<script src="halex-m-apex2-multichain.js"></script>
+<script src="halex-m-apex3.js"></script>
+<script src="halex-m-apex2-results.js"></script>
 <script src="halex-m-trading-token-view.js"></script>
 <script src="halex-m-apex-research.js"></script>
 <script>
@@ -9851,6 +9945,82 @@ initGate();
   if (window.HalexMWalletModules && window.HalexMWalletModules.mountAll) {
     window.HalexMWalletModules.mountAll();
   }
+</script>
+<script>
+/* HALEX-M Braintree + Skill Lab wiring (2026-11-03 merge). Pure renderers over the
+   package globals; no keys, no signing, no invented data. */
+(function(){
+  var root = document.getElementById("hm-bt-root");
+  if(root){
+    if(!window.HalexMBraintree){ root.textContent = "Braintree module did not load."; }
+    else {
+      var reg = window.HalexMBraintree.defaultRegistry();
+      var renderBt = function(){
+        var cats = reg.categories();
+        var h = "";
+        Object.keys(cats).forEach(function(c){
+          var skills = reg.list().filter(function(s){ return s.category === c; });
+          h += '<div class="sec-title" style="margin-top:10px">' + esc(c) + " · " + cats[c] + " skills</div>";
+          h += skills.map(function(s){
+            var on = reg.isOn(s.id);
+            return '<div class="socket-row"><div style="flex:1; min-width:0"><b>' + esc(s.label) + '</b> <span class="chip ' + (on ? "ok" : "warn") + '">' + (on ? "ON" : "OFF") + '</span> <span class="chip info">' + esc(s.status) + '</span><p>' + esc(s.desc) + " — gate: " + esc(s.gate) + "</p></div>" +
+              '<button class="btn" data-bt-toggle="' + esc(s.id) + '">' + (on ? "Turn off" : "Turn on") + "</button></div>";
+          }).join("");
+        });
+        root.innerHTML = h;
+        $$("[data-bt-toggle]", root).forEach(function(b){
+          b.addEventListener("click", function(){ reg.toggle(b.getAttribute("data-bt-toggle")); renderBt(); });
+        });
+      };
+      renderBt();
+      var opIn = document.getElementById("hm-sl-op-input"), opGo = document.getElementById("hm-sl-op-go"), opRep = document.getElementById("hm-sl-op-reply");
+      if(opIn && opGo && opRep){
+        opGo.addEventListener("click", function(){
+          if(!window.HalexMSkillsLabUpgrade){ opRep.textContent = "Skill Lab operator module did not load."; return; }
+          try{ opRep.textContent = window.HalexMSkillsLabUpgrade.operatorReply(opIn.value, reg); }
+          catch(e){ opRep.textContent = "Operator error: " + e.message; }
+        });
+      }
+    }
+  }
+  var mcChain = document.getElementById("hm-mc-chain"), mcIn = document.getElementById("hm-mc-input"),
+      mcGo = document.getElementById("hm-mc-go"), mcOut = document.getElementById("hm-mc-output");
+  if(mcChain && mcIn && mcGo && mcOut){
+    if(window.HalexMMultichain){
+      window.HalexMMultichain.listChains().forEach(function(c){
+        var o = document.createElement("option"); o.value = c.chainId; o.textContent = c.name; mcChain.appendChild(o);
+      });
+    }
+    mcGo.addEventListener("click", function(){
+      if(!window.HalexMApex2Multichain || !window.HalexMApex2Results){ mcOut.textContent = "Multi-chain search modules did not load."; return; }
+      var q = mcIn.value.trim();
+      if(!q){ mcOut.textContent = "Enter a token name or symbol to search."; return; }
+      mcOut.textContent = "Searching…";
+      window.HalexMApex2Multichain.search(q, window.fetch.bind(window)).then(function(norm){
+        var filtered = window.HalexMApex2Multichain.filterByChain(norm, mcChain.value);
+        if(!filtered.results.length){ mcOut.innerHTML = "<p class=\"note\">No pairs found for \u201c" + esc(q) + "\u201d on " + esc(mcChain.value) + " — nothing invented.</p>"; return; }
+        var first = filtered.results[0];
+        var sections = window.HalexMApex2Results.buildDetailSections(
+          { chainId: first.chainId, tokenName: first.tokenName, tokenSymbol: first.tokenSymbol,
+            pairs: filtered.results.map(function(r){ return { dex: r.dexId, priceUsd: r.priceUsd, liquidityUsd: r.liquidityUsd, volume24h: r.volume24h }; }) },
+          window.HalexMApex3 || null);
+        var h = filtered.results.map(function(r){
+          return '<div class="socket-row"><div style="flex:1; min-width:0"><b>' + esc(r.tokenName) + " (" + esc(r.tokenSymbol) + ')</b><p>Chain: ' + esc(r.chainId) + " · " + esc(r.dexId) + " · price $" + esc(String(r.priceUsd)) + " · liquidity $" + esc(String(r.liquidityUsd)) + "</p></div></div>";
+        }).join("");
+        h += sections.map(function(s){
+          return '<div class="card" style="margin-top:10px"><b>' + esc(s.title) + '</b><pre style="white-space:pre-wrap">' + esc(s.body) + "</pre></div>";
+        }).join("");
+        h += '<p class="note">Movement record: no transfer records have been supplied on this page, so the movement record is empty and hop playback has no hops to play. Nothing is shown until real records arrive.</p>';
+        mcOut.innerHTML = h;
+      }).catch(function(e){ mcOut.textContent = "Search failed: " + e.message; });
+    });
+  }
+  var a3 = document.getElementById("hm-apex3-root");
+  if(a3){
+    a3.innerHTML = "<p class=\"note\">No transfer records have been supplied on this page, so APEX³ has no hops to investigate. This tab states its gap: it never invents hops, origins, or verdicts. Investigations render here from host-supplied public chain reads, and every flag is an investigation flag, not a verdict or a recovery claim.</p>" +
+      (window.HalexMApex3 ? "<p class=\"note\">APEX³ engine loaded: hop graphs, funding traces, and theft flags are available once records arrive.</p>" : "<p class=\"note\">APEX³ engine did not load.</p>");
+  }
+})();
 </script>
 </body>
 </html>

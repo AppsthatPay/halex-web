@@ -1,0 +1,398 @@
+[
+  {
+    "id": "SL-momentum",
+    "label": "Second-wave momentum",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "TESTED",
+    "gate": "NOT PROVEN",
+    "desc": "Enter only after the first move proves demand; sell in rungs, trail the runner, hard time cap."
+  },
+  {
+    "id": "SL-mirror",
+    "label": "Wallet mirror",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "TESTED",
+    "gate": "NOT PROVEN",
+    "desc": "Mirror a watched wallet's fresh buys only after that wallet's record survives an audit."
+  },
+  {
+    "id": "SL-fresh",
+    "label": "Fresh-launch screen",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "TESTED",
+    "gate": "NOT PROVEN",
+    "desc": "Screen brand-new pools for accelerating buys, two-sided tape, and a verifiable link. Says no almost every time."
+  },
+  {
+    "id": "SL-meanrev",
+    "label": "Mean-reversion",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "TESTED",
+    "gate": "NOT PROVEN",
+    "desc": "Buy after an overextended move fades toward its average; break the floor and the thesis is dead."
+  },
+  {
+    "id": "SL-dip",
+    "label": "Dip buy",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "TESTED",
+    "gate": "NOT PROVEN",
+    "desc": "Buy the pullback after a strong first move while it holds above the first move's midpoint."
+  },
+  {
+    "id": "SL-stall-idea",
+    "label": "Stall-exit scalper",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/skills-lab",
+    "status": "IDEA",
+    "gate": "NOT A SKILL YET",
+    "desc": "Template only: enter on a small defined trigger, close if no progress inside the window. Earns numbers only in the paper arena."
+  },
+  {
+    "id": "HM-trading",
+    "label": "HALEX-M Trading System (Trading View + Token View)",
+    "category": "trading",
+    "source": "halex-m-tab-upgrades-20261101/trading-token-view",
+    "status": "STAGED",
+    "gate": "PACKAGE 66/66",
+    "desc": "The HALEX-M trading system as a trade skill in the Braintree. Paper default; live only via visitor-wallet confirmed review."
+  },
+  {
+    "id": "APEX2",
+    "label": "APEX² Research (multi-chain)",
+    "category": "research",
+    "source": "halex-m-tab-upgrades-20261101/apex-research + this package (multi-chain upgrade)",
+    "status": "UPGRADED-STAGED",
+    "gate": "PACKAGE 45/45 + THIS PACKAGE",
+    "desc": "Token research across ALL chains, not Solana-only. DexScreener public reads; custody proven on-chain in the live gate, never claimed here."
+  },
+  {
+    "id": "APEX3",
+    "label": "APEX³ Deep Research & Investigation",
+    "category": "research",
+    "source": "this package (halex-m-apex3.js)",
+    "status": "NEW-STAGED",
+    "gate": "THIS PACKAGE",
+    "desc": "Tracks theft and stolen items across transactions: hop graphs, funding traces, chain-life starts. Public-data analysis only; no law-enforcement powers claimed."
+  },
+  {
+    "id": "solhag-x-search",
+    "label": "SolHaG X Search",
+    "category": "research",
+    "source": "custom-skills/solhag-x-search",
+    "status": "CUSTOM",
+    "gate": "ADVISORY-ONLY",
+    "desc": "Research tokens, KOLs, catalysts through a signed-in X session. Social is advisory-only, never a verified signal by itself."
+  },
+  {
+    "id": "solhag-socialskills",
+    "label": "SolHaG SocialSkills",
+    "category": "research",
+    "source": "custom-skills/solhag-socialskills",
+    "status": "CUSTOM",
+    "gate": "ADVISORY-ONLY",
+    "desc": "Social-first token intelligence. A signal only when BOTH social and on-chain confirm a real, non-scam project."
+  },
+  {
+    "id": "airdrop-hunter",
+    "label": "Airdrop Hunter",
+    "category": "research",
+    "source": "custom-skills/airdrop-hunter",
+    "status": "CUSTOM",
+    "gate": "FORM-ONLY HARD STOPS",
+    "desc": "Hunt, classify, and sign up form-safe airdrops. No seed, key, signing, fee, or KYC step ever taken by the agent."
+  },
+  {
+    "id": "ZCURE",
+    "label": "ZCURE security",
+    "category": "security",
+    "source": "halex-m/halex-m-zcure.js",
+    "status": "STAGED",
+    "gate": "PYTHON 27/27 + JS CLIENT 10/10",
+    "desc": "Security screening wired into HALEX-M staging only. The remote leg is NOT_WIRED; nothing here claims otherwise."
+  },
+  {
+    "id": "chaintarium",
+    "label": "Chaintarium cityscape",
+    "category": "security",
+    "source": "halex-m-merged-chaintarium-20261103",
+    "status": "STAGED",
+    "gate": "MERGED COPY 58/58 (NOT LIVE)",
+    "desc": "Chain city visualization: wallets, tokens, transfers, theft-wallet markers, whale and exchange shapes. Legend over circuit city; nothing deleted."
+  },
+  {
+    "id": "WC-rent-reclaim",
+    "label": "War Chest: Solana rent reclaim",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST + this package (live wiring)",
+    "status": "LIVE-VISITOR",
+    "gate": "PREVIEW FIRST, SIGN SECOND",
+    "desc": "Sweeps SOL rent from empty token accounts. Builds the real close instructions for visitor signing; preview shows the exact effect first."
+  },
+  {
+    "id": "WC-bulk-close",
+    "label": "War Chest: Bulk close accounts",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST + this package (live wiring)",
+    "status": "LIVE-VISITOR",
+    "gate": "PREVIEW FIRST, SIGN SECOND",
+    "desc": "Closes many empty token accounts in one pass. The close list is shown in full before any signature."
+  },
+  {
+    "id": "WC-burn",
+    "label": "War Chest: Per-chain burn",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST + this package (live wiring)",
+    "status": "LIVE-VISITOR",
+    "gate": "PREVIEW FIRST, SIGN SECOND",
+    "desc": "Burns dust or unwanted tokens chain by chain from a full, shown burn list. Nothing burns by surprise."
+  },
+  {
+    "id": "WC-evm-toolbox",
+    "label": "War Chest: EVM toolbox",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST + this package (live wiring)",
+    "status": "LIVE-VISITOR",
+    "gate": "PREVIEW FIRST, SIGN SECOND",
+    "desc": "Revoke stale approvals, read contract state, check gas before committing. Revoke transactions are built for visitor signing."
+  },
+  {
+    "id": "WC-pl-reports",
+    "label": "War Chest: P/L reports",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST + this package (live wiring)",
+    "status": "LIVE-LEDGER",
+    "gate": "LEDGER-COMPUTED",
+    "desc": "Profit-and-loss reports computed from the supplied ledger, so the report and the record cannot disagree. No ledger supplied means no numbers shown."
+  },
+  {
+    "id": "WC-skill-sets",
+    "label": "War Chest: Trade skill sets",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST",
+    "status": "LIVE HERE",
+    "gate": "PAGE",
+    "desc": "Browse proven and proving skill sets, read their score cards, or forge your own in the Skills Lab."
+  },
+  {
+    "id": "WC-airdrop-scout",
+    "label": "War Chest: Airdrop Scout",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST",
+    "status": "LIVE HERE",
+    "gate": "PAGE",
+    "desc": "Searches X through the visitor's own connected account; form-only signups agent-done, signature steps listed as yours by hand."
+  },
+  {
+    "id": "WC-ai-socket",
+    "label": "War Chest: AI socket for external agents",
+    "category": "wallet",
+    "source": "halex-m/index.html WARCHEST",
+    "status": "LIVE HERE",
+    "gate": "PAGE",
+    "desc": "Plug an outside AI into the toolbox through the agent socket. Agents propose; the visitor confirms every fund move; agents can never withdraw."
+  },
+  {
+    "id": "wallet-modules",
+    "label": "Wallet Modules",
+    "category": "wallet",
+    "source": "halex-m-tab-upgrades-20261101/wallet-modules",
+    "status": "STAGED",
+    "gate": "PACKAGE 76/76",
+    "desc": "Trading wallets, fund movements, balances. The stricter trading-wallets module never sends a pasted address anywhere; that rule survives this merge."
+  },
+  {
+    "id": "coinbase-agent-skill",
+    "label": "Coinbase agent skill",
+    "category": "wallet",
+    "source": "custom-skills/coinbase-agent-skill",
+    "status": "CUSTOM",
+    "gate": "SETUP ONLY",
+    "desc": "Coinbase setup, account connection, and x402 premium-data payments. Setup guidance only; no credentials are stored or invented here."
+  },
+  {
+    "id": "team2-neural-core",
+    "label": "Neural Core (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-neural-core.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side word-hash vectors + 2-layer net with real backprop. Available to Braintree joint thinking only when the HALEX-AI bridge is on."
+  },
+  {
+    "id": "team2-smc-mesh",
+    "label": "SMC mesh (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-smc-mesh.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side 8x8 torus mesh, Dijkstra avoiding failed pods. Bridge-gated; not a HALEX-M execution path."
+  },
+  {
+    "id": "team2-cognition-hub",
+    "label": "Cognition Hub (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-cognition-hub.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side cognition hub. Bridge-gated."
+  },
+  {
+    "id": "team2-inference",
+    "label": "Inference engine (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-inference.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side bigram inference on a caller corpus; an untrained engine refuses. Bridge-gated."
+  },
+  {
+    "id": "team2-tokenizer",
+    "label": "Tokenizer (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-tokenizer.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side lossless tokenizer. Bridge-gated."
+  },
+  {
+    "id": "team2-codex",
+    "label": "Codex (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-codex.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side codex; raises KeyError naming missing fields instead of inventing them. Bridge-gated."
+  },
+  {
+    "id": "team2-cognitive-memory",
+    "label": "Cognitive memory (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-cognitive-memory.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side cosine retrieval + consolidation. Bridge-gated."
+  },
+  {
+    "id": "team2-critic",
+    "label": "Metacognitive critic (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-metacognitive-critic.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side critic, 4 scored checks. Bridge-gated."
+  },
+  {
+    "id": "team2-pod-sched",
+    "label": "Pod scheduler (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-pod-sched.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side priority ordering + utilization/makespan. Bridge-gated."
+  },
+  {
+    "id": "team2-z5-cluster",
+    "label": "Z5 cluster (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-z5-cluster.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side Z5-core sharding model. Bridge-gated."
+  },
+  {
+    "id": "team2-gateway",
+    "label": "Gateway (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-gateway.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51",
+    "desc": "HALEX-AI-side HTTP gateway. Bridge-gated."
+  },
+  {
+    "id": "team2-agent-router",
+    "label": "Agent router (team2)",
+    "category": "intelligence",
+    "source": "pending-builds/team2-agent-router.py",
+    "status": "STAGED",
+    "gate": "TEAM2 HARNESS 51/51 (SHELL EXECUTION DISABLED BY DESIGN)",
+    "desc": "HALEX-AI-side planning/validation router. Its terminal-command execution is DESIGN ONLY and disabled: never wired as live arbitrary command execution."
+  },
+  {
+    "id": "halex-complete-20261103",
+    "label": "HALEX-AI Selfbuild Completion (21 modules)",
+    "category": "intelligence",
+    "source": "pending-builds/halex-complete-20261103",
+    "status": "STAGED",
+    "gate": "HARNESS 41/41",
+    "desc": "Completed HALEX-AI submission package: semantic holograph, tree of thought, goal engine, supreme engine, chat, encyclopedia, content suite, vision, and more. Bridge-gated."
+  },
+  {
+    "id": "drex-mitosis-copy",
+    "label": "HALEX-M mitosis staging copy (Drex/MiroFish)",
+    "category": "intelligence",
+    "source": "pending-builds/drex-mirofish-halexm-mitosis-copy-20261103.json",
+    "status": "DRAFT",
+    "gate": "DESIGN + INVENTORY ONLY",
+    "desc": "Staging copy draft distilled from the Drex/MiroFish research. NO copy execution was performed by this draft: no engine mitosis call, no chain record, no live mint."
+  },
+  {
+    "id": "z100-038-wallet-skills",
+    "label": "ZINIUM wallet skills (Z100-038)",
+    "category": "intelligence",
+    "source": "pending-builds/z100-038-wallet-skills.py",
+    "status": "STAGED",
+    "gate": "ZINIUM CHAIN-500 RECORD",
+    "desc": "Wallet-as-processor skill records on chain 500. Staging record; not a HALEX-M execution path."
+  },
+  {
+    "id": "SK-DREX-001",
+    "label": "Probability over options",
+    "category": "decision",
+    "source": "pending-builds/drex-mirofish-braintree-skills-20261103.json",
+    "status": "DRAFT-PROPOSAL",
+    "gate": "NOT FILED",
+    "desc": "Return one probability per known option instead of an essay. Options must be supplied in advance; none are invented."
+  },
+  {
+    "id": "SK-DREX-002",
+    "label": "Confidence gating",
+    "category": "decision",
+    "source": "pending-builds/drex-mirofish-braintree-skills-20261103.json",
+    "status": "DRAFT-PROPOSAL",
+    "gate": "NOT FILED",
+    "desc": "Act only when the leading probability clears a human-set threshold; otherwise wait, with the wait recorded. A threshold is never by itself an order to move funds."
+  },
+  {
+    "id": "SK-DREX-003",
+    "label": "Swarm rehearsal",
+    "category": "decision",
+    "source": "pending-builds/drex-mirofish-braintree-skills-20261103.json",
+    "status": "DRAFT-PROPOSAL",
+    "gate": "NOT FILED",
+    "desc": "Rehearse a decision across a swarm of simulated agents before acting. Proposal only; no rehearsal has been run as a filing."
+  },
+  {
+    "id": "SK-DREX-004",
+    "label": "State composition",
+    "category": "decision",
+    "source": "pending-builds/drex-mirofish-braintree-skills-20261103.json",
+    "status": "DRAFT-PROPOSAL",
+    "gate": "NOT FILED",
+    "desc": "Compose a fixed decision state from fixed inputs before any probability is computed."
+  },
+  {
+    "id": "SK-DREX-005",
+    "label": "Decision autopsy",
+    "category": "decision",
+    "source": "pending-builds/drex-mirofish-braintree-skills-20261103.json",
+    "status": "DRAFT-PROPOSAL",
+    "gate": "NOT FILED",
+    "desc": "After a decision, record what was known, what was chosen, and what happened, so the next decision learns from the last."
+  }
+]
