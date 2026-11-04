@@ -1283,6 +1283,7 @@ nav.tabbar button span{letter-spacing:.015em}
 </style>
 <link rel="stylesheet" href="halex-m-ai.css">
 <link rel="stylesheet" href="halex-m-upgrade.css">
+<link rel="stylesheet" href="halex-m-trading-token-view.css">
 <link rel="stylesheet" href="chaintarium-cityscapes.css">
 <script src="halex-zcure.js"></script>
 </head>
@@ -1786,6 +1787,9 @@ nav.tabbar button span{letter-spacing:.015em}
       </tbody>
     </table>
   </div>
+  <div class="sec-title">Trading View — chart + bundle flow</div>
+  <div id="hm-tv-trading-host"></div>
+
   <div class="sec-title">Talk to HALEX-M AI about trading</div>
   <div class="card">
     <p class="note" style="margin:0 0 12px; font-size:13px">A chat box in this tab, sharing the SMT draft with the HALEX-M AI tab and the Skills Lab Forge. Ask about a skill, scan a token, or check the paper-test gate — then send a useful answer to the draft with one tap.</p>
@@ -3569,6 +3573,12 @@ function renderSheet(){
     $("#lab-input").value = t.address;
     runLab();
   });
+  /* HALEX-M upgrade — Trading+Token View: append the deeper token panel to the sheet body */
+  try{
+    var tvHost = document.createElement("div"); tvHost.id = "hm-tv-token-host";
+    var sb = $("#sheet-body"); if(sb) sb.appendChild(tvHost);
+    if(window.HalexMTradingView && window.HalexMTradingView.renderTokenPanel) window.HalexMTradingView.renderTokenPanel(tvHost, t, { source: "live" });
+  }catch(e){}
 }
 
 /* ---------------- APEX2 watchlist + lab ---------------- */
@@ -9806,5 +9816,9 @@ initGate();
 <script src="halex-m-blockchain-knowledge.js"></script>
 <script src="halex-m-upgrade.js"></script>
 <script src="halex-m-lab-expansion.js"></script>
+<script src="halex-m-trading-token-view.js"></script>
+<script>
+  if (window.HalexMTradingView && window.HalexMTradingView.mountTradingPanel) { window.HalexMTradingView.mountTradingPanel(); }
+</script>
 </body>
 </html>
