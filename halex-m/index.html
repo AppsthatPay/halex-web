@@ -9,11 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<!-- Three.js powers only the Chaintarium tab, so it loads deferred: the page
-     itself never waits on this ~600 KB CDN script to render. If the deferred
-     copy still fails to arrive, ensureThree() in the boot script retries it
-     on demand from fallback CDNs when the 3D engine is actually needed. -->
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<!-- Three.js powers only the Chaintarium tab, so it loads on demand: the
+     page itself never waits on the engine to render. The vendored current
+     build (three r170, MIT — vendor/THREE-LICENSE.txt) registers itself
+     below as a module; ensureThree() in the boot script waits for it and
+     retries the same vendored file once if it has not registered. No CDN
+     engine copy is ever substituted: the engine ships with the page. -->
+<script type="module">import * as THREE from "./vendor/three.module.min.js"; window.THREE = THREE;</script>
 <style>
 :root{
   --bg:#0a0c10; --bg2:#0e1117; --panel:#12151d; --panel2:#171b26; --panel3:#1d2230;
@@ -1289,6 +1291,32 @@ nav.tabbar button span{letter-spacing:.015em}
 <link rel="stylesheet" href="halex-m-apex-research.css">
 <link rel="stylesheet" href="chaintarium-cityscapes.css">
 <script src="halex-zcure.js"></script>
+<style id="halexm-rebuild-css">
+/* ---------- HALEX-M rebuild pass (2026-11-04): chrome discipline,
+   tools drawer, legend sheet, live chart box ---------- */
+.topstrip, nav.tabbar, .chain-toolbar, .chain-sysbar, .surf-tools, .hm-cs-tools, .chain-quick, .chain-ctl{
+  user-select:none; -webkit-user-select:none;
+}
+nav.tabbar .rail{touch-action:pan-x}
+.chain-toolbar{touch-action:pan-y}
+#chain-stage.tools-closed .chain-toolbar{display:none}
+#chain-tools-toggle{
+  position:absolute; top:8px; right:8px; z-index:66;
+  background:linear-gradient(165deg, rgba(20,28,46,.94), rgba(8,11,18,.92));
+  border:1px solid rgba(255,194,75,.5); color:#ffd98a; font-weight:700;
+}
+#chain-stage:not(.tools-closed) #chain-tools-toggle{right:122px}
+#hm-cs-tools:empty{display:none}
+#hm-cs-legend{display:none}
+#surface.legend-open #hm-cs-legend{
+  display:block; position:absolute; left:8px; right:8px; bottom:34px; z-index:44;
+  max-height:44%; overflow-y:auto; touch-action:pan-y;
+  background:linear-gradient(165deg, rgba(13,19,32,.97), rgba(5,8,13,.97));
+  border:1px solid rgba(120,220,255,.3); border-radius:13px; padding:10px 12px;
+}
+#detail-chart-lw{width:100%; height:200px; display:block}
+@media (min-width:900px){ #detail-chart-lw{height:228px} }
+</style>
 </head>
 <body>
 
@@ -1393,7 +1421,7 @@ nav.tabbar button span{letter-spacing:.015em}
   <div class="wrap">
     <div class="brandmark">
       <div class="glyph"><svg class="halex-mark" width="19" height="19" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 C13.4 42.3 6.5 34.5 6.5 23 V8 Z" fill="#e79a10"/><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 Z" fill="#cf8507"/><path d="M24 2.5 L41.5 8 L24 13.2 L6.5 8 Z" fill="#ffc94d"/><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 C13.4 42.3 6.5 34.5 6.5 23 V8 Z" fill="none" stroke="rgba(96,58,0,.6)" stroke-width="1.1"/><path d="M6.5 8 L24 13.2 L41.5 8" fill="none" stroke="rgba(96,58,0,.45)" stroke-width="1"/><path d="M17 16.5 V31.5 M31 16.5 V31.5 M17 24 H31" fill="none" stroke="#150e02" stroke-width="4.4"/></svg></div>
-      <div><b>HALEX-M</b><span>Sandbox preview · not production</span></div>
+      <div><b>HALEX-M</b><span>Advanced Blockchain Intelligence</span></div>
     </div>
     <span class="pill" id="feed-pill"><span class="dot"></span><span id="feed-pill-text">Feed: standby</span></span>
     <span class="pill founding" id="founding-pill" hidden><span class="dot"></span>FOUNDING MEMBER</span>
@@ -1418,10 +1446,10 @@ nav.tabbar button span{letter-spacing:.015em}
 <!-- ================= HOME ================= -->
 <section class="tab active" id="tab-home">
   <div class="hero-band">
-    <h2>The whole HALEX stack, in one testable sandbox.</h2>
+    <h2>The whole HALEX stack, in one place.</h2>
     <p>Live market firehose, watched-token research, the RUSTY mint, AI trading wallets, APEX² research reports and the Chaintarium — wired to real public data where it exists, and honestly labeled where a backend is still to come.</p>
     <div class="mkt-strip" id="mkt-strip"></div>
-    <p class="note" style="margin-top:9px"><span class="chip warn">SNAPSHOT — NOT LIVE</span>&nbsp; Market snapshot: Oct 17, 2026 close · Source: Basis Desk market close. Live prices are on APEX¹.</p>
+    <p class="note" style="margin-top:9px" id="mkt-note"><span class="chip info">LOADING</span>&nbsp; Fetching live majors from DexScreener… if the feed cannot be reached, this strip says so and shows no prices rather than stale ones.</p>
   </div>
 
   <div class="sec-title">Jump in</div>
@@ -1756,7 +1784,7 @@ nav.tabbar button span{letter-spacing:.015em}
 <section class="tab" id="tab-news">
   <div class="tabhead">
     <h2>News — tuned to your interests</h2>
-    <p>An AI-curated snapshot built around Solana, Base, memecoins and the trade system. Snapshot pulled Oct 18, 2026 — the live news socket is not wired in this sandbox yet.</p>
+    <p>An AI-curated snapshot built around Solana, Base, memecoins and the trade system. Snapshot pulled Oct 18, 2026 — the live news socket is not connected yet.</p>
   </div>
   <div class="feed-tools" id="news-filters">
     <button class="fchip on" data-tag="all">All</button>
@@ -1778,7 +1806,7 @@ nav.tabbar button span{letter-spacing:.015em}
   </div>
   <div class="sec-title">AI wallets</div>
   <div class="grid c3" id="ai-wallets"></div>
-  <p class="note" style="margin-top:8px">Balances pulled Oct 16, 2026. Live balance socket not wired in the sandbox.</p>
+  <p class="note" style="margin-top:8px">Balances pulled Oct 16, 2026. Live balance socket not connected in this build.</p>
   <div id="hm-wm-price"></div>
   <div id="hm-wm-whale"></div>
 
@@ -1961,7 +1989,7 @@ nav.tabbar button span{letter-spacing:.015em}
       <button class="btn primary" id="lab-markup-paper">Start paper run (local record)</button>
       <button class="btn" id="lab-markup-wallet">Go to the Forge wallet pick</button>
     </div>
-    <label class="qa-check live-off" style="margin-top:12px"><input type="checkbox" disabled> Switch to live currency — DISABLED. Live execution is not wired in this static page: HALEX-M holds no keys, signs nothing, and moves no funds, and wallet connect is read-only. Live is not offered until the paper-test gate is proven AND a real signed executor exists.</label>
+    <label class="qa-check live-off" style="margin-top:12px"><input type="checkbox" disabled> Switch to live currency — DISABLED. Live execution is not connected in this static page: HALEX-M holds no keys, signs nothing, and moves no funds, and wallet connect is read-only. Live is not offered until the paper-test gate is proven AND a real signed executor exists.</label>
     <p class="note" id="lab-markup-note" style="margin-top:10px"></p>
   </div>
   <div class="sec-title">Skills Lab — modernized cards + visitor wallet</div>
@@ -2053,10 +2081,10 @@ nav.tabbar button span{letter-spacing:.015em}
     <button class="btn" id="chain-system-main" aria-pressed="false">Main system</button>
     <button class="btn" id="chain-system-dying" aria-pressed="false">Dying system only</button>
     <button class="btn on" id="chain-system-both" aria-pressed="true">Both systems</button>
-    <span id="chain-live-status">Live-activity feed: not wired yet — model tick only. No live chain-block feed is connected; transfers below are MODEL, not live.</span>
+    <span id="chain-live-status">Live-activity feed: model tick only. No live chain-block feed is connected; transfers below are MODEL, not live.</span>
     <p class="note">Both systems share this one window. The main system orbits Bitcoin (the sun). The second, dying system orbits a blackhole sun and holds lesser-used / dead / R&amp;D chains, labelled as such. Cross-system arcs are drawn only when a transfer exists in the current 15-second window — model transfers until a live feed is wired.</p>
   </div>
-  <div id="chain-stage">
+  <div id="chain-stage" class="tools-closed">
     <canvas id="chain-canvas"></canvas>
     <div id="chain-labels"></div>
     <div id="surface">
@@ -2070,11 +2098,12 @@ nav.tabbar button span{letter-spacing:.015em}
             <input id="surf-search" type="text" placeholder="Search this planet: a structure, a token, or any wallet address…" autocomplete="off" spellcheck="false" />
             <div class="chain-suggest" id="surf-suggest"></div>
           </div>
+          <button class="btn" id="hm-cs-legend-btn" aria-expanded="false" aria-controls="hm-cs-legend">Legend</button>
         </div>
         <div class="hm-cs-tools" id="hm-cs-tools"></div>
         <div class="hm-cs-legend" id="hm-cs-legend"></div>
       </div>
-      <div class="surf-activity-tick" id="surf-activity-tick">Planet view — last 15 seconds: model tick only, no live feed wired yet.</div>
+      <div class="surf-activity-tick" id="surf-activity-tick">Planet view — last 15 seconds: model tick only — no live feed connected.</div>
       <div class="surf-layers" id="surf-layers"><b>Planet layers: 3 years each</b><span class="note" style="font-size:12px"> The core is the oldest records, the surface is the newest. Pick a layer, or type a year and jump to it.</span><div class="layer-btns" id="surf-layer-btns"></div><div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center"><input id="surf-layer-date" type="text" inputmode="numeric" placeholder="Year, e.g. 2020" /><button class="btn" id="surf-layer-go">Go to layer</button></div><p class="surf-layer-note" id="surf-layer-note"></p></div>
       <aside class="surf-feed" id="surf-feed" aria-label="Live chain feed">
         <div class="sf-head"><span class="track-live-dot"></span><b id="sf-title">Live chain feed</b><button id="sf-close" aria-label="Hide the live chain feed">✕</button></div>
@@ -2098,6 +2127,7 @@ nav.tabbar button span{letter-spacing:.015em}
       <div class="moon-step" id="moon-step" hidden></div>
       <p class="moon-note" id="moon-note"></p>
     </div>
+    <button class="btn" id="chain-tools-toggle" aria-expanded="false" aria-controls="chain-toolbar">⚙ Tools</button>
     <div class="chain-toolbar" id="chain-toolbar" aria-label="Chaintarium tools">
       <div class="tb-cap">TOOLS</div>
       <div class="tb-group tb-view">
@@ -2107,7 +2137,6 @@ nav.tabbar button span{letter-spacing:.015em}
       </div>
       <div class="tb-group tb-unclutter" id="tb-unclutter">
         <div class="tb-cap">UNCLUTTER</div>
-        <button class="btn" id="uncl-hide-empty" disabled title="NOT WIRED — the cosmos is a stylized deterministic model with no per-shard address counts to filter on">Hide empty shards: NOT WIRED</button>
         <button class="btn" id="uncl-collapse-inactive" aria-pressed="false">Collapse inactive tokens: off</button>
         <button class="btn" id="uncl-high-signal" aria-pressed="false">High-signal only: off</button>
         <button class="btn" id="uncl-streamline-feed" aria-pressed="false">Streamline tx feed: off</button>
@@ -2146,7 +2175,7 @@ nav.tabbar button span{letter-spacing:.015em}
   <div class="card" id="chain-activity-card">
     <b>Live-activity tick — last 15 seconds</b>
     <p id="chain-activity-tick">Waiting for the first 15-second tick. Source will be labelled here on every tick: live feed if one is wired, otherwise MODEL.</p>
-    <p id="chain-system-note">Model vs live: planet sizes, rods, terrain bands, grids, markers and transfer arcs in this upgrade are a stylized deterministic MODEL (snapshot values), not live chain data. A live feed is NOT wired yet. To wire one, a host feed must provide <span class="mono">window.HALEX_CHAIN_FEED.latestTransfers(15)</span> returning [{from, to}] chain ids — until then every transfer shown is explicitly labelled MODEL.</p>
+    <p id="chain-system-note">Model vs live: planet sizes, rods, terrain bands, grids, markers and transfer arcs in this upgrade are a stylized deterministic MODEL (snapshot values), not live chain data. No live host feed is connected. To wire one, a host feed must provide <span class="mono">window.HALEX_CHAIN_FEED.latestTransfers(15)</span> returning [{from, to}] chain ids — until then every transfer shown is explicitly labelled MODEL.</p>
     <p><b>Main-system planets (top 40 most-listed / used + PIVX):</b> <span id="chain-top40-list"></span></p>
     <p><b>Dying system (blackhole sun — lesser-used / dead / R&amp;D chains, labelled as such):</b> <span id="chain-dying-list"></span></p>
   </div>
@@ -2783,16 +2812,70 @@ function quickGrid(){
   });
 }
 
-/* ---------------- home market snapshot (Oct 17, 2026 close — Basis Desk) ---------------- */
-var SNAPSHOT = [
-  {sym:"BTC", price:"$81,378", chg:-0.1}, {sym:"ETH", price:"$2,400", chg:-0.8},
-  {sym:"SOL", price:"$103.32", chg:-0.9}, {sym:"BNB", price:"$717.20", chg:-0.4},
-  {sym:"XRP", price:"$1.29", chg:-1.2}
-];
-function renderSnapshot(){
-  $("#mkt-strip").innerHTML = SNAPSHOT.map(function(m){
-    return '<div class="mkt"><span>'+m.sym+'</span><b>'+m.price+'</b> <i class="'+(m.chg>=0?"up":"down")+'">'+fmtPct(m.chg)+"</i></div>";
+/* ---------------- home market majors — LIVE (DexScreener, keyless) ----------------
+   The strip fetches the five majors from DexScreener's public token
+   endpoint on load and every 45 s, and stamps the time it updated.
+   Each row is the deepest-liquidity pair for that token, labelled
+   from the API's own response. There is no stored snapshot behind
+   this strip: if the fetch cannot produce at least three live rows,
+   the strip renders an explicit feed-unavailable state carrying no
+   prices at all, and the note under the strip says so. Stale prices
+   are never dressed up as live ones. Never silent. */
+function renderMajorsUnavailable(){
+  var strip = $("#mkt-strip");
+  if(!strip) return;
+  strip.innerHTML = MKT_MAJORS.map(function(m){
+    return '<div class="mkt"><span>'+m.sym+'</span><b>—</b> <i class="faint">no live data</i></div>';
   }).join("");
+}
+var MKT_MAJORS = [
+  { sym:"BTC",  addr:"0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599" },
+  { sym:"ETH",  addr:"0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2" },
+  { sym:"SOL",  addr:"So11111111111111111111111111111111111111112" },
+  { sym:"BNB",  addr:"0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" },
+  { sym:"DOGE", addr:"0xbA2aE424d960c26247Dd6c32edC70B295c744C43" }
+];
+function fmtMktPrice(p){
+  if(!isFinite(p) || p <= 0) return "—";
+  if(p >= 1000) return "$" + p.toLocaleString("en-US", { maximumFractionDigits:0 });
+  if(p >= 1) return "$" + p.toFixed(2);
+  if(p >= 0.01) return "$" + p.toPrecision(3);
+  return "$" + p.toPrecision(2);
+}
+function fetchMajor(m){
+  return fetch("https://api.dexscreener.com/latest/dex/tokens/" + m.addr)
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var pairs = (j && j.pairs) || [], best = null;
+      pairs.forEach(function(p){
+        var liq = (p.liquidity && p.liquidity.usd) || 0;
+        if(!best || liq > best.liq) best = { liq: liq, p: p };
+      });
+      if(!best || !best.p.priceUsd) return null;
+      return { sym: m.sym, price: parseFloat(best.p.priceUsd),
+               chg: (best.p.priceChange && typeof best.p.priceChange.h24 === "number") ? best.p.priceChange.h24 : 0 };
+    })
+    .catch(function(){ return null; });
+}
+function renderMajors(){
+  var strip = $("#mkt-strip"), note = $("#mkt-note");
+  if(!strip) return;
+  Promise.all(MKT_MAJORS.map(fetchMajor)).then(function(rows){
+    var live = rows.filter(function(r){ return !!r; });
+    if(live.length >= 3){
+      strip.innerHTML = rows.map(function(r, i){
+        if(r) return '<div class="mkt"><span>'+r.sym+'</span><b>'+fmtMktPrice(r.price)+'</b> <i class="'+(r.chg>=0?"up":"down")+'">'+fmtPct(r.chg)+"</i></div>";
+        return '<div class="mkt"><span>'+MKT_MAJORS[i].sym+'</span><b>—</b> <i class="faint">no live data</i></div>';
+      }).join("");
+      if(note) note.innerHTML = '<span class="chip ok">LIVE</span>&nbsp; Majors · updated ' + clockStr(true) + ' · Source: DexScreener (deepest-liquidity pair per token) · refreshes every 45 s.';
+    } else {
+      renderMajorsUnavailable();
+      if(note) note.innerHTML = '<span class="chip warn">LIVE FEED UNREACHABLE</span>&nbsp; No live majors data right now, so this strip shows no prices. The live fetch retries every 45 s.';
+    }
+  }).catch(function(){
+    renderMajorsUnavailable();
+    if(note) note.innerHTML = '<span class="chip warn">LIVE FEED UNREACHABLE</span>&nbsp; No live majors data right now, so this strip shows no prices. The live fetch retries every 45 s.';
+  });
 }
 
 /* ---------------- state ---------------- */
@@ -3313,19 +3396,148 @@ function bindCrosshair(c, opts){
   c.addEventListener("pointerdown", pos);
   c.addEventListener("pointerleave", function(){ opts.setHover(-1); });
 }
-function drawChart(){
+function drawChartCanvas(){
   var c = $("#detail-chart"); if(!c || !portalSeries || portalSeries.length < 2) return;
   paintChart(c, portalSeries, chartMode, chartHover, portalRange);
   var rd = $("#chart-read");
   if(rd) rd.textContent = chartReadText(portalSeries, chartHover >= 0 ? chartHover : portalSeries.length - 1, portalRange);
   var rr = $("#chart-replay-range"); if(rr && portalSeries) rr.max = portalSeries.length - 1;
 }
+/* ---------------- TradingView Lightweight Charts (Apache 2.0) ----------------
+   The token chart renders with the vendored Lightweight Charts
+   library (vendor/lightweight-charts.standalone.production.js;
+   license at vendor/LIGHTWEIGHT-CHARTS-LICENSE.txt). The library's
+   TradingView attribution stays ON, as the Apache 2.0 terms require.
+   Same GeckoTerminal OHLCV series as the canvas engine, plus SMA 20
+   and EMA 50 overlays computed from those closes, a volume histogram,
+   range high/low markers and a replay-position marker. If the
+   library cannot load, the original canvas engine draws instead —
+   the chart is never left blank. (This is the Lightweight library;
+   TradingView's proprietary Advanced Charts is not used anywhere.) */
+var lwState = null, lwLoad = null;
+function ensureLW(){
+  if(window.LightweightCharts) return Promise.resolve(true);
+  if(!lwLoad) lwLoad = loadScript("vendor/lightweight-charts.standalone.production.js").then(function(){ return !!window.LightweightCharts; }).catch(function(){ return false; });
+  return lwLoad;
+}
+function lwSMA(data, period){
+  var out = [];
+  if(period < 2 || data.length < period) return out;
+  var sum = 0;
+  for(var i = 0; i < data.length; i++){
+    sum += data[i].value;
+    if(i >= period) sum -= data[i - period].value;
+    if(i >= period - 1) out.push({ time: data[i].time, value: sum / period });
+  }
+  return out;
+}
+function lwEMA(data, period){
+  var out = [];
+  if(!data.length || period < 2) return out;
+  var k = 2 / (period + 1), e = data[0].value;
+  for(var i = 0; i < data.length; i++){
+    e = i === 0 ? data[0].value : data[i].value * k + e * (1 - k);
+    if(i >= period - 1) out.push({ time: data[i].time, value: e });
+  }
+  return out;
+}
+function lwMarkers(){
+  if(!lwState || !lwState.main || !portalSeries || portalSeries.length < 2) return;
+  var hiI = 0, loI = 0;
+  portalSeries.forEach(function(p, i){ if(p.h > portalSeries[hiI].h) hiI = i; if(p.l < portalSeries[loI].l) loI = i; });
+  var marks = [
+    { time: portalSeries[hiI].t, position: "aboveBar", color: "#ffd98a", shape: "circle" },
+    { time: portalSeries[loI].t, position: "belowBar", color: "#ffd98a", shape: "circle" }
+  ];
+  if(chartHover >= 0 && chartHover < portalSeries.length){
+    var hp = portalSeries[chartHover], up = hp.v >= hp.o;
+    marks.push({ time: hp.t, position: up ? "aboveBar" : "belowBar", color: up ? "#31c48d" : "#ff6b5e", shape: up ? "arrowUp" : "arrowDown" });
+  }
+  marks.sort(function(a, b){ return a.time - b.time; });
+  try{ lwState.main.setMarkers(marks); }catch(e){}
+}
+function drawChartLW(c){
+  var LWC = window.LightweightCharts; if(!LWC) return false;
+  try{
+    if(!lwState || lwState.canvas !== c){
+      if(lwState && lwState.chart){ try{ lwState.chart.remove(); }catch(e){} }
+      var div = document.createElement("div"); div.id = "detail-chart-lw";
+      c.parentNode.insertBefore(div, c);
+      var chart = LWC.createChart(div, {
+        width: div.clientWidth || c.clientWidth || 320,
+        height: div.clientHeight || 200,
+        layout: { background: { type: "solid", color: "transparent" }, textColor: "#8fa0bd", fontFamily: "'IBM Plex Mono', monospace", attributionLogo: true },
+        grid: { vertLines: { color: "rgba(90,169,255,.10)" }, horzLines: { color: "rgba(90,169,255,.10)" } },
+        rightPriceScale: { borderColor: "rgba(120,220,255,.25)" },
+        timeScale: { borderColor: "rgba(120,220,255,.25)", timeVisible: true, secondsVisible: false },
+        crosshair: { mode: LWC.CrosshairMode.Normal }
+      });
+      lwState = { chart: chart, div: div, canvas: c, main: null, vol: null, sma: null, ema: null, mode: null };
+      chart.subscribeCrosshairMove(function(param){
+        if(!param || !param.time || !portalSeries) return;
+        for(var i = 0; i < portalSeries.length; i++){
+          if(portalSeries[i].t === param.time){
+            if(i !== chartHover){
+              chartHover = i; lwMarkers();
+              var rd = $("#chart-read");
+              if(rd) rd.textContent = chartReadText(portalSeries, i, portalRange);
+            }
+            break;
+          }
+        }
+      });
+    }
+    var st = lwState, chart = st.chart;
+    chart.resize(st.div.clientWidth || 320, st.div.clientHeight || 200);
+    if(st.mode !== chartMode){
+      if(st.main){ chart.removeSeries(st.main); st.main = null; }
+      if(st.sma){ chart.removeSeries(st.sma); st.sma = null; }
+      if(st.ema){ chart.removeSeries(st.ema); st.ema = null; }
+      if(chartMode === "line"){
+        st.main = chart.addLineSeries({ color: "#ffd98a", lineWidth: 2, priceLineVisible: true });
+      } else {
+        st.main = chart.addCandlestickSeries({ upColor: "#31c48d", downColor: "#ff6b5e", borderVisible: false, wickUpColor: "#31c48d", wickDownColor: "#ff6b5e", priceLineVisible: true });
+      }
+      st.sma = chart.addLineSeries({ color: "rgba(255,194,75,.75)", lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      st.ema = chart.addLineSeries({ color: "rgba(90,169,255,.75)", lineWidth: 1, priceLineVisible: false, lastValueVisible: false, crosshairMarkerVisible: false });
+      if(!st.vol){
+        st.vol = chart.addHistogramSeries({ priceScaleId: "vol", priceFormat: { type: "volume" }, lastValueVisible: false, priceLineVisible: false });
+        chart.priceScale("vol").applyOptions({ scaleMargins: { top: 0.84, bottom: 0 } });
+        chart.priceScale("right").applyOptions({ scaleMargins: { top: 0.06, bottom: 0.2 } });
+      }
+      st.mode = chartMode;
+    }
+    var closes = portalSeries.map(function(p){ return { time: p.t, value: p.v }; });
+    if(chartMode === "line") st.main.setData(closes);
+    else st.main.setData(portalSeries.map(function(p){ return { time: p.t, open: p.o, high: p.h, low: p.l, close: p.v }; }));
+    st.vol.setData(portalSeries.map(function(p){ return { time: p.t, value: p.vol || 0, color: p.v >= p.o ? "rgba(49,196,141,.5)" : "rgba(255,107,94,.5)" }; }));
+    st.sma.setData(lwSMA(closes, Math.min(20, closes.length)));
+    st.ema.setData(lwEMA(closes, Math.min(50, closes.length)));
+    lwMarkers();
+    c.style.display = "none";
+    var rd2 = $("#chart-read");
+    if(rd2) rd2.textContent = chartReadText(portalSeries, chartHover >= 0 ? chartHover : portalSeries.length - 1, portalRange);
+    var rr2 = $("#chart-replay-range"); if(rr2) rr2.max = portalSeries.length - 1;
+    var note = $("#chart-note");
+    if(note) note.textContent = "Live OHLCV · GeckoTerminal · rendered by TradingView Lightweight Charts™ with SMA 20 + EMA 50 overlays.";
+    return true;
+  }catch(e){ return false; }
+}
+function drawChart(){
+  var c = $("#detail-chart"); if(!c || !portalSeries || portalSeries.length < 2) return;
+  ensureLW().then(function(ok){
+    if(!ok || !drawChartLW($("#detail-chart"))){
+      var cv = $("#detail-chart"); if(cv) cv.style.display = "";
+      drawChartCanvas();
+    }
+  });
+}
 /* ---------------- HD chart action replay (2026-10-27, staging) ----------------
    Steps are built from the live GeckoTerminal OHLCV candles already on
    the chart: direction (close vs open) gives buy/sell pressure, and
    the step text gives time, price and volume from that candle. A live
    tape of individual sends, swaps, stakes and pooled-liquidity events
-   is NOT wired yet, so those kinds appear only as labelled sample
+   is not connected yet, so those kinds appear only as labelled sample
    steps in the panel note, never as live events. Play steps the
    crosshair through the candles; the range input scrubs it. */
 var chartReplay = { timer: null, idx: -1, playing: false };
@@ -3456,7 +3668,7 @@ function labChartHTML(){
     '<div class="hd-card"><b class="hd-title">Token detail + action replay — Research Lab</b>' +
     '<div class="hd-replay" style="border-top:none; padding-top:2px"><div class="replay-row"><button class="btn" id="lab-replay-play">▶ Play replay</button><span class="replay-arrow" id="lab-replay-arrow">▲</span><input type="range" id="lab-replay-range" min="0" max="100" value="0" /></div>' +
     '<div class="replay-step" id="lab-replay-step">Action replay — press play to step through the live OHLCV candles.</div>' +
-    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet wired to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Detail numbers (price, liquidity, market cap, volume, buys, sells) come from the live Research Lab report below when a token is looked up. No bubble graphs.</p></div></div>';
+    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet connected to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Detail numbers (price, liquidity, market cap, volume, buys, sells) come from the live Research Lab report below when a token is looked up. No bubble graphs.</p></div></div>';
 }
 var chartRszT = null;
 window.addEventListener("resize", function(){
@@ -3536,7 +3748,7 @@ function renderSheet(){
     '</div>' +
     '<div class="hd-replay"><div class="replay-row"><button class="btn" id="chart-replay-play">▶ Play replay</button><span class="replay-arrow" id="chart-replay-arrow">▲</span><input type="range" id="chart-replay-range" min="0" max="100" value="0" /></div>' +
     '<div class="replay-step" id="chart-replay-step">Action replay — press play to step through the live OHLCV candles.</div>' +
-    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet wired to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Buy/sell pressure comes from candle direction. No bubble graphs.</p></div></div>' +
+    '<p class="note" style="margin-top:6px">Action replay, in development: steps are built from the live OHLCV candles above. Individual sends, swaps, stakes and pooled-liquidity events are not yet connected to a live tape, so those kinds appear only as labelled sample steps here, never as live events. Buy/sell pressure comes from candle direction. No bubble graphs.</p></div></div>' +
 
     (t.description ? '<p class="note" style="margin-top:10px">'+esc(t.description.slice(0,300))+"</p>" : "") +
     '<div style="margin-top:6px">' +
@@ -3593,7 +3805,7 @@ function renderSheet(){
       '<div class="amounts"><button data-amt="10">$10</button><button data-amt="25">$25</button><button data-amt="50">$50</button><button data-amt="100">$100</button></div>' +
       '<p class="note" id="portal-est"></p>' +
       '<button class="btn block '+(portalSide==="buy"?"buy":"sell")+'" id="portal-go">'+(portalSide==="buy"?"Buy ":"Sell ")+esc(t.symbol)+"</button>" +
-      '<p class="note" style="margin-top:9px">Preview portal — execution is not wired in the sandbox. In production this quote routes through the Trade Portal (all venues quoted, simulated, fail-closed) and signs in your HALEX wallet.</p>' +
+      '<p class="note" style="margin-top:9px">Preview portal — execution is not connected in this build. In production this quote routes through the Trade Portal (all venues quoted, simulated, fail-closed) and signs in your HALEX wallet.</p>' +
     "</div>";
   $$("#range-row button").forEach(function(b){
     b.addEventListener("click", function(){
@@ -3625,7 +3837,7 @@ function renderSheet(){
   $("#seg-buy").addEventListener("click", function(){ portalSide="buy"; renderSheet(); });
   $("#seg-sell").addEventListener("click", function(){ portalSide="sell"; renderSheet(); });
   $("#portal-go").addEventListener("click", function(){
-    toast("Sandbox preview: trade execution is not wired. Nothing was bought or sold.");
+    toast("Paper mode: trade execution is off in this build. Nothing was bought or sold.");
   });
   $("#sheet-watch").addEventListener("click", function(){
     if(inWatch){ toast(t.symbol + " is already on your APEX² watchlist."); return; }
@@ -4909,7 +5121,7 @@ function hwRender(){
 function hwConnected(st, provider, afterAllow){
   /* ZCURE handshake gate (halex-zcure.js, the client half of the layer):
      the session presents as connected ONLY after a ZCURE ALLOW. The
-     remote verification leg is NOT WIRED in this build — the verdict
+     remote verification leg is not connected in this build — the verdict
      object says so, and nothing here pretends a backend answered. */
   var present = function(){
     hwState = st; hwProvider = provider || null; hwSave(); hwRender();
@@ -5542,26 +5754,32 @@ $("#r-deploy").addEventListener("click", function(){
 });
 
 /* ---------------- Chaintarium (Three.js) ----------------
-   The engine script is deferred in the head so first paint never waits
-   on it. This loader is the on-demand path: it resolves at once when
-   the engine is already present, otherwise it walks the CDN list the
-   same way the other CDN loaders in this file do. A failed round clears the
-   cached promise so the next attempt retries from the top. */
-var THREE_URLS = [
-  "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
-  "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js",
-  "https://unpkg.com/three@0.128.0/build/three.min.js"
-];
+   The engine is the vendored current build loaded as a module in the
+   head (three r170, vendor/three.module.min.js, MIT) so first paint
+   never waits on it. This loader is the on-demand path: it resolves
+   at once when the engine is already present, waits briefly for the
+   head module to register, then retries the same vendored file once
+   via dynamic import. No CDN engine is ever substituted — if the
+   local file cannot load, the scenes report the engine unavailable
+   instead of silently running a different, older build. A failed
+   round clears the cached promise so the next attempt retries. */
 var threePromise = null;
 function ensureThree(){
   if(window.THREE) return Promise.resolve();
   if(threePromise) return threePromise;
-  var chain = Promise.reject(new Error("no CDN tried"));
-  THREE_URLS.forEach(function(url){
-    chain = chain.catch(function(){ return loadScript(url); });
-  });
-  threePromise = chain.then(function(){
-    if(!window.THREE) throw new Error("the Three.js script loaded but did not register the engine");
+  threePromise = new Promise(function(res, rej){
+    var waited = 0;
+    (function poll(){
+      if(window.THREE) return res();
+      waited += 100;
+      if(waited >= 2500) return rej(new Error("vendored three did not register"));
+      setTimeout(poll, 100);
+    })();
+  }).catch(function(){
+    return import("./vendor/three.module.min.js").then(function(mod){
+      if(!window.THREE) window.THREE = mod;
+      if(!window.THREE) throw new Error("the vendored Three.js module loaded but did not register the engine");
+    });
   });
   threePromise.catch(function(){ threePromise = null; });
   return threePromise;
@@ -5703,7 +5921,7 @@ function chaintariumMicroSize(modelValue){
     totalH: 0.10 + (0.35 + t * 1.55) + (1 + Math.round(t * 5)) * (0.16 + t * 0.10) + (0.18 + t * 0.22)
   };
 }
-/* Live-activity feed contract (NOT wired yet). If a host page provides
+/* Live-activity feed contract (not connected yet). If a host page provides
    window.HALEX_CHAIN_FEED = { latestTransfers: function(seconds){
    return [{from:"ethereum", to:"digibyte"}]; } }, this consumes it and
    labels ticks LIVE. Otherwise ticks are MODEL and say so. Never claim
@@ -5823,6 +6041,7 @@ function startChaintarium(){
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
   var scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x030409, 0.0016); /* rebuild pass: gentle depth falloff across the system */
   var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 300);
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
@@ -5881,7 +6100,7 @@ function startChaintarium(){
 
   var world = new THREE.Group(); scene.add(world);
   scene.add(new THREE.AmbientLight(0x8899bb, 0.55));
-  var sunLight = new THREE.PointLight(0xffc37a, 1.6, 0); world.add(sunLight);
+  var sunLight = new THREE.PointLight(0xffc37a, 1.6, 0); sunLight.decay = 0; /* decay 0 = pre-r155 falloff; physical decay would dim orbit-distance planets to black */ world.add(sunLight);
 
   var planets = [];
   var towerGeoSys = new THREE.BoxGeometry(1, 1, 1); towerGeoSys.translate(0, 0.5, 0);
@@ -7075,6 +7294,32 @@ function disposeScene(sc){
     if(o.isInstancedMesh && o.dispose) o.dispose();
   });
 }
+/* Lit-window texture for the circuit-city towers: a dark facade grid
+   whose lit cells are bright, so each tower family's emissive colour
+   shows through the windows only. One shared CanvasTexture for every
+   instanced tower — the HD read comes from the windows, not from
+   more geometry. Also handed to the legend city builder. */
+var _surfWinTex = null;
+function surfWindowTexture(){
+  if(_surfWinTex) return _surfWinTex;
+  var cv = document.createElement("canvas"); cv.width = 64; cv.height = 128;
+  var g = cv.getContext("2d");
+  g.fillStyle = "#000"; g.fillRect(0, 0, 64, 128);
+  for(var wy = 0; wy < 16; wy++){
+    for(var wx = 0; wx < 6; wx++){
+      var r = sHash2(wx * 3 + wy * 17, 131, 17);
+      if(r > 0.45){
+        var b = 140 + Math.floor(r * 115);
+        g.fillStyle = "rgb(" + b + "," + b + "," + b + ")";
+        g.fillRect(3 + wx * 10, 4 + wy * 8, 5, 4);
+      }
+    }
+  }
+  var t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  _surfWinTex = t;
+  return t;
+}
 function buildSurfaceScene(c, stage){
   surfPillars = [];
   var canvas = $("#surface-canvas"), labelsBox = $("#surface-labels");
@@ -7086,9 +7331,11 @@ function buildSurfaceScene(c, stage){
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
   var camEulS = new THREE.Euler(0, 0, 0, "YXZ"); /* same full-360 rig as the system view — the up vector rides the rotation over the poles */
-  scene.add(new THREE.AmbientLight(0x8fa3c8, 0.5));
+  scene.add(new THREE.AmbientLight(0x8fa3c8, 0.38));
+  scene.add(new THREE.HemisphereLight(0xbdd3ff, 0x141210, 0.5)); /* rebuild pass: sky/ground shading so towers shade like solid buildings, not flat cutouts */
+  scene.fog = new THREE.FogExp2(0x04060a, 0.0048); /* rebuild pass: the far side of the world falls off into atmosphere */
   var dl = new THREE.DirectionalLight(0xfff2dd, 1.28); dl.position.set(30, 26, 18); scene.add(dl);
-  var rim = new THREE.PointLight(0x2ee6c8, 0.7, 0); rim.position.set(-36, -16, -24); scene.add(rim);
+  var rim = new THREE.PointLight(0x2ee6c8, 0.7, 0); rim.decay = 0; rim.position.set(-36, -16, -24); scene.add(rim);
 
   var seed = (hueFor(c.id) % 89) + 3;
   var surfLayerIdxNow = (typeof surfLayerIdx !== "undefined" ? surfLayerIdx : 0);
@@ -7298,7 +7545,7 @@ function buildSurfaceScene(c, stage){
   function towerMesh(mats, color, emissive, ei){
     if(!mats.length) return;
     var g = new THREE.BoxGeometry(1, 1, 1); g.translate(0, 0.5, 0);
-    var m = new THREE.InstancedMesh(g, new THREE.MeshStandardMaterial({ color: color, emissive: emissive, emissiveIntensity: ei, roughness: 0.44, metalness: 0.6 }), mats.length);
+    var m = new THREE.InstancedMesh(g, new THREE.MeshStandardMaterial({ color: color, emissive: emissive, emissiveIntensity: ei, emissiveMap: surfWindowTexture(), roughness: 0.44, metalness: 0.6 }), mats.length);
     for(var j = 0; j < mats.length; j++) m.setMatrixAt(j, mats[j]);
     m.instanceMatrix.needsUpdate = true;
     world.add(m);
@@ -7670,7 +7917,7 @@ function buildSurfaceScene(c, stage){
     var CS = window.HalexMChaintariumCityscapes;
     if(!CS || !CS.buildCityscape || !CS.buildMeshes) return;
     var city = CS.buildCityscape(seed);
-    var built = CS.buildMeshes(THREE, city);
+    var built = CS.buildMeshes(THREE, city, { windowTexture: surfWindowTexture() });
     var lg = built.group;
     var lu = sHash2(7, 777, seed), lv = sHash2(7, 817, seed);
     var ly = 1 - lu * 2, lr = Math.sqrt(Math.max(0, 1 - ly * ly)), lt = lv * Math.PI * 2;
@@ -7943,10 +8190,13 @@ function buildSurfaceScene(c, stage){
   canvas.addEventListener("touchend", onTouchEnd);
 
   var raf = 0, stopped = false;
+  /* rebuild pass: adaptive quality ladder — pixel ratio steps down
+     before anything visible is shed, and back up when frames recover */
+  var qSteps = [Math.min(window.devicePixelRatio || 1, 2), 1.6, 1.35, 1.15], qLevel = 0, qFrames = 0, qEma = 16, qLast = performance.now();
   var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function loop(){
     raf = requestAnimationFrame(loop);
-    if(stopped || !surf.open || surf.chain !== c || currentTab !== "chaintarium") return;
+    if(stopped || !surf.open || surf.chain !== c || currentTab !== "chaintarium" || document.hidden) return;
     if(spinGoal){
       /* a search or a tap asked for a structure: the planet itself
          turns until that structure faces the camera, then settles */
@@ -8022,6 +8272,20 @@ function buildSurfaceScene(c, stage){
         arr[0] = va.x + (vb.x - va.x) * fr2; arr[1] = va.y + (vb.y - va.y) * fr2; arr[2] = va.z + (vb.z - va.z) * fr2;
         fl.geo.attributes.position.needsUpdate = true;
       });
+    }
+    /* rebuild pass: slow day/night drift of the key light */
+    if(!reduceMotion){
+      var ltn = performance.now() * 0.001;
+      dl.position.set(Math.cos(ltn * 0.05) * 34, 24 + Math.sin(ltn * 0.037) * 6, Math.sin(ltn * 0.05) * 34);
+      dl.intensity = 1.16 + Math.sin(ltn * 0.05) * 0.2;
+    }
+    /* rebuild pass: adaptive quality — long frames step the pixel
+       ratio down a rung; recovered frames step it back up */
+    qFrames++; qEma = qEma * 0.95 + Math.min(100, performance.now() - qLast) * 0.05; qLast = performance.now();
+    if(qFrames >= 90){
+      qFrames = 0;
+      if(qEma > 26 && qLevel < qSteps.length - 1){ qLevel++; renderer.setPixelRatio(qSteps[qLevel]); resize(); }
+      else if(qEma < 12.5 && qLevel > 0){ qLevel--; renderer.setPixelRatio(qSteps[qLevel]); resize(); }
     }
     ang += (tAng - ang) * 0.06; tilt += (tTilt - tilt) * 0.06; radius += (tRadius - radius) * 0.06;
     camEulS.set(-tilt, ang, 0);
@@ -8900,6 +9164,7 @@ function syncChainTools(){
    switches exactly as they left them. */
 var chainLayers = window.ChainMoons ? ChainMoons.defaultLayerState()
   : { platforms:true, wallets:true, transactions:true, flows:true, rugs:true, bundles:true, labels:true, scan:true };
+chainLayers.scan = false; /* rebuild pass: the surface-scan card no longer sits on the view by default — structure info opens on tap (feat card), and the Scan card layer in Tools re-enables the HUD when wanted */
 var surfLayerGroups = {};
 function layerKeyForFeat(type){
   return { platform:"platforms", wallet:"wallets", transaction:"transactions", movement:"flows", rug:"rugs", bundle:"bundles" }[type] || "flows";
@@ -9898,7 +10163,8 @@ function initLaunch(){
 /* ---------------- boot ---------------- */
 buildNav();
 quickGrid();
-renderSnapshot();
+renderMajors();
+setInterval(function(){ if(!document.hidden) renderMajors(); }, 45000);
 renderNews("all");
 renderTrading();
 renderSkillRoll();
@@ -10019,6 +10285,34 @@ initGate();
   if(a3){
     a3.innerHTML = "<p class=\"note\">No transfer records have been supplied on this page, so APEX³ has no hops to investigate. This tab states its gap: it never invents hops, origins, or verdicts. Investigations render here from host-supplied public chain reads, and every flag is an investigation flag, not a verdict or a recovery claim.</p>" +
       (window.HalexMApex3 ? "<p class=\"note\">APEX³ engine loaded: hop graphs, funding traces, and theft flags are available once records arrive.</p>" : "<p class=\"note\">APEX³ engine did not load.</p>");
+  }
+})();
+</script>
+<script>
+/* HALEX-M rebuild pass: tools drawer + legend sheet wiring.
+   The drawer starts closed (owner's clutter verdict); the toggle is
+   always on the stage's top-right corner and the choice persists. */
+(function(){
+  var stage = document.getElementById("chain-stage");
+  var tgl = document.getElementById("chain-tools-toggle");
+  if(stage && tgl){
+    var open = false;
+    try{ open = localStorage.getItem("halexm-tools-open") === "1"; }catch(e){}
+    stage.classList.toggle("tools-closed", !open);
+    tgl.setAttribute("aria-expanded", open ? "true" : "false");
+    tgl.addEventListener("click", function(){
+      var nowClosed = stage.classList.toggle("tools-closed");
+      tgl.setAttribute("aria-expanded", nowClosed ? "false" : "true");
+      try{ localStorage.setItem("halexm-tools-open", nowClosed ? "0" : "1"); }catch(e){}
+    });
+  }
+  var lbtn = document.getElementById("hm-cs-legend-btn");
+  var surf = document.getElementById("surface");
+  if(lbtn && surf){
+    lbtn.addEventListener("click", function(){
+      var on = surf.classList.toggle("legend-open");
+      lbtn.setAttribute("aria-expanded", on ? "true" : "false");
+    });
   }
 })();
 </script>

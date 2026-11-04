@@ -213,11 +213,18 @@
      r128 build); in tests a stub with the same constructors works.
      Returns { group, clickables, flashers }. Every mesh gets
      userData.structure = its descriptor, so raycast clicks resolve. */
-  function buildMeshes(THREE, city){
+  function buildMeshes(THREE, city, opts){
     var group = new THREE.Group();
     var clickables = [], flashers = [];
-    function mat(hex, emissive, ei){
-      return new THREE.MeshStandardMaterial({ color: hex, emissive: emissive, emissiveIntensity: ei, roughness: 0.5, metalness: 0.55 });
+    /* opts.windowTexture (a THREE CanvasTexture of a lit-window grid)
+       is applied as the emissive map on tower-class structures, so
+       their emissive colour reads as lit windows. Optional: callers
+       without a texture (tests, stubs) get the original materials. */
+    var winTex = (opts && opts.windowTexture) || null;
+    function mat(hex, emissive, ei, tex){
+      var p = { color: hex, emissive: emissive, emissiveIntensity: ei, roughness: 0.5, metalness: 0.55 };
+      if(tex && winTex) p.emissiveMap = winTex;
+      return new THREE.MeshStandardMaterial(p);
     }
     function put(mesh, st){
       mesh.userData.structure = st;
@@ -276,7 +283,7 @@
         lamp.position.set(x, s.h + 0.05, z);
         put(lamp, st);
       } else if(st.shape === "tower-black-red"){
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.w), mat(col.body, col.body, 0.2));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.w), mat(col.body, col.body, 0.2, true));
         base.position.set(x, s.h / 2, z);
         put(base, st);
         var trim = new THREE.Mesh(new THREE.BoxGeometry(s.w * 1.08, s.h * 0.08, s.w * 1.08), mat(col.trim, col.trim, 0.5));
@@ -288,7 +295,7 @@
         put(found, st);
         flashers.push({ material: foundMat, phase: idx * 0.7 });
       } else if(st.shape === "capital-rectangle" || st.shape === "capital-flagged"){
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.2));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.2, true));
         base.position.set(x, s.h / 2, z);
         put(base, st);
         var roof = new THREE.Mesh(new THREE.BoxGeometry(s.w * 1.1, 0.08, s.d * 1.1), mat(col.trim, col.trim, 0.4));
@@ -319,7 +326,7 @@
         var tl = new THREE.Line(tg, new THREE.LineBasicMaterial({ color: col.light, transparent: true, opacity: 0.85 }));
         put(tl, st);
       } else {
-        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.25));
+        base = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, s.d), mat(col.body, col.body, 0.25, true));
         base.position.set(x, s.h / 2, z);
         put(base, st);
       }
