@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HALEX Access</title>
+<style>
+  :root{
+    --bg:#0d1017;
+    --panel:#141926;
+    --panel2:#1a2133;
+    --gold:#c9a227;
+    --gold-dim:#8a711c;
+    --text:#e8e6df;
+    --muted:#9aa3b2;
+    --line:#2a3247;
+    --err:#e06c5c;
+    --ok:#7fc97f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5;
+    padding:20px 14px 48px;
+  }
+  .wrap{max-width:640px;margin:0 auto}
+  header{text-align:center;padding:18px 0 8px}
+  header h1{
+    color:var(--gold);
+    font-size:30px;
+    letter-spacing:3px;
+    font-weight:800;
+  }
+  header .sub{color:var(--muted);font-size:14px;margin-top:4px;letter-spacing:1px}
+  .intro{
+    text-align:center;
+    color:var(--text);
+    font-size:15px;
+    margin:14px 4px 22px;
+  }
+  h2.section{
+    color:var(--gold);
+    font-size:13px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin:22px 0 10px;
+  }
+  .cards{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:560px){.cards{grid-template-columns:1fr 1fr}}
+  .card{
+    display:block;
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:12px;
+    padding:16px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .card input{position:absolute;opacity:0;pointer-events:none}
+  .card .name{font-size:19px;font-weight:700;letter-spacing:1px;color:var(--text)}
+  .card .tag{
+    display:inline-block;
+    margin-top:6px;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:#0d1017;
+    background:var(--gold);
+    border-radius:4px;
+    padding:2px 7px;
+    font-weight:700;
+  }
+  .card .tag.list{background:var(--panel2);color:var(--gold);border:1px solid var(--gold-dim)}
+  .card p{color:var(--muted);font-size:14px;margin-top:9px}
+  .card.selected{border-color:var(--gold);background:var(--panel2)}
+  label.field{display:block;margin-top:14px}
+  label.field .lab{font-size:13px;color:var(--muted);letter-spacing:.4px}
+  label.field .req{color:var(--gold)}
+  input[type="email"],input[type="text"],textarea{
+    width:100%;
+    margin-top:5px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:9px;
+    color:var(--text);
+    font-size:16px;
+    padding:11px 12px;
+    font-family:inherit;
+  }
+  input:focus,textarea:focus{outline:none;border-color:var(--gold)}
+  textarea{resize:vertical;min-height:56px;word-break:break-all}
+  .routes{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:560px){.routes{grid-template-columns:1fr 1fr}}
+  .route{
+    display:block;
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:12px;
+    padding:14px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .route input{position:absolute;opacity:0;pointer-events:none}
+  .route .rname{font-weight:700;font-size:16px}
+  .route p{color:var(--muted);font-size:13.5px;margin-top:6px}
+  .route.selected{border-color:var(--gold);background:var(--panel2)}
+  .walletbox{
+    margin-top:12px;
+    background:var(--panel);
+    border:1px dashed var(--gold-dim);
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
+  }
+  .walletbox .addr{
+    display:block;
+    margin-top:6px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13px;
+    color:var(--gold);
+    word-break:break-all;
+    user-select:all;
+  }
+  .hint{
+    margin-top:10px;
+    font-size:13.5px;
+    color:var(--gold);
+    display:none;
+  }
+  .honest{
+    margin-top:22px;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px 14px;
+    font-size:13.5px;
+    color:var(--muted);
+  }
+  .honest strong{color:var(--text)}
+  button.submit{
+    width:100%;
+    margin-top:22px;
+    background:var(--gold);
+    color:#0d1017;
+    border:none;
+    border-radius:10px;
+    font-size:17px;
+    font-weight:800;
+    letter-spacing:1px;
+    padding:14px;
+    cursor:pointer;
+  }
+  button.submit:disabled{opacity:.55;cursor:default}
+  .msg{display:none;margin-top:16px;border-radius:10px;padding:13px 14px;font-size:14.5px}
+  .msg.err{display:block;background:#2a1712;border:1px solid var(--err);color:#f0b8ae}
+  .msg a{color:var(--gold)}
+  .state{
+    display:none;
+    background:var(--panel);
+    border:2px solid var(--gold);
+    border-radius:12px;
+    padding:20px 16px;
+    text-align:center;
+    margin-top:10px;
+  }
+  .state.show{display:block}
+  .state h3{color:var(--gold);font-size:19px;letter-spacing:1px;margin-bottom:8px}
+  .state p{color:var(--muted);font-size:14.5px}
+  .state p strong{color:var(--text)}
+  .state button{
+    margin-top:14px;
+    background:transparent;
+    color:var(--gold);
+    border:1px solid var(--gold-dim);
+    border-radius:8px;
+    padding:9px 14px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .hidden{display:none !important}
+  footer{
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:34px;
+    letter-spacing:1px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>HALEX</h1>
+    <div class="sub">ACCESS SIGN-UP</div>
+  </header>
+
+  <p class="intro">One sign-up covers the products below. Pick a product, send your payment or donation, and paste the proof. Access is granted after the proof is checked.</p>
+
+  <!-- Return-visit pending state -->
+  <div class="state" id="pendingState">
+    <h3>SIGN-UP ON FILE</h3>
+    <p id="pendingText">Your signup is on file, pending review.</p>
+    <p style="margin-top:8px">Proof is checked before access is granted. Access runs 1 month from the date it is granted.</p>
+    <button type="button" id="newSignupBtn">Submit a new signup</button>
+  </div>
+
+  <!-- Post-submit confirmation state -->
+  <div class="state" id="confirmState">
+    <h3>SIGN-UP RECEIVED</h3>
+    <p>Your signup was received. <strong>Proof is checked before access is granted.</strong></p>
+    <p style="margin-top:8px">Crypto donation proof is verified on-chain. X Pay references are reviewed. Once granted, access runs <strong>1 month</strong> from the grant date.</p>
+  </div>
+
+  <form id="accessForm" novalidate>
+
+    <h2 class="section">1 &middot; Choose a product</h2>
+    <div class="cards">
+      <label class="card selected" id="cardHalexM">
+        <input type="radio" name="product" value="HALEX-M" checked>
+        <span class="name">HALEX-M</span><br>
+        <span class="tag">Open now</span>
+        <p>Crypto market intelligence: live chain views, token research, and trading tools in one app.</p>
+      </label>
+      <label class="card" id="cardNishido">
+        <input type="radio" name="product" value="NISHIDO">
+        <span class="name">NISHIDO</span><br>
+        <span class="tag list">Access list</span>
+        <p>A swordsman dueling game. Join the access list for launch.</p>
+      </label>
+    </div>
+
+    <h2 class="section">2 &middot; Your details</h2>
+    <label class="field">
+      <span class="lab">Email address <span class="req">(required, this is your sign-in)</span></span>
+      <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+    </label>
+    <label class="field">
+      <span class="lab">Solana address (optional)</span>
+      <input type="text" id="solanaAddress" name="solana_address" placeholder="Your Solana wallet address" autocomplete="off">
+    </label>
+
+    <h2 class="section">3 &middot; Payment route</h2>
+    <div class="routes">
+      <label class="route selected" id="routeDonateCard">
+        <input type="radio" name="route" value="Donate to open" checked>
+        <span class="rname">Donate to open</span>
+        <p>Send SOL to the project wallet below. Your proof is the transaction signature.</p>
+      </label>
+      <label class="route" id="routeXpayCard">
+        <input type="radio" name="route" value="X Pay">
+        <span class="rname">X Pay</span>
+        <p>Pay <strong>@HALEXApp</strong> on X, $5 to $50,000, for 1 month of access. Complete the payment in X first, then paste the payment reference as proof below.</p>
+      </label>
+    </div>
+
+    <div class="walletbox" id="walletBox">
+      Project wallet (Solana):
+      <span class="addr">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</span>
+      <div class="hint" id="donateHint">Guidance for HALEX-M: 0.05&ndash;0.5 SOL.</div>
+    </div>
+
+    <label class="field">
+      <span class="lab">Amount <span class="req">(required)</span></span>
+      <input type="text" id="amount" name="amount" placeholder="e.g. 0.1 SOL or $25" autocomplete="off" required>
+    </label>
+
+    <label class="field">
+      <span class="lab" id="proofLabel">Proof of transaction <span class="req">(required)</span> &mdash; transaction signature</span>
+      <textarea id="proof" name="proof" placeholder="Paste the Solana transaction signature" required></textarea>
+    </label>
+
+    <div class="honest">
+      <strong>How proof is checked:</strong> crypto donation proof is verified on-chain. X Pay references are reviewed before access is granted. Nothing is unlocked until the proof checks out, and access runs 1 month from the date it is granted.
+    </div>
+
+    <div class="msg" id="errorBox"></div>
+
+    <button type="submit" class="submit" id="submitBtn">SUBMIT SIGN-UP</button>
+  </form>
+
+  <footer>HALEX &middot; ACCESS PORTAL</footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var ENDPOINT = "https://formsubmit.co/ajax/604fe9abad5b5439a9e8661c740e3b16";
+  var STORE_KEY = "halexAccessPendingSignup";
+
+  var form = document.getElementById("accessForm");
+  var pendingState = document.getElementById("pendingState");
+  var pendingText = document.getElementById("pendingText");
+  var confirmState = document.getElementById("confirmState");
+  var errorBox = document.getElementById("errorBox");
+  var submitBtn = document.getElementById("submitBtn");
+  var walletBox = document.getElementById("walletBox");
+  var donateHint = document.getElementById("donateHint");
+  var proofLabel = document.getElementById("proofLabel");
+  var proofField = document.getElementById("proof");
+
+  function selectedProduct(){
+    var el = form.querySelector('input[name="product"]:checked');
+    return el ? el.value : "";
+  }
+  function selectedRoute(){
+    var el = form.querySelector('input[name="route"]:checked');
+    return el ? el.value : "";
+  }
+
+  function refresh(){
+    document.getElementById("cardHalexM").classList.toggle("selected", selectedProduct() === "HALEX-M");
+    document.getElementById("cardNishido").classList.toggle("selected", selectedProduct() === "NISHIDO");
+    document.getElementById("routeDonateCard").classList.toggle("selected", selectedRoute() === "Donate to open");
+    document.getElementById("routeXpayCard").classList.toggle("selected", selectedRoute() === "X Pay");
+    var donating = selectedRoute() === "Donate to open";
+    walletBox.classList.toggle("hidden", !donating);
+    donateHint.style.display = (donating && selectedProduct() === "HALEX-M") ? "block" : "none";
+    if (donating) {
+      proofLabel.innerHTML = 'Proof of transaction <span class="req">(required)</span> &mdash; transaction signature';
+      proofField.placeholder = "Paste the Solana transaction signature";
+    } else {
+      proofLabel.innerHTML = 'Proof of transaction <span class="req">(required)</span> &mdash; X Pay payment reference';
+      proofField.placeholder = "Paste the X Pay payment reference";
+    }
+  }
+  form.addEventListener("change", refresh);
+  refresh();
+
+  function showPending(record){
+    pendingText.innerHTML = "Your signup is on file, pending review" +
+      (record && record.product ? " &mdash; <strong>" + record.product + "</strong>" : "") +
+      (record && record.email ? " for <strong>" + record.email + "</strong>" : "") + ".";
+    pendingState.classList.add("show");
+    form.classList.add("hidden");
+  }
+
+  function loadPending(){
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (e) { return null; }
+  }
+
+  var existing = loadPending();
+  if (existing) { showPending(existing); }
+
+  document.getElementById("newSignupBtn").addEventListener("click", function(){
+    pendingState.classList.remove("show");
+    form.classList.remove("hidden");
+  });
+
+  function showError(text){
+    errorBox.textContent = text;
+    errorBox.className = "msg err";
+  }
+  function clearError(){
+    errorBox.textContent = "";
+    errorBox.className = "msg";
+  }
+
+  form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    clearError();
+
+    var product = selectedProduct();
+    var route = selectedRoute();
+    var email = document.getElementById("email").value.trim();
+    var solana = document.getElementById("solanaAddress").value.trim();
+    var amount = document.getElementById("amount").value.trim();
+    var proof = proofField.value.trim();
+
+    if (!product) { showError("Please choose a product."); return; }
+    if (!email || email.indexOf("@") < 1) { showError("Please enter a valid email address. It is your sign-in."); return; }
+    if (!route) { showError("Please choose a payment route."); return; }
+    if (!amount) { showError("Please enter the amount you sent."); return; }
+    if (!proof) { showError("Please paste your proof of transaction."); return; }
+
+    var payload = {
+      _subject: "HALEX Access Portal signup",
+      product: product,
+      email: email,
+      solana_address: solana,
+      route: route,
+      amount: amount,
+      proof: proof
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "SENDING...";
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(function(res){
+      if (!res.ok) { throw new Error("HTTP " + res.status); }
+      return res.json().catch(function(){ return {}; });
+    }).then(function(){
+      var record = {
+        product: product,
+        email: email,
+        route: route,
+        amount: amount,
+        submitted_at: new Date().toISOString()
+      };
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(record)); } catch (e) {}
+      form.classList.add("hidden");
+      pendingState.classList.remove("show");
+      confirmState.classList.add("show");
+      window.scrollTo(0, 0);
+    }).catch(function(){
+      showError("The signup could not be sent. Check your connection and try again. Nothing was recorded, so please retry.");
+    }).then(function(){
+      submitBtn.disabled = false;
+      submitBtn.textContent = "SUBMIT SIGN-UP";
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -568,6 +568,11 @@ body.chain-pop{overflow:hidden}
 .chain-sysbar .btn{font-size:12px; font-weight:600; padding:7px 11px; border-radius:99px; border:1px solid var(--line2); background:var(--panel2); color:var(--muted)}
 .chain-sysbar .btn.on{background:var(--text); color:var(--bg)}
 .chain-sysbar .note{flex-basis:100%}
+.chain-screenbar{position:absolute; left:10px; right:126px; bottom:8px; z-index:40; display:flex; gap:6px; flex-wrap:wrap; justify-content:center; pointer-events:none}
+.chain-screenbar .btn{pointer-events:auto; font-size:11.5px; font-weight:600; padding:6px 12px; border-radius:99px; border:1px solid var(--line2); background:rgba(8,10,16,.82); color:var(--muted); backdrop-filter:blur(6px)}
+.chain-screenbar .btn.on{background:var(--text); color:var(--bg)}
+.chain-screenbar #chain-screen-back{border-color:rgba(255,194,75,.5); color:#ffd98a}
+#surface.open ~ .chain-screenbar{display:none}
 #chain-live-status{font-size:12px; color:var(--muted)}
 .surf-activity-tick{position:absolute; left:10px; bottom:30px; z-index:6; max-width:min(420px,86vw); background:rgba(8,10,16,.82); border:1px solid rgba(255,194,75,.4); border-radius:10px; padding:7px 10px; font-size:11.5px; color:#c6d2e8; backdrop-filter:blur(6px)}
 #chain-activity-card p{margin:6px 0 0; font-size:12.5px; color:var(--muted)}
@@ -1463,6 +1468,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="btn primary block" id="gate-check">Check the chain &amp; unlock</button>
     <p class="launch-note" id="gate-status" hidden></p>
     <p class="launch-fine">Any single donation between 0.05 and 0.5 SOL counts — less or more doesn't unlock. The check runs in your browser against the public Solana chain: no account, no sign-up, and nothing is stored. Already sent it? Enter the sending wallet above and check.</p>
+    <p class="launch-note">Prefer to sign up first, or paying through X instead? The <a href="../access/">HALEX Access Portal</a> takes sign-ups for HALEX-M and Nishido — email sign-in plus proof of transaction.</p>
   </div>
 </div>
 
@@ -2133,7 +2139,7 @@ nav.tabbar .rail{touch-action:pan-x}
 <section class="tab" id="tab-chaintarium">
   <div class="tabhead">
     <h2>Chaintarium</h2>
-    <p>Bitcoin is the sun, every chain orbits as a planet, and each world maps its wallets, tokens and pools.</p>
+    <p>Three solar systems — Bitcoin and BNB Chain are suns, the dead chains fall to a blackhole — and each world maps its wallets, tokens and pools.</p>
   </div>
   <div class="chain-search">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
@@ -2148,11 +2154,12 @@ nav.tabbar .rail{touch-action:pan-x}
   <div id="chain-scrim" aria-hidden="true"></div>
   <div class="chain-sysbar" id="chain-sysbar" aria-label="Chaintarium solar systems">
     <b>Solar systems</b>
-    <button class="btn" id="chain-system-main" aria-pressed="false">Main system</button>
-    <button class="btn" id="chain-system-dying" aria-pressed="false">Dying system only</button>
-    <button class="btn on" id="chain-system-both" aria-pressed="true">Both systems</button>
-    <button class="btn on" id="chain-visit-main" aria-pressed="true">Visit Main system</button>
-    <button class="btn" id="chain-visit-dying" aria-pressed="false">Visit Blackhole system</button>
+    <button class="btn" id="chain-system-main" aria-pressed="false">Active system</button>
+    <button class="btn" id="chain-system-dying" aria-pressed="false">Blackhole system</button>
+    <button class="btn on" id="chain-system-both" aria-pressed="true">All systems</button>
+    <button class="btn on" id="chain-visit-active" aria-pressed="true">Visit Active system</button>
+    <button class="btn" id="chain-visit-semi" aria-pressed="false">Visit Semi-Active system</button>
+    <button class="btn" id="chain-visit-blackhole" aria-pressed="false">Visit Blackhole system</button>
     <span id="chain-live-status">Transfers shown are a model until a live feed is wired.</span>
   </div>
   <div id="chain-stage" class="tools-closed">
@@ -2199,6 +2206,13 @@ nav.tabbar .rail{touch-action:pan-x}
       <div class="moon-step" id="moon-step" hidden></div>
       <p class="moon-note" id="moon-note"></p>
     </div>
+    <div class="chain-screenbar" id="chain-screenbar" role="tablist" aria-label="Chaintarium screens">
+      <button class="btn" id="chain-screen-back" hidden>← Overview</button>
+      <button class="btn on" id="chain-screen-overview" role="tab" aria-selected="true">Overview</button>
+      <button class="btn" id="chain-screen-active" role="tab" aria-selected="false">Active</button>
+      <button class="btn" id="chain-screen-semi" role="tab" aria-selected="false">Semi-Active</button>
+      <button class="btn" id="chain-screen-blackhole" role="tab" aria-selected="false">Blackhole</button>
+    </div>
     <button class="btn" id="chain-tools-toggle" aria-expanded="false" aria-controls="chain-toolbar">⚙ Tools</button>
     <div class="chain-toolbar" id="chain-toolbar" aria-label="Chaintarium tools">
       <div class="tb-cap">TOOLS</div>
@@ -2207,8 +2221,9 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn" id="chain-tools-feed" aria-pressed="true">Live feed on</button>
         <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
         <button class="btn" id="chain-tools-deadsys" aria-pressed="true">Dead system on</button>
-        <button class="btn on" id="chain-tools-visit-main" aria-pressed="true">Visit Main system</button>
-        <button class="btn" id="chain-tools-visit-dying" aria-pressed="false">Visit Blackhole system</button>
+        <button class="btn on" id="chain-tools-visit-active" aria-pressed="true">Visit Active system</button>
+        <button class="btn" id="chain-tools-visit-semi" aria-pressed="false">Visit Semi-Active system</button>
+        <button class="btn" id="chain-tools-visit-blackhole" aria-pressed="false">Visit Blackhole system</button>
       </div>
       <div class="tb-group tb-view">
         <div class="tb-cap">VIEW</div>
@@ -2269,8 +2284,9 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="chain-list-toggle" id="chain-list-toggle" aria-expanded="false" aria-controls="chain-chips">Chains · <span id="chain-count">36</span><span class="clt-chev" aria-hidden="true">▾</span></button>
     <div class="chain-ctl" id="chain-chips" hidden></div>
     <div class="chain-lists-note" id="chain-lists-note" hidden>
-      <p><b>Main system:</b> <span id="chain-top40-list"></span></p>
-      <p><b>Dying system (blackhole sun):</b> <span id="chain-dying-list"></span></p>
+      <p><b>Active system (Bitcoin sun):</b> <span id="chain-top40-list"></span></p>
+      <p><b>Semi-active system (BNB sun):</b> <span id="chain-semi-list"></span></p>
+      <p><b>Blackhole system:</b> <span id="chain-dying-list"></span></p>
     </div>
   </div>
   <div class="card chain-track" id="chain-track" hidden>
@@ -6157,34 +6173,47 @@ CHAINS_3D.forEach(function(c){
   c.moons = c.moons || [];
 });
 /* ---------------- Chaintarium systems, organized 2026-11-04 ----------------
-   TWO SYSTEMS, ranked by the activity index in the chain data (the
-   popularity proxy; no live popularity feed is wired). Names are
-   listed here and in #chain-top40-list.
-   MAIN SYSTEM: CHAINS_3D above holds 36 worlds (Bitcoin the sun plus
-   35 planets), every one with activity 0.30 or higher. Orbits are
-   re-spaced by activity rank, most active closest in, so every planet
-   visibly rides the sun's ring system inside the polar grid.
-   DYING SYSTEM: DYING_CHAINS_3D below orbits the blackhole sun. The
-   five lowest-activity catalog chains (activity under 0.30:
-   ThunderCore, Cronos, DigiByte, Fantom, PIVX) live ONLY here now,
-   alongside the dead / R&D chains (Ethereum Classic, Plasma,
-   Namecoin, Peercoin, Vertcoin, Feathercoin, Primecoin, Terra
-   Classic). No chain stands in both systems, and none floats
-   outside one. */
+   THREE SYSTEMS, ranked by the activity index in the chain data (the
+   popularity proxy; no live popularity feed is wired), shown as FOUR
+   screens: an overview of all three systems, then one fitted screen
+   per system. Names are listed here and in the chain lists note.
+   SYSTEM 1 — ACTIVE: Bitcoin the sun plus the 20 most active chains
+   (activity 0.40–0.95), orbits re-spaced by activity rank on one
+   ladder (8 + rank × 2.8), most active closest in.
+   SYSTEM 2 — SEMI-ACTIVE: BNB Chain the sun ("not much building or
+   use") plus the lesser 20: the 14 catalog chains at activity
+   0.30–0.40 on the same ladder, then the six worlds flagged "dying
+   chain" in DYING_CHAINS_3D on its outer rungs.
+   SYSTEM 3 — BLACKHOLE: the 7 dead chains as planets around the
+   blackhole sun. The blackhole is actively swallowing the 3
+   least-used of them (Feathercoin, Primecoin, Peercoin): they spiral
+   at its event horizon, dimming and shrinking, never consumed.
+   21 + 21 + 7 = 49 worlds, plus the blackhole. No chain stands in
+   two systems, none floats outside one, and no transfer route or
+   model transfer crosses between systems. */
+var ACTIVE_ORDER = ["solana","base","ethereum","tron","sui","arbitrum","optimism","dogecoin","hyperliquid","polygon","aptos","avalanche","xrp","litecoin","near","unichain","zksync","cardano","hedera","linea"];
+var SEMI_ORDER = ["mantle","monero","starknet","stellar","algorand","berachain","blast","cosmos","scroll","sei","tezos","ink","nano","polkadot"];
+CHAINS_3D.forEach(function(c){
+  var ai = ACTIVE_ORDER.indexOf(c.id), si = SEMI_ORDER.indexOf(c.id);
+  if(c.id === "bitcoin"){ c.system = "active"; c.orbit = 0; }
+  else if(ai >= 0){ c.system = "active"; c.orbit = 8 + ai * 2.8; }
+  else if(c.id === "bsc"){ c.system = "semi"; c.orbit = 0; }
+  else if(si >= 0){ c.system = "semi"; c.orbit = 8 + si * 2.8; }
+});
 var DYING_CHAINS_3D = [
-  { id:"dying-etc", name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, status:"dying chain", mainId:null, note:"Dying-system rendering — Ethereum Classic, the unforked chain, shown fading toward the blackhole. Labelled dying, not a new chain." },
-  { id:"dying-dgb", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, status:"dying chain", mainId:null, note:"Dying-system rendering of DigiByte — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
-  { id:"dying-pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, status:"dying chain", mainId:null, note:"Dying-system rendering of PIVX — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
-  { id:"dying-thunder", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, status:"dying chain", mainId:null, note:"Dying-system rendering of ThunderCore — the lowest-activity chain in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
-  { id:"dying-plasma", name:"Plasma", sym:"PLASMA", color:0x7a5cff, born:2019, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Plasma, a scaling R&D design, labelled dead / R&D chain." },
-  { id:"dying-namecoin", name:"Namecoin", sym:"NMC", color:0x8a8a8a, born:2011, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Namecoin, an early naming R&D chain, labelled dead / R&D." },
-  { id:"dying-peercoin", name:"Peercoin", sym:"PPC", color:0x3cb054, born:2012, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Peercoin, an early proof-of-stake R&D chain, labelled dead / R&D." },
-  { id:"dying-vertcoin", name:"Vertcoin", sym:"VTC", color:0x1b3448, born:2014, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Vertcoin, labelled dead / R&D." },
-  { id:"dying-feathercoin", name:"Feathercoin", sym:"FTC", color:0x2c7df7, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Feathercoin, labelled dead / R&D." },
-  { id:"dying-primecoin", name:"Primecoin", sym:"XPM", color:0xc0c0c0, born:2013, status:"dead / R&D chain", mainId:null, note:"Dying-system rendering — Primecoin, a prime-number proof-of-work R&D chain, labelled dead / R&D." },
-  { id:"dying-terraclassic", name:"Terra Classic", sym:"LUNC", color:0x5496ff, born:2018, status:"dead chain", mainId:null, note:"Dying-system rendering — Terra Classic, labelled dead chain." },
-  { id:"dying-fantom", name:"Fantom", sym:"FTM", color:0x1969ff, born:2019, status:"dying chain", mainId:null, note:"Dying-system rendering of Fantom — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." },
-  { id:"dying-cronos", name:"Cronos", sym:"CRO", color:0x2e4d8f, born:2021, status:"dying chain", mainId:null, note:"Dying-system rendering of Cronos — one of the lowest-activity chains in the catalog, organized under the blackhole sun by the 2026-11-04 system pass. Labelled dying." }
+  { id:"dying-etc", name:"Ethereum Classic", sym:"ETC", color:0x3ab83a, born:2016, status:"dying chain", mainId:null, system:"semi", semiOrbit:61.2, note:"Semi-active rendering — Ethereum Classic, the unforked chain, on the outer rungs of the semi-active system around the BNB sun. Labelled dying, not a new chain." },
+  { id:"dying-dgb", name:"DigiByte", sym:"DGB", color:0x0066cc, born:2014, status:"dying chain", mainId:null, system:"semi", semiOrbit:55.6, note:"Semi-active rendering of DigiByte — one of the lowest-activity chains in the catalog, orbiting the BNB sun in the semi-active system. Labelled dying." },
+  { id:"dying-pivx", name:"PIVX", sym:"PIVX", color:0x5a2d8a, born:2016, status:"dying chain", mainId:null, system:"semi", semiOrbit:58.4, note:"Semi-active rendering of PIVX — one of the lowest-activity chains in the catalog, orbiting the BNB sun in the semi-active system. Labelled dying." },
+  { id:"dying-thunder", name:"ThunderCore", sym:"TT", color:0xffc627, born:2019, status:"dying chain", mainId:null, system:"semi", semiOrbit:52.8, note:"Semi-active rendering of ThunderCore — the lowest-activity chain in the catalog, orbiting the BNB sun in the semi-active system. Labelled dying." },
+  { id:"dying-plasma", name:"Plasma", sym:"PLASMA", color:0x7a5cff, born:2019, status:"dead / R&D chain", mainId:null, system:"blackhole", bhOrbit:22.5, note:"Blackhole-system rendering — Plasma, a scaling R&D design, labelled dead / R&D chain." },
+  { id:"dying-namecoin", name:"Namecoin", sym:"NMC", color:0x8a8a8a, born:2011, status:"dead / R&D chain", mainId:null, system:"blackhole", bhOrbit:13.5, note:"Blackhole-system rendering — Namecoin, an early naming R&D chain, labelled dead / R&D." },
+  { id:"dying-peercoin", name:"Peercoin", sym:"PPC", color:0x3cb054, born:2012, status:"dead / R&D chain", mainId:null, system:"blackhole", swallowed:true, note:"Blackhole-system rendering — Peercoin, an early proof-of-stake R&D chain, labelled dead / R&D. One of the three least-used dead chains: the blackhole is swallowing it, spiraling at the event horizon." },
+  { id:"dying-vertcoin", name:"Vertcoin", sym:"VTC", color:0x1b3448, born:2014, status:"dead / R&D chain", mainId:null, system:"blackhole", bhOrbit:18, note:"Blackhole-system rendering — Vertcoin, labelled dead / R&D." },
+  { id:"dying-feathercoin", name:"Feathercoin", sym:"FTC", color:0x2c7df7, born:2013, status:"dead / R&D chain", mainId:null, system:"blackhole", swallowed:true, note:"Blackhole-system rendering — Feathercoin, labelled dead / R&D. One of the three least-used dead chains: the blackhole is swallowing it, spiraling at the event horizon." },
+  { id:"dying-primecoin", name:"Primecoin", sym:"XPM", color:0xc0c0c0, born:2013, status:"dead / R&D chain", mainId:null, system:"blackhole", swallowed:true, note:"Blackhole-system rendering — Primecoin, a prime-number proof-of-work R&D chain, labelled dead / R&D. One of the three least-used dead chains: the blackhole is swallowing it, spiraling at the event horizon." },
+  { id:"dying-terraclassic", name:"Terra Classic", sym:"LUNC", color:0x5496ff, born:2018, status:"dead chain", mainId:null, system:"blackhole", bhOrbit:9, note:"Blackhole-system rendering — Terra Classic, labelled dead chain." },
+  { id:"dying-fantom", name:"Fantom", sym:"FTM", color:0x1969ff, born:2019, status:"dying chain", mainId:null, system:"semi", semiOrbit:50, note:"Semi-active rendering of Fantom — one of the lowest-activity chains in the catalog, orbiting the BNB sun in the semi-active system. Labelled dying." },
+  { id:"dying-cronos", name:"Cronos", sym:"CRO", color:0x2e4d8f, born:2021, status:"dying chain", mainId:null, system:"semi", semiOrbit:47.2, note:"Semi-active rendering of Cronos — one of the lowest-activity chains in the catalog, orbiting the BNB sun in the semi-active system. Labelled dying." }
 
 ];
 /* Micro-structure sizing — rods that stick up as MODULAR structures, not
@@ -6218,15 +6247,16 @@ function chaintariumLiveFeedAvailable(){
   try { return !!(window.HALEX_CHAIN_FEED && typeof window.HALEX_CHAIN_FEED.latestTransfers === "function"); } catch(e){ return false; }
 }
 function chaintariumModelTransfers(){
-  /* MODEL transfer pairs stay inside the system(s) on screen: a main
-     view never reports transfers to dying worlds, a dying view never
-     reports main worlds, and cross-system pairs appear only in the
-     Both view (fix pass 2026-11-04, Jeffrey's phone review). */
+  /* MODEL transfer pairs stay inside ONE system, always (3-system
+     pass 2026-11-04): an Active view reports Active pairs, a
+     Semi-Active view Semi-Active pairs, a Blackhole view Blackhole
+     pairs, and the overview mixes pairs from all three — but no pair
+     ever crosses between systems. */
   var view = (typeof ch !== "undefined" && ch.systemView) || "both";
-  var mainPairs = [["ethereum","base"],["solana","base"],["ethereum","arbitrum"],["bsc","tron"],["solana","sui"],["base","polygon"]];
-  var dyingPairs = [["dying-etc","dying-terraclassic"],["dying-dgb","dying-pivx"],["dying-thunder","dying-fantom"],["dying-namecoin","dying-peercoin"],["dying-vertcoin","dying-feathercoin"],["dying-plasma","dying-primecoin"]];
-  var crossPairs = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-fantom"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
-  var pairs = view === "main" ? mainPairs : (view === "dying" ? dyingPairs : crossPairs.concat(mainPairs.slice(0, 3)));
+  var mainPairs = [["ethereum","base"],["solana","base"],["ethereum","arbitrum"],["tron","xrp"],["solana","sui"],["base","polygon"]];
+  var semiPairs = [["bsc","mantle"],["cosmos","polkadot"],["bsc","stellar"],["dying-dgb","dying-pivx"],["dying-thunder","dying-fantom"],["dying-cronos","dying-etc"]];
+  var dyingPairs = [["dying-namecoin","dying-vertcoin"],["dying-terraclassic","dying-plasma"],["dying-feathercoin","dying-primecoin"],["dying-namecoin","dying-peercoin"]];
+  var pairs = view === "main" ? mainPairs : (view === "semi" ? semiPairs : (view === "dying" ? dyingPairs : mainPairs.slice(0, 2).concat(semiPairs.slice(0, 2), dyingPairs.slice(0, 2))));
   var tick = chaintariumLive.modelTick, out = [];
   for(var i = 0; i < 3; i++){
     var pr = pairs[(tick + i) % pairs.length];
@@ -6261,7 +6291,7 @@ if(typeof window !== "undefined" && !window._chaintariumTickStarted){
 }
 function chainById(id){ return CHAINS_3D.filter(function(x){ return x.id===id; })[0] || null; }
 function hexCss(hex){ return "#" + ("000000" + hex.toString(16)).slice(-6); }
-var ch = { started:false, focus:null, systemView:"both" };
+var ch = { started:false, focus:null, systemView:"both", screen:"overview", homeSystem:"active" };
 (function chaintariumSystemUI(){
   function setView(v){
     ch.systemView = v;
@@ -6271,11 +6301,21 @@ var ch = { started:false, focus:null, systemView:"both" };
     });
     if(window.halexmSyncDeadToggle) window.halexmSyncDeadToggle();
   }
-  var m = document.getElementById("chain-system-main"); if(m) m.addEventListener("click", function(){ setView("main"); });
-  var d = document.getElementById("chain-system-dying"); if(d) d.addEventListener("click", function(){ setView("dying"); });
-  var b = document.getElementById("chain-system-both"); if(b) b.addEventListener("click", function(){ setView("both"); });
-  var tl = document.getElementById("chain-top40-list"); if(tl) tl.textContent = CHAINS_3D.map(function(c){ return c.name; }).join(", ");
-  var dl = document.getElementById("chain-dying-list"); if(dl) dl.textContent = DYING_CHAINS_3D.map(function(c){ return c.name + " (" + c.status + ")"; }).join(", ");
+  /* the sysbar system buttons jump to that system's SCREEN (the
+     3-system pass: screens isolate and fit a system, which the old
+     visibility-only filter could not do on a phone). If the 3D
+     engine has not built yet, fall back to the visibility view so
+     the buttons are never dead. */
+  function jump(screen, view){
+    if(window.chaintariumShowScreen) window.chaintariumShowScreen(screen);
+    else setView(view);
+  }
+  var m = document.getElementById("chain-system-main"); if(m) m.addEventListener("click", function(){ jump("active", "main"); });
+  var d = document.getElementById("chain-system-dying"); if(d) d.addEventListener("click", function(){ jump("blackhole", "dying"); });
+  var b = document.getElementById("chain-system-both"); if(b) b.addEventListener("click", function(){ jump("overview", "both"); });
+  var tl = document.getElementById("chain-top40-list"); if(tl) tl.textContent = CHAINS_3D.filter(function(c){ return c.system === "active"; }).map(function(c){ return c.name; }).join(", ");
+  var sl = document.getElementById("chain-semi-list"); if(sl) sl.textContent = CHAINS_3D.filter(function(c){ return c.system === "semi"; }).map(function(c){ return c.name; }).concat(DYING_CHAINS_3D.filter(function(c){ return c.system === "semi"; }).map(function(c){ return c.name; })).join(", ");
+  var dl = document.getElementById("chain-dying-list"); if(dl) dl.textContent = DYING_CHAINS_3D.filter(function(c){ return c.system === "blackhole"; }).map(function(c){ return c.name + " (" + c.status + ")"; }).join(", ");
   window.chaintariumSetSystem = setView;
 })();
 function chainInfoHTML(c){
@@ -6361,23 +6401,53 @@ function startChaintarium(){
   scene.fog = new THREE.FogExp2(0x050b1e, 0.0016); /* new-look night pass: fog matched to the night background */
   /* new-look night pass: a dark ground plane under the system, drawn
      as a subtle polar grid — the orbits already lie in this plane */
-  var sysGrid = new THREE.PolarGridHelper(126, 16, 10, 64, 0x2a4a7f, 0x16294d);
+  var sysGrid = new THREE.PolarGridHelper(68, 16, 10, 64, 0x2a4a7f, 0x16294d);
   sysGrid.position.y = -3.2;
   sysGrid.material.transparent = true; sysGrid.material.opacity = 0.32; sysGrid.material.depthWrite = false;
   scene.add(sysGrid);
+  /* each system gets its own polar grid under its own orbits, so the
+     three clusters read as three systems in the overview */
+  var semiGrid = new THREE.PolarGridHelper(68, 16, 10, 64, 0x2a4a7f, 0x16294d);
+  semiGrid.position.copy(SEMI_CENTER); semiGrid.position.y -= 3.2;
+  semiGrid.material.transparent = true; semiGrid.material.opacity = 0.32; semiGrid.material.depthWrite = false;
+  var dyingGrid = new THREE.PolarGridHelper(26, 12, 6, 48, 0x4a2a6e, 0x241536);
+  dyingGrid.position.copy(DYING_CENTER); dyingGrid.position.y -= 3.2;
+  dyingGrid.material.transparent = true; dyingGrid.material.opacity = 0.32; dyingGrid.material.depthWrite = false;
+  scene.add(semiGrid); scene.add(dyingGrid);
   var camera = new THREE.PerspectiveCamera(55, 1, 0.1, 900); /* far plane widened (fix pass 2026-11-04): free pan and zoom-out can carry the eye far from the origin */
   var camEul = new THREE.Euler(0, 0, 0, "YXZ"); /* full-360 orbit: the up vector rides the same rotation, so crossing a pole never flips the view */
   var targetDist = 46, dist = 46, rotX = 0.42, rotY = 0.6, tRotX = 0.42, tRotY = 0.6;
-  /* fit distance: how far the camera must sit for the whole system to
-     fit — outermost orbit (121) plus a world radius, over the camera's
-     55° field, worst case over every drag orientation and aspect. The
-     old fixed cap (115) clipped the outer worlds on phones; pinch and
-     wheel now stop at this computed distance instead, so pinching all
-     the way out always frames the full solar system. */
-  function chainFitDist(){
+  /* ---- the three systems (3-system pass 2026-11-04) ----
+     One scene, three systems at well-separated centres, FOUR screens
+     (overview + one per system) as a view-state machine — see
+     showScreen(). Centres sit inside the 230 pan cap; the fit
+     extents below are each system's real reach: outermost orbit
+     (61.2 on the shared 8 + rank × 2.8 ladder) plus the outermost
+     world's radius and moon reach for the two sun systems, the
+     blackhole's outermost dead orbit (22.5) plus its world radius,
+     and for the overview the Semi-Active centre's distance (133)
+     plus its extent. */
+  var GALAXY_CENTER = new THREE.Vector3(0, 0, 0);
+  var SEMI_CENTER = new THREE.Vector3(-112, 28, -66);
+  var DYING_CENTER = new THREE.Vector3(52, -30, -72);
+  var ACTIVE_EXTENT = 66, SEMI_EXTENT = 66, BLACKHOLE_EXTENT = 25, OVERVIEW_EXTENT = 202;
+  function systemCenter(sys){ return sys === "semi" ? SEMI_CENTER : (sys === "blackhole" ? DYING_CENTER : GALAXY_CENTER); }
+  /* fit distance: how far the camera must sit for an extent to fit —
+     the extent over the camera's 55° field, worst case over every
+     drag orientation and aspect. Pinch and wheel stop at the current
+     screen's computed fit instead of a fixed cap, so pinching all
+     the way out always frames the whole screen. */
+  function systemFitDist(rOut){
     var r = canvas.getBoundingClientRect();
     var a = r.width / Math.max(1, r.height);
-    return Math.ceil(138 / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+    return Math.ceil(rOut / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+  }
+  function chainFitDist(){ return systemFitDist(ACTIVE_EXTENT); }
+  function semiFitDist(){ return systemFitDist(SEMI_EXTENT); }
+  function blackholeFitDist(){ return systemFitDist(BLACKHOLE_EXTENT); }
+  function overviewFitDist(){ return systemFitDist(OVERVIEW_EXTENT); }
+  function screenFitDist(screen){
+    return screen === "active" ? chainFitDist() : (screen === "semi" ? semiFitDist() : (screen === "blackhole" ? blackholeFitDist() : overviewFitDist()));
   }
   camera.position.set(0, 20, 46);
 
@@ -6470,13 +6540,14 @@ function startChaintarium(){
     mesh.userData.chain = c;
     world.add(mesh);
     c._obj = mesh;
+    c._centerV = systemCenter(c.system); /* the centre this world orbits (its system's sun position) */
     var glow = addGlow(mesh, c.color, c.size * (c.orbit===0 ? 5.2 : 3.6), c.orbit===0 ? 0.34 : 0.2);
-    if(c.orbit===0) sunGlow = glow;
+    if(c.id === "bitcoin") sunGlow = glow; /* the breathing corona belongs to the Active sun; BNB wears the same sun dressing via orbit===0 above */
     dressCity(mesh, c, c.size, 90 + c.size * 75 + c.activity * 200); /* denser circuit cities (fix pass 2026-11-04) */
     if(c.orbit > 0){
       var ringGeo = new THREE.RingGeometry(c.orbit-0.035, c.orbit+0.035, 128);
       var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:c.color, side:THREE.DoubleSide, transparent:true, opacity:0.2 }));
-      ring.rotation.x = Math.PI/2; world.add(ring); c._ring = ring;
+      ring.rotation.x = Math.PI/2; ring.position.copy(c._centerV); world.add(ring); c._ring = ring;
     }
     var label = document.createElement("div");
     label.className = "planet-label"; label.textContent = c.name;
@@ -6514,7 +6585,7 @@ function startChaintarium(){
     var bn = 1100, bp = new Float32Array(bn * 3), bc2 = new Float32Array(bn * 3);
     var dust = new THREE.Color(0x9a8a70), glint = new THREE.Color(0xffd98a), tc2 = new THREE.Color();
     for(var bi = 0; bi < bn; bi++){
-      var ba = Math.random() * Math.PI * 2, br = 36.6 + Math.random() * 0.8;
+      var ba = Math.random() * Math.PI * 2, br = 42.9 + Math.random() * 0.5;
       bp[bi * 3] = Math.cos(ba) * br; bp[bi * 3 + 1] = (Math.random() - 0.5) * 0.55; bp[bi * 3 + 2] = Math.sin(ba) * br;
       tc2.copy(Math.random() > 0.86 ? glint : dust).multiplyScalar(0.4 + Math.random() * 0.6);
       bc2[bi * 3] = tc2.r; bc2[bi * 3 + 1] = tc2.g; bc2[bi * 3 + 2] = tc2.b;
@@ -6565,12 +6636,16 @@ function startChaintarium(){
      the planets' live positions every frame (they move), and bright
      pulses ride the curves — transfers in flight. Stylized routes: they
      show how value moves between chains, not live transfer data. */
+  /* every route stays inside ONE system (3-system pass 2026-11-04):
+     the old bitcoin→BNB and BNB→tron arcs crossed between the Active
+     and Semi-Active systems and are gone; BNB gets its own sun route
+     inside Semi-Active instead */
   var ROUTES = [
-    ["bitcoin","ethereum",0xffc24b],["bitcoin","solana",0x2ee6c8],["bitcoin","bsc",0x4da2ff],
+    ["bitcoin","ethereum",0xffc24b],["bitcoin","solana",0x2ee6c8],
     ["ethereum","base",0x4da2ff],["ethereum","arbitrum",0x2ee6c8],["ethereum","polygon",0xb45cff],
     ["ethereum","avalanche",0xffc24b],["solana","base",0xb45cff],["solana","sui",0x4da2ff],
-    ["bsc","tron",0x2ee6c8],["xrp","tron",0xffc24b],["base","arbitrum",0x2ee6c8],
-    ["cosmos","polkadot",0xb45cff],["solana","avalanche",0x4da2ff]
+    ["xrp","tron",0xffc24b],["base","arbitrum",0x2ee6c8],
+    ["bsc","mantle",0xffc24b],["cosmos","polkadot",0xb45cff],["solana","avalanche",0x4da2ff]
   ];
   var ARC_SEG = 26;
   var routes = [];
@@ -6601,33 +6676,52 @@ function startChaintarium(){
       });
     })(ca, cb);
     labelsBox.appendChild(rlabel);
-    routes.push({ a: ca._obj, b: cb._obj, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012, line: line, label: rlabel, midObj: midObj });
+    routes.push({ a: ca._obj, b: cb._obj, sysA: ca.system, sysB: cb.system, geo: g, curve: null, pulses: [ (ri * 0.37) % 1, (ri * 0.37 + 0.52) % 1 ], speed: 0.05 + (ri % 5) * 0.012, line: line, label: rlabel, midObj: midObj });
   });
   var pulseGeo = new THREE.BufferGeometry();
   pulseGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(Math.max(1, routes.length * 2) * 3), 3));
   var pulsePts = new THREE.Points(pulseGeo, new THREE.PointsMaterial({ color: 0xfff3d6, size: 1.3, sizeAttenuation: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, map: glowTex, alphaTest: 0.01 }));
   world.add(pulsePts);
-  /* ---- second dying solar system (staging upgrade) ----
-     One window, two systems: a blackhole sun at a fixed offset from the
-     main sun, with dying-system worlds orbiting it. Dying worlds are
-     dim, small and fade toward the blackhole — a stylized MODEL, not
-     live chain data. Cross-system arcs use the same live-position
-     redraw as main routes; their pulses are MODEL until a live feed
-     is wired (see chaintariumLive), and their labels say MODEL. */
-  var DYING_CENTER = new THREE.Vector3(52, -30, -72);
+  /* ---- the lesser worlds: Semi-Active's outer rungs + the Blackhole
+     system (3-system pass 2026-11-04) ----
+     The 13 lesser worlds of DYING_CHAINS_3D now split by their system
+     field: the six flagged "dying chain" orbit the BNB sun as the
+     Semi-Active system's outer planets (semiGroup at SEMI_CENTER),
+     and the 7 dead chains orbit the blackhole (dyingGroup at
+     DYING_CENTER). All are dim, small, stylized MODEL worlds, not
+     live chain data. Three of the dead — Feathercoin, Primecoin,
+     Peercoin, the least used — are being swallowed: swallowedPos()
+     spirals them at the event horizon, dimming and shrinking, and
+     they are never consumed (the spiral loops). */
   var dyingGroup = new THREE.Group(); dyingGroup.position.copy(DYING_CENTER); world.add(dyingGroup);
+  var semiGroup = new THREE.Group(); semiGroup.position.copy(SEMI_CENTER); world.add(semiGroup);
   var blackhole = new THREE.Mesh(new THREE.SphereGeometry(3.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
   dyingGroup.add(blackhole);
   /* Chaintarium upgrade: the blackhole sun itself is a card target, so
-     clicking it opens the dying-system card (previously only dying
+     clicking it opens the blackhole-system card (previously only dying
      worlds routed to showDyingInfo). "—" marks fields with no value;
      nothing here claims a live feed from a dead chain. */
-  blackhole.userData.dying = { name:"Blackhole sun", sym:"—", status:"dying system", born:"—", mainId:null,
-    note:"The dying system's sun. Clicking a dying world opens its card; no live feed is claimed from a dead chain." };
+  blackhole.userData.dying = { name:"Blackhole sun", sym:"—", status:"dying system", born:"—", mainId:null, system:"blackhole",
+    note:"The blackhole system's sun. It is swallowing the three least-used dead chains — Feathercoin, Primecoin and Peercoin spiral at its event horizon. Clicking a dead world opens its card; no live feed is claimed from a dead chain." };
   var bhRing = new THREE.Mesh(new THREE.RingGeometry(4.2, 7.5, 64), new THREE.MeshBasicMaterial({ color: 0xa855f7, side: THREE.DoubleSide, transparent: true, opacity: 0.55 }));
   bhRing.rotation.x = Math.PI / 2.4; dyingGroup.add(bhRing);
   addGlow(blackhole, 0xa855f7, 22, 0.35);
-  var bhLabel = document.createElement("div"); bhLabel.className = "planet-label dying"; bhLabel.textContent = "Blackhole sun — dying system"; labelsBox.appendChild(bhLabel);
+  var bhLabel = document.createElement("div"); bhLabel.className = "planet-label dying"; bhLabel.textContent = "Blackhole sun — blackhole system"; labelsBox.appendChild(bhLabel);
+  /* the swallow spiral, as a pure function of time so it can be
+     verified headlessly: phase runs 0→1 over ~22 s; radius eases
+     from 9.6 (outside the accretion ring) in to 4.4 — always outside
+     the blackhole's own 3.2 radius, so a swallowed world converges
+     on the horizon but never reaches the centre and is never
+     consumed; the angle winds faster as it falls. out gets the
+     LOCAL position (the caller adds it inside dyingGroup); the
+     return value is the phase, for dimming/shrinking. */
+  function swallowedPos(dp, t, out){
+    var ph = (t * 0.045 + dp.spiralOff) % 1;
+    var sr = 9.6 - ph * 5.2;
+    var sa = dp.angle + t * 0.22 + ph * 2.4;
+    out.set(Math.cos(sa) * sr, 0.35 - ph * 0.5, Math.sin(sa) * sr);
+    return ph;
+  }
   var dyingPlanets = [];
   var dyingModel = (window.HalexMChaintariumCityscapes && window.HalexMChaintariumCityscapes.buildDyingSystem)
     ? window.HalexMChaintariumCityscapes.buildDyingSystem(DYING_CHAINS_3D) : null;
@@ -6638,63 +6732,19 @@ function startChaintarium(){
       new THREE.MeshStandardMaterial({ color: new THREE.Color(dc.color).multiplyScalar(0.3).lerp(new THREE.Color(0x111111), 0.45), roughness: 0.7, metalness: 0.4, emissive: dc.color, emissiveIntensity: dm ? 0.08 * dm.dim : 0.08, transparent: true, opacity: dm ? dm.opacity : 0.85 }));
     if(dm) dmesh.scale.setScalar(dm.crumble);
     dmesh.userData.dying = dc;
-    dyingGroup.add(dmesh);
-    var dlabel = document.createElement("div"); dlabel.className = "planet-label dying"; dlabel.textContent = dc.name + " (dying)"; labelsBox.appendChild(dlabel);
-    dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: 6 + di * 2.4, speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9 });
+    dmesh.userData.baseScale = dm ? dm.crumble : 1;
+    dmesh.userData.baseOpacity = dm ? dm.opacity : 0.85;
+    if(dc.system === "semi") semiGroup.add(dmesh); else dyingGroup.add(dmesh);
+    var dlabel = document.createElement("div"); dlabel.className = "planet-label dying"; dlabel.textContent = dc.name + (dc.status.indexOf("dead") === 0 ? " (dead)" : " (dying)"); labelsBox.appendChild(dlabel);
+    dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: dc.system === "semi" ? dc.semiOrbit : (dc.bhOrbit || 0), speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9, swallowed: !!dc.swallowed, spiralOff: di * 0.37 });
   });
-  var CROSS_ROUTES = [["ethereum","dying-dgb"],["base","dying-pivx"],["solana","dying-fantom"],["ethereum","dying-etc"],["base","dying-thunder"],["solana","dying-plasma"]];
-  var crossRoutes = [], crossPulseGeo = null, crossPulsePts = null;
-  (function buildCrossRoutes(){
-    var tmpGeo = new THREE.BufferGeometry();
-    tmpGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(CROSS_ROUTES.length * 3), 3));
-    crossPulseGeo = tmpGeo;
-    crossPulsePts = new THREE.Points(tmpGeo, new THREE.PointsMaterial({ color: 0xffd98a, size: 1.4, sizeAttenuation: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, map: glowTex, alphaTest: 0.01 }));
-    world.add(crossPulsePts);
-    CROSS_ROUTES.forEach(function(cr, ri){
-      var ca = chainById(cr[0]); if(!ca || !ca._obj) return;
-      var dp = null; dyingPlanets.forEach(function(x){ if(x.d.id === cr[1]) dp = x; }); if(!dp) return;
-      var g = new THREE.BufferGeometry();
-      g.setAttribute("position", new THREE.BufferAttribute(new Float32Array((ARC_SEG + 1) * 3), 3));
-      var line = new THREE.Line(g, new THREE.LineBasicMaterial({ color: 0xa855f7, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
-      world.add(line);
-      var midObj = new THREE.Object3D(); world.add(midObj);
-      var lab = document.createElement("div"); lab.className = "route-label"; lab.textContent = ca.sym + " → " + dp.d.sym + " · MODEL";
-      lab.title = "Cross-system transfer (MODEL — no live feed wired): " + ca.name + " → " + dp.d.name + " (" + dp.d.status + ")";
-      lab.addEventListener("click", function(){
-        var info = document.getElementById("chain-info"); if(!info) return;
-        info.innerHTML = "<b>Cross-system transfer — MODEL</b><p class=\"note\" style=\"margin-top:4px\">Model transfer between systems, not live transfer data. No live chain-block feed is wired yet.</p>" +
-          '<div class="kv"><span>From (main)</span><b>' + esc(ca.name) + "</b></div>" +
-          '<div class="kv"><span>To (dying)</span><b>' + esc(dp.d.name) + " (" + esc(dp.d.status) + ")</b></div>";
-      });
-      labelsBox.appendChild(lab);
-      crossRoutes.push({ a: ca._obj, bMesh: dp.mesh, bEntry: dp, geo: g, line: line, label: lab, midObj: midObj, pulses: [(ri * 0.31) % 1], speed: 0.04 + (ri % 3) * 0.01 });
-    });
-  })();
-  var _cva = new THREE.Vector3(), _cvb = new THREE.Vector3(), _cvm = new THREE.Vector3();
-  function updateCrossRoutes(t){
-    if(!crossPulseGeo) return;
-    var pp = crossPulseGeo.attributes.position.array, pi = 0;
-    var liveNow = !!(chaintariumLive && chaintariumLive.feedAvailable);
-    if(crossPulsePts) crossPulsePts.material.color.setHex(liveNow ? 0x31c48d : 0xffd98a);
-    crossRoutes.forEach(function(rt){
-      rt.a.getWorldPosition(_cva); world.worldToLocal(_cva);
-      rt.bMesh.getWorldPosition(_cvb); world.worldToLocal(_cvb);
-      _cvm.copy(_cva).add(_cvb).multiplyScalar(0.5);
-      var lift = _cva.distanceTo(_cvb);
-      _cvm.multiplyScalar(1 + Math.min(0.22, lift * 0.006 + 0.05)); _cvm.y += lift * 0.10;
-      if(rt.midObj) rt.midObj.position.copy(_cvm);
-      rt.curve = new THREE.QuadraticBezierCurve3(_cva.clone(), _cvm.clone(), _cvb.clone());
-      var lp = rt.geo.attributes.position.array;
-      for(var s2 = 0; s2 <= ARC_SEG; s2++){ var pt = rt.curve.getPoint(s2 / ARC_SEG); lp[s2 * 3] = pt.x; lp[s2 * 3 + 1] = pt.y; lp[s2 * 3 + 2] = pt.z; }
-      rt.geo.attributes.position.needsUpdate = true;
-      rt.pulses.forEach(function(p0){ var pt2 = rt.curve.getPoint((p0 + t * rt.speed) % 1); pp[pi * 3] = pt2.x; pp[pi * 3 + 1] = pt2.y; pp[pi * 3 + 2] = pt2.z; pi++; });
-    });
-    crossPulseGeo.attributes.position.needsUpdate = true;
-  }
+  /* No cross-system routes (3-system pass 2026-11-04): the old
+     main→dying arcs are deleted outright — transfers, routes and
+     model pairs all stay inside their own system now. */
   function showDyingInfo(dc){
     var info = document.getElementById("chain-info"); if(!info) return;
     var visitBtn = dc.mainId ? '<button class="btn primary" data-visit="' + dc.mainId + '" style="margin-top:12px">Visit ' + esc(dc.name) + " (main planet)</button>" : "";
-    info.innerHTML = "<b>" + esc(dc.name) + ' <span class="mono" style="color:var(--gold); font-size:12px">$' + esc(dc.sym) + "</span> — dying system</b>" +
+    info.innerHTML = "<b>" + esc(dc.name) + ' <span class="mono" style="color:var(--gold); font-size:12px">$' + esc(dc.sym) + "</span> — " + (dc.system === "semi" ? "semi-active system" : "blackhole system") + "</b>" +
       '<p class="note" style="margin-top:4px">' + esc(dc.note) + " This is a stylized model rendering, not live chain data.</p>" +
       '<div class="kv"><span>Status</span><b>' + esc(dc.status) + "</b></div>" +
       '<div class="kv"><span>Born</span><b>' + dc.born + "</b></div>" + visitBtn;
@@ -6732,8 +6782,8 @@ function startChaintarium(){
   hudSys.innerHTML = '<div class="hud-head"><b>CHAINTARIUM — LIVE SYSTEM</b>' +
     '<button class="hud-btn" id="hud-sys-expand" aria-expanded="false" aria-label="Expand system info">▾</button>' +
     '<button class="hud-btn" id="hud-sys-close" aria-label="Close system card">✕</button></div>' +
-    '<div class="hud-body"><span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
-    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface. Drag to orbit, two-finger drag to pan anywhere, pinch to zoom. Visit flies you to a system; double-tap returns to the system you visited.</span></div>';
+    '<div class="hud-body"><span class="mono">' + CHAINS_3D.filter(function(c){ return c.system === "active"; }).length + " active worlds · " + (CHAINS_3D.filter(function(c){ return c.system === "semi"; }).length + DYING_CHAINS_3D.filter(function(c){ return c.system === "semi"; }).length) + " semi-active worlds · " + DYING_CHAINS_3D.filter(function(c){ return c.system === "blackhole"; }).length + " blackhole worlds · " + routes.length + ' routes · no routes cross systems</span><br>' +
+    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Four screens: Overview, Active, Semi-Active, Blackhole — tap a sun or the blackhole in the overview to open its system, swipe or use the screen tabs to move between them. Tap a world to walk its surface. Drag to orbit, two-finger drag to pan anywhere, pinch to zoom. Double-tap refits the screen you are on.</span></div>';
   stage.appendChild(hudSys);
   var hudExp = hudSys.querySelector("#hud-sys-expand"), hudX = hudSys.querySelector("#hud-sys-close");
   if(hudExp) hudExp.addEventListener("click", function(){
@@ -6762,15 +6812,19 @@ function startChaintarium(){
   }
   resize();
   window.addEventListener("resize", resize);
+  /* the page opens on the OVERVIEW screen, framed on all three
+     systems (3-system pass 2026-11-04) */
+  dist = targetDist = screenFitDist("overview");
 
   /* controls: drag rotate, wheel + pinch zoom, and (fix pass
      2026-11-04) free pan: two-finger drag, right-drag or Shift-drag
      moves the eye anywhere in the galaxy, double-tap/double-click
-     returns to the system you visited last (the Visit buttons set
-     it; main until you visit the blackhole). Nothing clamps the
-     orbit axes, and nothing pulls the camera back on its own. */
+     refits the screen you are on. A quick horizontal swipe cycles
+     screens. Nothing clamps the orbit axes, and nothing pulls the
+     camera back on its own. */
   var drag = null, pinchD = 0;
   var pan = new THREE.Vector3(), panT = new THREE.Vector3();
+  var focusHomeV = new THREE.Vector3(0, 0, 0); /* centre of the focused world's system — a dive homes here, and the focus lock in animate() keys off it */
   var activePtrs = {}, lastMid = null;
   var _panEul = new THREE.Euler(0, 0, 0, "YXZ"), _panR = new THREE.Vector3(), _panU = new THREE.Vector3();
   function panBy(dx, dy){
@@ -6785,8 +6839,12 @@ function startChaintarium(){
   }
   var lastTouch = performance.now(), hoverNDC = null, hoverTick = 0;
   function pt(e){ var r = canvas.getBoundingClientRect(); return { x: e.clientX-r.left, y: e.clientY-r.top }; }
+  var swipeStart = null; /* a quick, mostly-horizontal one-finger flick cycles screens (see pointerup) */
   canvas.addEventListener("pointerdown", function(e){
     lastTouch = performance.now();
+    if(e.pointerType === "touch" && Object.keys(activePtrs).length === 0){
+      var sp = pt(e); swipeStart = { x: sp.x, y: sp.y, t: performance.now() };
+    } else if(Object.keys(activePtrs).length > 0) swipeStart = null;
     activePtrs[e.pointerId] = pt(e);
     if(Object.keys(activePtrs).length === 2){
       var ids = Object.keys(activePtrs);
@@ -6799,12 +6857,12 @@ function startChaintarium(){
   });
   canvas.addEventListener("contextmenu", function(e){ e.preventDefault(); });
   canvas.addEventListener("dblclick", function(){
-    /* double-tap recentres on the home system — the one you visited
-       last with the Visit buttons (main until told otherwise), at
-       that system's fit distance, not always back to Bitcoin at the
-       old fixed frame */
-    if(ch.homeSystem === "dying"){ panT.copy(DYING_CENTER); targetDist = dyingFitDist(); }
-    else { panT.set(0, 0, 0); targetDist = chainFitDist(); }
+    /* double-tap refits the CURRENT screen: its centre at its own
+       fit distance (3-system pass — the overview refits the galaxy,
+       a system screen refits that system) */
+    var scr = ch.screen || "overview";
+    panT.copy(systemCenter(scr === "active" ? "active" : scr));
+    targetDist = screenFitDist(scr);
   });
   canvas.addEventListener("pointermove", function(e){
     lastTouch = performance.now();
@@ -6833,23 +6891,37 @@ function startChaintarium(){
   canvas.addEventListener("pointerup", function(e){
     delete activePtrs[e.pointerId];
     if(Object.keys(activePtrs).length < 2) lastMid = null;
+    /* swipe between screens: a fast one-finger flick, mostly
+       horizontal, that was not a pan gesture. Left = next screen,
+       right = previous, in Overview → Active → Semi-Active →
+       Blackhole order. Slow drags still just orbit the camera. */
+    if(swipeStart && e.pointerType === "touch" && !(drag && drag.pan)){
+      var ep = pt(e), sdx = ep.x - swipeStart.x, sdy = ep.y - swipeStart.y;
+      if(performance.now() - swipeStart.t < 700 && Math.abs(sdx) > 80 && Math.abs(sdx) > 2 * Math.abs(sdy)){
+        cycleScreen(sdx < 0 ? 1 : -1);
+        swipeStart = null; drag = null;
+        return;
+      }
+    }
+    swipeStart = null;
     if(drag && drag.moved < 6 && !drag.pan) pick(e);
     drag = null;
   });
   canvas.addEventListener("pointercancel", function(e){
     delete activePtrs[e.pointerId];
     if(Object.keys(activePtrs).length < 2) lastMid = null;
+    swipeStart = null;
     drag = null;
   });
   canvas.addEventListener("wheel", function(e){
     e.preventDefault();
     lastTouch = performance.now();
-    targetDist = Math.max(9, Math.min(chainFitDist() * 1.35, targetDist + e.deltaY*0.03));
+    targetDist = Math.max(9, Math.min(screenFitDist(ch.screen || "overview") * 1.35, targetDist + e.deltaY*0.03));
   }, { passive:false });
   canvas.addEventListener("touchmove", function(e){
     if(e.touches.length === 2){
       var d = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
-      if(pinchD) targetDist = Math.max(9, Math.min(chainFitDist() * 1.35, targetDist - (d-pinchD)*0.08));
+      if(pinchD) targetDist = Math.max(9, Math.min(screenFitDist(ch.screen || "overview") * 1.35, targetDist - (d-pinchD)*0.08));
       pinchD = d;
     }
   }, { passive:true });
@@ -6870,6 +6942,14 @@ function startChaintarium(){
       /* a tap can land on a city's towers or the planet's halo — walk
          up to the world that owns them */
       var ho = hits[0].object, hc = ho.userData.chain || (ho.parent && ho.parent.userData.chain);
+      if((ch.screen || "overview") === "overview"){
+        /* on the overview, a tap on ANY world — a sun, the blackhole,
+           or a planet — opens that world's system screen; a second
+           tap, inside the system, does what taps always did */
+        if(ho.userData.dying){ showScreen(ho.userData.dying.system === "semi" ? "semi" : "blackhole"); return; }
+        if(hc){ showScreen(hc.system === "semi" ? "semi" : "active"); return; }
+        return;
+      }
       if(ho.userData.dying){ showDyingInfo(ho.userData.dying); return; }
       if(hc) diveTo(hc);
     }
@@ -6884,7 +6964,8 @@ function startChaintarium(){
     if(reduceMotionSys){ visitChain(c); return; }
     diving = true;
     ch.focus = c.id;
-    panT.set(0, 0, 0); pan.set(0, 0, 0); /* a dive always starts from the system centre */
+    var homeC = c._centerV || GALAXY_CENTER;
+    panT.copy(homeC); pan.copy(homeC); focusHomeV.copy(homeC); /* a dive always starts from its own system's centre */
     /* gentler tap zoom: the dive stops at distance 20 (was 11) with a
        wider frame per world size, so a planet tap no longer rushes
        the camera into the world's face before the sphere opens */
@@ -6897,54 +6978,70 @@ function startChaintarium(){
     }, 690);
   }
 
-  /* Visit a solar system (Jeffrey's order, 2026-11-04): fly the
-     camera to centre on the CHOSEN system, framed to see the whole
-     system, then leave the visitor free to move. There is no tween
-     here on purpose — the render loop eases dist toward targetDist
-     and pan toward panT every frame, so setting the two targets IS
-     the flight. The blackhole visit exists so the dying system can
-     be watched up close, swallowing its worlds, instead of only
-     ever recentring on Bitcoin. */
-  function dyingFitDist(){
-    /* same FOV math as chainFitDist(), from the dying system's real
-       extent: outermost orbit as assigned above (6 + di*2.4, di
-       max n-1) plus the outermost world's radius (0.55 + di*0.05).
-       For the shipped 13 worlds: 34.8 + 1.15 = 35.95. */
-    var n = DYING_CHAINS_3D.length;
-    var rOut = (6 + (n - 1) * 2.4) + (0.55 + (n - 1) * 0.05);
-    var r = canvas.getBoundingClientRect();
-    var a = r.width / Math.max(1, r.height);
-    return Math.ceil(rOut / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
-  }
-  function visitSystem(sys){
-    if(sys === "dying"){
-      /* if the view filter hides the dying system, open both so the
-         system being visited is actually on screen */
-      if(ch.systemView === "main" && window.chaintariumSetSystem) window.chaintariumSetSystem("both");
-      panT.copy(DYING_CENTER);
-      targetDist = dyingFitDist();
-    } else {
-      sys = "main";
-      if(ch.systemView === "dying" && window.chaintariumSetSystem) window.chaintariumSetSystem("both");
-      panT.set(0, 0, 0);
-      targetDist = chainFitDist();
-    }
-    if(ch.focus) ch.focus = null; /* same focus release as panBy */
-    ch.homeSystem = sys; /* double-tap recentres here from now on */
-    [["chain-visit-main","main"],["chain-visit-dying","dying"]].forEach(function(pr){
+  /* ---- SCREENS: overview + one screen per system (Jeffrey's
+     3-system design, 2026-11-04) ----
+     Four screens, one view-state machine. A system screen centres
+     the camera on that system at ITS OWN fit distance — the whole
+     system framed on a phone — and shows only that system; the
+     overview frames all three clusters at galaxy scale. There is
+     no tween on purpose: the render loop eases dist toward
+     targetDist and pan toward panT every frame, so setting the two
+     targets IS the flight. Reachable from the screen tab bar, the
+     sysbar Visit buttons, the Tools drawer mirrors, a tap on a
+     system's centre object in the overview, and horizontal swipes. */
+  var SCREEN_ORDER = ["overview", "active", "semi", "blackhole"];
+  var SCREEN_VIEWS = { overview:"both", active:"main", semi:"semi", blackhole:"dying" };
+  function syncScreenChrome(){
+    [["chain-visit-active","active"],["chain-visit-semi","semi"],["chain-visit-blackhole","blackhole"]].forEach(function(pr){
       var el = document.getElementById(pr[0]); if(!el) return;
-      var on = pr[1] === sys;
+      var on = pr[1] === ch.homeSystem;
       el.classList.toggle("on", on); el.setAttribute("aria-pressed", on ? "true" : "false");
     });
+    SCREEN_ORDER.forEach(function(s){
+      var tb = document.getElementById("chain-screen-" + s); if(!tb) return;
+      var on = s === ch.screen;
+      tb.classList.toggle("on", on); tb.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    var bk = document.getElementById("chain-screen-back");
+    if(bk) bk.hidden = (ch.screen === "overview");
     if(window.halexmSyncVisitTools) window.halexmSyncVisitTools();
+  }
+  function showScreen(screen){
+    if(SCREEN_ORDER.indexOf(screen) < 0) screen = "overview";
+    ch.screen = screen;
+    if(window.chaintariumSetSystem) window.chaintariumSetSystem(SCREEN_VIEWS[screen]);
+    panT.copy(systemCenter(screen));
+    targetDist = screenFitDist(screen);
+    if(ch.focus) ch.focus = null; /* same focus release as panBy */
+    if(screen !== "overview") ch.homeSystem = screen; /* the Visit buttons' "on" mark follows the last system visited */
+    syncScreenChrome();
     /* reduced motion: no flight, land on the target at once — the
        same snap diveTo/visitChain use under reduceMotionSys */
     if(reduceMotionSys){ pan.copy(panT); dist = targetDist; }
   }
-  var vmBtn = document.getElementById("chain-visit-main");
-  if(vmBtn) vmBtn.addEventListener("click", function(){ visitSystem("main"); });
-  var vdBtn = document.getElementById("chain-visit-dying");
-  if(vdBtn) vdBtn.addEventListener("click", function(){ visitSystem("dying"); });
+  function cycleScreen(dir){
+    var i = SCREEN_ORDER.indexOf(ch.screen || "overview");
+    var n = (i + dir + SCREEN_ORDER.length) % SCREEN_ORDER.length;
+    showScreen(SCREEN_ORDER[n]);
+  }
+  window.chaintariumShowScreen = showScreen;
+  /* back-compat wrapper: the pre-3-system visit names map onto the
+     screens ("main" → Active screen, "dying" → Blackhole screen) */
+  function visitSystem(sys){ showScreen(sys === "main" ? "active" : (sys === "dying" ? "blackhole" : sys)); }
+  function dyingFitDist(){ return blackholeFitDist(); }
+  var vaBtn = document.getElementById("chain-visit-active");
+  if(vaBtn) vaBtn.addEventListener("click", function(){ showScreen("active"); });
+  var vsBtn = document.getElementById("chain-visit-semi");
+  if(vsBtn) vsBtn.addEventListener("click", function(){ showScreen("semi"); });
+  var vbBtn = document.getElementById("chain-visit-blackhole");
+  if(vbBtn) vbBtn.addEventListener("click", function(){ showScreen("blackhole"); });
+  SCREEN_ORDER.forEach(function(s){
+    var tb = document.getElementById("chain-screen-" + s);
+    if(tb) tb.addEventListener("click", function(){ showScreen(s); });
+  });
+  var bkBtn = document.getElementById("chain-screen-back");
+  if(bkBtn) bkBtn.addEventListener("click", function(){ showScreen("overview"); });
+  syncScreenChrome();
 
   function placeLabel(obj, label){
     var v = new THREE.Vector3();
@@ -6956,15 +7053,23 @@ function startChaintarium(){
   }
 
   var focusPos = new THREE.Vector3();
+  /* is a system on screen in the current view? "both" shows all
+     three; a system view shows only its own */
+  function sysVisible(sys){
+    return ch.systemView === "both" || (ch.systemView === "main" && sys === "active") ||
+      (ch.systemView === "semi" && sys === "semi") || (ch.systemView === "dying" && sys === "blackhole");
+  }
+  var _swV = new THREE.Vector3();
   function animate(){
     requestAnimationFrame(animate);
     if(currentTab !== "chaintarium" || surf.open) return;
     var t = Date.now()*0.001;
     planets.forEach(function(p){
-      if(p.c.orbit === 0){ p.mesh.position.set(0,0,0); p.mesh.rotation.y = t*0.02; }
+      var cv = p.c._centerV || GALAXY_CENTER;
+      if(p.c.orbit === 0){ p.mesh.position.copy(cv); p.mesh.rotation.y = t*0.02; }
       else {
         var a = p.angle + t * p.c.speed * 0.14;
-        p.mesh.position.set(Math.cos(a)*p.c.orbit, Math.sin(a*1.7)*0.4, Math.sin(a)*p.c.orbit);
+        p.mesh.position.set(cv.x + Math.cos(a)*p.c.orbit, cv.y + Math.sin(a*1.7)*0.4, cv.z + Math.sin(a)*p.c.orbit);
         p.mesh.rotation.y = t*0.12;
       }
       var px = p.mesh.position.x, py = p.mesh.position.y, pz = p.mesh.position.z;
@@ -6973,8 +7078,10 @@ function startChaintarium(){
         mn.mesh.position.set(px + Math.cos(ma)*mn.dist, py + Math.sin(ma*1.3)*0.18, pz + Math.sin(ma)*mn.dist);
         mn.mesh.rotation.y = t*0.25;
       });
-      /* search isolation: only the isolated world (and its moons and orbit ring) stays visible */
-      var isoVis = (!ch.isolated || p.c.id === ch.isolated) && ch.systemView !== "dying";
+      /* search isolation: only the isolated world (and its moons and
+         orbit ring) stays visible; a system view shows only its own
+         system */
+      var isoVis = (!ch.isolated || p.c.id === ch.isolated) && sysVisible(p.c.system);
       p.mesh.visible = isoVis;
       if(p.c._ring) p.c._ring.visible = isoVis;
       p.moons.forEach(function(mn){ mn.mesh.visible = isoVis; });
@@ -6982,27 +7089,41 @@ function startChaintarium(){
     updateRoutes(t);
     if(typeof dyingPlanets !== "undefined"){
       dyingPlanets.forEach(function(dp){
-        var da = dp.angle + t * dp.speed;
-        dp.mesh.position.set(Math.cos(da) * dp.orbit, Math.sin(da * 1.3) * 0.5, Math.sin(da) * dp.orbit);
+        if(dp.swallowed){
+          /* being swallowed: spiral at the event horizon via
+             swallowedPos(); dim and shrink as the phase deepens,
+             restore as it loops — never consumed. Reduced motion:
+             hold a still mid-spiral pose. */
+          if(reduceMotionSys){
+            dp.mesh.position.set(Math.cos(dp.angle) * 7.2, 0.1, Math.sin(dp.angle) * 7.2);
+          } else {
+            var sph = swallowedPos(dp, t, _swV);
+            dp.mesh.position.copy(_swV);
+            dp.mesh.scale.setScalar(dp.mesh.userData.baseScale * (1 - sph * 0.4));
+            dp.mesh.material.opacity = dp.mesh.userData.baseOpacity * (1 - sph * 0.45);
+          }
+        } else {
+          var da = dp.angle + t * dp.speed;
+          dp.mesh.position.set(Math.cos(da) * dp.orbit, Math.sin(da * 1.3) * 0.5, Math.sin(da) * dp.orbit);
+        }
         dp.mesh.rotation.y = t * 0.2;
       });
-      if(typeof dyingGroup !== "undefined") dyingGroup.visible = ch.systemView !== "main" && !ch.isolated;
+      if(typeof dyingGroup !== "undefined") dyingGroup.visible = sysVisible("blackhole") && !ch.isolated;
+      if(typeof semiGroup !== "undefined") semiGroup.visible = sysVisible("semi") && !ch.isolated;
       if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
     }
-    if(typeof updateCrossRoutes === "function") updateCrossRoutes(t);
-    /* cross-chain transfer routes: visible unless the transfers layer
-       is off or the view is isolated to one world; pulses ride with them */
+    if(typeof sysGrid !== "undefined" && sysGrid) sysGrid.visible = sysVisible("active") && !ch.isolated;
+    if(typeof semiGrid !== "undefined" && semiGrid) semiGrid.visible = sysVisible("semi") && !ch.isolated;
+    if(typeof dyingGrid !== "undefined" && dyingGrid) dyingGrid.visible = sysVisible("blackhole") && !ch.isolated;
+    /* transfer routes: visible unless the transfers layer is off or
+       the view is isolated to one world — and only when BOTH endpoint
+       systems are on screen (no route crosses systems, ever) */
     var transfersOn = !ch.transfersOff && !ch.isolated;
-    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn && ch.systemView !== "dying"; });
-    if(typeof crossRoutes !== "undefined"){
-      var crossOn = transfersOn && ch.systemView === "both";
-      crossRoutes.forEach(function(rt){ if(rt.line) rt.line.visible = crossOn; });
-      if(typeof crossPulsePts !== "undefined" && crossPulsePts) crossPulsePts.visible = crossOn;
-    }
+    routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn && sysVisible(rt.sysA) && sysVisible(rt.sysB); });
     if(pulsePts) pulsePts.visible = transfersOn;
     if(sunGlow) sunGlow.material.opacity = 0.32 + Math.sin(t * 1.4) * 0.05; /* the sun breathes — slow, restrained */
     if(belt) belt.rotation.y = t * 0.008; /* the belt crawls around the sun */
-    if(belt) belt.visible = !ch.isolated;
+    if(belt) belt.visible = !ch.isolated && sysVisible("active");
     if(comet.head && !reduceMotionSys){
       var cu = (t % 46) / 46 * Math.PI * 2, cp = cometPos(cu, new THREE.Vector3());
       comet.head.position.copy(cp);
@@ -7013,13 +7134,13 @@ function startChaintarium(){
       }
       comet.tailGeo.attributes.position.needsUpdate = true;
     }
-    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys && !ch.isolated && !ch.transfersOff;
+    if(comet.head) comet.head.visible = comet.tail.visible = !reduceMotionSys && !ch.isolated && !ch.transfersOff && sysVisible("active");
     rotY += (tRotY-rotY)*0.07; rotX += (tRotX-rotX)*0.07;
     dist += (targetDist-dist)*0.06;
     pan.lerp(panT, 0.08);
     var focusObj = null;
     planets.forEach(function(p){ if(p.c.id === ch.focus) focusObj = p.mesh; });
-    if(focusObj && ch.focus !== "bitcoin" && panT.lengthSq() < 0.04){
+    if(focusObj && chainById(ch.focus) && chainById(ch.focus).orbit !== 0 && panT.distanceToSquared(focusHomeV) < 0.04){
       focusObj.getWorldPosition(focusPos);
       world.position.lerp(new THREE.Vector3(-focusPos.x, -focusPos.y*0.4, -focusPos.z), 0.05);
     } else {
@@ -7054,7 +7175,7 @@ function startChaintarium(){
     /* labels — moons are named only for the world you're visiting/focused on;
        under a search isolation, only the isolated world's labels stay */
     planets.forEach(function(p){
-      if(ch.isolated && p.c.id !== ch.isolated) p.label.style.display = "none";
+      if((ch.isolated && p.c.id !== ch.isolated) || !p.mesh.visible) p.label.style.display = "none";
       else placeLabel(p.mesh, p.label);
       p.moons.forEach(function(mn){
         if(ch.focus === p.c.id && (!ch.isolated || ch.isolated === p.c.id)) placeLabel(mn.mesh, mn.label);
@@ -7065,22 +7186,16 @@ function startChaintarium(){
        routes when transfers are off or the view is isolated */
     routes.forEach(function(rt){
       if(rt.label){
-        if(transfersOn && ch.systemView !== "dying" && rt.midObj) placeLabel(rt.midObj, rt.label);
+        if(rt.line && rt.line.visible && rt.midObj) placeLabel(rt.midObj, rt.label);
         else rt.label.style.display = "none";
       }
     });
-    if(typeof dyingPlanets !== "undefined" && typeof dyingGroup !== "undefined" && dyingGroup.visible){
-      if(typeof bhLabel !== "undefined" && typeof blackhole !== "undefined") placeLabel(blackhole, bhLabel);
+    if(typeof dyingPlanets !== "undefined"){
+      if(typeof dyingGroup !== "undefined" && dyingGroup.visible && typeof bhLabel !== "undefined" && typeof blackhole !== "undefined") placeLabel(blackhole, bhLabel);
+      else if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
       dyingPlanets.forEach(function(dp){
-        if(ch.systemView !== "main" && !ch.isolated) placeLabel(dp.mesh, dp.label); else dp.label.style.display = "none";
-      });
-    } else if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
-    if(typeof crossRoutes !== "undefined"){
-      crossRoutes.forEach(function(rt){
-        if(rt.label){
-          if(transfersOn && ch.systemView === "both" && rt.midObj) placeLabel(rt.midObj, rt.label);
-          else rt.label.style.display = "none";
-        }
+        var grpVis = dp.d.system === "semi" ? (typeof semiGroup !== "undefined" && semiGroup.visible) : (typeof dyingGroup !== "undefined" && dyingGroup.visible);
+        if(grpVis && !ch.isolated) placeLabel(dp.mesh, dp.label); else dp.label.style.display = "none";
       });
     }
     /* the focus HUD rides above the world you're locked onto */
@@ -9661,15 +9776,15 @@ function syncChainTools(){
   }
   var ds = $("#chain-tools-deadsys");
   if(ds){
-    var dOn = ch.systemView !== "main";
+    var dOn = (ch.systemView === "both" || ch.systemView === "dying");
     ds.textContent = dOn ? "Dead system on" : "Dead system off";
     ds.setAttribute("aria-pressed", dOn ? "true" : "false");
   }
   /* Visit mirrors follow the home system visitSystem() records —
-     main is home until a blackhole visit says otherwise */
-  [["#chain-tools-visit-main","main"],["#chain-tools-visit-dying","dying"]].forEach(function(pr){
+     Active is home until another system's visit says otherwise */
+  [["#chain-tools-visit-active","active"],["#chain-tools-visit-semi","semi"],["#chain-tools-visit-blackhole","blackhole"]].forEach(function(pr){
     var vb = $(pr[0]); if(!vb) return;
-    var von = (ch.homeSystem || "main") === pr[1];
+    var von = (ch.homeSystem || "active") === pr[1];
     vb.classList.toggle("on", von); vb.setAttribute("aria-pressed", von ? "true" : "false");
   });
 }
@@ -9689,15 +9804,21 @@ function syncChainTools(){
   });
   var ds2 = $("#chain-tools-deadsys");
   if(ds2) ds2.addEventListener("click", function(){
-    if(window.chaintariumSetSystem) window.chaintariumSetSystem(ch.systemView === "main" ? "both" : "main");
+    /* Dead system toggle: the blackhole system is visible in the
+       "both" and "dying" views; toggling swaps between showing it
+       and the Active-only view (visibility only — the camera and
+       the current screen stay where they are) */
+    if(window.chaintariumSetSystem) window.chaintariumSetSystem((ch.systemView === "both" || ch.systemView === "dying") ? "main" : "both");
     syncChainTools();
   });
   /* Visit entries mirror the sysbar Visit buttons — they click the
      real buttons, so the flight logic lives in exactly one place */
-  var vm2 = $("#chain-tools-visit-main");
-  if(vm2) vm2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-main"); if(b) b.click(); });
-  var vd2 = $("#chain-tools-visit-dying");
-  if(vd2) vd2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-dying"); if(b) b.click(); });
+  var vm2 = $("#chain-tools-visit-active");
+  if(vm2) vm2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-active"); if(b) b.click(); });
+  var vs2 = $("#chain-tools-visit-semi");
+  if(vs2) vs2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-semi"); if(b) b.click(); });
+  var vd2 = $("#chain-tools-visit-blackhole");
+  if(vd2) vd2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-blackhole"); if(b) b.click(); });
   /* the sysbar's setView() calls this hook so the Dead system toggle
      label stays truthful when the view changes from the sysbar */
   window.halexmSyncDeadToggle = syncChainTools;
