@@ -2001,7 +2001,7 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="card" id="trading-card" hidden></div>
 
   <div class="sec-title">Exactly how HALEX builds a trade strategy</div>
-  <div class="card" id="lab-allen-method">
+  <div class="card" id="lab-method-card">
     <details class="lab-collapse"><summary>The 8-step method — tap to open <span class="note">(each step can be sent into the Q&amp;A draft; nothing here trades or promises a result)</span></summary>
     <div id="lab-method-steps" style="margin-top:10px"></div>
     <p class="note" id="lab-method-note" style="margin-top:10px"></p>
@@ -2151,6 +2151,8 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="btn" id="chain-system-main" aria-pressed="false">Main system</button>
     <button class="btn" id="chain-system-dying" aria-pressed="false">Dying system only</button>
     <button class="btn on" id="chain-system-both" aria-pressed="true">Both systems</button>
+    <button class="btn on" id="chain-visit-main" aria-pressed="true">Visit Main system</button>
+    <button class="btn" id="chain-visit-dying" aria-pressed="false">Visit Blackhole system</button>
     <span id="chain-live-status">Transfers shown are a model until a live feed is wired.</span>
   </div>
   <div id="chain-stage" class="tools-closed">
@@ -2205,6 +2207,8 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn" id="chain-tools-feed" aria-pressed="true">Live feed on</button>
         <button class="btn" id="chain-tools-transfers" aria-pressed="true">Transfers on</button>
         <button class="btn" id="chain-tools-deadsys" aria-pressed="true">Dead system on</button>
+        <button class="btn on" id="chain-tools-visit-main" aria-pressed="true">Visit Main system</button>
+        <button class="btn" id="chain-tools-visit-dying" aria-pressed="false">Visit Blackhole system</button>
       </div>
       <div class="tb-group tb-view">
         <div class="tb-cap">VIEW</div>
@@ -6729,7 +6733,7 @@ function startChaintarium(){
     '<button class="hud-btn" id="hud-sys-expand" aria-expanded="false" aria-label="Expand system info">▾</button>' +
     '<button class="hud-btn" id="hud-sys-close" aria-label="Close system card">✕</button></div>' +
     '<div class="hud-body"><span class="mono">' + CHAINS_3D.length + " main worlds · " + DYING_CHAINS_3D.length + " dying worlds · " + routes.length + " routes · " + crossRoutes.length + ' cross-system routes (MODEL)</span><br>' +
-    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface. Drag to orbit, two-finger drag to pan anywhere, pinch to zoom; double-tap recentres.</span></div>';
+    '<span class="dim">Light pulses are transfers in flight — MODEL until a live feed is wired. Tap a world to walk its surface. Drag to orbit, two-finger drag to pan anywhere, pinch to zoom. Visit flies you to a system; double-tap returns to the system you visited.</span></div>';
   stage.appendChild(hudSys);
   var hudExp = hudSys.querySelector("#hud-sys-expand"), hudX = hudSys.querySelector("#hud-sys-close");
   if(hudExp) hudExp.addEventListener("click", function(){
@@ -6762,8 +6766,9 @@ function startChaintarium(){
   /* controls: drag rotate, wheel + pinch zoom, and (fix pass
      2026-11-04) free pan: two-finger drag, right-drag or Shift-drag
      moves the eye anywhere in the galaxy, double-tap/double-click
-     recentres. Nothing clamps the orbit axes, and nothing pulls the
-     camera back to the middle on its own. */
+     returns to the system you visited last (the Visit buttons set
+     it; main until you visit the blackhole). Nothing clamps the
+     orbit axes, and nothing pulls the camera back on its own. */
   var drag = null, pinchD = 0;
   var pan = new THREE.Vector3(), panT = new THREE.Vector3();
   var activePtrs = {}, lastMid = null;
@@ -6793,7 +6798,14 @@ function startChaintarium(){
     canvas.setPointerCapture(e.pointerId);
   });
   canvas.addEventListener("contextmenu", function(e){ e.preventDefault(); });
-  canvas.addEventListener("dblclick", function(){ panT.set(0, 0, 0); });
+  canvas.addEventListener("dblclick", function(){
+    /* double-tap recentres on the home system — the one you visited
+       last with the Visit buttons (main until told otherwise), at
+       that system's fit distance, not always back to Bitcoin at the
+       old fixed frame */
+    if(ch.homeSystem === "dying"){ panT.copy(DYING_CENTER); targetDist = dyingFitDist(); }
+    else { panT.set(0, 0, 0); targetDist = chainFitDist(); }
+  });
   canvas.addEventListener("pointermove", function(e){
     lastTouch = performance.now();
     if(activePtrs[e.pointerId]) activePtrs[e.pointerId] = pt(e);
@@ -6884,6 +6896,55 @@ function startChaintarium(){
       visitChain(c);
     }, 690);
   }
+
+  /* Visit a solar system (Jeffrey's order, 2026-11-04): fly the
+     camera to centre on the CHOSEN system, framed to see the whole
+     system, then leave the visitor free to move. There is no tween
+     here on purpose — the render loop eases dist toward targetDist
+     and pan toward panT every frame, so setting the two targets IS
+     the flight. The blackhole visit exists so the dying system can
+     be watched up close, swallowing its worlds, instead of only
+     ever recentring on Bitcoin. */
+  function dyingFitDist(){
+    /* same FOV math as chainFitDist(), from the dying system's real
+       extent: outermost orbit as assigned above (6 + di*2.4, di
+       max n-1) plus the outermost world's radius (0.55 + di*0.05).
+       For the shipped 13 worlds: 34.8 + 1.15 = 35.95. */
+    var n = DYING_CHAINS_3D.length;
+    var rOut = (6 + (n - 1) * 2.4) + (0.55 + (n - 1) * 0.05);
+    var r = canvas.getBoundingClientRect();
+    var a = r.width / Math.max(1, r.height);
+    return Math.ceil(rOut / (Math.tan(55 * Math.PI / 360) * Math.min(1, a))) + 12;
+  }
+  function visitSystem(sys){
+    if(sys === "dying"){
+      /* if the view filter hides the dying system, open both so the
+         system being visited is actually on screen */
+      if(ch.systemView === "main" && window.chaintariumSetSystem) window.chaintariumSetSystem("both");
+      panT.copy(DYING_CENTER);
+      targetDist = dyingFitDist();
+    } else {
+      sys = "main";
+      if(ch.systemView === "dying" && window.chaintariumSetSystem) window.chaintariumSetSystem("both");
+      panT.set(0, 0, 0);
+      targetDist = chainFitDist();
+    }
+    if(ch.focus) ch.focus = null; /* same focus release as panBy */
+    ch.homeSystem = sys; /* double-tap recentres here from now on */
+    [["chain-visit-main","main"],["chain-visit-dying","dying"]].forEach(function(pr){
+      var el = document.getElementById(pr[0]); if(!el) return;
+      var on = pr[1] === sys;
+      el.classList.toggle("on", on); el.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    if(window.halexmSyncVisitTools) window.halexmSyncVisitTools();
+    /* reduced motion: no flight, land on the target at once — the
+       same snap diveTo/visitChain use under reduceMotionSys */
+    if(reduceMotionSys){ pan.copy(panT); dist = targetDist; }
+  }
+  var vmBtn = document.getElementById("chain-visit-main");
+  if(vmBtn) vmBtn.addEventListener("click", function(){ visitSystem("main"); });
+  var vdBtn = document.getElementById("chain-visit-dying");
+  if(vdBtn) vdBtn.addEventListener("click", function(){ visitSystem("dying"); });
 
   function placeLabel(obj, label){
     var v = new THREE.Vector3();
@@ -9604,6 +9665,13 @@ function syncChainTools(){
     ds.textContent = dOn ? "Dead system on" : "Dead system off";
     ds.setAttribute("aria-pressed", dOn ? "true" : "false");
   }
+  /* Visit mirrors follow the home system visitSystem() records —
+     main is home until a blackhole visit says otherwise */
+  [["#chain-tools-visit-main","main"],["#chain-tools-visit-dying","dying"]].forEach(function(pr){
+    var vb = $(pr[0]); if(!vb) return;
+    var von = (ch.homeSystem || "main") === pr[1];
+    vb.classList.toggle("on", von); vb.setAttribute("aria-pressed", von ? "true" : "false");
+  });
 }
 (function initChainTools(){
   var ov = $("#chain-tools-overlays"), tr = $("#chain-tools-transfers"), sa = $("#chain-tools-showall"), stage = $("#chain-stage");
@@ -9624,9 +9692,18 @@ function syncChainTools(){
     if(window.chaintariumSetSystem) window.chaintariumSetSystem(ch.systemView === "main" ? "both" : "main");
     syncChainTools();
   });
+  /* Visit entries mirror the sysbar Visit buttons — they click the
+     real buttons, so the flight logic lives in exactly one place */
+  var vm2 = $("#chain-tools-visit-main");
+  if(vm2) vm2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-main"); if(b) b.click(); });
+  var vd2 = $("#chain-tools-visit-dying");
+  if(vd2) vd2.addEventListener("click", function(){ var b = document.getElementById("chain-visit-dying"); if(b) b.click(); });
   /* the sysbar's setView() calls this hook so the Dead system toggle
      label stays truthful when the view changes from the sysbar */
   window.halexmSyncDeadToggle = syncChainTools;
+  /* visitSystem() calls this hook so the drawer Visit mirrors keep
+     the "on" mark on the system actually visited */
+  window.halexmSyncVisitTools = syncChainTools;
   syncChainTools();
 })();
 
