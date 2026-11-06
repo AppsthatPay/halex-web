@@ -1412,6 +1412,54 @@ nav.tabbar .rail{touch-action:pan-x}
 #apex3-timeline{margin-top:12px}
 #apex3-timeline svg{width:100%; height:auto; display:block}
 #apex3-readout-card{margin-top:12px}
+/* ---------- Chaintarium de-clutter port (2026-11-05, from the Sandbox
+   build, adapted to this file's own structure): everything over the
+   stage closes except the ⚙ Tools toggle, which never closes; the
+   toolbar's BRING BACK group restores panels with the same label +
+   aria-pressed sync as the System card toggle; info cards close on a
+   double double-tap — tap tap, tap tap; the popped window's Fill
+   screen / Pop back in cluster delegates to the toolbar's tb-window
+   buttons and drags; the search bar gains a grip (pop mode), an
+   explicit Search button and an ✕ ---------- */
+.panel-closed{display:none !important}
+.panel-x{
+  position:absolute; top:6px; right:6px; z-index:6; width:26px; height:26px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.22); background:rgba(10,13,20,.82); color:#dbe6fa;
+  font-size:12px; line-height:1; display:flex; align-items:center; justify-content:center; padding:0; cursor:pointer;
+}
+.panel-x:active{transform:scale(.92)}
+.has-x{position:relative}
+#chain-track.has-x, #chain-info.has-x{padding-right:40px}
+/* the focus HUD rides with pointer-events:none in the base build —
+   it takes events here so its ✕ and the double double-tap can land */
+#chain-hud-focus{pointer-events:auto; padding-right:30px}
+.panel-x-inline{
+  flex:none; align-self:center; width:30px; height:30px; padding:0; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center; font-size:13px;
+}
+.chain-search{flex-wrap:wrap}
+.chain-search .panel-x-inline{border-color:color-mix(in srgb, var(--gold) 40%, var(--line))}
+#chain-search-go{flex:none; white-space:nowrap}
+.drag-grip{
+  flex:none; display:inline-flex; align-items:center; justify-content:center; align-self:center;
+  cursor:grab; touch-action:none; color:var(--gold); font-size:16px; letter-spacing:1px;
+  width:20px; padding:6px 0; user-select:none; -webkit-user-select:none; line-height:1;
+}
+.drag-grip:active{cursor:grabbing}
+/* the grip only exists for the popped window, where the bar floats
+   over the stage; the search icon shifts right to clear it there */
+#chain-search-grip{display:none}
+#chain-stage.pop #chain-search-grip{display:inline-flex}
+#chain-stage.pop .chain-search>svg{left:39px}
+/* the popped window's own window-button cluster (the .pop-actions
+   shell was already styled in the base CSS): it rests left of the
+   tools column and floats above the drawer when dragged over it */
+#chain-pop-cluster{right:118px; z-index:68; align-items:center}
+#chain-pop-cluster .drag-grip{background:rgba(8,10,16,.85); border:1px solid var(--line2); border-radius:99px; padding:8px 7px; backdrop-filter:blur(6px); width:auto}
+/* the screen tabs take their own surface taps so the double
+   double-tap can land on the bar itself, not only on its buttons */
+#chain-screenbar{pointer-events:auto}
+.ddt-flash{outline:2px solid rgba(255,194,75,.65); outline-offset:-2px}
 </style>
 </head>
 <body>
@@ -2141,10 +2189,13 @@ nav.tabbar .rail{touch-action:pan-x}
     <h2>Chaintarium</h2>
     <p>Three solar systems — Bitcoin and BNB Chain are suns, the dead chains fall to a blackhole — and each world maps its wallets, tokens and pools.</p>
   </div>
-  <div class="chain-search">
+  <div class="chain-search" id="chain-search-bar">
+    <span class="drag-grip" id="chain-search-grip" title="Drag to move the search bar while the window is popped out" aria-hidden="true">⠿</span>
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
     <input id="chain-search" type="text" placeholder="Search the cosmos — a chain, a token, or paste a wallet address…" autocomplete="off" spellcheck="false" />
     <button class="btn" id="chain-record" title="Record an APEX² snapshot of what you're looking at — the open world, tracked tokens and wallets, with their live reads — and download it"><span class="recdot"></span>Record the data</button>
+    <button class="btn" id="chain-search-go" title="Search — fly to the chain, start tracking the token, or read the wallet">Search</button>
+    <button class="btn panel-x-inline" id="chain-search-close" aria-label="Close the search bar" title="Close — bring it back from Tools">✕</button>
     <div class="chain-suggest" id="chain-suggest"></div>
   </div>
   <div class="chain-quick" id="chain-quick"></div>
@@ -2212,6 +2263,7 @@ nav.tabbar .rail{touch-action:pan-x}
       <button class="btn" id="chain-screen-active" role="tab" aria-selected="false">Active</button>
       <button class="btn" id="chain-screen-semi" role="tab" aria-selected="false">Semi-Active</button>
       <button class="btn" id="chain-screen-blackhole" role="tab" aria-selected="false">Blackhole</button>
+      <button class="btn" id="chain-screenbar-close" aria-label="Close the screen tabs" title="Close — bring them back from Tools">✕</button>
     </div>
     <button class="btn" id="chain-tools-toggle" aria-expanded="false" aria-controls="chain-toolbar">⚙ Tools</button>
     <div class="chain-toolbar" id="chain-toolbar" aria-label="Chaintarium tools">
@@ -2242,6 +2294,15 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn" id="chain-pop-fill" aria-pressed="false"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
         <button class="btn" id="chain-pop-close"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg>Pop back in</button>
       </div>
+      <div class="tb-group tb-restore">
+        <div class="tb-cap">BRING BACK</div>
+        <button class="btn" id="chain-restore-all">Show everything again</button>
+        <button class="btn" id="chain-restore-search" aria-pressed="true">Search bar on</button>
+        <button class="btn" id="chain-restore-info" aria-pressed="true">Info cards on</button>
+        <button class="btn" id="chain-restore-screens" aria-pressed="true">Screen tabs on</button>
+        <button class="btn" id="chain-restore-track" aria-pressed="true">Tracker card on</button>
+        <button class="btn" id="chain-restore-planet" aria-pressed="true">Planet cards on</button>
+      </div>
       <div class="tb-group tb-planet">
         <div class="tb-cap">PLANET</div>
         <button class="btn" id="surface-info-btn">Planet info</button>
@@ -2261,6 +2322,11 @@ nav.tabbar .rail{touch-action:pan-x}
       <div class="tb-group">
         <button class="btn" id="chain-tools-close">✕ Close tools</button>
       </div>
+    </div>
+    <div class="pop-actions" id="chain-pop-cluster">
+      <span class="drag-grip" id="chain-pop-grip" title="Drag to move these window buttons anywhere in the window" aria-hidden="true">⠿</span>
+      <button class="btn" id="chain-pop-cluster-fill" aria-pressed="false"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg><span>Fill screen</span></button>
+      <button class="btn" id="chain-pop-cluster-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h5V4M20 9h-5V4M4 15h5v5M20 15h-5v5"/></svg>Pop back in</button>
     </div>
   </div>
   <div class="chain-below" id="chain-below">
@@ -11373,6 +11439,409 @@ initGate();
     var card = document.getElementById("surface-card");
     if(card) card.style.display = (card.style.display === "none") ? "" : "none";
   });
+})();
+</script>
+<script>
+/* ---------------- Chaintarium de-clutter (ported 2026-11-05 from the
+   Sandbox build to this file's own structure) ----------------
+   Everything over the stage closes except the ⚙ Tools toggle, which
+   never closes and is the way back: the toolbar carries a BRING BACK
+   group whose buttons mirror each panel's state with the same
+   "… on/off" label + aria-pressed sync the System card toggle uses.
+   Info cards close from an ✕ where one fits, and every one of them
+   also closes on a double double-tap — tap tap, tap tap — on its own
+   surface. Cards that already own a close path close through it, so
+   their own toggles stay truthful: the system HUD through its own ✕
+   (which syncs the System card toggle), the planet card through its
+   own ✕ (a fresh dive resets it), the legend through the Legend
+   button. The toolbar's tb-window group lives inside the scrolling
+   drawer, so the popped window gets its own Fill screen / Pop back
+   in cluster: it delegates its clicks to the real toolbar buttons,
+   mirrors their label, and drags anywhere in the window (a press
+   without a move still clicks). The search bar gains an ✕ that works
+   docked or popped, a double double-tap close while popped, a grip
+   that drags it while popped, and an explicit Search button wired to
+   the same suggestion pick the Enter key makes. Session state only —
+   a fresh page load starts with the full view. */
+(function(){
+  function $(s, el){ return (el || document).querySelector(s); }
+  function $$(s, el){ return Array.prototype.slice.call((el || document).querySelectorAll(s)); }
+  function say(msg){ try{ if(typeof toast === "function") toast(msg); }catch(e){} }
+  var stage = $("#chain-stage");
+
+  /* ---------- BRING BACK sync: labels + aria-pressed follow state ---------- */
+  function setBtn(btn, on, label){
+    if(!btn) return;
+    btn.textContent = label + (on ? " on" : " off");
+    btn.setAttribute("aria-pressed", on ? "true" : "false");
+  }
+  function infoOpen(){
+    var hf = $("#chain-hud-focus"), ci = $("#chain-info");
+    return (!hf || !hf.classList.contains("panel-closed")) && (!ci || !ci.classList.contains("panel-closed"));
+  }
+  function planetOpen(){
+    var card = $("#surface-card"), lay = $("#surf-layers");
+    return (!card || (card.style.display !== "none" && !card.classList.contains("panel-closed"))) &&
+           (!lay || !lay.classList.contains("panel-closed"));
+  }
+  function syncRestore(){
+    var sb = $(".chain-search");
+    setBtn($("#chain-restore-search"), !!(sb && !sb.classList.contains("panel-closed")), "Search bar");
+    setBtn($("#chain-restore-info"), infoOpen(), "Info cards");
+    var sc = $("#chain-screenbar");
+    setBtn($("#chain-restore-screens"), !!(sc && !sc.classList.contains("panel-closed")), "Screen tabs");
+    var tr = $("#chain-track");
+    setBtn($("#chain-restore-track"), !!(tr && !tr.classList.contains("panel-closed") && !tr.hidden), "Tracker card");
+    setBtn($("#chain-restore-planet"), planetOpen(), "Planet cards");
+    var s = $("#surface"), leg = $("#hm-cs-legend");
+    if(s && leg && s.classList.contains("legend-open")) leg._wasClosed = false;
+  }
+
+  function closePanel(el){
+    if(!el) return;
+    el.classList.add("panel-closed");
+    say("Closed — bring it back any time from Tools.");
+    syncRestore();
+  }
+  function openPanel(el){
+    if(!el) return;
+    el.classList.remove("panel-closed");
+    syncRestore();
+  }
+
+  /* double double-tap: two quick taps, a beat, two quick taps.
+     Taps on buttons, links and inputs inside a card never count —
+     those are controls, not the card's surface. A desktop double
+     double-click counts the same way. */
+  function bindQuadTap(el, closeFn, gateFn){
+    if(!el || el._ddtBound) return;
+    el._ddtBound = true;
+    var taps = [];
+    function isControl(t){
+      return t && t.closest && t.closest("button, a, input, select, textarea, .panel-x, .chain-suggest");
+    }
+    function registerTap(){
+      if(gateFn && !gateFn()) return;
+      var now = Date.now();
+      taps = taps.filter(function(t){ return now - t <= 2600; });
+      taps.push(now);
+      if(taps.length >= 2) el.classList.add("ddt-flash");
+      if(taps.length >= 4){
+        var a = taps[taps.length - 4], b = taps[taps.length - 3], c = taps[taps.length - 2], d = taps[taps.length - 1];
+        if(b - a <= 450 && d - c <= 450 && c - b <= 1300){
+          taps = [];
+          el.classList.remove("ddt-flash");
+          closeFn();
+          return;
+        }
+      }
+      setTimeout(function(){ el.classList.remove("ddt-flash"); }, 500);
+    }
+    el.addEventListener("pointerup", function(e){
+      if(e.pointerType === "mouse" && e.button !== 0) return;
+      if(isControl(e.target)) return;
+      registerTap();
+    });
+    var dbls = [];
+    el.addEventListener("dblclick", function(e){
+      if(isControl(e.target)) return;
+      if(gateFn && !gateFn()) return;
+      var now = Date.now();
+      dbls = dbls.filter(function(t){ return now - t <= 1600; });
+      dbls.push(now);
+      if(dbls.length >= 2){ dbls = []; taps = []; closeFn(); }
+    });
+  }
+
+  /* give a card an ✕ in its corner when it has none. The ✕ is a
+     direct child; cards whose content is rebuilt re-fit it in
+     fitDynamic below. has-x (a class, not an inline style) makes
+     static cards a positioning context without ever overriding the
+     popped window's absolute positioning for #chain-track. */
+  function fitX(el, closeFn){
+    if(!el || el.querySelector(":scope > .panel-x")) return;
+    el.classList.add("has-x");
+    var x = document.createElement("button");
+    x.type = "button"; x.className = "panel-x"; x.textContent = "✕";
+    x.setAttribute("aria-label", "Close this panel");
+    x.title = "Close — bring it back from Tools";
+    x.addEventListener("click", function(e){ e.stopPropagation(); (closeFn || function(){ closePanel(el); })(); });
+    el.appendChild(x);
+  }
+
+  /* ---------- static cards ---------- */
+  var screenbar = $("#chain-screenbar");
+  if(screenbar){
+    bindQuadTap(screenbar, function(){ closePanel(screenbar); });
+    var sbx = $("#chain-screenbar-close");
+    if(sbx) sbx.addEventListener("click", function(){ closePanel(screenbar); });
+  }
+  var track = $("#chain-track");
+  if(track){
+    fitX(track);
+    bindQuadTap(track, function(){ closePanel(track); });
+  }
+  var info = $("#chain-info");
+  if(info){
+    fitX(info);
+    bindQuadTap(info, function(){ closePanel(info); });
+  }
+  var layers = $("#surf-layers");
+  if(layers){
+    fitX(layers);
+    bindQuadTap(layers, function(){ closePanel(layers); });
+  }
+  /* the legend closes through its own Legend button, so the button's
+     aria-expanded stays truthful; no ✕ is fitted inside it — its
+     content is filled exactly once by the surface builder and an
+     extra child would read as content already present */
+  var legend = $("#hm-cs-legend");
+  if(legend) bindQuadTap(legend, function(){
+    var s = $("#surface");
+    if(s && s.classList.contains("legend-open")){
+      legend._wasClosed = true;
+      var b = $("#hm-cs-legend-btn"); if(b) b.click();
+      say("Closed — bring it back any time from Tools.");
+      syncRestore();
+    }
+  });
+  /* the planet card closes through its own ✕, the exact path a fresh
+     dive resets; Planet info and BRING BACK can also reopen it */
+  var scard = $("#surface-card");
+  if(scard) bindQuadTap(scard, function(){
+    var x = $("#surface-card-x");
+    if(x) x.click();
+    else scard.style.display = "none";
+    say("Closed — bring it back any time from Tools.");
+    syncRestore();
+  });
+
+  /* ---------- dynamic cards: the two orbit HUDs are built by the
+     3D renderer, and the focus HUD's content is re-filled per world ---------- */
+  function closeFocusHud(){
+    var hf = $("#chain-hud-focus"); if(!hf) return;
+    hf._closedFor = (hf._for != null ? hf._for : "");
+    hf.classList.add("panel-closed");
+    say("Closed — focus a different world to bring it back, or use Tools.");
+    syncRestore();
+  }
+  function fitDynamic(){
+    var hs = $("#chain-hud-sys");
+    if(hs) bindQuadTap(hs, function(){
+      var x = $("#hud-sys-close");
+      if(x) x.click(); else hs.style.display = "none";
+      syncRestore();
+    });
+    var hf = $("#chain-hud-focus");
+    if(hf){
+      bindQuadTap(hf, function(){ closeFocusHud(); });
+      if(!hf.querySelector(":scope > .panel-x")){
+        var x = document.createElement("button");
+        x.type = "button"; x.className = "panel-x"; x.textContent = "✕";
+        x.setAttribute("aria-label", "Close this card");
+        x.title = "Close — focusing a different world brings it back";
+        x.addEventListener("click", function(e){ e.stopPropagation(); closeFocusHud(); });
+        hf.appendChild(x);
+      }
+      /* the render loop re-fills the card only when a DIFFERENT world
+         is focused — that refill is the cue to bring the card back */
+      if(hf.classList.contains("panel-closed") && hf._closedFor != null && hf._for !== hf._closedFor){
+        hf.classList.remove("panel-closed");
+        hf._closedFor = null;
+      }
+    }
+    var ci = $("#chain-info");
+    if(ci) fitX(ci);
+    syncRestore();
+  }
+  if(window.MutationObserver){
+    var pending = false;
+    new MutationObserver(function(){
+      if(pending) return; pending = true;
+      setTimeout(function(){ pending = false; fitDynamic(); }, 120);
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+  fitDynamic();
+
+  /* ---------- the search bar: ✕, Search button, grip, pop quad-tap ---------- */
+  var searchBar = $(".chain-search"), searchInp = $("#chain-search");
+  var searchClose = $("#chain-search-close");
+  if(searchClose && searchBar) searchClose.addEventListener("click", function(){ closePanel(searchBar); });
+  if(searchBar) bindQuadTap(searchBar, function(){ closePanel(searchBar); }, function(){
+    return !!(stage && stage.classList.contains("pop"));
+  });
+  var goBtn = $("#chain-search-go");
+  if(goBtn && searchInp) goBtn.addEventListener("click", function(){
+    openPanel(searchBar);
+    searchInp.focus();
+    function enterPath(){
+      /* exactly what the existing Enter keydown handler does: pick
+         the highlighted (or first) suggestion — no parallel search */
+      searchInp.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true }));
+    }
+    if($$("#chain-suggest button").length){ enterPath(); return; }
+    searchInp.dispatchEvent(new Event("input", { bubbles: true }));
+    setTimeout(function(){
+      if($$("#chain-suggest button").length) enterPath();
+      else say("Type a chain, a token, or paste a wallet address — then Search.");
+    }, 420);
+  });
+  /* drag by the grip while popped (the bar is absolutely positioned
+     over the stage there); the grip never touches the text input */
+  var grip = $("#chain-search-grip");
+  if(grip && searchBar) grip.addEventListener("pointerdown", function(e){
+    if(!stage || !stage.classList.contains("pop")) return;
+    e.preventDefault();
+    var sr = stage.getBoundingClientRect(), r = searchBar.getBoundingClientRect();
+    var sx = e.clientX, sy = e.clientY, sl = r.left - sr.left, st = r.top - sr.top;
+    try{ grip.setPointerCapture(e.pointerId); }catch(err){}
+    function mv(ev){
+      var nl = sl + (ev.clientX - sx), nt = st + (ev.clientY - sy);
+      nl = Math.max(0, Math.min(nl, sr.width - r.width));
+      nt = Math.max(0, Math.min(nt, sr.height - r.height));
+      searchBar.style.left = nl + "px"; searchBar.style.top = nt + "px";
+    }
+    function up(){
+      grip.removeEventListener("pointermove", mv);
+      grip.removeEventListener("pointerup", up);
+      grip.removeEventListener("pointercancel", up);
+    }
+    grip.addEventListener("pointermove", mv);
+    grip.addEventListener("pointerup", up);
+    grip.addEventListener("pointercancel", up);
+  });
+
+  /* ---------- the popped window's own Fill / Pop back in cluster ----------
+     It delegates to the real tb-window buttons (one logic path) and
+     mirrors the Fill button's label and pressed state. Dragging
+     starts past 8px of pointer travel; a press without a move still
+     clicks. Positions clamp inside the stage. */
+  var cluster = $("#chain-pop-cluster");
+  var cFill = $("#chain-pop-cluster-fill"), cClose = $("#chain-pop-cluster-close");
+  var rFill = $("#chain-pop-fill"), rClose = $("#chain-pop-close");
+  if(cFill && rFill) cFill.addEventListener("click", function(){ rFill.click(); });
+  if(cClose && rClose) cClose.addEventListener("click", function(){ rClose.click(); });
+  function syncCluster(){
+    if(!cFill || !rFill) return;
+    var from = rFill.querySelector("span"), to = cFill.querySelector("span");
+    if(from && to) to.textContent = from.textContent;
+    cFill.setAttribute("aria-pressed", rFill.getAttribute("aria-pressed") || "false");
+  }
+  if(rFill && window.MutationObserver){
+    new MutationObserver(syncCluster).observe(rFill, { attributes: true, childList: true, subtree: true, characterData: true });
+  }
+  syncCluster();
+  if(cluster && stage){
+    var drag = null;
+    cluster.addEventListener("pointerdown", function(e){
+      if(e.pointerType === "mouse" && e.button !== 0) return;
+      var sr = stage.getBoundingClientRect(), r = cluster.getBoundingClientRect();
+      drag = { id: e.pointerId, x: e.clientX, y: e.clientY, l: r.left - sr.left, t: r.top - sr.top, w: r.width, h: r.height, moved: false };
+    });
+    cluster.addEventListener("pointermove", function(e){
+      if(!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if(!drag.moved){
+        if(Math.sqrt(dx * dx + dy * dy) <= 8) return;
+        drag.moved = true;
+        try{ cluster.setPointerCapture(drag.id); }catch(err){}
+      }
+      var sr = stage.getBoundingClientRect();
+      var nl = Math.max(0, Math.min(drag.l + dx, sr.width - drag.w));
+      var nt = Math.max(0, Math.min(drag.t + dy, sr.height - drag.h));
+      cluster.style.left = nl + "px"; cluster.style.top = nt + "px";
+      cluster.style.right = "auto"; cluster.style.bottom = "auto";
+    });
+    function endDrag(){
+      if(drag && drag.moved){
+        /* swallow the click the drag would otherwise fire */
+        var eat = function(ev){
+          ev.stopPropagation(); ev.preventDefault();
+          document.removeEventListener("click", eat, true);
+        };
+        document.addEventListener("click", eat, true);
+        setTimeout(function(){ document.removeEventListener("click", eat, true); }, 400);
+      }
+      drag = null;
+    }
+    cluster.addEventListener("pointerup", endDrag);
+    cluster.addEventListener("pointercancel", endDrag);
+  }
+  /* popping back in returns the search bar and the cluster to their
+     rest places — the bar is in-flow when docked, so stale drag
+     offsets must not follow it home */
+  if(stage && window.MutationObserver){
+    new MutationObserver(function(){
+      if(stage.classList.contains("pop")) return;
+      if(searchBar){ searchBar.style.left = ""; searchBar.style.top = ""; }
+      if(cluster){ cluster.style.left = ""; cluster.style.top = ""; cluster.style.right = ""; cluster.style.bottom = ""; }
+    }).observe(stage, { attributes: true, attributeFilter: ["class"] });
+  }
+
+  /* ---------- BRING BACK: the toolbar restore group ---------- */
+  var rb;
+  rb = $("#chain-restore-search");
+  if(rb) rb.addEventListener("click", function(){
+    var sb = $(".chain-search"); if(!sb) return;
+    if(sb.classList.contains("panel-closed")) openPanel(sb); else closePanel(sb);
+  });
+  rb = $("#chain-restore-info");
+  if(rb) rb.addEventListener("click", function(){
+    var hf = $("#chain-hud-focus"), ci = $("#chain-info");
+    if(infoOpen()){
+      if(ci) ci.classList.add("panel-closed");
+      if(hf){ hf._closedFor = (hf._for != null ? hf._for : ""); hf.classList.add("panel-closed"); }
+    } else {
+      if(ci) ci.classList.remove("panel-closed");
+      if(hf){ hf.classList.remove("panel-closed"); hf._closedFor = null; }
+    }
+    syncRestore();
+  });
+  rb = $("#chain-restore-screens");
+  if(rb) rb.addEventListener("click", function(){
+    var sc = $("#chain-screenbar"); if(!sc) return;
+    if(sc.classList.contains("panel-closed")) openPanel(sc); else closePanel(sc);
+  });
+  rb = $("#chain-restore-track");
+  if(rb) rb.addEventListener("click", function(){
+    var tr = $("#chain-track"); if(!tr) return;
+    if(tr.classList.contains("panel-closed")) openPanel(tr); else closePanel(tr);
+  });
+  rb = $("#chain-restore-planet");
+  if(rb) rb.addEventListener("click", function(){
+    var card = $("#surface-card"), lay = $("#surf-layers");
+    if(planetOpen()){
+      if(card) card.style.display = "none";
+      if(lay) lay.classList.add("panel-closed");
+    } else {
+      if(card){ card.classList.remove("panel-closed"); card.style.display = ""; }
+      if(lay) lay.classList.remove("panel-closed");
+    }
+    syncRestore();
+  });
+  rb = $("#chain-restore-all");
+  if(rb) rb.addEventListener("click", function(){
+    $$("#tab-chaintarium .panel-closed").forEach(function(el){ el.classList.remove("panel-closed"); });
+    var card = $("#surface-card"); if(card) card.style.display = "";
+    var hf = $("#chain-hud-focus"); if(hf) hf._closedFor = null;
+    var hs = $("#chain-hud-sys");
+    if(hs && hs.style.display === "none"){
+      hs.style.display = "";
+      var scb = document.getElementById("chain-tools-syscard");
+      if(scb){ scb.textContent = "System card on"; scb.setAttribute("aria-pressed", "true"); }
+    }
+    var leg = $("#hm-cs-legend");
+    if(leg && leg._wasClosed){
+      leg._wasClosed = false;
+      var lb = $("#hm-cs-legend-btn"); if(lb) lb.click();
+    }
+    say("Back in view.");
+    syncRestore();
+  });
+  /* opening the drawer refreshes the mirrors before Jeffrey reads them */
+  var tgl = $("#chain-tools-toggle");
+  if(tgl) tgl.addEventListener("click", function(){ setTimeout(syncRestore, 30); });
+  syncRestore();
 })();
 </script>
 </body>
