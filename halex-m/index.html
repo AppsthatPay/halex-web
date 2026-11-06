@@ -463,6 +463,14 @@ table.log tr:last-child td{border-bottom:none}
    startChaintarium() adds a non-passive touchmove guard on the stage
    for WebViews that still hand the gesture to the page scroller. */
 body.chain-live{overscroll-behavior:none}
+/* FREEZE FIX: while the Chaintarium is live, the sticky top strip
+   must not paint. It is composited as its own layer over the page,
+   and a browser compositor blending that layer against the
+   continuously repainting WebGL canvas wedges after ~20 s (proven
+   headlessly: frames stop with no JS error and no context loss,
+   timers alive). Hiding it for this tab only removes the wedge;
+   the bottom nav stays, and the view carries its own live bar. */
+body.chain-live .topstrip{visibility:hidden}
 .surface-hud{position:absolute; top:10px; left:10px; right:10px; display:flex; gap:8px; align-items:flex-start; pointer-events:none; z-index:5}
 .surface-card{pointer-events:auto; background:rgba(8,10,16,.8); border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:10px 12px; max-width:min(350px,78vw); backdrop-filter:blur(6px)}
 .surface-card b{font-size:15px}
@@ -6253,7 +6261,10 @@ CHAINS_3D.forEach(function(c){
    SYSTEM 3 — BLACKHOLE: the 7 dead chains as planets around the
    blackhole sun. The blackhole is actively swallowing the 3
    least-used of them (Feathercoin, Primecoin, Peercoin): they spiral
-   at its event horizon, dimming and shrinking, never consumed.
+   at its event horizon, and every 7 minutes the innermost is pulled
+   in over a full minute — stretched, fractured into glowing
+   fragments and streamed into the horizon as sparkling light — then
+   it re-enters at the spiral's outer tail so the cycle never ends.
    21 + 21 + 7 = 49 worlds, plus the blackhole. No chain stands in
    two systems, none floats outside one, and no transfer route or
    model transfer crosses between systems. */
@@ -6461,10 +6472,27 @@ function startChaintarium(){
     return;
   }
   ch.started = true;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+  /* pixel ratio capped at 1.5 (was 2): the full-stage canvas at 2x
+     was more sustained GPU/compositor load than phone WebViews (and
+     software GL) can carry — the frame pipeline wedged and, with no
+     recovery path in the page, the screen sat frozen. The stall
+     watchdog below sheds further if frames ever stall again. */
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 1.5));
+  renderer.domElement.addEventListener("webglcontextlost", function(e){
+    e.preventDefault();
+    setTimeout(function(){ try { renderer.forceContextRestore(); } catch(err){} }, 600);
+  });
   var scene = new THREE.Scene();
   scene.background = new THREE.Color(0x040918); /* new-look night pass: deep blue night behind the system */
   scene.fog = new THREE.FogExp2(0x050b1e, 0.0016); /* new-look night pass: fog matched to the night background */
+  /* the system centres + fit extents are declared BEFORE the grids
+     below use them (fix: the night-pass grids copied SEMI_CENTER /
+     DYING_CENTER some twenty lines before their assignments ran,
+     which threw and killed the whole Chaintarium start) */
+  var GALAXY_CENTER = new THREE.Vector3(0, 0, 0);
+  var SEMI_CENTER = new THREE.Vector3(-112, 28, -66);
+  var DYING_CENTER = new THREE.Vector3(52, -30, -72);
+  var ACTIVE_EXTENT = 66, SEMI_EXTENT = 66, BLACKHOLE_EXTENT = 19, OVERVIEW_EXTENT = 202;
   /* new-look night pass: a dark ground plane under the system, drawn
      as a subtle polar grid — the orbits already lie in this plane */
   var sysGrid = new THREE.PolarGridHelper(68, 16, 10, 64, 0x2a4a7f, 0x16294d);
@@ -6493,10 +6521,6 @@ function startChaintarium(){
      blackhole's outermost dead orbit (22.5) plus its world radius,
      and for the overview the Semi-Active centre's distance (133)
      plus its extent. */
-  var GALAXY_CENTER = new THREE.Vector3(0, 0, 0);
-  var SEMI_CENTER = new THREE.Vector3(-112, 28, -66);
-  var DYING_CENTER = new THREE.Vector3(52, -30, -72);
-  var ACTIVE_EXTENT = 66, SEMI_EXTENT = 66, BLACKHOLE_EXTENT = 25, OVERVIEW_EXTENT = 202;
   function systemCenter(sys){ return sys === "semi" ? SEMI_CENTER : (sys === "blackhole" ? DYING_CENTER : GALAXY_CENTER); }
   /* fit distance: how far the camera must sit for an extent to fit —
      the extent over the camera's 55° field, worst case over every
@@ -6602,7 +6626,7 @@ function startChaintarium(){
        circuits, not from a colored shell glowing like a toy */
     var baseCol = new THREE.Color(c.color).multiplyScalar(c.orbit===0 ? 0.4 : 0.24).lerp(new THREE.Color(0x12161d), c.orbit===0 ? 0.3 : 0.48);
     var mat = new THREE.MeshStandardMaterial({ color: baseCol, roughness: 0.58, metalness: 0.52, emissive: c.color, emissiveIntensity: c.orbit===0 ? 0.34 : 0.1 });
-    var mesh = new THREE.Mesh(new THREE.SphereGeometry(c.size, 40, 40), mat);
+    var mesh = new THREE.Mesh(new THREE.SphereGeometry(c.size, 30, 30), mat);
     mesh.userData.chain = c;
     world.add(mesh);
     c._obj = mesh;
@@ -6757,8 +6781,10 @@ function startChaintarium(){
      DYING_CENTER). All are dim, small, stylized MODEL worlds, not
      live chain data. Three of the dead — Feathercoin, Primecoin,
      Peercoin, the least used — are being swallowed: swallowedPos()
-     spirals them at the event horizon, dimming and shrinking, and
-     they are never consumed (the spiral loops). */
+     spirals them at the event horizon, dimming and shrinking. On top
+     of that ambient spiral rides the swallow event (updateBhEvent):
+     every 7 minutes the innermost world is actually consumed over
+     60 s and re-enters at the spiral's tail. */
   var dyingGroup = new THREE.Group(); dyingGroup.position.copy(DYING_CENTER); world.add(dyingGroup);
   var semiGroup = new THREE.Group(); semiGroup.position.copy(SEMI_CENTER); world.add(semiGroup);
   var blackhole = new THREE.Mesh(new THREE.SphereGeometry(3.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
@@ -6768,17 +6794,212 @@ function startChaintarium(){
      worlds routed to showDyingInfo). "—" marks fields with no value;
      nothing here claims a live feed from a dead chain. */
   blackhole.userData.dying = { name:"Blackhole sun", sym:"—", status:"dying system", born:"—", mainId:null, system:"blackhole",
-    note:"The blackhole system's sun. It is swallowing the three least-used dead chains — Feathercoin, Primecoin and Peercoin spiral at its event horizon. Clicking a dead world opens its card; no live feed is claimed from a dead chain." };
-  var bhRing = new THREE.Mesh(new THREE.RingGeometry(4.2, 7.5, 64), new THREE.MeshBasicMaterial({ color: 0xa855f7, side: THREE.DoubleSide, transparent: true, opacity: 0.55 }));
-  bhRing.rotation.x = Math.PI / 2.4; dyingGroup.add(bhRing);
-  addGlow(blackhole, 0xa855f7, 22, 0.35);
+    note:"The blackhole system's sun. It is swallowing the three least-used dead chains — Feathercoin, Primecoin and Peercoin spiral at its event horizon; every 7 minutes the innermost is pulled in over a full minute, stretched, fractured into light and streamed into the horizon, then returned to the spiral. Clicking a dead world opens its card; no live feed is claimed from a dead chain." };
+  /* the black hole, drawn as a real one (Chaintarium upgrade): the
+     pure-black horizon sphere above, wrapped in a thin bright
+     photon ring, one tilted streaked accretion disc (white-hot
+     inner edge cooling through orange to a dark red rim, with a
+     fixed hot glare on its approaching side), dust streaming down
+     the disc into the horizon, and a soft warm outer glow — the
+     centrepiece of its screen, replacing the old flat purple ring. */
+  addGlow(blackhole, 0xffb36b, 30, 0.20);   /* soft warm outer glow */
+  addGlow(blackhole, 0xff8c4a, 52, 0.07);   /* faint wide halo */
+  var bhTilt = new THREE.Group();
+  bhTilt.rotation.x = 0.42; bhTilt.rotation.z = 0.10;
+  dyingGroup.add(bhTilt);
+  var bhSpin = new THREE.Group();
+  bhTilt.add(bhSpin);
+  var photonRing = new THREE.Mesh(new THREE.TorusGeometry(3.72, 0.13, 12, 140),
+    new THREE.MeshBasicMaterial({ color: 0xfff3d6 }));
+  photonRing.rotation.x = Math.PI / 2;
+  bhTilt.add(photonRing);
+  var photonRing2 = new THREE.Mesh(new THREE.TorusGeometry(4.12, 0.05, 8, 140),
+    new THREE.MeshBasicMaterial({ color: 0xffc98a, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending, depthWrite: false }));
+  photonRing2.rotation.x = Math.PI / 2;
+  bhTilt.add(photonRing2);
+  var discTex = (function(){
+    var cv = document.createElement("canvas"); cv.width = cv.height = 512;
+    var g = cv.getContext("2d");
+    for(var r = 250; r > 40; r -= 3){
+      var u = (r - 40) / 210;               /* 0 inner -> 1 outer */
+      var cr = Math.round(255 - u * 90), cg = Math.round(246 - u * 168), cb = Math.round(216 - u * 178);
+      var al = 0.95 * Math.pow(1 - u, 0.6) + 0.04;
+      g.strokeStyle = "rgba(" + cr + "," + cg + "," + cb + "," + al.toFixed(3) + ")";
+      g.lineWidth = 3.4;
+      var a0 = Math.random() * Math.PI * 2;
+      for(var a = 0; a < Math.PI * 2; a += 0.1 + Math.random() * 0.18){
+        g.globalAlpha = 0.72 + Math.random() * 0.28;   /* streaks */
+        g.beginPath(); g.arc(256, 256, r, a0 + a, a0 + a + 0.3 + Math.random() * 0.35); g.stroke();
+      }
+    }
+    g.globalAlpha = 1;
+    var dtx = new THREE.CanvasTexture(cv);
+    /* the vendored three renders colour-managed: mark the disc
+       texture sRGB or it comes out washed pale (the r128 sandbox
+       build renders the same canvas raw and needs no mark) */
+    if("colorSpace" in dtx && THREE.SRGBColorSpace) dtx.colorSpace = THREE.SRGBColorSpace;
+    return dtx;
+  })();
+  var bhDisk = new THREE.Mesh(new THREE.RingGeometry(3.95, 11.5, 128, 1),
+    new THREE.MeshBasicMaterial({ map: discTex, side: THREE.DoubleSide, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+  bhDisk.rotation.x = Math.PI / 2;
+  bhSpin.add(bhDisk);
+  var bhGlare = addGlow(photonRing, 0xffd9a8, 10, 0.16);
+  bhGlare.position.set(-5.9, 0, 0); bhGlare.scale.set(12, 2.4, 1);
+  /* dust streaming down the disc into the horizon (pooled, 420 pts) */
+  var BH_STREAM_N = 420;
+  var streamGeo = new THREE.BufferGeometry();
+  var streamPos = new Float32Array(BH_STREAM_N * 3);
+  var streamCol = new Float32Array(BH_STREAM_N * 3);
+  var streamAng = new Float32Array(BH_STREAM_N);
+  var streamBase = new Float32Array(BH_STREAM_N);
+  (function(){
+    for(var ii = 0; ii < BH_STREAM_N; ii++){
+      streamAng[ii] = Math.random() * Math.PI * 2;
+      streamBase[ii] = Math.random();
+      var hot = 1 - streamBase[ii];
+      streamCol[ii*3] = 1.0; streamCol[ii*3+1] = 0.55 + hot * 0.45; streamCol[ii*3+2] = 0.25 + hot * 0.65;
+    }
+    streamGeo.setAttribute("position", new THREE.BufferAttribute(streamPos, 3));
+    streamGeo.setAttribute("color", new THREE.BufferAttribute(streamCol, 3));
+  })();
+  var bhStream = new THREE.Points(streamGeo, new THREE.PointsMaterial({ size: 0.34, map: glowTex, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }));
+  bhSpin.add(bhStream);
+  /* ---- SWALLOW EVENT: every 7 minutes (start to start) the
+     innermost spiral world is pulled in over 60 seconds — approach
+     + stretch (0-20s), fracture into glowing fragments (20-35s),
+     sparkle-stream infall with bright flashes (35-55s), final
+     flash and gone (55-60s) — then the world re-enters faded-in at
+     the spiral's outer tail so the 7-world system stays whole.
+     All event particles live in one pre-allocated pooled buffer
+     (BH_MAXFRAG), so the event can never grow the scene. ---- */
+  var BH_PERIOD = 420, BH_LEN = 60, BH_MAXFRAG = 170;
+  var fragGeo = new THREE.BufferGeometry();
+  var fragPos = new Float32Array(BH_MAXFRAG * 3);
+  var fragCol = new Float32Array(BH_MAXFRAG * 3);
+  fragGeo.setAttribute("position", new THREE.BufferAttribute(fragPos, 3));
+  fragGeo.setAttribute("color", new THREE.BufferAttribute(fragCol, 3));
+  fragGeo.setDrawRange(0, 0);
+  var fragPts = new THREE.Points(fragGeo, new THREE.PointsMaterial({ size: 0.42, map: glowTex, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
+  fragPts.frustumCulled = false;
+  bhTilt.add(fragPts);
+  var frags = [];   /* {a: angle, r: radius, y: height, tw: twinkle phase, warm: 0..1} */
+  var flashTex = (function(){
+    var cv = document.createElement("canvas"); cv.width = cv.height = 128;
+    var g = cv.getContext("2d");
+    var gr = g.createRadialGradient(64, 64, 2, 64, 64, 64);
+    gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.25, "rgba(255,230,190,0.75)");
+    gr.addColorStop(0.6, "rgba(255,170,90,0.25)"); gr.addColorStop(1, "rgba(255,150,60,0)");
+    g.fillStyle = gr; g.fillRect(0, 0, 128, 128);
+    return new THREE.CanvasTexture(cv);
+  })();
+  var bhFlash = new THREE.Sprite(new THREE.SpriteMaterial({ map: flashTex, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+  bhFlash.scale.set(7, 7, 1);
+  bhTilt.add(bhFlash);
+  var bhEv = { clock: 0, rate: 1, lastT: 0, nextAt: 25, active: false, start: 0,
+               victim: null, sph0: 0, burstDone: false, streamFed: 0, flash: 0, fade: {} };
+  window.__bhEvent = { state: bhEv,
+    startNow: function(){ if(!bhEv.active) startBhEvent(bhEv.lastT); },
+    setRate: function(r){ bhEv.rate = Math.max(0.1, Math.min(60, +r || 1)); } };
+  function startBhEvent(t){
+    var best = null, bestSph = -1;
+    dyingPlanets.forEach(function(dp){
+      if(!dp.swallowed) return;
+      var s = (t * 0.045 + dp.spiralOff) % 1;
+      if(s > bestSph){ bestSph = s; best = dp; }
+    });
+    if(!best) return;
+    bhEv.active = true; bhEv.start = bhEv.clock; bhEv.victim = best;
+    bhEv.sph0 = bestSph; bhEv.burstDone = false; bhEv.streamFed = 0;
+    frags.length = 0;
+  }
+  var _fv = new THREE.Vector3();
+  function spawnFrag(localPos, streamMode, spread){
+    if(frags.length >= BH_MAXFRAG) return;
+    var px = localPos.x + (Math.random() - 0.5) * spread;
+    var py = localPos.y + (Math.random() - 0.5) * spread * 0.4;
+    var pz = localPos.z + (Math.random() - 0.5) * spread;
+    frags.push({ a: Math.atan2(pz, px), r: Math.sqrt(px * px + pz * pz), y: py,
+                 tw: Math.random() * Math.PI * 2, warm: Math.random(), stream: !!streamMode });
+  }
+  function victimTiltPos(dp){
+    _fv.copy(dp.mesh.position);
+    dyingGroup.localToWorld(_fv);
+    bhTilt.worldToLocal(_fv);
+    return _fv;
+  }
+  function updateBhEvent(t, dt){
+    bhEv.lastT = t;
+    bhEv.clock += dt * bhEv.rate;
+    var e = bhEv.active ? bhEv.clock - bhEv.start : -1;
+    if(bhEv.active && bhEv.victim){
+      var v = bhEv.victim;
+      if(e < 20){                                    /* approach + stretch */
+        var u = e / 20, uu = u * u;
+        v._ev = { sph: bhEv.sph0 + (1.03 - bhEv.sph0) * uu, stretch: u, op: 1, hide: false, mul: 1 };
+      } else if(e < 35){                             /* fracture */
+        var u2 = (e - 20) / 15;
+        v._ev = { sph: 1.03, stretch: 1, op: 1 - u2 * 0.9, hide: e >= 31, mul: 1 - u2 * 0.8 };
+        if(!bhEv.burstDone && e >= 21){
+          bhEv.burstDone = true;
+          var bp = victimTiltPos(v);
+          for(var bi = 0; bi < 70; bi++) spawnFrag(bp, false, 1.8);
+        }
+      } else if(e < 60){                             /* sparkle-stream infall, then gone */
+        v._ev = { sph: 1.03, stretch: 1, op: 0, hide: true, mul: 0.2 };
+        if(e < 55 && bhEv.burstDone){
+          var sp2 = victimTiltPos(v);
+          while(bhEv.streamFed < 100 && frags.length < BH_MAXFRAG && Math.random() < 0.5){
+            spawnFrag(sp2, true, 2.2); bhEv.streamFed++;
+          }
+        }
+      }
+      if(e >= BH_LEN){                               /* gone — re-enter at the tail */
+        var off = -((t * 0.045) % 1); if(off < 0) off += 1;
+        v.spiralOff = off;
+        bhEv.fade[v.d.id] = t;
+        v._ev = null; v.mesh.quaternion.identity();
+        bhEv.active = false; bhEv.victim = null;
+        bhEv.nextAt = bhEv.start + BH_PERIOD;        /* start-to-start: 7 minutes */
+      }
+    }
+    if(!bhEv.active && bhEv.clock >= bhEv.nextAt) startBhEvent(t);
+    var edt = dt * bhEv.rate;
+    for(var fi = frags.length - 1; fi >= 0; fi--){
+      var f = frags[fi];
+      if(bhEv.active && e >= 35) f.stream = true;
+      if(f.stream){
+        f.a += edt * (2.4 + 18 / Math.max(4.0, f.r));
+        f.r -= edt * (0.35 + (11.5 - f.r) * 0.04) * (e >= 55 ? 2.2 : 1);
+        f.y *= Math.max(0, 1 - edt * 0.8);
+        if(f.r <= 4.0){ frags.splice(fi, 1); bhEv.flash = Math.min(1, bhEv.flash + 0.22); continue; }
+      } else {
+        f.a += edt * 0.35; f.r += edt * 0.15;        /* fracture debris drifts */
+      }
+      fragPos[fi*3] = Math.cos(f.a) * f.r; fragPos[fi*3+1] = f.y; fragPos[fi*3+2] = Math.sin(f.a) * f.r;
+      var tw = 0.55 + 0.45 * Math.sin(bhEv.clock * 26 + f.tw);
+      fragCol[fi*3] = tw; fragCol[fi*3+1] = tw * (0.5 + f.warm * 0.45); fragCol[fi*3+2] = tw * (0.22 + f.warm * 0.55);
+    }
+    fragGeo.attributes.position.needsUpdate = true;
+    fragGeo.attributes.color.needsUpdate = true;
+    fragGeo.setDrawRange(0, frags.length);
+    fragPts.visible = frags.length > 0;
+    bhEv.flash = Math.max(0, bhEv.flash - dt * 2.4);
+    var fin = 0;
+    if(bhEv.active && e >= 55 && e < 60) fin = Math.sin((e - 55) / 5 * Math.PI);
+    var inten = Math.max(bhEv.flash, fin);
+    bhFlash.material.opacity = inten * 0.9;
+    var fs = 7 + inten * (fin > bhEv.flash ? 24 : 11);
+    bhFlash.scale.set(fs, fs, 1);
+  }
   var bhLabel = document.createElement("div"); bhLabel.className = "planet-label dying"; bhLabel.textContent = "Blackhole sun — blackhole system"; labelsBox.appendChild(bhLabel);
   /* the swallow spiral, as a pure function of time so it can be
      verified headlessly: phase runs 0→1 over ~22 s; radius eases
      from 9.6 (outside the accretion ring) in to 4.4 — always outside
-     the blackhole's own 3.2 radius, so a swallowed world converges
-     on the horizon but never reaches the centre and is never
-     consumed; the angle winds faster as it falls. out gets the
+     the blackhole's own 3.2 radius, so in the ambient loop a
+     swallowed world converges on the horizon without reaching the
+     centre (the 7-minute event is what actually consumes one); the
+     angle winds faster as it falls. out gets the
      LOCAL position (the caller adds it inside dyingGroup); the
      return value is the phase, for dimming/shrinking. */
   function swallowedPos(dp, t, out){
@@ -7126,10 +7347,15 @@ function startChaintarium(){
       (ch.systemView === "semi" && sys === "semi") || (ch.systemView === "dying" && sys === "blackhole");
   }
   var _swV = new THREE.Vector3();
+  var prevT = 0, lastFrameAt = performance.now(), chillUntil = 0;
+  var _sv = new THREE.Vector3(), _sx = new THREE.Vector3(1, 0, 0);
   function animate(){
     requestAnimationFrame(animate);
     if(currentTab !== "chaintarium" || surf.open) return;
+    lastFrameAt = performance.now();
     var t = Date.now()*0.001;
+    var dt = prevT ? Math.min(0.1, Math.max(0, t - prevT)) : 0.016;
+    prevT = t;
     planets.forEach(function(p){
       var cv = p.c._centerV || GALAXY_CENTER;
       if(p.c.orbit === 0){ p.mesh.position.copy(cv); p.mesh.rotation.y = t*0.02; }
@@ -7156,24 +7382,63 @@ function startChaintarium(){
     if(typeof dyingPlanets !== "undefined"){
       dyingPlanets.forEach(function(dp){
         if(dp.swallowed){
-          /* being swallowed: spiral at the event horizon via
-             swallowedPos(); dim and shrink as the phase deepens,
-             restore as it loops — never consumed. Reduced motion:
-             hold a still mid-spiral pose. */
-          if(reduceMotionSys){
+          /* the ambient spiral via swallowedPos(); on top of it
+             rides the SWALLOW EVENT (updateBhEvent): every 7
+             minutes the innermost world is staged via dp._ev —
+             pulled down the spiral, stretched thin toward the hole
+             (spaghettification), fractured away, gone, then
+             re-entered faded-in at the tail. Reduced motion: hold
+             a still mid-spiral pose. */
+          if(dp._ev && !reduceMotionSys){
+            var ev = dp._ev, esph = Math.min(1.03, ev.sph);
+            var esr = 9.6 - esph * 5.2, esa = dp.angle + t * 0.22 + esph * 2.4;
+            dp.mesh.position.set(Math.cos(esa) * esr, 0.35 - esph * 0.5, Math.sin(esa) * esr);
+            if(ev.hide){ dp.mesh.visible = false; }
+            else {
+              dp.mesh.visible = true; /* group visibility governs the system */
+              var baseS = dp.mesh.userData.baseScale * (1 - Math.min(1, esph) * 0.4) * (ev.mul || 1);
+              if(ev.stretch > 0){
+                _sv.set(-dp.mesh.position.x, 0, -dp.mesh.position.z).normalize();
+                dp.mesh.quaternion.setFromUnitVectors(_sx, _sv);
+                dp.mesh.scale.set(baseS * (1 + ev.stretch * 1.6), Math.max(0.1, baseS * (1 - ev.stretch * 0.5)), Math.max(0.1, baseS * (1 - ev.stretch * 0.5)));
+              } else {
+                dp.mesh.scale.setScalar(baseS);
+              }
+              dp.mesh.material.opacity = dp.mesh.userData.baseOpacity * ev.op;
+            }
+          } else if(reduceMotionSys){
             dp.mesh.position.set(Math.cos(dp.angle) * 7.2, 0.1, Math.sin(dp.angle) * 7.2);
           } else {
+            dp.mesh.visible = true;
             var sph = swallowedPos(dp, t, _swV);
             dp.mesh.position.copy(_swV);
             dp.mesh.scale.setScalar(dp.mesh.userData.baseScale * (1 - sph * 0.4));
             dp.mesh.material.opacity = dp.mesh.userData.baseOpacity * (1 - sph * 0.45);
+            /* a world the hole just returned fades back in at the tail */
+            if(bhEv.fade[dp.d.id] != null){
+              var fr2 = (t - bhEv.fade[dp.d.id]) / 6;
+              if(fr2 >= 1) delete bhEv.fade[dp.d.id];
+              else dp.mesh.material.opacity *= Math.max(0, fr2);
+            }
           }
         } else {
           var da = dp.angle + t * dp.speed;
           dp.mesh.position.set(Math.cos(da) * dp.orbit, Math.sin(da * 1.3) * 0.5, Math.sin(da) * dp.orbit);
         }
-        dp.mesh.rotation.y = t * 0.2;
+        if(!dp._ev) dp.mesh.rotation.y = t * 0.2;
       });
+      /* the black hole's disc + dust spin and stream inward; the
+         swallow event advances on the same clock */
+      bhSpin.rotation.y = t * 0.12;
+      var flow = (t * 0.4) % 7.35;
+      for(var si = 0; si < BH_STREAM_N; si++){
+        var srr = 4.15 + ((streamBase[si] * 7.35 + flow) % 7.35);
+        streamPos[si*3] = Math.cos(streamAng[si]) * srr;
+        streamPos[si*3+1] = Math.sin(streamAng[si] * 7.3) * 0.16;
+        streamPos[si*3+2] = Math.sin(streamAng[si]) * srr;
+      }
+      streamGeo.attributes.position.needsUpdate = true;
+      updateBhEvent(t, dt);
       if(typeof dyingGroup !== "undefined") dyingGroup.visible = sysVisible("blackhole") && !ch.isolated;
       if(typeof semiGroup !== "undefined") semiGroup.visible = sysVisible("semi") && !ch.isolated;
       if(typeof bhLabel !== "undefined") bhLabel.style.display = "none";
@@ -7237,7 +7502,10 @@ function startChaintarium(){
     camera.position.set(0, 0, dist).applyEuler(camEul).add(pan);
     camera.up.set(0, 1, 0).applyEuler(camEul);
     camera.lookAt(pan.x, pan.y, pan.z);
-    renderer.render(scene, camera);
+    /* stall watchdog's breather: while chilled, frames keep flowing
+       (labels, logic, RAF) but no GL work is submitted, letting a
+       wedged GPU/compositor pipeline drain instead of dying */
+    if(performance.now() >= chillUntil) renderer.render(scene, camera);
     /* labels — moons are named only for the world you're visiting/focused on;
        under a search isolation, only the isolated world's labels stay */
     planets.forEach(function(p){
@@ -7281,6 +7549,46 @@ function startChaintarium(){
        the Cosmos Tracker (below) owns that layer */
     if(window.chainTrackFrame) window.chainTrackFrame({ world: world, planets: planets, labels: labelsBox, place: placeLabel, t: t });
   }
+  /* STALL WATCHDOG — the freeze fix's safety net. Timers keep firing
+     even when the frame pipeline wedges, so a 1.2s interval watches
+     the last real frame time: if frames stall past 3s while the
+     Chaintarium is on screen, shed render load in steps (a render
+     breather first, then glow sprites, then the far point fields)
+     until frames flow again, and restore the full look after 15
+     healthy seconds. NB: never resize the canvas or change pixel
+     ratio mid-stall — resizing a wedged drawing buffer can block
+     the main thread on the GPU channel, turning a stall into a
+     full hang. A stall can now cost a few seconds of prettiness —
+     never a frozen screen. */
+  var shedLevel = 0, healthySince = 0, shedSprites = null, shedPoints = null;
+  function applyShed(){
+    chillUntil = performance.now() + (shedLevel === 1 ? 4000 : shedLevel === 2 ? 8000 : 15000);
+    if(shedLevel >= 1){
+      if(!shedSprites){ shedSprites = []; world.traverse(function(o){ if(o.isSprite) shedSprites.push(o); }); }
+      shedSprites.forEach(function(s){ s.visible = false; });
+    }
+    if(shedLevel >= 2){
+      if(!shedPoints){ shedPoints = []; scene.traverse(function(o){ if(o.isPoints && o !== fragPts) shedPoints.push(o); }); }
+      shedPoints.forEach(function(s){ s.visible = false; });
+    }
+  }
+  function liftShed(){
+    shedLevel = 0; healthySince = 0; chillUntil = 0;
+    if(shedSprites) shedSprites.forEach(function(s){ s.visible = true; });
+    if(shedPoints) shedPoints.forEach(function(s){ s.visible = true; });
+  }
+  setInterval(function(){
+    if(currentTab !== "chaintarium" || surf.open || document.visibilityState !== "visible"){ healthySince = 0; return; }
+    var stall = performance.now() - lastFrameAt;
+    if(stall > 3000){
+      healthySince = 0;
+      if(shedLevel < 3){ shedLevel++; applyShed(); }
+      lastFrameAt = performance.now(); /* re-arm: next step in 3s if still stuck */
+    } else if(shedLevel > 0){
+      if(!healthySince) healthySince = performance.now();
+      if(performance.now() - healthySince > 30000) liftShed();
+    }
+  }, 1200);
   animate();
 }
 
