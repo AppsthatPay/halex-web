@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="halex-m-phase1-chrome.css" />
 <!-- Three.js powers only the Chaintarium tab, so it loads on demand: the
      page itself never waits on the engine to render. The vendored current
      build (three r170, MIT — vendor/THREE-LICENSE.txt) registers itself
@@ -1468,6 +1469,47 @@ nav.tabbar .rail{touch-action:pan-x}
    double-tap can land on the bar itself, not only on its buttons */
 #chain-screenbar{pointer-events:auto}
 .ddt-flash{outline:2px solid rgba(255,194,75,.65); outline-offset:-2px}
+/* ---------- Chaintarium pop-window HUD (2026-11-07, Jeffrey's phone
+   review "Not Loading After Planet View"): on a narrow popped window
+   the top rows piled onto each other — the cosmos search bar wrapped
+   to 2–3 rows over the Fill/Pop-back-in cluster and the Tools button,
+   and the planet HUD started on top of them. The rows are now stacked
+   on fixed tops with single-row bars, so nothing overlaps at
+   360–430px: search (top:10, one row), window buttons + Tools
+   (top:56–58, one row), planet HUD (top:106). The search bar's drag
+   grip and ✕ hide here — the bar itself stays, and both come back
+   outside the popped window or above 640px. The surface note lifts
+   clear of the activity tick whenever a planet is open. ---------- */
+@media (max-width:640px){
+  #chain-stage.pop .chain-search{width:calc(100% - 20px); flex-wrap:nowrap}
+  #chain-stage.pop #chain-search-grip, #chain-stage.pop #chain-search-close{display:none}
+  #chain-stage.pop .chain-search>svg{left:11px}
+  #chain-pop-cluster{right:96px}
+  #chain-pop-cluster .drag-grip{display:none}
+  .pop-actions .btn{white-space:nowrap}
+  #chain-stage.pop .surface-note{bottom:70px}
+  /* the planet-layers panel is a static child of #surface while the
+     planet HUD is absolutely positioned over the same band, so the
+     panel's buttons and "Now showing" note crossed the Back button
+     and the planet search + Legend row. In the popped window it now
+     rides below the HUD column as a compact layer-button strip: the
+     title, year jump and "Now showing" note stay on the wide layout,
+     where there is room — the surface-scan sheet rides the bottom of
+     the popped window (bottom:54px, ~215 tall), so a full panel
+     would run into it. The highlighted button still shows the active
+     layer; the strip scrolls internally if a chain has more layers
+     than fit. The height cap (242 top + 231 scan sheet + 54 bottom
+     offset + 8 gap) keeps the strip clear of the scan sheet.
+     While the Planet info card is open there is no gap
+     between the taller HUD and the scan sheet, so the strip hides
+     until the card is closed. */
+  #chain-stage.pop #surf-layers{position:absolute; top:242px; left:10px; right:10px; z-index:5; margin:0; max-height:calc(100% - 535px); overflow-y:auto}
+  #chain-stage.pop.info-on #surf-layers{display:none}
+  #chain-stage.pop #surf-layers>b,
+  #chain-stage.pop #surf-layers>span.note,
+  #chain-stage.pop #surf-layers>div:not(.layer-btns),
+  #chain-stage.pop #surf-layer-note{display:none}
+}
 </style>
 </head>
 <body>
@@ -6246,6 +6288,23 @@ CHAINS_3D.forEach(function(c){
   if(!c.zones) c.zones = [["Core Settlements",-0.4,-0.25],["DeFi Highlands",0.45,-0.4],["The Outer Flats",0.05,0.55]];
   c.moons = c.moons || [];
 });
+
+/* Earth-like worlds (visual upgrades, 2026-11-07): blue oceans, green/brown
+   continents, cloud swirls and polar caps in the system view, and an
+   ocean/green palette on the surface view. Active gets four, Semi-Active
+   gets two — a few, as ordered. */
+var EARTH_LIKE = { ethereum:1, cardano:1, near:1, hedera:1, stellar:1, tezos:1 };
+/* Surface look per dying world (visual upgrades, 2026-11-07). Kinds:
+   banded, storm, cratered, molten. */
+var DYING_TEX = {
+  "dying-plasma":"banded", "dying-namecoin":"cratered", "dying-peercoin":"storm",
+  "dying-vertcoin":"banded", "dying-feathercoin":"banded", "dying-primecoin":"cratered",
+  "dying-terraclassic":"molten", "dying-etc":"banded", "dying-dgb":"cratered",
+  "dying-pivx":"banded", "dying-thunder":"molten", "dying-fantom":"banded", "dying-cronos":"cratered"
+};
+/* Rings and debris fields per dying world (visual upgrades, 2026-11-07). */
+var DYING_RINGS = { "dying-feathercoin":1, "dying-vertcoin":1, "dying-cronos":1 };
+var DYING_DEBRIS = { "dying-terraclassic":1, "dying-primecoin":1, "dying-thunder":1 };
 /* ---------------- Chaintarium systems, organized 2026-11-04 ----------------
    THREE SYSTEMS, ranked by the activity index in the chain data (the
    popularity proxy; no live popularity feed is wired), shown as FOUR
@@ -6261,7 +6320,7 @@ CHAINS_3D.forEach(function(c){
    SYSTEM 3 — BLACKHOLE: the 7 dead chains as planets around the
    blackhole sun. The blackhole is actively swallowing the 3
    least-used of them (Feathercoin, Primecoin, Peercoin): they spiral
-   at its event horizon, and every 7 minutes the innermost is pulled
+   at its event horizon, and every 3 minutes the innermost is pulled
    in over a full minute — stretched, fractured into glowing
    fragments and streamed into the horizon as sparkling light — then
    it re-enters at the spiral's outer tail so the cycle never ends.
@@ -6419,6 +6478,145 @@ function renderChainChips(){
     });
   });
 }
+
+/* ---------- procedural surface textures (visual upgrades, 2026-11-07) ----------
+   Module-level so both the system view (inside startChaintarium) and the
+   surface views (buildSurfaceScene / buildStarSurfaceScene) can use them.
+   Surfaces are drawn once on 2D canvases and reused as THREE.CanvasTexture
+   maps — no per-frame allocation, no network. A tiny seeded RNG keeps each
+   planet's look stable across loads. */
+function rngSeed(str){
+  var h = 2166136261;
+  for(var i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return function(){ h = Math.imul(h ^ (h >>> 15), 2246822519); h = Math.imul(h ^ (h >>> 13), 3266489917); return ((h ^= h >>> 16) >>> 0) / 4294967296; };
+}
+function blob(ctx, x, y, r, col, alpha){
+  var g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, col); g.addColorStop(1, "rgba(0,0,0,0)");
+  ctx.globalAlpha = alpha; ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+}
+function planetTexture(kind, seedStr, base, accent){
+  var rnd = rngSeed(kind + "|" + seedStr);
+  var cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
+  var ctx = cv.getContext("2d"), i, x, y, r, s;
+  ctx.fillStyle = base; ctx.fillRect(0, 0, 512, 256);
+  if(kind === "banded" || kind === "storm"){
+    /* bands derived from the planet's own colours — tan for Jupiter-like
+       worlds, tinted for the rest; the middle band carries the accent */
+    var bc = new THREE.Color(base), ac = new THREE.Color(accent);
+    var bands = [0, 1, 2, 3, 4].map(function(k){
+      var col = (k === 2 ? ac : bc).clone();
+      col.offsetHSL(0, 0, [-0.02, 0.14, 0.26, 0.07, 0.2][k]);
+      return "#" + col.getHexString();
+    });
+    for(i = 0; i < 9; i++){
+      var by = (i + 0.5) * 256 / 9, bh = 256 / 9 * (0.7 + rnd() * 0.6);
+      ctx.fillStyle = bands[i % bands.length]; ctx.globalAlpha = 0.55 + rnd() * 0.3;
+      ctx.beginPath(); ctx.moveTo(0, by - bh / 2);
+      for(x = 0; x <= 512; x += 32) ctx.lineTo(x, by - bh / 2 + Math.sin(x * 0.02 + i) * 5);
+      for(x = 512; x >= 0; x -= 32) ctx.lineTo(x, by + bh / 2 + Math.sin(x * 0.02 + i + 1) * 5);
+      ctx.closePath(); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    if(kind === "storm"){
+      ctx.save(); ctx.translate(330, 150); ctx.rotate(-0.15);
+      ctx.fillStyle = accent; ctx.globalAlpha = 0.9;
+      ctx.beginPath(); ctx.ellipse(0, 0, 62, 34, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.globalAlpha = 0.5; ctx.fillStyle = "#fff2cf";
+      ctx.beginPath(); ctx.ellipse(0, 0, 44, 22, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.restore(); ctx.globalAlpha = 1;
+    }
+  } else if(kind === "cratered"){
+    for(i = 0; i < 260; i++){
+      x = rnd() * 512; y = rnd() * 256; r = 1 + rnd() * 7;
+      ctx.fillStyle = "rgba(0,0,0,0.35)"; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(255,255,255,0.22)"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(x, y, r, Math.PI * 1.1, Math.PI * 1.7); ctx.stroke();
+    }
+    for(i = 0; i < 40; i++) blob(ctx, rnd() * 512, rnd() * 256, 6 + rnd() * 22, accent, 0.25);
+  } else if(kind === "molten"){
+    for(i = 0; i < 60; i++) blob(ctx, rnd() * 512, rnd() * 256, 8 + rnd() * 30, accent, 0.5 + rnd() * 0.4);
+    ctx.strokeStyle = accent; ctx.lineWidth = 2;
+    for(i = 0; i < 14; i++){
+      x = rnd() * 512; y = rnd() * 256; ctx.globalAlpha = 0.6 + rnd() * 0.4;
+      ctx.beginPath(); ctx.moveTo(x, y);
+      for(s = 0; s < 5; s++){ x += (rnd() - 0.5) * 90; y += (rnd() - 0.5) * 40; ctx.lineTo(x, y); }
+      ctx.stroke();
+    }
+    ctx.globalAlpha = 1;
+  } else if(kind === "earth"){
+    for(i = 0; i < 9; i++) blob(ctx, rnd() * 512, rnd() * 256, 18 + rnd() * 42, i % 3 ? "#2f7a3d" : "#8a6d3b", 0.9);
+    for(i = 0; i < 26; i++) blob(ctx, rnd() * 512, rnd() * 256, 8 + rnd() * 26, "rgba(255,255,255,0.85)", 0.35);
+    ctx.fillStyle = "#eef4fb"; ctx.fillRect(0, 0, 512, 14); ctx.fillRect(0, 242, 512, 14);
+  } else {
+    for(i = 0; i < 70; i++) blob(ctx, rnd() * 512, rnd() * 256, 10 + rnd() * 34, accent, 0.3);
+  }
+  var tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+/* Blazing star surface: granulation cells, hot spots, dark sunspots.
+   "dying" is the BNB palette — darker, redder, more spots. */
+function sunTexture(kind, seedStr){
+  var rnd = rngSeed("sun|" + kind + "|" + seedStr);
+  var cv = document.createElement("canvas"); cv.width = 512; cv.height = 256;
+  var ctx = cv.getContext("2d"), i, x, y;
+  ctx.fillStyle = kind === "dying" ? "#8a1a08" : "#ff8c1a"; ctx.fillRect(0, 0, 512, 256);
+  var hot = kind === "dying" ? ["#ff5a1f", "#c22a05", "#3d0505", "#ff8c2e"] : ["#ffd76a", "#fff3b0", "#ff6a00", "#ffbe3d"];
+  for(i = 0; i < 340; i++) blob(ctx, rnd() * 512, rnd() * 256, 4 + rnd() * 16, hot[i % hot.length], 0.35 + rnd() * 0.45);
+  ctx.strokeStyle = kind === "dying" ? "rgba(255,90,31,0.35)" : "rgba(255,240,170,0.5)";
+  for(i = 0; i < 90; i++){ x = rnd() * 512; y = rnd() * 256; ctx.lineWidth = 1 + rnd(); ctx.beginPath(); ctx.arc(x, y, 3 + rnd() * 9, 0, Math.PI * 2); ctx.stroke(); }
+  for(i = 0; i < (kind === "dying" ? 14 : 7); i++) blob(ctx, rnd() * 512, rnd() * 256, 5 + rnd() * 12, "#1a0500", 0.8);
+  var tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+  return tex;
+}
+/* Flat ring around a planet (child of the planet mesh, so it follows it). */
+function makeRing(inner, outer, color, opacity){
+  var m = new THREE.Mesh(
+    new THREE.RingGeometry(inner, outer, 64),
+    new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: opacity, side: THREE.DoubleSide, depthWrite: false })
+  );
+  m.rotation.x = -Math.PI / 2 + (rngSeed("ring" + inner + outer)() - 0.5) * 0.5;
+  return m;
+}
+/* Small debris field: a flat cloud of points around a planet. */
+function makeDebris(parent, radius, n, color, seedStr){
+  var rnd = rngSeed(seedStr), pos = new Float32Array(n * 3), i, a, r;
+  for(i = 0; i < n; i++){
+    a = rnd() * Math.PI * 2; r = radius * (1.6 + rnd() * 1.6);
+    pos[i * 3] = Math.cos(a) * r; pos[i * 3 + 1] = (rnd() - 0.5) * radius * 0.5; pos[i * 3 + 2] = Math.sin(a) * r;
+  }
+  var g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+  var pts = new THREE.Points(g, new THREE.PointsMaterial({ color: color, size: 0.09, transparent: true, opacity: 0.75, sizeAttenuation: true }));
+  parent.add(pts);
+  return pts;
+}
+/* A flame tongue: an additive cone sticking out of a star's surface. */
+function makeFlareTongue(parent, dir, sunR, len, radius, color){
+  var m = new THREE.Mesh(
+    new THREE.ConeGeometry(radius, len, 8),
+    new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false })
+  );
+  var d = dir.clone().normalize();
+  m.position.copy(d).multiplyScalar(sunR + len * 0.22);
+  m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);
+  parent.add(m);
+  return m;
+}
+/* A coronal loop: a glowing torus arc rising off a star's limb. */
+function makeFlareLoop(parent, R, tube, color){
+  var m = new THREE.Mesh(
+    new THREE.TorusGeometry(R, tube, 8, 24, Math.PI * 0.85),
+    new THREE.MeshBasicMaterial({ color: color, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+  );
+  parent.add(m);
+  return m;
+}
 function startChaintarium(){
   renderChainChips();
   renderChainQuick();
@@ -6575,6 +6773,7 @@ function startChaintarium(){
     parent.add(sp);
     return sp;
   }
+
   /* nebula clouds — huge, faint, far behind the system */
   [[0x5b2ea6,-120,-30,-170,150],[0x0e4d5c,140,40,-160,170],[0x27356e,30,-70,-190,190],[0x6e5316,-150,60,-150,120]].forEach(function(nb){
     var nsp = addGlow(scene, nb[0], nb[4], 0.09);
@@ -6620,20 +6819,88 @@ function startChaintarium(){
     if(inst.instanceColor) inst.instanceColor.needsUpdate = true;
     mesh.add(inst);
   }
+  /* Visual-upgrade state (2026-11-07): sun flares, BNB dust, sun textures. */
+  var sunFlares = [];   /* { mesh, phase, kind, baseOp, dying } — flare tongues + loops */
+  var btcSunTex = null, bnbSunTex = null, bnbGlow = null, bnbDust = null;
   CHAINS_3D.forEach(function(c, idx){
     /* gunmetal first, chain-tinted second — the references' worlds are
        dark machined spheres whose light comes from their cities and
-       circuits, not from a colored shell glowing like a toy */
-    var baseCol = new THREE.Color(c.color).multiplyScalar(c.orbit===0 ? 0.4 : 0.24).lerp(new THREE.Color(0x12161d), c.orbit===0 ? 0.3 : 0.48);
-    var mat = new THREE.MeshStandardMaterial({ color: baseCol, roughness: 0.58, metalness: 0.52, emissive: c.color, emissiveIntensity: c.orbit===0 ? 0.34 : 0.1 });
+       circuits, not from a colored shell glowing like a toy.
+       Suns, earth-like worlds and a few oddballs break the rule on
+       purpose (visual upgrades, 2026-11-07): a star is not a planet. */
+    var isSun = c.orbit === 0, isEarth = !!EARTH_LIKE[c.id];
+    var baseCol = new THREE.Color(c.color).multiplyScalar(isSun ? 0.4 : 0.24).lerp(new THREE.Color(0x12161d), isSun ? 0.3 : 0.48);
+    var mat;
+    if(c.id === "bitcoin"){
+      btcSunTex = sunTexture("sun", "bitcoin");
+      mat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: btcSunTex, emissive: 0xffd76a, emissiveMap: btcSunTex, emissiveIntensity: 1.15, roughness: 0.9, metalness: 0 });
+    } else if(c.id === "bsc"){
+      bnbSunTex = sunTexture("dying", "bsc");
+      mat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: bnbSunTex, emissive: 0xff5a1f, emissiveMap: bnbSunTex, emissiveIntensity: 0.9, roughness: 0.95, metalness: 0 });
+    } else if(isEarth){
+      mat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: planetTexture("earth", c.id, "#1d4e89", "#2f7a3d"), roughness: 0.8, metalness: 0.08, emissive: 0x1a3a5c, emissiveIntensity: 0.12 });
+    } else if(c.id === "solana"){
+      mat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: planetTexture("storm", "solana", "#7a4fd0", "#ff5a8a"), roughness: 0.7, metalness: 0.15, emissive: 0x9945ff, emissiveIntensity: 0.18 });
+    } else if(c.id === "dogecoin"){
+      mat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: planetTexture("cratered", "dogecoin", "#c2a633", "#e8d9a0"), roughness: 0.85, metalness: 0.1, emissive: 0xc2a633, emissiveIntensity: 0.12 });
+    } else {
+      mat = new THREE.MeshStandardMaterial({ color: baseCol, roughness: 0.58, metalness: 0.52, emissive: c.color, emissiveIntensity: 0.16 });
+    }
     var mesh = new THREE.Mesh(new THREE.SphereGeometry(c.size, 30, 30), mat);
     mesh.userData.chain = c;
     world.add(mesh);
     c._obj = mesh;
     c._centerV = systemCenter(c.system); /* the centre this world orbits (its system's sun position) */
-    var glow = addGlow(mesh, c.color, c.size * (c.orbit===0 ? 5.2 : 3.6), c.orbit===0 ? 0.34 : 0.2);
-    if(c.id === "bitcoin") sunGlow = glow; /* the breathing corona belongs to the Active sun; BNB wears the same sun dressing via orbit===0 above */
-    dressCity(mesh, c, c.size, 90 + c.size * 75 + c.activity * 200); /* denser circuit cities (fix pass 2026-11-04) */
+    var glow = addGlow(mesh, c.color, c.size * (isSun ? 5.2 : 3.6), isSun ? 0.34 : 0.26);
+    if(c.id === "bitcoin"){
+      sunGlow = glow; /* the breathing corona belongs to the Active sun */
+      addGlow(mesh, 0xffc23d, c.size * 9, 0.16); /* outer corona */
+      var frnd = rngSeed("flares-bitcoin"), fi, fdir;
+      for(fi = 0; fi < 8; fi++){
+        fdir = new THREE.Vector3(frnd() * 2 - 1, frnd() * 2 - 1, frnd() * 2 - 1);
+        sunFlares.push({ mesh: makeFlareTongue(mesh, fdir, c.size, c.size * (0.7 + frnd() * 0.9), c.size * (0.10 + frnd() * 0.08), 0xffc23d), phase: frnd() * 6.28, kind: "tongue", baseOp: 0.85, dying: false });
+      }
+      for(fi = 0; fi < 5; fi++){
+        var loop = makeFlareLoop(mesh, c.size * 0.55, c.size * 0.06, 0xffc23d);
+        fdir = new THREE.Vector3(frnd() * 2 - 1, frnd() * 2 - 1, frnd() * 2 - 1);
+        loop.position.copy(fdir).multiplyScalar(c.size * 0.85);
+        loop.rotation.set(frnd() * 3.14, frnd() * 3.14, frnd() * 3.14);
+        sunFlares.push({ mesh: loop, phase: frnd() * 6.28, kind: "loop", baseOp: 0.65, dying: false });
+      }
+    }
+    if(c.id === "bsc"){
+      bnbGlow = glow; /* the dying star's corona — dimmer, redder, breathes slower */
+      var brnd = rngSeed("flares-bsc"), bi, bdir;
+      for(bi = 0; bi < 6; bi++){
+        bdir = new THREE.Vector3(brnd() * 2 - 1, brnd() * 2 - 1, brnd() * 2 - 1);
+        sunFlares.push({ mesh: makeFlareTongue(mesh, bdir, c.size, c.size * (0.5 + brnd() * 0.6), c.size * (0.08 + brnd() * 0.06), bi % 2 ? 0x7a0e0e : 0xff3d00), phase: brnd() * 6.28, kind: "tongue", baseOp: 0.9, dying: true });
+      }
+      /* micro dust the dying star sheds — drifts outward, fades, recycles */
+      var dustN = 120, dustPos = new Float32Array(dustN * 3), dustBase = [];
+      for(bi = 0; bi < dustN; bi++){
+        var da = brnd() * Math.PI * 2, dr2 = c.size * (2.5 + brnd() * 3.5), dy = (brnd() - 0.5) * c.size * 2.4;
+        dustBase.push({ a: da, r: dr2, y: dy, sp: 0.10 + brnd() * 0.25 });
+        dustPos[bi * 3] = Math.cos(da) * dr2; dustPos[bi * 3 + 1] = dy; dustPos[bi * 3 + 2] = Math.sin(da) * dr2;
+      }
+      var dustGeo = new THREE.BufferGeometry();
+      dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+      var dustPts = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x8a2a12, size: 0.12, transparent: true, opacity: 0.5, sizeAttenuation: true }));
+      dustPts.position.copy(c._centerV);
+      world.add(dustPts);
+      bnbDust = { pts: dustPts, base: dustBase, maxR: c.size * 6.5, minR: c.size * 2.5 };
+    }
+    if(isEarth){
+      addGlow(mesh, 0x6fb7ff, c.size * 4.2, 0.3); /* thin blue atmosphere */
+      var cloudCv = document.createElement("canvas"); cloudCv.width = 256; cloudCv.height = 128;
+      var cctx = cloudCv.getContext("2d"), crnd = rngSeed("clouds-" + c.id), ci;
+      for(ci = 0; ci < 44; ci++) blob(cctx, crnd() * 256, crnd() * 128, 6 + crnd() * 20, "rgba(255,255,255,0.9)", 0.25 + crnd() * 0.3);
+      var clouds = new THREE.Mesh(new THREE.SphereGeometry(c.size * 1.07, 24, 24), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cloudCv), transparent: true, opacity: 0.45, depthWrite: false }));
+      mesh.add(clouds); c._clouds = clouds;
+    }
+    if(c.id === "avalanche"){
+      mesh.add(makeRing(c.size * 1.5, c.size * 2.1, 0xd8b98a, 0.4)); /* Saturn-style ring on the red world */
+    }
+    if(!isSun) dressCity(mesh, c, c.size, 90 + c.size * 75 + c.activity * 200); /* denser circuit cities (fix pass 2026-11-04) — no cities on a star */
     if(c.orbit > 0){
       var ringGeo = new THREE.RingGeometry(c.orbit-0.035, c.orbit+0.035, 128);
       var ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color:c.color, side:THREE.DoubleSide, transparent:true, opacity:0.2 }));
@@ -6772,6 +7039,65 @@ function startChaintarium(){
   pulseGeo.setAttribute("position", new THREE.BufferAttribute(new Float32Array(Math.max(1, routes.length * 2) * 3), 3));
   var pulsePts = new THREE.Points(pulseGeo, new THREE.PointsMaterial({ color: 0xfff3d6, size: 1.3, sizeAttenuation: true, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false, map: glowTex, alphaTest: 0.01 }));
   world.add(pulsePts);
+
+  /* ---------- ambient traffic (visual upgrades, 2026-11-07) ----------
+     Satellites and micro alien saucers drift through the systems on wide
+     ellipses, and a few tiny space probes ride the transfer routes —
+     occasionally one impacts its destination planet with a small flash.
+     Pooled, bounded, no per-frame allocation; all hidden under reduced
+     motion, probes also hidden when transfers are off. */
+  var ambientFlyers = [];
+  (function buildFlyers(){
+    var frnd = rngSeed("flyers");
+    var hubs = [
+      { c: new THREE.Vector3().addVectors(GALAXY_CENTER, SEMI_CENTER).multiplyScalar(0.5), rx: 62, rz: 38, ry: 6 },
+      { c: new THREE.Vector3().addVectors(SEMI_CENTER, DYING_CENTER).multiplyScalar(0.5), rx: 58, rz: 34, ry: 5 },
+      { c: GALAXY_CENTER.clone(), rx: 30, rz: 18, ry: 4 },
+      { c: SEMI_CENTER.clone(), rx: 42, rz: 26, ry: 5 }
+    ];
+    var i, g, hub, body, panel, dome, blink;
+    for(i = 0; i < 10; i++){
+      hub = hubs[i % hubs.length];
+      g = new THREE.Group();
+      if(i < 6){
+        /* satellite: grey bus, two solar panels, one blinking beacon */
+        body = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.3, 0.5), new THREE.MeshStandardMaterial({ color: 0x9aa4b0, roughness: 0.4, metalness: 0.8 }));
+        g.add(body);
+        panel = new THREE.Mesh(new THREE.BoxGeometry(1.5, 0.04, 0.45), new THREE.MeshStandardMaterial({ color: 0x1a3a8a, roughness: 0.3, metalness: 0.6 }));
+        panel.position.x = 1.05; g.add(panel);
+        panel = panel.clone(); panel.position.x = -1.05; g.add(panel);
+        blink = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: i % 2 ? 0xff4444 : 0x44ff88, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }));
+        blink.scale.set(0.9, 0.9, 1); blink.position.set(0, 0.35, 0); g.add(blink);
+      } else {
+        /* micro alien saucer: flattened disc, dome, green rim glow */
+        body = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 8), new THREE.MeshStandardMaterial({ color: 0xb8c4c0, roughness: 0.25, metalness: 0.9 }));
+        body.scale.set(1, 0.32, 1); g.add(body);
+        dome = new THREE.Mesh(new THREE.SphereGeometry(0.2, 12, 8), new THREE.MeshStandardMaterial({ color: 0x7dffce, roughness: 0.2, metalness: 0.4, emissive: 0x2a8a5a, emissiveIntensity: 0.6 }));
+        dome.position.y = 0.16; g.add(dome);
+        blink = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x7dffce, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+        blink.scale.set(1.7, 1.7, 1); g.add(blink);
+      }
+      world.add(g);
+      ambientFlyers.push({ group: g, blink: blink, saucer: i >= 6, cx: hub.c.x, cy: hub.c.y, cz: hub.c.z, rx: hub.rx * (0.8 + frnd() * 0.4), rz: hub.rz * (0.8 + frnd() * 0.4), ry: hub.ry, speed: (0.02 + frnd() * 0.025) * (frnd() > 0.5 ? 1 : -1), phase: frnd() * 6.28 });
+    }
+  })();
+  var probeFleet = [], probeFlash = null;
+  (function buildProbes(){
+    var i, g, cone, glow;
+    for(i = 0; i < 3; i++){
+      g = new THREE.Group();
+      cone = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.5, 6), new THREE.MeshBasicMaterial({ color: 0xffe9a8 }));
+      g.add(cone);
+      glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffe9a8, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+      glow.scale.set(1.2, 1.2, 1); g.add(glow);
+      world.add(g);
+      probeFleet.push({ group: g, route: null, u: 0, speed: 0.08 + i * 0.03, legs: 0, impacts: 0 });
+    }
+    probeFlash = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0xffd76a, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false }));
+    probeFlash.scale.set(0.5, 0.5, 1);
+    world.add(probeFlash);
+    probeFlash.userData = { active: false, t0: 0 };
+  })();
   /* ---- the lesser worlds: Semi-Active's outer rungs + the Blackhole
      system (3-system pass 2026-11-04) ----
      The 13 lesser worlds of DYING_CHAINS_3D now split by their system
@@ -6783,8 +7109,9 @@ function startChaintarium(){
      Peercoin, the least used — are being swallowed: swallowedPos()
      spirals them at the event horizon, dimming and shrinking. On top
      of that ambient spiral rides the swallow event (updateBhEvent):
-     every 7 minutes the innermost world is actually consumed over
-     60 s and re-enters at the spiral's tail. */
+     every 3 minutes the innermost world is actually consumed over
+     60 s, then its small moon is sucked in over 18 s, and the world
+     re-enters at the spiral's tail. */
   var dyingGroup = new THREE.Group(); dyingGroup.position.copy(DYING_CENTER); world.add(dyingGroup);
   var semiGroup = new THREE.Group(); semiGroup.position.copy(SEMI_CENTER); world.add(semiGroup);
   var blackhole = new THREE.Mesh(new THREE.SphereGeometry(3.2, 32, 32), new THREE.MeshBasicMaterial({ color: 0x000000 }));
@@ -6794,7 +7121,7 @@ function startChaintarium(){
      worlds routed to showDyingInfo). "—" marks fields with no value;
      nothing here claims a live feed from a dead chain. */
   blackhole.userData.dying = { name:"Blackhole sun", sym:"—", status:"dying system", born:"—", mainId:null, system:"blackhole",
-    note:"The blackhole system's sun. It is swallowing the three least-used dead chains — Feathercoin, Primecoin and Peercoin spiral at its event horizon; every 7 minutes the innermost is pulled in over a full minute, stretched, fractured into light and streamed into the horizon, then returned to the spiral. Clicking a dead world opens its card; no live feed is claimed from a dead chain." };
+    note:"The blackhole system's sun. It is swallowing the three least-used dead chains — Feathercoin, Primecoin and Peercoin spiral at its event horizon; every 3 minutes the innermost is pulled in over a full minute, stretched, fractured into light and streamed into the horizon, then its small moon is sucked in too, and the world returns to the spiral. Clicking a dead world opens its card; no live feed is claimed from a dead chain." };
   /* the black hole, drawn as a real one (Chaintarium upgrade): the
      pure-black horizon sphere above, wrapped in a thin bright
      photon ring, one tilted streaked accretion disc (white-hot
@@ -6865,15 +7192,19 @@ function startChaintarium(){
   })();
   var bhStream = new THREE.Points(streamGeo, new THREE.PointsMaterial({ size: 0.34, map: glowTex, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false }));
   bhSpin.add(bhStream);
-  /* ---- SWALLOW EVENT: every 7 minutes (start to start) the
+  /* ---- SWALLOW EVENT: every 3 minutes (start to start) the
      innermost spiral world is pulled in over 60 seconds — approach
      + stretch (0-20s), fracture into glowing fragments (20-35s),
      sparkle-stream infall with bright flashes (35-55s), final
-     flash and gone (55-60s) — then the world re-enters faded-in at
+     flash and gone (55-60s) — then its small moon is sucked in
+     wobbling over 18 s (60-78s), flashes, and is gone; the hole
+     vibrates and flashes again — then the world re-enters faded-in at
      the spiral's outer tail so the 7-world system stays whole.
-     All event particles live in one pre-allocated pooled buffer
-     (BH_MAXFRAG), so the event can never grow the scene. ---- */
-  var BH_PERIOD = 420, BH_LEN = 60, BH_MAXFRAG = 170;
+     All event particles live in two pre-allocated pooled buffers
+     (BH_MAXFRAG + BH_MACRO_N), so the event can never grow the scene. ---- */
+  /* visual upgrades, 2026-11-07: the loop restarts 3 minutes after it starts;
+     the moon phase (BH_MOON_LEN) follows the planet's destruction */
+  var BH_PERIOD = 180, BH_LEN = 60, BH_MOON_LEN = 18, BH_MAXFRAG = 170, BH_MACRO_N = 48;
   var fragGeo = new THREE.BufferGeometry();
   var fragPos = new Float32Array(BH_MAXFRAG * 3);
   var fragCol = new Float32Array(BH_MAXFRAG * 3);
@@ -6884,6 +7215,19 @@ function startChaintarium(){
   fragPts.frustumCulled = false;
   bhTilt.add(fragPts);
   var frags = [];   /* {a: angle, r: radius, y: height, tw: twinkle phase, warm: 0..1} */
+  /* macro chunks: the dying planet sheds itself as big visible pieces
+     before it crumbles (visual upgrades, 2026-11-07) — a second pooled
+     Points cloud with larger points, same no-allocation discipline */
+  var macroGeo = new THREE.BufferGeometry();
+  var macroPos = new Float32Array(BH_MACRO_N * 3);
+  var macroCol = new Float32Array(BH_MACRO_N * 3);
+  macroGeo.setAttribute("position", new THREE.BufferAttribute(macroPos, 3));
+  macroGeo.setAttribute("color", new THREE.BufferAttribute(macroCol, 3));
+  macroGeo.setDrawRange(0, 0);
+  var macroPts = new THREE.Points(macroGeo, new THREE.PointsMaterial({ size: 1.15, map: glowTex, vertexColors: true, sizeAttenuation: true, transparent: true, opacity: 0.95, blending: THREE.AdditiveBlending, depthWrite: false }));
+  macroPts.frustumCulled = false;
+  bhTilt.add(macroPts);
+  var macros = [];   /* {a, r, y, tw, warm, stream} — same shape as frags, bigger */
   var flashTex = (function(){
     var cv = document.createElement("canvas"); cv.width = cv.height = 128;
     var g = cv.getContext("2d");
@@ -6897,10 +7241,25 @@ function startChaintarium(){
   bhFlash.scale.set(7, 7, 1);
   bhTilt.add(bhFlash);
   var bhEv = { clock: 0, rate: 1, lastT: 0, nextAt: 25, active: false, start: 0,
-               victim: null, sph0: 0, burstDone: false, streamFed: 0, flash: 0, fade: {} };
+               victim: null, sph0: 0, burstDone: false, streamFed: 0, flash: 0, fade: {},
+               mode: 0, moonDone: false, moonFlash: 0, moonR0: 0, vibe: 0, macroFed: 0 };
   window.__bhEvent = { state: bhEv,
     startNow: function(){ if(!bhEv.active) startBhEvent(bhEv.lastT); },
     setRate: function(r){ bhEv.rate = Math.max(0.1, Math.min(60, +r || 1)); } };
+  /* verification handle for the visual upgrades (2026-11-07): read-only
+     counts + live state for headless checks; not part of the UI */
+  window.__ctDebug = {
+    planets: CHAINS_3D,
+    dying: function(){ return dyingPlanets; },
+    sunFlares: function(){ return sunFlares; },
+    flyers: function(){ return ambientFlyers; },
+    probes: function(){ return probeFleet; },
+    probeFlash: function(){ return probeFlash; },
+    bnbDust: function(){ return bnbDust; },
+    bhEvent: function(){ return bhEv; },
+    frags: function(){ return frags; },
+    macros: function(){ return macros; }
+  };
   function startBhEvent(t){
     var best = null, bestSph = -1;
     dyingPlanets.forEach(function(dp){
@@ -6911,7 +7270,9 @@ function startChaintarium(){
     if(!best) return;
     bhEv.active = true; bhEv.start = bhEv.clock; bhEv.victim = best;
     bhEv.sph0 = bestSph; bhEv.burstDone = false; bhEv.streamFed = 0;
-    frags.length = 0;
+    bhEv.mode = (best.d.id.length + Math.floor(bhEv.clock)) % 3; /* 0 burst, 1 ring-shed, 2 ember-rain — a different disintegration each event */
+    bhEv.moonDone = false; bhEv.moonFlash = 0; bhEv.moonR0 = 0; bhEv.vibe = 0; bhEv.macroFed = 0;
+    frags.length = 0; macros.length = 0;
   }
   var _fv = new THREE.Vector3();
   function spawnFrag(localPos, streamMode, spread){
@@ -6921,6 +7282,14 @@ function startChaintarium(){
     var pz = localPos.z + (Math.random() - 0.5) * spread;
     frags.push({ a: Math.atan2(pz, px), r: Math.sqrt(px * px + pz * pz), y: py,
                  tw: Math.random() * Math.PI * 2, warm: Math.random(), stream: !!streamMode });
+  }
+  function spawnMacro(localPos, spread){
+    if(macros.length >= BH_MACRO_N) return;
+    var px = localPos.x + (Math.random() - 0.5) * spread;
+    var py = localPos.y + (Math.random() - 0.5) * spread * 0.4;
+    var pz = localPos.z + (Math.random() - 0.5) * spread;
+    macros.push({ a: Math.atan2(pz, px), r: Math.sqrt(px * px + pz * pz), y: py,
+                  tw: Math.random() * Math.PI * 2, warm: Math.random(), stream: false });
   }
   function victimTiltPos(dp){
     _fv.copy(dp.mesh.position);
@@ -6937,13 +7306,25 @@ function startChaintarium(){
       if(e < 20){                                    /* approach + stretch */
         var u = e / 20, uu = u * u;
         v._ev = { sph: bhEv.sph0 + (1.03 - bhEv.sph0) * uu, stretch: u, op: 1, hide: false, mul: 1 };
-      } else if(e < 35){                             /* fracture */
+      } else if(e < 35){                             /* fracture — the planet sheds itself */
         var u2 = (e - 20) / 15;
         v._ev = { sph: 1.03, stretch: 1, op: 1 - u2 * 0.9, hide: e >= 31, mul: 1 - u2 * 0.8 };
         if(!bhEv.burstDone && e >= 21){
           bhEv.burstDone = true;
           var bp = victimTiltPos(v);
-          for(var bi = 0; bi < 70; bi++) spawnFrag(bp, false, 1.8);
+          if(bhEv.mode === 1){
+            /* ring-shed: chunks peel off in a flat ring around the victim */
+            for(var ri = 0; ri < 70; ri++){
+              var ra = ri / 70 * Math.PI * 2, rr = 1.2 + (ri % 5) * 0.3;
+              var rx = bp.x + Math.cos(ra) * rr, rz = bp.z + Math.sin(ra) * rr;
+              if(frags.length < BH_MAXFRAG) frags.push({ a: Math.atan2(rz, rx), r: Math.sqrt(rx * rx + rz * rz), y: bp.y + (Math.random() - 0.5) * 0.3, tw: Math.random() * Math.PI * 2, warm: Math.random(), stream: false });
+            }
+          } else {
+            for(var bi = 0; bi < 70; bi++) spawnFrag(bp, false, 1.8);
+          }
+          /* macro chunks shed with the burst — the big visible pieces */
+          for(var mi = 0; mi < BH_MACRO_N; mi++) spawnMacro(bp, 2.0);
+          bhEv.flash = Math.max(bhEv.flash, 0.5);   /* fracture flash */
         }
       } else if(e < 60){                             /* sparkle-stream infall, then gone */
         v._ev = { sph: 1.03, stretch: 1, op: 0, hide: true, mul: 0.2 };
@@ -6953,14 +7334,39 @@ function startChaintarium(){
             spawnFrag(sp2, true, 2.2); bhEv.streamFed++;
           }
         }
+      } else if(e < 60 + BH_MOON_LEN){               /* the moon falls victim too */
+        v._ev = { sph: 1.03, stretch: 1, op: 0, hide: true, mul: 0.2 };
+        var me = e - 60, moon = v.doomMoon;
+        if(moon && !moon.mesh.userData.moonGone){
+          if(!bhEv.moonR0){
+            bhEv.moonR0 = Math.max(3.5, Math.hypot(moon.mesh.position.x, moon.mesh.position.z));
+            bhEv.moonA0 = Math.atan2(moon.mesh.position.z, moon.mesh.position.x);
+          }
+          /* sucked in wobbling: radius shrinks, angle winds, it shakes */
+          var mu = me / BH_MOON_LEN;
+          var mr = bhEv.moonR0 - mu * (bhEv.moonR0 - 3.4) + Math.sin(me * 9) * 0.35 * (1 - mu);
+          var ma = bhEv.moonA0 + me * 1.9;
+          moon.mesh.position.set(Math.cos(ma) * mr, 0.35 + Math.sin(me * 7) * 0.3 * (1 - mu), Math.sin(ma) * mr);
+          moon.mesh.scale.setScalar(Math.max(0.3, 1 - mu * 0.7));
+          moon.mesh.visible = true;
+          moon.mesh.material.opacity = moon.baseOpacity; /* the event owns the moon now — it is fully lit again */
+          if(me >= 12 && !bhEv.moonDone){
+            bhEv.moonDone = true;
+            moon.mesh.userData.moonGone = true;
+            moon.mesh.visible = false;
+            bhEv.moonFlash = 1;                       /* the moon's flash */
+            bhEv.vibe = 1;                            /* the blackhole shudders */
+          }
+        }
       }
-      if(e >= BH_LEN){                               /* gone — re-enter at the tail */
+      if(e >= 60 + BH_MOON_LEN){                     /* gone — re-enter at the tail */
         var off = -((t * 0.045) % 1); if(off < 0) off += 1;
         v.spiralOff = off;
         bhEv.fade[v.d.id] = t;
+        if(v.doomMoon){ v.doomMoon.mesh.userData.moonGone = false; v.doomMoon.mesh.visible = true; v.doomMoon.mesh.scale.setScalar(1); }
         v._ev = null; v.mesh.quaternion.identity();
         bhEv.active = false; bhEv.victim = null;
-        bhEv.nextAt = bhEv.start + BH_PERIOD;        /* start-to-start: 7 minutes */
+        bhEv.nextAt = bhEv.start + BH_PERIOD;        /* start-to-start: 3 minutes */
       }
     }
     if(!bhEv.active && bhEv.clock >= bhEv.nextAt) startBhEvent(t);
@@ -6978,19 +7384,53 @@ function startChaintarium(){
       }
       fragPos[fi*3] = Math.cos(f.a) * f.r; fragPos[fi*3+1] = f.y; fragPos[fi*3+2] = Math.sin(f.a) * f.r;
       var tw = 0.55 + 0.45 * Math.sin(bhEv.clock * 26 + f.tw);
-      fragCol[fi*3] = tw; fragCol[fi*3+1] = tw * (0.5 + f.warm * 0.45); fragCol[fi*3+2] = tw * (0.22 + f.warm * 0.55);
+      if(bhEv.mode === 2){ fragCol[fi*3] = tw; fragCol[fi*3+1] = tw * 0.28; fragCol[fi*3+2] = tw * 0.12; } /* ember-rain: deep red-orange */
+      else { fragCol[fi*3] = tw; fragCol[fi*3+1] = tw * (0.5 + f.warm * 0.45); fragCol[fi*3+2] = tw * (0.22 + f.warm * 0.55); }
     }
+    /* macro chunks: drift out during the fracture, then stream in with the rest */
+    for(var mki = macros.length - 1; mki >= 0; mki--){
+      var mk = macros[mki];
+      if(bhEv.active && e >= 35) mk.stream = true;
+      if(mk.stream){
+        mk.a += edt * (2.0 + 14 / Math.max(4.0, mk.r));
+        mk.r -= edt * (0.3 + (11.5 - mk.r) * 0.035);
+        mk.y *= Math.max(0, 1 - edt * 0.6);
+        if(mk.r <= 4.0){ macros.splice(mki, 1); bhEv.flash = Math.min(1, bhEv.flash + 0.3); continue; }
+      } else {
+        mk.a += edt * 0.3; mk.r += edt * 0.35;
+      }
+      macroPos[mki*3] = Math.cos(mk.a) * mk.r; macroPos[mki*3+1] = mk.y; macroPos[mki*3+2] = Math.sin(mk.a) * mk.r;
+      var mtw = 0.6 + 0.4 * Math.sin(bhEv.clock * 18 + mk.tw);
+      macroCol[mki*3] = mtw; macroCol[mki*3+1] = mtw * (0.45 + mk.warm * 0.4); macroCol[mki*3+2] = mtw * 0.2;
+    }
+    macroGeo.attributes.position.needsUpdate = true;
+    macroGeo.attributes.color.needsUpdate = true;
+    macroGeo.setDrawRange(0, macros.length);
+    macroPts.visible = macros.length > 0;
     fragGeo.attributes.position.needsUpdate = true;
     fragGeo.attributes.color.needsUpdate = true;
     fragGeo.setDrawRange(0, frags.length);
     fragPts.visible = frags.length > 0;
     bhEv.flash = Math.max(0, bhEv.flash - dt * 2.4);
+    bhEv.moonFlash = Math.max(0, bhEv.moonFlash - dt * 1.6);
+    bhEv.vibe = Math.max(0, bhEv.vibe - dt * 0.5);
     var fin = 0;
     if(bhEv.active && e >= 55 && e < 60) fin = Math.sin((e - 55) / 5 * Math.PI);
-    var inten = Math.max(bhEv.flash, fin);
+    var mfin = 0;
+    if(bhEv.active && e >= 72 && e < 78) mfin = Math.sin((e - 72) / 6 * Math.PI); /* second flash, after the moon */
+    var inten = Math.max(bhEv.flash, fin, bhEv.moonFlash, mfin);
     bhFlash.material.opacity = inten * 0.9;
     var fs = 7 + inten * (fin > bhEv.flash ? 24 : 11);
     bhFlash.scale.set(fs, fs, 1);
+    /* the blackhole vibrates after swallowing the moon, then settles */
+    if(bhEv.vibe > 0){
+      bhTilt.rotation.x = 0.42 + (Math.random() - 0.5) * 0.07 * bhEv.vibe;
+      bhTilt.rotation.z = 0.10 + (Math.random() - 0.5) * 0.07 * bhEv.vibe;
+      blackhole.scale.setScalar(1 + bhEv.vibe * 0.05);
+    } else {
+      bhTilt.rotation.x = 0.42; bhTilt.rotation.z = 0.10;
+      blackhole.scale.setScalar(1);
+    }
   }
   var bhLabel = document.createElement("div"); bhLabel.className = "planet-label dying"; bhLabel.textContent = "Blackhole sun — blackhole system"; labelsBox.appendChild(bhLabel);
   /* the swallow spiral, as a pure function of time so it can be
@@ -6998,7 +7438,7 @@ function startChaintarium(){
      from 9.6 (outside the accretion ring) in to 4.4 — always outside
      the blackhole's own 3.2 radius, so in the ambient loop a
      swallowed world converges on the horizon without reaching the
-     centre (the 7-minute event is what actually consumes one); the
+     centre (the 3-minute event is what actually consumes one); the
      angle winds faster as it falls. out gets the
      LOCAL position (the caller adds it inside dyingGroup); the
      return value is the phase, for dimming/shrinking. */
@@ -7014,16 +7454,36 @@ function startChaintarium(){
     ? window.HalexMChaintariumCityscapes.buildDyingSystem(DYING_CHAINS_3D) : null;
   DYING_CHAINS_3D.forEach(function(dc, di){
     var dm = dyingModel ? dyingModel[di] : null;
-    var dr = 0.55 + di * 0.05;
+    /* visual upgrades, 2026-11-07: bigger, brighter, surfaced — the old
+       build dimmed these to near-invisible (opacity down to 0.25, emissive
+       0.08 x dim) and gave them no surface at all. */
+    var dr = (0.55 + di * 0.05) * (dc.system === "blackhole" ? 1.35 : 1.2);
+    var dtex = planetTexture(DYING_TEX[dc.id] || "banded", dc.id,
+      "#" + new THREE.Color(dc.color).getHexString(),
+      "#" + new THREE.Color(dc.color).offsetHSL(0, 0, 0.3).getHexString());
+    var dOp = dc.system === "blackhole" ? 1 : 0.95;
     var dmesh = new THREE.Mesh(new THREE.SphereGeometry(dr, 24, 24),
-      new THREE.MeshStandardMaterial({ color: new THREE.Color(dc.color).multiplyScalar(0.3).lerp(new THREE.Color(0x111111), 0.45), roughness: 0.7, metalness: 0.4, emissive: dc.color, emissiveIntensity: dm ? 0.08 * dm.dim : 0.08, transparent: true, opacity: dm ? dm.opacity : 0.85 }));
+      new THREE.MeshStandardMaterial({ color: 0xffffff, map: dtex, roughness: 0.75, metalness: 0.25, emissive: dc.color, emissiveIntensity: dc.system === "blackhole" ? 0.32 : 0.22, transparent: true, opacity: dOp }));
     if(dm) dmesh.scale.setScalar(dm.crumble);
     dmesh.userData.dying = dc;
     dmesh.userData.baseScale = dm ? dm.crumble : 1;
-    dmesh.userData.baseOpacity = dm ? dm.opacity : 0.85;
+    dmesh.userData.baseOpacity = dOp;
     if(dc.system === "semi") semiGroup.add(dmesh); else dyingGroup.add(dmesh);
+    addGlow(dmesh, dc.color, dr * 6, 0.32); /* read the world from across the screen */
+    if(DYING_RINGS[dc.id]) dmesh.add(makeRing(dr * 1.5, dr * 2.1, 0xd8c9a0, 0.4));
+    var debris = DYING_DEBRIS[dc.id] ? makeDebris(dmesh, dr, 70, dc.color, "debris-" + dc.id) : null;
     var dlabel = document.createElement("div"); dlabel.className = "planet-label dying"; dlabel.textContent = dc.name + (dc.status.indexOf("dead") === 0 ? " (dead)" : " (dying)"); labelsBox.appendChild(dlabel);
-    dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: dc.system === "semi" ? dc.semiOrbit : (dc.bhOrbit || 0), speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9, swallowed: !!dc.swallowed, spiralOff: di * 0.37 });
+    /* a small moon of its own for each swallowed world — the blackhole
+       event's second victim (visual upgrades, 2026-11-07) */
+    var doomMoon = null;
+    if(dc.swallowed){
+      var mTex = planetTexture("cratered", dc.id + "-moon", "#8a8a8a", "#c0c0c0");
+      var mmesh = new THREE.Mesh(new THREE.SphereGeometry(dr * 0.3, 16, 16),
+        new THREE.MeshStandardMaterial({ color: 0xffffff, map: mTex, roughness: 0.9, metalness: 0.1, emissive: dc.color, emissiveIntensity: 0.15, transparent: true, opacity: dOp }));
+      dyingGroup.add(mmesh);
+      doomMoon = { mesh: mmesh, angle: di * 1.7, dist: dr * 2.6, speed: 0.5 + (di % 3) * 0.12, baseOpacity: dOp };
+    }
+    dyingPlanets.push({ d: dc, mesh: dmesh, label: dlabel, orbit: dc.system === "semi" ? dc.semiOrbit : (dc.bhOrbit || 0), speed: 0.10 + (di % 4) * 0.03, angle: di * 0.9, swallowed: !!dc.swallowed, spiralOff: di * 0.37, debris: debris, doomMoon: doomMoon });
   });
   /* No cross-system routes (3-system pass 2026-11-04): the old
      main→dying arcs are deleted outright — transfers, routes and
@@ -7036,7 +7496,7 @@ function startChaintarium(){
       '<div class="kv"><span>Status</span><b>' + esc(dc.status) + "</b></div>" +
       '<div class="kv"><span>Born</span><b>' + dc.born + "</b></div>" + visitBtn;
   }
-  var _va = new THREE.Vector3(), _vb = new THREE.Vector3(), _vm = new THREE.Vector3();
+  var _va = new THREE.Vector3(), _vb = new THREE.Vector3(), _vm = new THREE.Vector3(), _vt = new THREE.Vector3(), _vy = new THREE.Vector3(0, 1, 0);
   function updateRoutes(t){
     var pp = pulseGeo.attributes.position.array, pi = 0;
     routes.forEach(function(rt){
@@ -7351,8 +7811,14 @@ function startChaintarium(){
   var _sv = new THREE.Vector3(), _sx = new THREE.Vector3(1, 0, 0);
   function animate(){
     requestAnimationFrame(animate);
+    /* the frame clock runs even while the loop is parked: a planet
+       visit parks the orbit loop (surf.open) for the whole visit, and
+       the stall watchdog would otherwise read that parked time as a
+       stall and shed the renderer for 4s on the very first frame
+       home. A genuinely wedged pipeline still stalls RAF, so the
+       watchdog still fires. (Fix 2026-11-07.) */
+    if(currentTab === "chaintarium") lastFrameAt = performance.now();
     if(currentTab !== "chaintarium" || surf.open) return;
-    lastFrameAt = performance.now();
     var t = Date.now()*0.001;
     var dt = prevT ? Math.min(0.1, Math.max(0, t - prevT)) : 0.016;
     prevT = t;
@@ -7379,11 +7845,89 @@ function startChaintarium(){
       p.moons.forEach(function(mn){ mn.mesh.visible = isoVis; });
     });
     updateRoutes(t);
+    /* ---------- visual upgrades, 2026-11-07: living suns + ambient traffic ---------- */
+    if(btcSunTex){ btcSunTex.offset.x = (t * 0.006) % 1; btcSunTex.offset.y = (t * 0.004) % 1; } /* boiling surface */
+    if(bnbSunTex){ bnbSunTex.offset.x = (t * 0.004) % 1; bnbSunTex.offset.y = (t * 0.003) % 1; }
+    if(!reduceMotionSys){
+      for(var sfi = 0; sfi < sunFlares.length; sfi++){
+        var sf = sunFlares[sfi], sPulse = Math.sin(t * (sf.dying ? 2.1 : 1.3) + sf.phase);
+        if(sf.kind === "tongue"){
+          var sLen = sf.dying ? Math.pow(Math.max(0, sPulse), 2) : 0.6 + 0.4 * sPulse;
+          sf.mesh.scale.y = Math.max(0.15, sLen);
+          sf.mesh.material.opacity = sf.baseOp * Math.max(0.1, sLen);
+        } else {
+          sf.mesh.material.opacity = sf.baseOp * (0.5 + 0.5 * sPulse);
+          sf.mesh.rotation.z += dt * 0.05;
+        }
+      }
+      if(bnbDust){
+        var dPos = bnbDust.pts.geometry.attributes.position.array;
+        for(var dbi = 0; dbi < bnbDust.base.length; dbi++){
+          var db = bnbDust.base[dbi];
+          db.r += dt * db.sp;
+          if(db.r > bnbDust.maxR){ db.r = bnbDust.minR; db.a = Math.random() * Math.PI * 2; }
+          dPos[dbi * 3] = Math.cos(db.a) * db.r;
+          dPos[dbi * 3 + 1] = db.y;
+          dPos[dbi * 3 + 2] = Math.sin(db.a) * db.r;
+        }
+        bnbDust.pts.geometry.attributes.position.needsUpdate = true;
+      }
+      /* satellites + saucers drift their ellipses; beacons blink */
+      for(var afi = 0; afi < ambientFlyers.length; afi++){
+        var af = ambientFlyers[afi], fa = t * af.speed + af.phase;
+        af.group.position.set(af.cx + Math.cos(fa) * af.rx, af.cy + Math.sin(fa * 0.7) * af.ry, af.cz + Math.sin(fa) * af.rz);
+        af.group.rotation.y = Math.atan2(-Math.sin(fa) * af.rx, Math.cos(fa) * af.rz);
+        if(af.saucer) af.group.rotation.z = Math.sin(t * 1.7 + af.phase) * 0.15;
+        af.blink.material.opacity = (Math.sin(t * 3 + af.phase) > 0) ? 0.95 : 0.12;
+        af.group.visible = true;
+      }
+      /* transaction probes ride the routes; one sometimes impacts its planet */
+      var probesOn = !ch.transfersOff && routes.length > 0;
+      for(var pri = 0; pri < probeFleet.length; pri++){
+        var pr = probeFleet[pri];
+        pr.group.visible = probesOn;
+        if(!probesOn) continue;
+        if(!pr.route || !pr.route.curve){
+          pr.route = routes[Math.floor(Math.random() * routes.length)];
+          pr.u = 0;
+        }
+        pr.u += pr.speed * dt;
+        if(pr.u >= 1){
+          pr.legs++;
+          if(Math.random() < 0.35 && pr.route.b){
+            pr.route.b.getWorldPosition(_va); world.worldToLocal(_va);
+            probeFlash.position.copy(_va);
+            probeFlash.userData.active = true; probeFlash.userData.t0 = t;
+            pr.impacts++;
+          }
+          pr.route = routes[Math.floor(Math.random() * routes.length)];
+          pr.u = 0;
+        }
+        if(pr.route && pr.route.curve){
+          pr.route.curve.getPoint(pr.u, _vm);
+          pr.group.position.copy(_vm);
+          pr.route.curve.getTangent(pr.u, _vt);
+          pr.group.quaternion.setFromUnitVectors(_vy, _vt);
+        }
+      }
+      if(probeFlash && probeFlash.userData.active){
+        var pfAge = t - probeFlash.userData.t0;
+        if(pfAge >= 0.7){ probeFlash.userData.active = false; probeFlash.material.opacity = 0; }
+        else { probeFlash.material.opacity = 0.9 * (1 - pfAge / 0.7); var pfS = 0.5 + pfAge * 5; probeFlash.scale.set(pfS, pfS, 1); }
+      }
+    } else {
+      /* reduced motion: traffic holds still, probes hide */
+      for(var afi2 = 0; afi2 < ambientFlyers.length; afi2++) ambientFlyers[afi2].group.visible = false;
+      for(var pri2 = 0; pri2 < probeFleet.length; pri2++) probeFleet[pri2].group.visible = false;
+      if(probeFlash) probeFlash.material.opacity = 0;
+    }
+    /* earth-like cloud shells drift slowly */
+    for(var cli = 0; cli < planets.length; cli++){ if(planets[cli].c._clouds) planets[cli].c._clouds.rotation.y = t * 0.03; }
     if(typeof dyingPlanets !== "undefined"){
       dyingPlanets.forEach(function(dp){
         if(dp.swallowed){
           /* the ambient spiral via swallowedPos(); on top of it
-             rides the SWALLOW EVENT (updateBhEvent): every 7
+             rides the SWALLOW EVENT (updateBhEvent): every 3
              minutes the innermost world is staged via dp._ev —
              pulled down the spiral, stretched thin toward the hole
              (spaghettification), fractured away, gone, then
@@ -7426,6 +7970,18 @@ function startChaintarium(){
           dp.mesh.position.set(Math.cos(da) * dp.orbit, Math.sin(da * 1.3) * 0.5, Math.sin(da) * dp.orbit);
         }
         if(!dp._ev) dp.mesh.rotation.y = t * 0.2;
+        /* the doom moon orbits its planet — unless the event owns it */
+        if(dp.doomMoon){
+          var moonBusy = bhEv.active && bhEv.victim === dp && (bhEv.clock - bhEv.start) >= 60;
+          var dm2 = dp.doomMoon;
+          if(!moonBusy){
+            var mAng = dm2.angle + t * dm2.speed;
+            dm2.mesh.position.set(dp.mesh.position.x + Math.cos(mAng) * dm2.dist, dp.mesh.position.y + Math.sin(mAng * 1.3) * 0.4, dp.mesh.position.z + Math.sin(mAng) * dm2.dist);
+            dm2.mesh.visible = dp.mesh.visible && !dm2.mesh.userData.moonGone;
+            dm2.mesh.material.opacity = Math.min(dm2.baseOpacity, dp.mesh.material.opacity);
+          }
+        }
+        if(dp.debris) dp.debris.rotation.y += dt * 0.3;
       });
       /* the black hole's disc + dust spin and stream inward; the
          swallow event advances on the same clock */
@@ -7452,7 +8008,8 @@ function startChaintarium(){
     var transfersOn = !ch.transfersOff && !ch.isolated;
     routes.forEach(function(rt){ if(rt.line) rt.line.visible = transfersOn && sysVisible(rt.sysA) && sysVisible(rt.sysB); });
     if(pulsePts) pulsePts.visible = transfersOn;
-    if(sunGlow) sunGlow.material.opacity = 0.32 + Math.sin(t * 1.4) * 0.05; /* the sun breathes — slow, restrained */
+    if(sunGlow) sunGlow.material.opacity = 0.38 + Math.sin(t * 1.4) * 0.08; /* the sun breathes — slow, restrained */
+    if(bnbGlow) bnbGlow.material.opacity = 0.26 + Math.sin(t * 0.9) * 0.07; /* the dying star breathes slower and dimmer */
     if(belt) belt.rotation.y = t * 0.008; /* the belt crawls around the sun */
     if(belt) belt.visible = !ch.isolated && sysVisible("active");
     if(comet.head && !reduceMotionSys){
@@ -7915,9 +8472,11 @@ function visitChain(c, moonName){
   closeMoonView();
   ch.focus = c.id;
   ch.focusObj = c._obj || null;
-  /* visiting a world isolates the orbit view to it, so coming back
-     from its surface returns to that world alone; Show-all in the
-     toolbar restores the whole system */
+  /* visiting a world isolates the orbit view to it while its surface
+     is open; coming back from the surface clears the isolation
+     (closeSurface) and returns to the whole system — the visited
+     world stays focused, so it is still easy to find. Show-all in
+     the toolbar restores the whole system from a search isolation. */
   ch.isolated = c.id;
   syncChainTools();
   $("#chain-info").innerHTML = chainInfoHTML(c);
@@ -7952,7 +8511,7 @@ function openSurface(c, moonName){
   scard.innerHTML =
     '<button class="sc-x" id="surface-card-x" aria-label="Close planet card">✕</button>' +
     "<b>"+esc(c.name)+' <span class="mono" style="color:var(--gold); font-size:12px">$'+esc(c.sym)+"</span></b>" +
-    '<div class="sstats">Orbiting the '+esc(c.name)+' sphere · a circuit-city raised from age × activity<br>' +
+    '<div class="sstats">' + (c.orbit === 0 ? (c.id === "bsc" ? "A dying star — orange-red flares, black-red bursts fading into micro dust" : "A living star — a blazing flamed surface, solar flares, no cities stand here") : "Orbiting the "+esc(c.name)+" sphere · a circuit-city raised from age × activity") + "<br>" +
     "Born <b>"+c.born+"</b> · Age <b>"+(2026 - c.born)+" yrs</b> · Activity <b>"+c.activity.toFixed(2)+"</b>" +
     (c.moons.length ? "<br>Moons: <b>"+c.moons.map(function(m){ return esc(m.name); }).join(", ")+"</b>" : "<br>No known fork moons") +
     "</div>" + moonChips;
@@ -7964,7 +8523,7 @@ function openSurface(c, moonName){
   if(moonName) showMoonNote(c, moonName);
   surfaceTrackStrip(c);
   renderSurfLayers(c);
-  buildSurfaceScene(c, stage);
+  if(c.orbit === 0) buildStarSurfaceScene(c, stage); else buildSurfaceScene(c, stage); /* suns get the star view, not the city view (visual upgrades, 2026-11-07) */
   applyChainLayers();
   surfFeedStart(c);
 }
@@ -7986,6 +8545,16 @@ function closeSurface(){
   var box = $("#surface"); if(box) box.classList.remove("open");
   if(surf._stop){ surf._stop(); surf._stop = null; }
   var labels = $("#surface-labels"); if(labels) labels.innerHTML = "";
+  /* Back to orbit means the whole system: visiting a world isolates
+     the orbit view to it (visitChain), and the isolation has to end
+     with the visit. Left set, the return shows only that world — and
+     on a screen its system is not on, nothing at all: an empty
+     starfield with a blank panel. The focus stays on the visited
+     world (its ring + card ride the full view), and a search
+     isolation is untouched — only a surface visit clears itself.
+     (Fix 2026-11-07, Jeffrey's "Not Loading After Planet View".) */
+  ch.isolated = null;
+  syncChainTools();
 }
 $("#surface-back").addEventListener("click", closeSurface);
 
@@ -8255,6 +8824,256 @@ function surfWindowTexture(){
   _surfWinTex = t;
   return t;
 }
+/* A star's surface view (visual upgrades, 2026-11-07): Bitcoin is a living
+   sun — a blazing flamed sphere with solar flares, coronal loops and a
+   breathing corona; BNB is the same rig in its dying palette, orange-red
+   flares with black-red bursts fading into micro dust. No cities, no
+   zones: a star has no streets. Same renderer/camera rig as the planet
+   surface view, so open/close and the back button behave identically. */
+function buildStarSurfaceScene(c, stage){
+  surfPillars = [];
+  surf.features = []; surf.selectFeature = null;
+  var canvas = $("#surface-canvas"), labelsBox = $("#surface-labels");
+  if(!surf.renderer){
+    try {
+      surf.renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias:true, alpha:true });
+    } catch(e) {
+      if(labelsBox) labelsBox.innerHTML = '<div class="empty" style="margin:16px">WebGL is not available on this device or browser, so the 3D star cannot render.</div>';
+      return;
+    }
+    surf.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  }
+  var renderer = surf.renderer;
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(50, 1, 0.1, 500);
+  var camEulS = new THREE.Euler(0, 0, 0, "YXZ");
+  scene.background = new THREE.Color(0x0a0502);
+  scene.add(new THREE.AmbientLight(0xffe0b0, 0.5));
+  var dl = new THREE.DirectionalLight(0xffe8c0, 1.2); dl.position.set(30, 26, 18); scene.add(dl);
+  var R = 15;
+  var world = new THREE.Group(); scene.add(world);
+
+  /* no layer groups with content — but applyChainLayers() expects the
+     six groups to exist after every surface build */
+  surfLayerGroups = {};
+  ["platforms", "wallets", "transactions", "flows", "rugs", "bundles"].forEach(function(k){
+    surfLayerGroups[k] = new THREE.Group();
+    world.add(surfLayerGroups[k]);
+  });
+
+  /* stars behind the star */
+  var starGeo = new THREE.BufferGeometry(), sp = [];
+  for(var si = 0; si < 400; si++){
+    var sr = 130 + sHash2(si, 3, 7) * 110, sth = sHash2(si, 8, 7) * Math.PI * 2, sph = Math.acos(2 * sHash2(si, 13, 7) - 1);
+    sp.push(sr * Math.sin(sph) * Math.cos(sth), sr * Math.cos(sph) * 0.7, sr * Math.sin(sph) * Math.sin(sth));
+  }
+  starGeo.setAttribute("position", new THREE.Float32BufferAttribute(sp, 3));
+  scene.add(new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0x8fa3c8, size:0.9, sizeAttenuation:true })));
+
+  var dying = c.id === "bsc";
+  var starTex = sunTexture(dying ? "dying" : "sun", "surface-" + c.id);
+  var star = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 96),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, map: starTex, emissive: dying ? 0xff5a1f : 0xffd76a, emissiveMap: starTex, emissiveIntensity: dying ? 0.9 : 1.15, roughness: 0.9, metalness: 0 }));
+  world.add(star);
+
+  /* corona: three nested additive glows, breathing at different rates */
+  var coronaTex = trackGlowTexture();
+  function starGlow(color, scale, opacity){
+    var s = new THREE.Sprite(new THREE.SpriteMaterial({ map: coronaTex, color: color, transparent: true, opacity: opacity, blending: THREE.AdditiveBlending, depthWrite: false }));
+    s.scale.set(scale, scale, 1);
+    world.add(s);
+    return s;
+  }
+  var corona1 = starGlow(dying ? 0xff3d00 : 0xffc23d, R * 3.4, 0.5);
+  var corona2 = starGlow(dying ? 0x7a0e0e : 0xff8c1a, R * 5.2, 0.28);
+  var corona3 = starGlow(dying ? 0x3d0505 : 0xfff3b0, R * 7.5, 0.12);
+
+  /* flare tongues + coronal loops rising off the limb */
+  var flares = [], frnd = rngSeed("star-flares-" + c.id), fi2, fdir;
+  for(fi2 = 0; fi2 < (dying ? 6 : 9); fi2++){
+    fdir = new THREE.Vector3(frnd() * 2 - 1, frnd() * 2 - 1, frnd() * 2 - 1);
+    var td = fdir.clone().normalize();
+    var tongue = new THREE.Mesh(
+      new THREE.ConeGeometry(R * (0.09 + frnd() * 0.07), R * (0.6 + frnd() * 0.8), 8),
+      new THREE.MeshBasicMaterial({ color: dying ? (fi2 % 2 ? 0x7a0e0e : 0xff3d00) : 0xffc23d, transparent: true, opacity: 0.85, blending: THREE.AdditiveBlending, depthWrite: false })
+    );
+    tongue.position.copy(td).multiplyScalar(R * 1.05);
+    tongue.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), td);
+    world.add(tongue);
+    flares.push({ mesh: tongue, phase: frnd() * 6.28, kind: "tongue", baseOp: 0.85, dying: dying });
+  }
+  for(fi2 = 0; fi2 < (dying ? 3 : 5); fi2++){
+    var loopMesh = new THREE.Mesh(
+      new THREE.TorusGeometry(R * 0.55, R * 0.06, 8, 24, Math.PI * 0.85),
+      new THREE.MeshBasicMaterial({ color: dying ? 0xff3d00 : 0xffc23d, transparent: true, opacity: 0.65, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide })
+    );
+    fdir = new THREE.Vector3(frnd() * 2 - 1, frnd() * 2 - 1, frnd() * 2 - 1);
+    loopMesh.position.copy(fdir).multiplyScalar(R * 0.85);
+    loopMesh.rotation.set(frnd() * 3.14, frnd() * 3.14, frnd() * 3.14);
+    world.add(loopMesh);
+    flares.push({ mesh: loopMesh, phase: frnd() * 6.28, kind: "loop", baseOp: 0.65, dying: dying });
+  }
+
+  /* BNB sheds micro dust that drifts outward and recycles */
+  var dust = null;
+  if(dying){
+    var dustN = 150, dustPos = new Float32Array(dustN * 3), dustBase = [];
+    for(var di2 = 0; di2 < dustN; di2++){
+      var da = frnd() * Math.PI * 2, dr3 = R * (1.6 + frnd() * 2.4), dy = (frnd() - 0.5) * R * 1.6;
+      dustBase.push({ a: da, r: dr3, y: dy, sp: 0.4 + frnd() * 0.9 });
+      dustPos[di2 * 3] = Math.cos(da) * dr3; dustPos[di2 * 3 + 1] = dy; dustPos[di2 * 3 + 2] = Math.sin(da) * dr3;
+    }
+    var dustGeo = new THREE.BufferGeometry();
+    dustGeo.setAttribute("position", new THREE.BufferAttribute(dustPos, 3));
+    var dustPts = new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x8a2a12, size: 0.35, transparent: true, opacity: 0.55, sizeAttenuation: true }));
+    world.add(dustPts);
+    dust = { pts: dustPts, base: dustBase, maxR: R * 4.2, minR: R * 1.6 };
+  }
+
+  /* fork moons ride the sky, as on a planet surface */
+  labelsBox.innerHTML = "";
+  var surfMoons = [];
+  c.moons.forEach(function(m, mi){
+    var mrad = 1.05 + mi * 0.22;
+    var mmesh = new THREE.Mesh(new THREE.SphereGeometry(mrad, 24, 24),
+      new THREE.MeshStandardMaterial({ color: new THREE.Color(m.color).multiplyScalar(0.55), roughness: 0.6, metalness: 0.2, emissive: m.color, emissiveIntensity: 0.4 }));
+    scene.add(mmesh);
+    var mglow = new THREE.Sprite(new THREE.SpriteMaterial({ map: trackGlowTexture(), color: m.color, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending, depthWrite: false }));
+    mglow.scale.set(mrad * 5.2, mrad * 5.2, 1);
+    scene.add(mglow);
+    var mel = document.createElement("div");
+    mel.className = "zone-label moon-sky"; mel.textContent = "◐ " + m.name;
+    labelsBox.appendChild(mel);
+    var manchor = new THREE.Object3D(); scene.add(manchor);
+    surfMoons.push({ mesh: mmesh, glow: mglow, el: mel, anchor: manchor, off: mi * 2.35 });
+  });
+
+  /* star scan — the same HUD slot, star wording */
+  var scanEl = $("#surface-scan");
+  if(!scanEl){
+    scanEl = document.createElement("div");
+    scanEl.className = "surface-scan"; scanEl.id = "surface-scan";
+    $("#surface").appendChild(scanEl);
+  }
+  scanEl.innerHTML = '<button class="scan-x" id="surface-scan-x" aria-label="Close surface scan">✕</button>' + "<b>STAR SCAN — " + esc(c.name.toUpperCase()) + "</b>" +
+    "<br>" + (dying ? "Dying star — orange-red flaming surface, black-red flare bursts fading into micro dust, corona dimming." : "Living star — blazing macro flamed surface, powerful solar flares, coronal loops, granulation boiling.") +
+    "<br>Moons: <b>" + (c.moons.length ? c.moons.map(function(m){ return esc(m.name); }).join(", ") : "none") + "</b> · a stylized model rendering, not live chain data";
+  var scanX = scanEl.querySelector("#surface-scan-x");
+  if(scanX) scanX.addEventListener("click", function(){ scanEl.style.display = "none"; });
+  scanEl.style.display = "";
+
+  var ang = 0.7, tilt = 0.55, radius = 40, tAng = 0.7, tTilt = 0.55, tRadius = 40, spin = 0;
+  function resize(){
+    var w = stage.clientWidth, h = stage.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+  }
+  resize();
+  var onResize = function(){ if(surf.open && surf.chain === c) resize(); };
+  window.addEventListener("resize", onResize);
+
+  var drag = null, pinchD = 0;
+  function onDown(e){ drag = { x: e.clientX, y: e.clientY, moved: 0 }; canvas.setPointerCapture(e.pointerId); }
+  function onMove(e){
+    if(!drag) return;
+    drag.moved += Math.abs(e.clientX - drag.x) + Math.abs(e.clientY - drag.y);
+    tAng += (e.clientX - drag.x) * 0.005;
+    tTilt += (e.clientY - drag.y) * 0.0035;
+    drag = { x: e.clientX, y: e.clientY, moved: drag.moved };
+  }
+  function onUp(e){ drag = null; }
+  function onWheel(e){ e.preventDefault(); tRadius = Math.max(21.5, Math.min(80, tRadius + e.deltaY * 0.03)); }
+  function onTouch(e){
+    if(e.touches.length === 2){
+      var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      if(pinchD) tRadius = Math.max(21.5, Math.min(80, tRadius - (d - pinchD) * 0.08));
+      pinchD = d;
+    }
+  }
+  function onTouchEnd(){ pinchD = 0; }
+  canvas.addEventListener("pointerdown", onDown);
+  canvas.addEventListener("pointermove", onMove);
+  canvas.addEventListener("pointerup", onUp);
+  canvas.addEventListener("wheel", onWheel, { passive:false });
+  canvas.addEventListener("touchmove", onTouch, { passive:true });
+  canvas.addEventListener("touchend", onTouchEnd);
+
+  var raf = 0, stopped = false;
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function loop(){
+    raf = requestAnimationFrame(loop);
+    if(stopped || !surf.open || surf.chain !== c || currentTab !== "chaintarium" || document.hidden) return;
+    var nowS = performance.now() * 0.001;
+    if(!drag && !reduceMotion) spin += 0.00045;
+    world.rotation.y = spin;
+    starTex.offset.x = (nowS * 0.006) % 1; starTex.offset.y = (nowS * 0.004) % 1; /* the surface boils */
+    corona1.material.opacity = 0.5 + Math.sin(nowS * 1.4) * 0.1;
+    corona2.material.opacity = 0.28 + Math.sin(nowS * 0.9 + 1.3) * 0.07;
+    corona3.material.opacity = 0.12 + Math.sin(nowS * 0.6 + 2.1) * 0.04;
+    if(!reduceMotion){
+      for(var fi3 = 0; fi3 < flares.length; fi3++){
+        var fl = flares[fi3], fPulse = Math.sin(nowS * (fl.dying ? 2.1 : 1.3) + fl.phase);
+        if(fl.kind === "tongue"){
+          var fLen = fl.dying ? Math.pow(Math.max(0, fPulse), 2) : 0.6 + 0.4 * fPulse;
+          fl.mesh.scale.y = Math.max(0.15, fLen);
+          fl.mesh.material.opacity = fl.baseOp * Math.max(0.1, fLen);
+        } else {
+          fl.mesh.material.opacity = fl.baseOp * (0.5 + 0.5 * fPulse);
+          fl.mesh.rotation.z += 0.016;
+        }
+      }
+      if(dust){
+        var dArr = dust.pts.geometry.attributes.position.array;
+        for(var dbi2 = 0; dbi2 < dust.base.length; dbi2++){
+          var db2 = dust.base[dbi2];
+          db2.r += 0.016 * db2.sp;
+          if(db2.r > dust.maxR){ db2.r = dust.minR; db2.a = Math.random() * Math.PI * 2; }
+          dArr[dbi2 * 3] = Math.cos(db2.a) * db2.r;
+          dArr[dbi2 * 3 + 1] = db2.y;
+          dArr[dbi2 * 3 + 2] = Math.sin(db2.a) * db2.r;
+        }
+        dust.pts.geometry.attributes.position.needsUpdate = true;
+      }
+    }
+    ang += (tAng - ang) * 0.06; tilt += (tTilt - tilt) * 0.06; radius += (tRadius - radius) * 0.06;
+    camEulS.set(-tilt, ang, 0);
+    camera.position.set(0, 0, radius).applyEuler(camEulS);
+    camera.up.set(0, 1, 0).applyEuler(camEulS);
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    var w = stage.clientWidth, h = stage.clientHeight;
+    var camDir = camera.position.clone().normalize(), wp = new THREE.Vector3();
+    if(surfMoons.length){
+      surfMoons.forEach(function(sm){
+        var ma2 = nowS * 0.045 + sm.off;
+        sm.anchor.position.set(Math.cos(ma2) * R * 2.05, R * 0.82 + Math.sin(nowS * 0.1 + sm.off) * 1.8, Math.sin(ma2) * R * 2.05);
+        sm.mesh.position.copy(sm.anchor.position);
+        sm.glow.position.copy(sm.anchor.position);
+        var mv = sm.anchor.position.clone();
+        if(mv.normalize().dot(camDir) < -0.28){ sm.el.style.display = "none"; return; }
+        mv.copy(sm.anchor.position).project(camera);
+        if(mv.z > 1){ sm.el.style.display = "none"; return; }
+        sm.el.style.display = "block";
+        sm.el.style.left = ((mv.x*0.5 + 0.5) * w) + "px";
+        sm.el.style.top = ((-mv.y*0.5 + 0.5) * h) + "px";
+      });
+    }
+  }
+  loop();
+  surf._stop = function(){
+    stopped = true;
+    cancelAnimationFrame(raf);
+    window.removeEventListener("resize", onResize);
+    canvas.removeEventListener("pointerdown", onDown);
+    canvas.removeEventListener("pointermove", onMove);
+    canvas.removeEventListener("pointerup", onUp);
+    canvas.removeEventListener("wheel", onWheel);
+    canvas.removeEventListener("touchmove", onTouch);
+    canvas.removeEventListener("touchend", onTouchEnd);
+    disposeScene(scene);
+  };
+}
+
 function buildSurfaceScene(c, stage){
   surfPillars = [];
   var canvas = $("#surface-canvas"), labelsBox = $("#surface-labels");
@@ -8340,7 +9159,14 @@ function buildSurfaceScene(c, stage){
      seas, dark slate lowlands, the chain's color only as a worn tint on
      the slopes, and brass — never bright gold — on the highest ground.
      The light on this world comes from its traces and towers. */
-  var deep = new THREE.Color(0x07090c), low = new THREE.Color(0x1a232e), mid = new THREE.Color(c.color).multiplyScalar(0.5).lerp(new THREE.Color(0x11161d), 0.35), peak = new THREE.Color(0x8a6a34), tmp = new THREE.Color(), dir = new THREE.Vector3();
+  /* earth-like worlds get oceans, green lowlands and snowy peaks instead of
+     the gunmetal palette (visual upgrades, 2026-11-07) */
+  var earth = !!EARTH_LIKE[c.id];
+  var deep = earth ? new THREE.Color(0x0a2a55) : new THREE.Color(0x07090c),
+      low = earth ? new THREE.Color(0x1d5c33) : new THREE.Color(0x1a232e),
+      mid = earth ? new THREE.Color(0x6b5a34) : new THREE.Color(c.color).multiplyScalar(0.5).lerp(new THREE.Color(0x11161d), 0.35),
+      peak = earth ? new THREE.Color(0xe8e8e8) : new THREE.Color(0x8a6a34),
+      tmp = new THREE.Color(), dir = new THREE.Vector3();
   for(var i = 0; i < posA.count; i++){
     dir.fromBufferAttribute(posA, i).normalize();
     var h = surfHeight(dir.x, dir.y, dir.z, seed, amp);
@@ -8354,13 +9180,13 @@ function buildSurfaceScene(c, stage){
   }
   geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
   geo.computeVertexNormals();
-  world.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors:true, flatShading:true, roughness:0.52, metalness:0.62 })));
+  world.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors:true, flatShading:true, roughness: earth ? 0.7 : 0.52, metalness: earth ? 0.15 : 0.62 })));
 
   /* atmosphere — a fresnel shell so the limb of the planet glows teal */
   var atmo = new THREE.Mesh(
     new THREE.SphereGeometry(R * 1.3, 48, 48),
     new THREE.ShaderMaterial({
-      uniforms: { uColor: { value: new THREE.Color(0x86c9e8).lerp(new THREE.Color(c.color), 0.22) } },
+      uniforms: { uColor: { value: earth ? new THREE.Color(0x3a7bd5) : new THREE.Color(0x86c9e8).lerp(new THREE.Color(c.color), 0.22) } },
       vertexShader: "varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
       fragmentShader: "varying vec3 vN; uniform vec3 uColor; void main(){ float i = pow(0.66 - dot(vN, vec3(0.0, 0.0, 1.0)), 3.2); gl_FragColor = vec4(uColor, 1.0) * i * 1.25; }",
       side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
@@ -12152,5 +12978,6 @@ initGate();
   syncRestore();
 })();
 </script>
+<script src="halex-m-phase1-chrome.js"></script>
 </body>
 </html>
