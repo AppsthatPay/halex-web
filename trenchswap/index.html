@@ -16,7 +16,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:radial-gradient(900px 500px at 50% -10%,rgba(124,58,237,.28),transparent 60%),#05030a}
 h1,h2,h3,.head{font-family:Montserrat,system-ui,sans-serif}
 button,input,select{font:inherit}
-.wrap{max-width:520px;margin:0 auto;background:var(--bg);min-height:100vh;position:relative;padding-bottom:92px;box-shadow:0 0 0 1px var(--line),0 0 80px rgba(102,45,145,.35)}
+.wrap{max-width:520px;margin:0 auto;background:var(--bg);min-height:100vh;min-height:100dvh;position:relative;padding-bottom:calc(96px + env(safe-area-inset-bottom));box-shadow:0 0 0 1px var(--line),0 0 80px rgba(102,45,145,.35)}
 /* header */
 header{position:sticky;top:0;z-index:30;background:rgba(10,6,20,.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;align-items:center;gap:10px}.brand img{width:40px;height:40px;border-radius:12px;object-fit:cover;box-shadow:0 0 18px rgba(168,85,247,.55)}
@@ -130,13 +130,13 @@ nav::-webkit-scrollbar{display:none}
 .mktrow:last-child{border-bottom:0}
 .mktrow img{width:38px;height:38px;border-radius:50%;object-fit:cover;background:var(--deep);flex:none}
 .dexform label.lbl{display:block;margin:12px 0 5px}
-nav button{background:none;border:0;color:var(--muted);font-weight:700;font-size:12px;padding:8px;cursor:pointer;border-radius:12px;flex:0 0 auto;min-width:76px;scroll-snap-align:start}
+nav button{background:none;border:0;color:var(--muted);font-weight:700;font-size:12px;padding:8px 2px;cursor:pointer;border-radius:12px;flex:1 1 0;min-width:0;scroll-snap-align:start}
 nav button .ic{font-size:20px;display:block;margin-bottom:2px}
 nav button.on{color:#fff;background:var(--deep)}
 /* overlays */
 .overlay{position:fixed;inset:0;background:rgba(5,3,10,.82);z-index:60;display:none;align-items:flex-end;justify-content:center}
 .overlay.open{display:flex}
-.sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;border:1px solid var(--line);padding:18px 16px 30px}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;max-height:92dvh;overflow:auto;border-radius:24px 24px 0 0;border:1px solid var(--line);padding:18px 16px calc(30px + env(safe-area-inset-bottom))}
 .sheet h2{margin:2px 0 6px;font-size:21px}
 .close{float:right;background:var(--raised);border:1px solid var(--line);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px}
 .socials{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.socials a,.socials span{background:var(--raised);border:1px solid var(--line);color:var(--gloss2);text-decoration:none;padding:8px 12px;border-radius:999px;font-size:13px;font-weight:700}
@@ -147,7 +147,7 @@ nav button.on{color:#fff;background:var(--deep)}
 .pickrow img{width:34px;height:34px;border-radius:50%;background:#fff;object-fit:cover}
 footer{padding:22px 16px 10px;text-align:center;color:var(--muted);font-size:13px}footer a{color:var(--gloss);font-weight:700;text-decoration:none}
 .masked .sens{font-family:"JetBrains Mono",monospace !important;letter-spacing:.05em}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;z-index:80;background:#2A1B42;border:1px solid var(--cta);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:600;display:none;max-width:92vw;text-align:center}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + env(safe-area-inset-bottom));z-index:80;background:#2A1B42;border:1px solid var(--cta);color:#fff;padding:11px 16px;border-radius:12px;font-size:13px;font-weight:600;display:none;max-width:92vw;text-align:center}
 .pinpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:260px;margin:14px auto}.pinpad button{background:var(--raised);border:1px solid var(--line);color:#fff;border-radius:50%;width:64px;height:64px;font-size:20px;font-weight:800;cursor:pointer;margin:auto}
 .dots{text-align:center;font-size:26px;letter-spacing:.4em;color:var(--cta);min-height:34px}
 iframe.browser{width:100%;height:52vh;border:1px solid var(--line);border-radius:14px;background:#fff}
@@ -156,6 +156,12 @@ iframe.browser{width:100%;height:52vh;border:1px solid var(--line);border-radius
 .qrbox .sub{color:#3A2B52}
 .chartwrap{margin-top:12px;background:linear-gradient(165deg,#1B0D33,#0A0614 72%);border:1px solid rgba(192,132,252,.3);border-radius:16px;padding:12px;box-shadow:inset 0 1px 0 rgba(243,232,255,.1),inset 0 -18px 34px rgba(102,45,145,.16),0 12px 30px rgba(0,0,0,.38);position:relative;overflow:hidden}
 .chartwrap::before{content:"";position:absolute;inset:0 0 auto 0;height:44%;background:linear-gradient(180deg,rgba(243,232,255,.07),transparent);pointer-events:none}
+#chartBox svg{filter:drop-shadow(0 12px 16px rgba(76,29,149,.42))}
+.ts-flame{transform-box:view-box;animation:tsFlamePlay 2.3s ease-in-out both}
+.ts-ember{animation:tsEmberRise 1.7s ease-out both}
+@keyframes tsFlamePlay{0%{transform:scaleY(0);opacity:0}25%{transform:scaleY(1.12);opacity:.95}55%{transform:scaleY(.92);opacity:.9}80%{transform:scaleY(.5);opacity:.5}100%{transform:scaleY(0);opacity:0}}
+@keyframes tsEmberRise{0%{transform:translateY(0);opacity:0}20%{opacity:.95}100%{transform:translateY(-16px);opacity:0}}
+@media (prefers-reduced-motion: reduce){.ts-flame,.ts-ember{display:none}}
 .chartwrap .segtabs{margin:8px 0 4px}
 .chartwrap .segtabs button{transition:background .18s ease,color .18s ease,border-color .18s ease}
 .modetabs{display:flex;gap:6px;margin:8px 0 2px}
@@ -175,7 +181,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 @media (prefers-reduced-motion: reduce){button,.token-card,.watch-card,.mktrow,.pickrow,.chartwrap .segtabs button,.modetabs button{transition:none}}
 .news-src{font-size:10px;font-weight:800;letter-spacing:.05em;padding:3px 7px;border-radius:999px;border:1px solid rgba(34,197,94,.35);background:rgba(34,197,94,.12);color:#86EFAC}
 .overlay.full{align-items:stretch}
-.sheet.fullsheet{max-height:100vh;height:100%;border-radius:0;padding:30px 18px 36px}
+.sheet.fullsheet{max-height:100vh;max-height:100dvh;height:100%;border-radius:0;padding:30px 18px 36px}
 .choice{display:block;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:16px;padding:15px;margin:10px 0;cursor:pointer}
 .choice:active{transform:scale(.99);border-color:var(--cta)}
 .choice b{font-family:Montserrat;font-size:16px;display:block}
@@ -359,17 +365,14 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
   </div>
 
   <div class="section" id="homeTrenching">
-    <div class="row" style="justify-content:space-between"><h2 style="margin:0">Trenching</h2><span class="chip grad">YOUR CALLS · THIS DEVICE</span></div>
-    <p class="sub">Your calls, under your wallet's name. Saved on this device only — these show instantly and are only yours.</p>
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0">Trenching</h2><span class="chip shared-badge">SHARED · VIA GITHUB</span></div>
+    <p class="sub" style="margin-top:6px">Shared calls from all users, read from the shared feed file. Make a call below and tap Submit once: the call goes to review, and once approved it lands here for everyone. A call needs at least $1 of the token held in your wallet.</p>
+    <div id="sharedFeedStatus" class="fee">Shared feed: loading…</div>
+    <div class="swipe" id="sharedFeed" style="margin-top:8px"></div>
+    <div class="row" style="justify-content:space-between;margin-top:18px"><h3 style="margin:0;font-size:15px">Your calls</h3><span class="chip grad">YOUR CALLS · THIS DEVICE</span></div>
+    <p class="sub" style="margin-top:6px">Your calls, under your wallet's name. Saved on this device only, these show instantly and are only yours.</p>
     <div class="swipe" id="trenchFeed" style="margin-top:4px"></div>
     <button class="btn secondary" id="trenchNewBtn" style="margin-top:10px">Call a token — Trenching</button>
-    <div style="margin-top:16px">
-      <div class="row" style="justify-content:space-between"><h3 style="margin:0;font-size:15px">Shared calls</h3><span class="chip shared-badge">SHARED · VIA GITHUB</span></div>
-      <p class="sub" style="margin-top:6px">Approved calls from all users, read from the shared GitHub file. Shared calls appear <b>after review</b> — never instantly. A call you submit goes to the review queue first.</p>
-      <div id="sharedFeedStatus" class="fee">Shared feed: loading from GitHub…</div>
-      <div class="swipe" id="sharedFeed" style="margin-top:8px"></div>
-      <div id="sharedSubmitStatus" class="fee" style="margin-top:8px"></div>
-    </div>
   </div>
   <div class="row" style="justify-content:space-between"><span class="live" id="mktLive">● LIVE FEED</span><span class="stamp" id="mktStamp">Fetching prices…</span></div>
   <div class="grid2" style="margin-top:10px">
@@ -712,20 +715,12 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <section class="tab" id="tab-info">
   <div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:20px">Settings &amp; Info</h2><span class="chip grad">🔥⚙️ FIRE GEAR</span></div>
   <div class="info-subtabs" id="infoSubtabs" role="tablist">
-    <button data-info="claim" class="on" type="button">Claim a Token</button>
+    <button data-info="language" class="on" type="button">Language</button>
+    <button data-info="claim" type="button">Claim a Token</button>
     <button data-info="rentals" type="button">🔥 Banner Spaces</button>
     <button data-info="referrals" type="button">Referrals</button>
     <button data-info="support" type="button">Support</button>
     <button data-info="blog" type="button">Blog</button>
-  </div>
-  <div class="card" style="margin-top:12px" id="infoHomeSettings">
-    <h3 style="margin:0" data-i18n="language">Language &amp; Currency</h3>
-    <p class="sub" style="margin-top:6px">Set the app language and the currency prices display in. These two settings are the front door of this tab — everything else lives in the tool menu at the top of this tab.</p>
-    <label class="lbl">APP LANGUAGE</label><select id="langSelect" style="margin-top:5px"><option value="en">English</option><option value="es">Español</option><option value="zh">中文 (Mandarin)</option><option value="ja">日本語</option><option value="pt">Português</option></select>
-    <div id="langStatus" class="fee" style="margin-top:8px"></div>
-    <label class="lbl" style="display:block;margin-top:14px">DISPLAY CURRENCY ($)</label><select id="currSelect" style="margin-top:5px"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="CNY">CNY — Chinese Yuan</option><option value="JPY">JPY — Japanese Yen</option><option value="BRL">BRL — Brazilian Real</option><option value="CAD">CAD — Canadian Dollar</option></select>
-    <div class="kv" style="margin-top:10px"><span>Rate status</span><b id="fxStatus">USD — no conversion</b></div>
-    <p class="fee" style="margin-top:6px">Currency conversion is <b>display-only</b>, using live FX rates — swaps still settle in SOL / USDC on-chain, and a converted price is never the on-chain price.</p>
   </div>
   <div class="card" style="margin-top:12px" id="infoFeesCard">
     <h3 style="margin:0">TrenchSwap Firefox — fees</h3>
@@ -735,7 +730,16 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
     <div class="kv"><span>Fees go to</span><b id="infoFeeAddr">TrenchSwap</b></div>
     <p class="fee" style="margin-top:8px">How that stacks up: Phantom's in-app swap fee is 0.85%. Solflare publishes no platform fee of its own. TrenchSwap's total is the one line shown on every swap before you confirm — tap “Show me the fee breakdown” there for the full split.</p>
   </div>
-  <div class="info-pane on card" id="info-claim">
+  <div class="info-pane on card" id="info-language">
+    <h3 style="margin:0" data-i18n="language">Language &amp; Currency</h3>
+    <p class="sub" style="margin-top:6px">These are the language and display currency settings, shown under this Language subtab. Set the app language and the currency prices display in.</p>
+    <label class="lbl">APP LANGUAGE</label><select id="langSelect" style="margin-top:5px"><option value="en">English</option><option value="es">Español</option><option value="zh">中文 (Mandarin)</option><option value="ja">日本語</option><option value="pt">Português</option></select>
+    <div id="langStatus" class="fee" style="margin-top:8px"></div>
+    <label class="lbl" style="display:block;margin-top:14px">DISPLAY CURRENCY ($)</label><select id="currSelect" style="margin-top:5px"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="CNY">CNY — Chinese Yuan</option><option value="JPY">JPY — Japanese Yen</option><option value="BRL">BRL — Brazilian Real</option><option value="CAD">CAD — Canadian Dollar</option></select>
+    <div class="kv" style="margin-top:10px"><span>Rate status</span><b id="fxStatus">USD — no conversion</b></div>
+    <p class="fee" style="margin-top:6px">Currency conversion is <b>display-only</b>, using live FX rates — swaps still settle in SOL / USDC on-chain, and a converted price is never the on-chain price.</p>
+  </div>
+  <div class="info-pane card" id="info-claim">
     <h3 style="margin:0">Claim a Token — build its Token Page</h3>
     <p class="sub" style="margin-top:6px">Token creators: prove the token is yours and build its Token Page — the dressed-up page with your description, links and info boxes that everyone sees when they tap your token. Unclaimed tokens keep the plain report.</p>
     <p class="sub">How it works: the app generates one <b>random USDC amount</b>. You send exactly that amount, from the wallet that created the token, to the TrenchSwap fee wallet. That one payment is the whole fee — it is the proof and the payment in one. The app verifies the payment on-chain (exact amount, creator wallet, inside a 30-minute window), and only then does the page editor open. Wrong wallet or wrong amount: no page, and there is no automatic refund — contact support and it is decided case by case.</p>
@@ -839,7 +843,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <div class="overlay" id="reportOverlay"><div class="sheet"><button class="close" data-close="reportOverlay">✕</button><div id="reportBody"><p class="sub">Loading report…</p></div></div></div>
 <!-- Trenching composer -->
 <div class="overlay" id="trenchOverlay"><div class="sheet"><button class="close" data-close="trenchOverlay">✕</button><h2>Call a token — Trenching</h2>
-<p class="sub">Posts to Trenching on Home as <b id="trenchAs">—</b>. Your call saves on this device and shows instantly under YOUR CALLS. To share it with everyone, submit it for review below after posting — shared calls appear for everyone only after approval, never instantly.</p>
+<p class="sub">Posts to Trenching on Home as <b id="trenchAs">—</b>. One tap on Submit does it all: your call saves under YOUR CALLS on this device and goes to review in the same action. Once approved, it appears in Shared calls at the top of Trenching for everyone. You must hold at least $1 worth of the token in your wallet to call it.</p>
 <div id="trenchPicked" style="display:none"></div>
 <div id="trenchPickTools">
 <label class="lbl">TOKEN — PASTE A MINT ADDRESS</label>
@@ -850,7 +854,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <label class="lbl" style="display:block;margin-top:12px">YOUR CALL — 140 CHARACTERS MAX</label>
 <textarea id="trenchText" rows="3" maxlength="140" placeholder="Man get in the trenches, this token is cooking, I'm digging green candles!" style="margin-top:5px"></textarea>
 <div class="row" style="justify-content:space-between;margin-top:4px"><span class="fee">Posts as “<span id="trenchAs2"></span> says: …”</span><span class="fee" id="trenchCount">0 / 140</span></div>
-<button class="btn" id="trenchPostBtn" style="margin-top:10px">Post call to Trenching</button>
+<button class="btn" id="trenchPostBtn" style="margin-top:10px">Submit call</button>
 <div id="trenchStatus" class="fee" style="margin-top:8px"></div>
 </div></div>
 <!-- Token picker -->
@@ -3138,7 +3142,7 @@ function openReport(mint,knownPair){
    '<div class="row">'+imgTag(info.imageUrl,p.baseToken.symbol,'style="width:64px;height:64px;border-radius:16px"',mint)+'<div><h2 style="margin:0">'+escapeHtml(p.baseToken.name||"")+'</h2><div class="fee">$'+escapeHtml(p.baseToken.symbol||"")+' · '+escapeHtml(p.dexId||"")+' / '+escapeHtml((p.labels||[]).join(", ")||"")+'</div></div></div>'
    +'<div class="row" style="margin-top:10px;gap:10px"><span style="font-size:24px;font-weight:800" class="head">'+dispPrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)+'</span>'+pctHtml(p.priceChange&&p.priceChange.h24)+'</div>'
    +((typeof fireBadgeHtml==="function"&&(fireBadgeHtml(mint)||tnTagHtml(mint)))?'<div class="row" style="margin-top:8px;gap:8px">'+fireBadgeHtml(mint)+tnTagHtml(mint)+'</div>':"")
-   +(p.pairAddress?'<div class="chartwrap"><div class="row" style="justify-content:space-between"><span class="lbl">TRENCHPEX CHART — RENDERED BY TRENCHSWAP</span><span class="stamp" id="chartStamp">Chart: loading…</span></div><div class="segtabs" id="chartTabs"><button data-tf="1s">1s</button><button data-tf="1m">1m</button><button data-tf="5m">5m</button><button data-tf="15m">15m</button><button data-tf="1h" class="on">1h</button><button data-tf="4h">4h</button><button data-tf="D">D</button></div><div class="modetabs" id="chartModeTabs"><button data-mode="candles" class="on">Candles</button><button data-mode="line">Line</button><button data-mode="replay">Replay 1h</button></div><div id="chartBox"><p class="sub" style="padding:12px 4px">Loading live candles…</p></div><div class="replaybar" id="replayBar" style="display:none"><div class="row"><button class="btn small" id="replayPlay" style="width:auto;min-width:96px">▶ Play</button><input type="range" id="replayScrub" min="0" max="0" value="0" step="1" aria-label="Replay position"><select id="replaySpeed" aria-label="Replay speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></div><p class="fee" id="replayStatus" style="margin-top:6px">Replay loads the real trades from the last hour on this pool — every trade shown is real.</p></div></div>':'<p class="fee" style="margin-top:10px">Chart: NOT READ — no pair address for this token.</p>')
+   +(p.pairAddress?'<div class="chartwrap"><div class="row" style="justify-content:space-between"><span class="lbl">TRENCHPEX CHART — RENDERED BY TRENCHSWAP</span><span class="stamp" id="chartStamp">Chart: loading…</span></div><div class="segtabs" id="chartTabs"><button data-tf="1s">1s</button><button data-tf="1m">1m</button><button data-tf="5m">5m</button><button data-tf="15m">15m</button><button data-tf="1h" class="on">1h</button><button data-tf="4h">4h</button><button data-tf="D">D</button></div><div class="modetabs" id="chartModeTabs"><button data-mode="candles" class="on">Candles</button><button data-mode="line">Line</button><button data-mode="trenchart">TrenChART</button><button data-mode="replay">Replay 1h</button></div><div id="chartBox"><p class="sub" style="padding:12px 4px">Loading live candles…</p></div><div class="replaybar" id="replayBar" style="display:none"><div class="row"><button class="btn small" id="replayPlay" style="width:auto;min-width:96px">▶ Play</button><input type="range" id="replayScrub" min="0" max="0" value="0" step="1" aria-label="Replay position"><select id="replaySpeed" aria-label="Replay speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></div><p class="fee" id="replayStatus" style="margin-top:6px">Replay loads the real trades from the last hour on this pool — every trade shown is real.</p></div></div>':'<p class="fee" style="margin-top:10px">Chart: NOT READ — no pair address for this token.</p>')
    +'<div class="socials">'+socHtml+'</div>'
    +'<div id="reportTokenPage"></div>'
    +'<div class="mono" style="color:var(--muted)">'+mint+'</div>'
@@ -3167,7 +3171,7 @@ function openReport(mint,knownPair){
    +'<button class="btn secondary" id="reportCallBtn" style="margin-top:8px">Call this token — Trenching</button>'
    +'<button class="btn ghost" id="reportClaimBtn" style="margin-top:8px">Claim this token</button>';
   var sym=p.baseToken.symbol,name=p.baseToken.name;
-  if(p.pairAddress){stopReplay();state.chart={pair:p.pairAddress,mint:mint,tf:"1h",mode:"candles",trades:null};
+  if(p.pairAddress){stopReplay();stopTickLine();state.chart={pair:p.pairAddress,mint:mint,tf:"1h",mode:"candles",trades:null};
    document.querySelectorAll("#chartTabs button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x===b)});state.chart.tf=b.dataset.tf;if(state.chart.mode==="replay"){setChartMode("candles")}else{fetchChart()}})});
    document.querySelectorAll("#chartModeTabs button").forEach(function(b){b.addEventListener("click",function(){setChartMode(b.dataset.mode)})});
    $("replayPlay").addEventListener("click",toggleReplayPlay);
@@ -3208,45 +3212,152 @@ function setChartMode(mode){
  if(!state.chart)return;state.chart.mode=mode;
  document.querySelectorAll("#chartModeTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.mode===mode)});
  var bar=$("replayBar");if(bar)bar.style.display=mode==="replay"?"block":"none";
- if(mode==="replay"){enterReplay()}else{pauseReplay();fetchChart()}}
+ if(mode==="replay"){stopTickLine();enterReplay()}else{pauseReplay();fetchChart()}}
 var TF_ORDER=["1m","5m","15m","1h","4h","D"];
+var TF_BUCKET={"1m":"minute","5m":"5 minutes","15m":"15 minutes","1h":"hour","4h":"4 hours","D":"day"};
+/* Phase 0 chart data layer: a fixed candle COUNT per timeframe (100), so the
+   window scales with the timeframe (15m covers about a day, 1h about 4 days,
+   D about 100 days). The last good OHLCV per pair + timeframe is cached in
+   memory and in localStorage; a render shows the cache first with its
+   timestamp and the live fetch only refreshes it in the background. A failed
+   refresh never blanks a chart that already rendered. Concurrent fetches per
+   pair + timeframe are deduped, and retries are capped at 2 with backoff. */
+var CHART_LIMIT=100;
+var ohlcvMem={},ohlcvInflight={};
+function ohlcvKey(pair,tf){return pair+"|"+tf}
+function ohlcvCacheGet(pair,tf){var k=ohlcvKey(pair,tf);if(ohlcvMem[k]&&ohlcvMem[k].c&&ohlcvMem[k].c.length)return ohlcvMem[k];try{var raw=localStorage.getItem("trenchswap.ohlcv."+k);if(raw){var o=JSON.parse(raw);if(o&&o.c&&o.c.length){ohlcvMem[k]=o;return o}}}catch(e){}return null}
+function ohlcvCachePut(pair,tf,candles){var o={c:candles,at:Date.now()};ohlcvMem[ohlcvKey(pair,tf)]=o;try{localStorage.setItem("trenchswap.ohlcv."+ohlcvKey(pair,tf),JSON.stringify(o))}catch(e){}}
+function ohlcvFetch(pair,tf){
+ var k=ohlcvKey(pair,tf);
+ if(ohlcvInflight[k])return ohlcvInflight[k];
+ var m=TF_MAP[tf];if(!m)return Promise.resolve(null);
+ var url="https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/ohlcv/"+m[0]+"?aggregate="+m[1]+"&limit="+CHART_LIMIT;
+ var p=fetchWithRetry(url,2).then(function(d){
+  var list=d&&d.data&&d.data.attributes&&d.data.attributes.ohlcv_list;
+  if(!list||!list.length)return[];
+  list=list.slice().sort(function(a,b){return a[0]-b[0]});
+  ohlcvCachePut(pair,tf,list);
+  return list}).catch(function(){return null});
+ ohlcvInflight[k]=p;
+ p.then(function(){if(ohlcvInflight[k]===p)delete ohlcvInflight[k]});
+ return p}
 function fetchChart(){
  var box=$("chartBox");if(!box||!state.chart||state.chart.mode==="replay")return;
- var tf=state.chart.tf;
- if(tf==="1s"){chartStampSet("Chart: 1s NOT READ");box.innerHTML='<p class="sub" style="padding:14px 4px">1-second chart data: NOT READ \u2014 the free live OHLCV source gates sub-minute data. Pick 1m or longer for a live chart on this pair, or use Replay 1h for trade-by-trade action.</p>';return}
- var m=TF_MAP[tf];if(!m)return;
- chartStampSet("Chart: loading "+tf+"…");
- box.innerHTML='<p class="sub" style="padding:14px 4px">Loading live candles\u2026</p>';
- var pair=state.chart.pair;
- fetchWithRetry("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/ohlcv/"+m[0]+"?aggregate="+m[1]+"&limit=120",3).then(function(d){
-  var list=d&&d.data&&d.data.attributes&&d.data.attributes.ohlcv_list;
-  if(!list||!list.length){return fallbackTf(tf,pair)}
-  list=list.slice().sort(function(a,b){return a[0]-b[0]});
-  if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pair)return;
-  state.chart.candles=list;state.chart.shownTf=tf;
-  drawChart(box,list,tf);
- }).catch(function(){if(!state.chart||state.chart.mode==="replay")return;chartStampSet("Chart: NOT READ");box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ \u2014 the live OHLCV source did not answer after retries. Try again, or pick another timeframe.</p>'});
- function fallbackTf(want,pairAddr){
-  /* The selected timeframe has no candles on this pair — try the nearest timeframes
-     that do, and say so plainly in the header and above the chart. */
-  var idx=TF_ORDER.indexOf(want);
-  var cands=TF_ORDER.slice().sort(function(a,b){return Math.abs(TF_ORDER.indexOf(a)-idx)-Math.abs(TF_ORDER.indexOf(b)-idx)}).filter(function(x){return x!==want});
-  var ci=0;
-  function next(){
-   if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
-   if(ci>=cands.length){chartStampSet("Chart: NOT READ");box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ \u2014 no live candles on any timeframe for this pair right now.</p>';return}
-   var tf2=cands[ci++];var m2=TF_MAP[tf2];
-   fetchWithRetry("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pairAddr)+"/ohlcv/"+m2[0]+"?aggregate="+m2[1]+"&limit=120",2).then(function(d2){
-    var l2=d2&&d2.data&&d2.data.attributes&&d2.data.attributes.ohlcv_list;
-    if(!l2||!l2.length){next();return}
-    if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
-    l2=l2.slice().sort(function(a,b){return a[0]-b[0]});
-    state.chart.candles=l2;state.chart.shownTf=tf2;
-    drawChart(box,l2,tf2);
-    box.insertAdjacentHTML("afterbegin",'<p class="fee" style="padding:2px 4px 8px">No '+want+' candles for this pair — showing '+tf2+' instead.</p>');
-    chartStampSet((state.chart.mode==="line"?"Line":"Candles")+": GeckoTerminal (live) \u00b7 showing "+tf2+" (no "+want+" candles) \u00b7 rendered "+new Date().toLocaleTimeString());
-   }).catch(function(){next()})}
-  next()}}
+ stopTickLine();
+ var tf=state.chart.tf,pair=state.chart.pair;
+ if(tf==="1s"){startTickLine();return}
+ if(!TF_MAP[tf])return;
+ var cached=ohlcvCacheGet(pair,tf);
+ if(cached&&cached.c.length>=2){
+  state.chart.candles=cached.c;state.chart.shownTf=tf;
+  drawChart(box,cached.c,tf);
+  chartStampSet(chartModeWord()+": cached "+tf+" candles, saved "+new Date(cached.at).toLocaleTimeString()+" - refreshing live…");
+ }else{
+  chartStampSet("Chart: loading "+tf+"…");
+  box.innerHTML='<p class="sub" style="padding:14px 4px">Loading live candles…</p>';
+ }
+ refreshChart(pair,tf,!!(cached&&cached.c.length>=2))}
+function refreshChart(pair,tf,hadCache){
+ ohlcvFetch(pair,tf).then(function(list){
+  if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pair||state.chart.tf!==tf)return;
+  var box=$("chartBox");if(!box)return;
+  if(list===null){
+   /* The refresh failed. A chart that already rendered stays exactly as it
+      is, with its cached timestamp; only a chart with nothing to show
+      reports NOT READ. */
+   if(hadCache){var c=ohlcvCacheGet(pair,tf);chartStampSet(chartModeWord()+": refresh did not answer - showing cached "+tf+" candles, saved "+(c?new Date(c.at).toLocaleTimeString():"earlier")+".")}
+   else{chartStampSet("Chart: NOT READ");box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ - the live OHLCV source did not answer after retries, and no cached candles exist for this pair yet. Try again, or pick another timeframe.</p>'}
+   return}
+  if(list.length>=2){
+   state.chart.candles=list;state.chart.shownTf=tf;
+   drawChart(box,list,tf);return}
+  /* No completed candles at this timeframe (the pair is younger than one
+     bucket): fall back to the finest timeframe that has at least 2 closes. */
+  fallbackTf(tf,pair,list.length?list:null)})}
+function fallbackTf(want,pairAddr,partial){
+ var order=TF_ORDER.filter(function(x){return x!==want});
+ var ci=0;
+ function fbNote(tf2){return want+" candles start after the first full "+TF_BUCKET[want]+" - showing "+tf2+" "+(state.chart.mode==="candles"?"candles":"line")+"."}
+ function useCandles(tf2,list,note){
+  if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
+  var box=$("chartBox");if(!box)return;
+  state.chart.candles=list;state.chart.shownTf=tf2;
+  drawChart(box,list,tf2);
+  box.insertAdjacentHTML("afterbegin",'<p class="fee" style="padding:2px 4px 8px">'+escapeHtml(note)+'</p>');
+  chartStampSet(chartModeWord()+": GeckoTerminal (live) - showing "+tf2+" (no completed "+want+" candles yet) - rendered "+new Date().toLocaleTimeString())}
+ function next(){
+  if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
+  if(ci>=order.length){
+   if(partial&&partial.length){useCandles(want,partial,"Only one "+want+" candle exists so far - this pair is brand new.");return}
+   chartStampSet("Chart: NOT READ");var box=$("chartBox");if(box)box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ - no candles on any timeframe for this pair right now.</p>';return}
+  var tf2=order[ci++];
+  var cached2=ohlcvCacheGet(pairAddr,tf2);
+  if(cached2&&cached2.c.length>=2){useCandles(tf2,cached2.c,fbNote(tf2));return}
+  ohlcvFetch(pairAddr,tf2).then(function(l2){
+   if(l2&&l2.length>=2)useCandles(tf2,l2,fbNote(tf2));
+   else next()})}
+ next()}
+/* ---------- 1s view: a live tick line, not a candle ----------
+   DexScreener pair price polled once a second; Jupiter Price v3 read every
+   2 seconds as a cross-check and shown in the stamp. If the tick line
+   cannot start, the view says why - it never pretends a 1s candle exists. */
+function stopTickLine(){
+ if(!state.chart)return;
+ if(state.chart.tickTimer){clearInterval(state.chart.tickTimer);state.chart.tickTimer=null}
+ if(state.chart.jupTimer){clearInterval(state.chart.jupTimer);state.chart.jupTimer=null}}
+function startTickLine(){
+ var box=$("chartBox");if(!box||!state.chart)return;
+ stopTickLine();
+ var pair=state.chart.pair,mint=state.chart.mint;
+ state.chart.ticks=[];state.chart.jupPx=null;
+ chartStampSet("Live tick line: starting…");
+ box.innerHTML='<p class="sub" style="padding:14px 4px">Starting the live tick line - one price read a second…</p>';
+ var fails=0;
+ function tick(){
+  if(!state.chart||state.chart.pair!==pair||state.chart.tf!=="1s"||state.chart.mode==="replay"){stopTickLine();return}
+  fetch("https://api.dexscreener.com/latest/dex/pairs/solana/"+encodeURIComponent(pair)).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(function(d){
+   var pr=d&&(d.pair||(d.pairs&&d.pairs[0]));var px=pr?Number(pr.priceUsd):NaN;
+   if(!isFinite(px)||!(px>0))throw new Error("no price");
+   fails=0;
+   if(!state.chart||state.chart.pair!==pair)return;
+   var tks=state.chart.ticks||(state.chart.ticks=[]);
+   tks.push({t:Date.now()/1000,p:px});
+   if(tks.length>240)tks.splice(0,tks.length-240);
+   var b2=$("chartBox");if(b2)drawTickChart(b2);
+  }).catch(function(){
+   fails++;
+   if(!state.chart||state.chart.pair!==pair)return;
+   if(fails===3)chartStampSet("Live tick line: the price source is not answering - retrying…");
+   if(fails>=8){stopTickLine();chartStampSet("Live tick line could not start");var b3=$("chartBox");if(b3)b3.innerHTML='<p class="sub" style="padding:14px 4px">The live tick line could not start: DexScreener did not answer after several tries, so there is no live price to draw. This view never invents a 1s candle. Pick 1m or longer above, or reopen the report to try again.</p>'}})}
+ function jupTick(){
+  if(!state.chart||state.chart.pair!==pair||state.chart.tf!=="1s")return;
+  fetch("https://api.jup.ag/price/v3?ids="+encodeURIComponent(mint)).then(function(r){return r.json()}).then(function(d){
+   var row=d&&(d[mint]||(d.data&&d.data[mint]));var px=row?Number(row.usdPrice!=null?row.usdPrice:row.price):NaN;
+   if(isFinite(px)&&px>0&&state.chart&&state.chart.pair===pair)state.chart.jupPx=px;
+  }).catch(function(){})}
+ tick();jupTick();
+ state.chart.tickTimer=setInterval(tick,1000);
+ state.chart.jupTimer=setInterval(jupTick,2000)}
+function drawTickChart(box){
+ var tks=state.chart&&state.chart.ticks;if(!tks||!tks.length)return;
+ var list=tks.map(function(x){return[x.t,x.p,x.p,x.p,x.p,0]});
+ var g=chartGeom(list);
+ function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
+ var n=list.length,i;
+ var s=chartHead(g,"1s","LIVE TICKS",list);
+ s+='<defs><linearGradient id="tsLineFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A855F7" stop-opacity="0.42"/><stop offset="1" stop-color="#A855F7" stop-opacity="0.02"/></linearGradient><linearGradient id="tsLineStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C3AED"/><stop offset="0.55" stop-color="#C084FC"/><stop offset="1" stop-color="#F3E8FF"/></linearGradient></defs>';
+ var pts=[];
+ for(i=0;i<n;i++){var x=n===1?g.plotW/2:i/(n-1)*g.plotW;pts.push([x,Y(tks[i].p)])}
+ var line=smoothPath(pts);
+ if(n>1){
+  s+='<path d="'+line+'" transform="translate(0,3)" fill="none" stroke="rgba(38,10,74,.55)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>';
+  s+='<path d="'+line+' L'+pts[n-1][0].toFixed(1)+' '+g.priceH+' L'+pts[0][0].toFixed(1)+' '+g.priceH+' Z" fill="url(#tsLineFill)" stroke="none"/>';
+  s+='<path d="'+line+'" fill="none" stroke="url(#tsLineStroke)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'}
+ s+='<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="3.5" fill="#FFFFFF" stroke="#A855F7" stroke-width="2"/>';
+ s+=chartTail(g,"1s",list,list[n-1][4]);
+ box.innerHTML=s;
+ var jup=state.chart.jupPx;
+ chartStampSet("Live tick line: DexScreener 1s - "+tks.length+" tick"+(tks.length===1?"":"s")+(jup?" - Jupiter cross-check "+chartPriceFmt(jup):"")+" - "+new Date().toLocaleTimeString())}
 function chartGeom(list){
  var W=340,H=252,axisW=56,plotW=W-axisW,priceH=184,volTop=priceH+16,volH=32;
  var min=Infinity,max=-Infinity,vmax=0,i,c;
@@ -3269,18 +3380,21 @@ function chartTail(g,tf,list,last){
  s+='<text x="'+g.plotW+'" y="'+(g.H-4)+'" fill="#C9BCE8" font-size="9.5" font-family="monospace" text-anchor="end">'+escapeHtml(tLbl(list[list.length-1][0]))+'</text>';
  return s+'</svg>'}
 function chartStampSet(txt){var st=$("chartStamp");if(st)st.textContent=txt}
+function chartModeWord(){if(!state.chart)return"Candles";return state.chart.mode==="line"?"Line":state.chart.mode==="trenchart"?"TrenChART":"Candles"}
 function drawChart(box,list,tf){
  if(state.chart&&state.chart.mode==="line"){drawLineChart(box,list,tf);return}
+ if(state.chart&&state.chart.mode==="trenchart"){drawTrenchChart(box,list,tf);return}
  var g=chartGeom(list);
  function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
  var n=list.length,step=g.plotW/n,bw=Math.max(1,Math.floor(step*0.62)),i,c;
  var s=chartHead(g,tf,"CANDLES",list);
- for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;var up=c[4]>=c[1];var col=up?"#B45CF7":"#7C3AED";var wick=up?"#E9D5FF":"#B794F6";
+ s+='<defs><filter id="tsCandleGlow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2.5" stdDeviation="2" flood-color="#4C1D95" flood-opacity="0.55"/></filter><linearGradient id="tsCandleUp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8B4FE"/><stop offset="0.45" stop-color="#B45CF7"/><stop offset="1" stop-color="#7C3AED"/></linearGradient><linearGradient id="tsCandleDn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A855F7"/><stop offset="1" stop-color="#4C1D95"/></linearGradient></defs>';
+ for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;var up=c[4]>=c[1];var col=up?"url(#tsCandleUp)":"url(#tsCandleDn)";var edge=up?"#22C55E":"#EF4444";
   var vh=g.vmax?c[5]/g.vmax*g.volH:0;
-  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+col+'" opacity="0.7"/>';
-  s+='<line x1="'+x.toFixed(1)+'" y1="'+Y(c[2]).toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+Y(c[3]).toFixed(1)+'" stroke="'+wick+'" stroke-width="1"/>';
+  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.7"/>';
+  s+='<line x1="'+x.toFixed(1)+'" y1="'+Y(c[2]).toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+Y(c[3]).toFixed(1)+'" stroke="'+edge+'" stroke-width="1.2"/>';
   var yO=Y(c[1]),yC=Y(c[4]);var top=Math.min(yO,yC),hgt=Math.max(1,Math.abs(yC-yO));
-  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw+'" height="'+hgt.toFixed(1)+'" fill="'+col+'" stroke="'+wick+'" stroke-width="0.5"/>'}
+  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw+'" height="'+hgt.toFixed(1)+'" fill="'+col+'" stroke="'+edge+'" stroke-width="1.4" filter="url(#tsCandleGlow)"/>'}
  s+=chartTail(g,tf,list,list[n-1][4]);
  box.innerHTML=s;
  chartStampSet("Candles: GeckoTerminal (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString())}
@@ -3301,12 +3415,65 @@ function drawLineChart(box,list,tf){
   var vh=g.vmax?c[5]/g.vmax*g.volH:0;var up=c[4]>=c[1];
   s+='<rect x="'+(x-Math.max(1,Math.floor(step*0.62))/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+Math.max(1,Math.floor(step*0.62))+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.6"/>'}
  var line=smoothPath(pts);
+ s+='<path d="'+line+'" transform="translate(0,3)" fill="none" stroke="rgba(38,10,74,.5)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>';
  s+='<path d="'+line+' L'+pts[n-1][0].toFixed(1)+' '+g.priceH+' L'+pts[0][0].toFixed(1)+' '+g.priceH+' Z" fill="url(#tsLineFill)" stroke="none"/>';
  s+='<path d="'+line+'" fill="none" stroke="url(#tsLineStroke)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
  s+='<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="3.5" fill="#FFFFFF" stroke="#A855F7" stroke-width="2"/>';
  s+=chartTail(g,tf,list,list[n-1][4]);
  box.innerHTML=s;
  chartStampSet("Line: GeckoTerminal closes (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString())}
+/* ---------- TrenChART: the Line chart played as purple flames ----------
+   Same OHLCV closes, same points, same glossy line as Line mode (identical
+   path math, so the settled chart is the true line chart). On top, one
+   flame tongue per sampled point plays for about 2.3 seconds: every flame
+   tip sits exactly on its real price point, the bodies trail down into the
+   deep purple fill, the points nearest the window high burn orange, a few
+   embers lift off, then the flames settle away and only the line rests.
+   Tapping the chart replays the flames. Presentation only: the line itself
+   never changes shape, and no data source beyond Line mode's is used. */
+function drawTrenchChart(box,list,tf){
+ var g=chartGeom(list);
+ function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
+ var n=list.length,step=g.plotW/n,i,c;
+ var s=chartHead(g,tf,"TRENCHART",list);
+ s+='<defs><linearGradient id="tsFireFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C3AED" stop-opacity="0.6"/><stop offset="0.55" stop-color="#A855F7" stop-opacity="0.28"/><stop offset="1" stop-color="#A855F7" stop-opacity="0.03"/></linearGradient><linearGradient id="tsLineStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C3AED"/><stop offset="0.55" stop-color="#C084FC"/><stop offset="1" stop-color="#F3E8FF"/></linearGradient><linearGradient id="tsFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E8FF"/><stop offset="0.35" stop-color="#C084FC"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0.25"/></linearGradient><linearGradient id="tsFlameHot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF7ED"/><stop offset="0.3" stop-color="#FDBA74"/><stop offset="0.62" stop-color="#F97316"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0.3"/></linearGradient></defs>';
+ var pts=[],hiIdx=0;
+ for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;pts.push([x,Y(c[4])]);
+  if(c[4]>list[hiIdx][4])hiIdx=i;
+  var vh=g.vmax?c[5]/g.vmax*g.volH:0;var up=c[4]>=c[1];
+  s+='<rect x="'+(x-Math.max(1,Math.floor(step*0.62))/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+Math.max(1,Math.floor(step*0.62))+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.6"/>'}
+ var line=smoothPath(pts);
+ s+='<path d="'+line+'" transform="translate(0,3)" fill="none" stroke="rgba(38,10,74,.5)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>';
+ s+='<path d="'+line+' L'+pts[n-1][0].toFixed(1)+' '+g.priceH+' L'+pts[0][0].toFixed(1)+' '+g.priceH+' Z" fill="url(#tsFireFill)" stroke="none"/>';
+ var stride=Math.max(1,Math.ceil(n/36));
+ var range=(g.max-g.min)||1;
+ for(i=0;i<n;i+=stride){
+  var px=pts[i][0],py=pts[i][1],close=list[i][4];
+  var frac=Math.max(0,Math.min(1,(close-g.min)/range));
+  var hot=close>=list[hiIdx][4]*0.999||frac>0.92;
+  var h=12+frac*30+((i*37)%10)*0.7;
+  var w=Math.max(2.2,Math.min(6,step*stride*0.42));
+  var d='M'+px.toFixed(1)+' '+py.toFixed(1)+' C'+(px+w*0.85).toFixed(1)+' '+(py+h*0.35).toFixed(1)+' '+(px+w*0.45).toFixed(1)+' '+(py+h*0.78).toFixed(1)+' '+px.toFixed(1)+' '+(py+h).toFixed(1)+' C'+(px-w*0.45).toFixed(1)+' '+(py+h*0.78).toFixed(1)+' '+(px-w*0.85).toFixed(1)+' '+(py+h*0.35).toFixed(1)+' '+px.toFixed(1)+' '+py.toFixed(1)+' Z';
+  s+='<path class="ts-flame" d="'+d+'" fill="url(#'+(hot?"tsFlameHot":"tsFlame")+'" style="transform-origin:'+px.toFixed(1)+'px '+py.toFixed(1)+'px;animation-delay:'+Math.min(700,i*14)+'ms"/>';
+  if(i%(stride*3)===0)s+='<circle class="ts-ember" cx="'+px.toFixed(1)+'" cy="'+(py-2).toFixed(1)+'" r="1.3" fill="'+(hot?"#FDBA74":"#E9D5FF")+'" style="animation-delay:'+(200+((i*53)%600))+'ms"/>'}
+ s+='<path d="'+line+'" fill="none" stroke="url(#tsLineStroke)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+ var hx=pts[hiIdx][0],hy=pts[hiIdx][1],hv=list[hiIdx][4];
+ var lbl="High "+chartPriceFmt(hv);
+ var tw=lbl.length*5.9+12;
+ var lx=Math.max(2,Math.min(g.plotW-tw-2,hx-tw/2));
+ var ly=hy-24;if(ly<2)ly=hy+10;
+ s+='<circle cx="'+hx.toFixed(1)+'" cy="'+hy.toFixed(1)+'" r="3.6" fill="#F97316" stroke="#FFF7ED" stroke-width="1.4"/>';
+ s+='<rect x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" width="'+tw.toFixed(1)+'" height="15" rx="7.5" fill="rgba(24,8,46,.88)" stroke="rgba(249,115,22,.65)"/>';
+ s+='<text x="'+(lx+tw/2).toFixed(1)+'" y="'+(ly+11).toFixed(1)+'" fill="#FED7AA" font-size="9.5" font-weight="bold" font-family="monospace" text-anchor="middle">'+escapeHtml(lbl)+'</text>';
+ s+='<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="3.5" fill="#FFFFFF" stroke="#A855F7" stroke-width="2"/>';
+ s+=chartTail(g,tf,list,list[n-1][4]);
+ box.innerHTML=s;
+ chartStampSet("TrenChART: GeckoTerminal closes (live) · "+tf+" · rendered "+new Date().toLocaleTimeString())}
+document.addEventListener("click",function(e){
+ if(!state.chart||state.chart.mode!=="trenchart"||!state.chart.candles||!state.chart.candles.length)return;
+ var t=e.target;if(!t||!t.closest)return;
+ var box=t.closest("#chartBox");if(!box)return;
+ drawTrenchChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)});
 /* ---------- 1-hour trade replay: real trades only (GeckoTerminal pool trades) ---------- */
 function replayStatus(txt){var el=$("replayStatus");if(el)el.textContent=txt}
 function pauseReplay(){
@@ -3785,15 +3952,51 @@ $("trenchResolveBtn").addEventListener("click",function(){
  }).catch(function(){st.textContent="Lookup failed — the token source did not answer. Try again."})});
 $("trenchMint").addEventListener("keydown",function(e){if(e.key==="Enter")$("trenchResolveBtn").click()});
 $("trenchText").addEventListener("input",function(){$("trenchCount").textContent=this.value.length+" / 140"});
+/* $1 HOLDING GATE: a call may only go out when the active wallet holds at
+   least $1 worth of the token, checked at submit time against a fresh
+   on-chain snapshot (the same read the Wallet tab uses). If the holding,
+   the price, or the snapshot itself cannot be read, the check does not
+   pass and the call does not go out. */
+function checkCallHolding(t){
+ var w=activeWalletObj();
+ if(!w||!walletIsReal(w))return Promise.resolve({ok:false,msg:"No wallet is set up on this device. Create or import a wallet and hold at least $1 of the token before calling it."});
+ function evaluate(){
+  var amt=null;
+  if(t.mint===SOL_MINT&&w.chain&&w.chain.SOL!=null)amt=Number(w.chain.SOL);
+  else if(w.chainMints&&w.chainMints[t.mint]!=null)amt=Number(w.chainMints[t.mint]);
+  else{var h=(w.holdings||[]).filter(function(x){return x.mint===t.mint})[0];amt=h?Number(h.amount||0):null}
+  if(amt==null){
+   if(w.chainStatus==="ok")amt=0;
+   else return{ok:false,msg:"Your wallet balance for this token could not be read yet. Open the Wallet tab, let the balances finish reading, then submit again."}}
+  if(!(amt>0))return{ok:false,msg:"Calls need at least $1 of the token held in your wallet. Your wallet holds none of $"+(t.symbol||"this token")+" right now, so this call cannot go out. Buy at least $1 worth first, then call it."};
+  var px=livePriceForMint(t.mint,t.symbol)||usdPriceOf({mint:t.mint,symbol:t.symbol||""});
+  if(px==null)return{ok:false,msg:"A live price for $"+(t.symbol||"this token")+" could not be read, so the $1 holding check cannot pass yet. Try again in a moment."};
+  var usd=amt*px;
+  if(usd<1)return{ok:false,msg:"Calls need at least $1 of the token held. Your wallet holds about "+fmt$(usd)+" of $"+(t.symbol||"this token")+" (live wallet snapshot, "+new Date(w.chainAt||Date.now()).toLocaleTimeString()+"). Top up to $1 or more, then submit."};
+  return{ok:true,detail:"about "+fmt$(usd)+" of $"+(t.symbol||"")+" held"}}
+ return refreshBalances("callout holding check").then(function(){
+  if(w.chainStatus==="loading"){
+   return new Promise(function(res){var n=0;var iv=setInterval(function(){n++;if(w.chainStatus!=="loading"||n>=24){clearInterval(iv);res(evaluate())}},500)})}
+  return evaluate()})}
 $("trenchPostBtn").addEventListener("click",function(){
  var st=$("trenchStatus");var t=state.trenchPick;var txt=$("trenchText").value.trim().slice(0,140);
- if(!t){st.textContent="Pick or paste a token first — a call needs a token.";return}
- if(!txt){st.textContent="Write your call first — a few words on why this token.";return}
- state.calls.unshift({mint:t.mint,symbol:t.symbol||"",name:t.name||"",img:t.img||null,text:txt,by:trenchDisplayName(),ts:Date.now()});
- saveCalls();renderTrenchFeed();renderProfile();
- $("trenchOverlay").classList.remove("open");
- var f=$("trenchFeed");if(f)f.scrollLeft=0;
- toast("Call posted to Trenching — saved on this device")});
+ if(!t){st.textContent="Pick or paste a token first, a call needs a token.";return}
+ if(!txt){st.textContent="Write your call first, a few words on why this token.";return}
+ var btn=$("trenchPostBtn");if(btn.disabled)return;btn.disabled=true;
+ st.textContent="Checking your wallet holds at least $1 of $"+(t.symbol||"this token")+"…";
+ checkCallHolding(t).then(function(g){
+  btn.disabled=false;
+  if(!g.ok){st.textContent=g.msg;return}
+  var call={mint:t.mint,symbol:t.symbol||"",name:t.name||"",img:t.img||null,text:txt,by:trenchDisplayName(),ts:Date.now()};
+  state.calls.unshift(call);
+  saveCalls();renderTrenchFeed();renderProfile();
+  /* ONE action: the same tap also sends the call to the shared review
+     queue. Approval is a manual commit to the shared feed file; the app
+     holds no GitHub token and never writes to GitHub. */
+  var q=localQueue("trenchswap.sharedQueue.v1");q.unshift({mint:call.mint,symbol:call.symbol,text:call.text,by:call.by,ts:call.ts,status:"Pending review"});saveQueue("trenchswap.sharedQueue.v1",q);
+  $("trenchOverlay").classList.remove("open");
+  var f=$("trenchFeed");if(f)f.scrollLeft=0;
+  toast("Call submitted: saved under YOUR CALLS and sent to review ("+g.detail+"). It appears in Shared calls once approved.")}).catch(function(){btn.disabled=false;st.textContent="The holding check could not run. Try again in a moment."})});
 loadCalls();renderTrenchFeed();
 /* ---------- H1 smoke test: wallet creation inside this hosted frame ----------
    Generates a throwaway wallet through the exact production path (BIP39 phrase ->
@@ -3815,7 +4018,7 @@ function runWalletSmokeTest(){
 setTimeout(runWalletSmokeTest,1200);
 
 /* ================= V24: Info tab, i18n, currency, shared Trenching ================= */
-var SHARED_CALLS_URL="https://raw.githubusercontent.com/HALEXApp/trenchswap-feed/main/calls.json";
+var SHARED_CALLS_URL="https://raw.githubusercontent.com/AppsthatPay/trenchswap-feed/main/calls.json";
 function infoGo(name){document.querySelectorAll("#infoSubtabs button").forEach(function(b){b.classList.toggle("on",b.dataset.info===name)});document.querySelectorAll(".info-pane").forEach(function(pn){pn.classList.toggle("on",pn.id==="info-"+name)})}
 document.querySelectorAll("#infoSubtabs button").forEach(function(b){b.addEventListener("click",function(){infoGo(b.dataset.info)})});
 var ttb=$("topTrenchInfoBtn");if(ttb)ttb.addEventListener("click",function(){goTab("info")});
@@ -3864,6 +4067,7 @@ $("refSubmitBtn").addEventListener("click",function(){var h=$("refHandle").value
 renderRefs();
 /* --- Blog: bundled per release, newest first --- */
 var BLOG_POSTS=[
+ {date:"2026-11-12",title:"v32: one-tap Trenching calls with a $1 holding gate, chart cache and live tick line",body:"Trenching now opens with Shared calls at the top of the section, right where you make a call. One tap on Submit does it all: the call saves under YOUR CALLS and goes to review in the same action, and it only goes out when your wallet holds at least $1 worth of the token, checked live at submit time. Charts keep their last good candles: a render shows the cached candles with their saved timestamp and refreshes in the background, so a failed refresh never blanks a chart. A pair younger than one candle bucket falls back to the finest timeframe that has candles and says so on screen. Timeframes now fetch a fixed count of 100 candles, so 15m covers about a day and 1h about 4 days instead of the same small window everywhere. The 1s view is now a live tick line, read once a second with a second source cross-checking every 2 seconds. Buy candles carry a green outline and sell candles a red one, over the same purple. A third chart view, TrenChART, plays the line as purple flames whose tips sit on the real price points, with the window high marked, then settles back into the true line chart; tap the chart to replay the flames."},
  {date:"2026-11-12",title:"Fees always land — the fee-account gate is gone, and no outbound DEX links",body:"Swap fees can no longer be stopped by a missing fee account. The percentage fee is collected in the token you receive, and if the fee wallet does not have an account for that token yet, the swap transaction itself creates it — funded by the swapping wallet, inside the same transaction, before the swap runs — so the fee lands in the fee wallet every time. Verify-before-sign checks that creation instruction along with everything else. The fee wallet only collects; it never signs and never spends. Also gone: outbound links to other DEX sites, including the Cross-check this pair link under the chart. Charts and token data still read from the same sources in the background — nothing in the app links out to another DEX anymore."},
  {date:"2026-11-12",title:"v29: Trench Machine mint tab, small banner rentals, swipeable tab bar",body:"The Trench Machine is here: a new Mint tab with the full launch form — image, name, ticker, description, links, quote pair, graduation target and an optional initial buy — launching on TrenchSwap's platform on Raydium LaunchLab, with the creation fee going to the TrenchSwap fee wallet in the same transaction as the mint. The review sheet shows the whole cost and fee stack before anything signs, and prepared launches are saved under Tokens you minted; the on-chain launch arms with TrenchSwap's one-time LaunchLab platform registration. Banner Spaces now rents both sizes: the Top Trench 300 × 300 square and the small 1200 × 200 strip (5 USDC for 24 hours in the Home rotation). Trenching Now on Markets trades its white block for the dark purple gloss of the rest of the app — white text, purple selected buttons, black unselected. The bottom tab bar now swipes left to right to fit all six tabs. Swap fees are unchanged and verified: 0.01% under $200, 0.02% at $200+, plus the flat 0.00015 SOL, all landing in the fee wallet in the same transaction as the swap."},
  {date:"2026-11-12",title:"v26: TrenchSwap Firefox, Claim a Token, cleaner Home and Markets",body:"Swaps now run on TrenchSwap Firefox, our swap protocol: a fresh quote at confirm time, an explicit 0.5% slippage setting, a 30-second quote limit with the timestamp and expiry on the confirm sheet, and verify-before-sign — the built transaction is parsed, simulated and checked against your quote before signing, and refused on any mismatch. The swap confirm now shows ONE total fee line, with the full breakdown one tap away. Claim a Token is live: creators prove ownership with one random USDC payment from the creator wallet and build a Token Page. Home carries house banners only, the Info tab opens on language and currency, Popular ranks by volume (a window that is not read says NOT READ), empty wallets list SOL / USDC / USDT / JUP at 0, and Markets is Solana tokens only — the Tracked pairs and Major crypto blocks are gone."},
@@ -3891,12 +4095,13 @@ $("langSelect").value=savedLang;applyLang(savedLang);
 $("langSelect").addEventListener("change",function(){try{localStorage.setItem("trenchswap.lang",this.value)}catch(e){}applyLang(this.value)});
 /* --- Shared Trenching via GitHub (read-only; no token in client) --- */
 state.sharedCalls=[];state.sharedLoaded=false;
-function sharedCard(c){var el=document.createElement("div");el.className="trench-card";el.setAttribute("data-fire-mint",c.mint);el.innerHTML='<div class="row">'+imgTag(c.img,c.symbol||"?",null,c.mint)+'<div class="grow"><b class="head" style="font-size:16px">$'+escapeHtml(c.symbol||"?")+'</b><div class="fee">SHARED · '+escapeHtml(relTime(c.ts))+'</div></div></div><div class="says">'+escapeHtml(c.by||"Wallet")+' says:</div><div class="calltext">'+escapeHtml(c.text||"")+'</div>';el.addEventListener("click",function(){if(c.mint)openReport(c.mint,null)});return el}
-function renderSharedFeed(){var c=$("sharedFeed");if(!c)return;c.innerHTML="";if(!state.sharedLoaded)return;if(!state.sharedCalls.length){c.innerHTML='<div class="trench-empty">No shared calls yet. Approved calls from the review queue will appear here for everyone.</div>';return}state.sharedCalls.forEach(function(call){c.appendChild(sharedCard(call))})}
-function fetchSharedCalls(){fetch(SHARED_CALLS_URL).then(function(r){if(!r.ok)throw new Error("shared feed "+r.status);return r.json()}).then(function(d){var arr=Array.isArray(d)?d:(d&&Array.isArray(d.calls)?d.calls:[]);state.sharedCalls=arr.filter(function(x){return x&&x.mint&&x.text}).slice(0,60);state.sharedLoaded=true;$("sharedFeedStatus").textContent="Shared feed: loaded from GitHub · "+state.sharedCalls.length+" approved call(s). Distinct from YOUR CALLS on this device.";renderSharedFeed()}).catch(function(){$("sharedFeedStatus").textContent="Shared feed could not load from GitHub — showing your local calls only above.";var c=$("sharedFeed");if(c)c.innerHTML=""})}
+function sharedCard(c){var el=document.createElement("div");el.className="trench-card";el.setAttribute("data-fire-mint",c.mint);el.innerHTML='<div class="row">'+imgTag(c.img,c.symbol||"?",null,c.mint)+'<div class="grow"><b class="head" style="font-size:16px">$'+escapeHtml(c.symbol||"?")+'</b><div class="fee">SHARED · '+escapeHtml(relTime(c.ts))+'</div></div></div><div class="says">'+escapeHtml(c.by||"Wallet")+(c.x?" ("+escapeHtml(c.x)+")":"")+' says:</div><div class="calltext">'+escapeHtml(c.text||"")+'</div>';el.addEventListener("click",function(){if(c.mint)openReport(c.mint,null)});return el}
+function renderSharedFeed(){var c=$("sharedFeed");if(!c)return;c.innerHTML="";if(!state.sharedLoaded)return;if(!state.sharedCalls.length){c.innerHTML='<div class="trench-empty">No shared calls yet - be the first to call a token.</div>';return}state.sharedCalls.forEach(function(call){c.appendChild(sharedCard(call))})}
+function fetchSharedCalls(){fetch(SHARED_CALLS_URL).then(function(r){if(!r.ok)throw new Error("shared feed "+r.status);return r.json()}).then(function(d){var arr=d&&Array.isArray(d.calls)?d.calls:null;if(!arr)throw new Error("shared feed shape");state.sharedCalls=arr.map(function(x){if(!x)return null;var ts=x.timestamp?Date.parse(x.timestamp):null;return{mint:x.mint,symbol:x.ticker||"",img:x.image_url||null,by:x.wallet_name||"Wallet",x:x.x_handle||"",text:x.text||"",ts:isNaN(ts)?null:ts}}).filter(function(x){return x&&x.mint&&x.text}).slice(0,60);state.sharedLoaded=true;$("sharedFeedStatus").textContent="Shared feed: loaded · "+state.sharedCalls.length+" approved call(s). Distinct from YOUR CALLS on this device.";renderSharedFeed()}).catch(function(){$("sharedFeedStatus").textContent="Shared feed could not load - showing your local calls only below.";var c=$("sharedFeed");if(c)c.innerHTML=""})}
 fetchSharedCalls();setInterval(fetchSharedCalls,120000);
-/* After a local post, offer shared submission (review queue, stored on device until committed to GitHub) */
-document.addEventListener("click",function(e){if(e.target&&e.target.id==="trenchPostBtn"){setTimeout(function(){var st=$("sharedSubmitStatus");if(st)st.innerHTML='Your latest call is saved under YOUR CALLS. To share it: it must go through review first — approved calls are committed to the shared GitHub file and then appear for everyone. <button class="btn small secondary" id="shareSubmitBtn" type="button" style="width:auto;margin-left:6px">Submit latest call for shared review</button>';var b=$("shareSubmitBtn");if(b)b.addEventListener("click",function(){var latest=state.calls&&state.calls[0];if(!latest)return;var q=localQueue("trenchswap.sharedQueue.v1");q.unshift({mint:latest.mint,symbol:latest.symbol,text:latest.text,by:latest.by,ts:Date.now(),status:"Pending review"});saveQueue("trenchswap.sharedQueue.v1",q);st.textContent="Submitted for shared review — pending. It will appear in the shared feed only after approval and a commit to the GitHub file."})},300)}});
+/* Shared submission is part of the one Submit action in the composer (see
+   the trenchPostBtn handler): the call saves locally and enters the review
+   queue in the same tap. There is no second submit step. */
 
 /* ================= V25: Trenching Now, Most Trenched, house 300, walkthrough, Organize =================
    A Trencher Call Out is one call-out for a token, counted by mint, from the
@@ -4197,7 +4402,7 @@ function zeroHoldingsHtml(){
    validated on every read; every rendered field is escaped, links are
    https-only. Unclaimed tokens render nothing here and keep the plain
    report. --- */
-var TOKEN_PAGES_URL="https://raw.githubusercontent.com/HALEXApp/trenchswap-feed/main/token-pages.json";
+var TOKEN_PAGES_URL="https://raw.githubusercontent.com/AppsthatPay/trenchswap-feed/main/token-pages.json";
 state.tokenPages={};state.claim=null;state.claimLogoData=null;state.tpSubmission=null;
 function tokenPageFor(mint){return (state.tokenPages&&state.tokenPages[mint])||null}
 function validateTokenPage(p){
