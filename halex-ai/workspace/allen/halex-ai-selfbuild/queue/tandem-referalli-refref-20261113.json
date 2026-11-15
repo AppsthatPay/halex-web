@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-13T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/tandem-referalli-refref-20261113.md",
+    "id": "tandem-referalli-refref-20261113",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-13T08:48:39.506355+00:00",
+  "gate_status": "done",
+  "id": "tandem-referalli-refref-20261113",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (Tandem MIT SHA d37fc362..., Referalli MIT SHA c371fbd3..., RefRef AGPL SHA 29ebfa54...); READMEs read in full; verified vs claimed separated in proposal workspace/agent_patterns/proposals/tandem-referalli-refref-20261113.md. HALEX gate stricter: no payment code (Stripe adapter is a record-only pattern), no Postgres/SQL/RLS, no Next.js/Docker/server, no provider/API-key/network code in the engine, no AGPL code or adaptation. Tandem 'AI reviewer audit' and live-Stripe verification claims NOT adopted; RefRef alpha, no maturity claim; star counts are live counts only.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-13 ~03:42 EST",
+  "spec": null,
+  "summary": "Event-sourced commission ledger plus attribution-first referral discipline: append-only typed event log with replay-rebuilt state, decision snapshots in event payloads, idempotent retries, holds/approvals/disputes/clawbacks as distinct lifecycle states with release only by a trusted scheduled job, a payout adapter that records but never moves money, and attribution in three steps (link, associate, validated conversion) with idempotency keys, Retry-After retries, webhook verification discipline, and test/live mode assertion. Patterns from Tandem CRM (MIT) and Referalli (MIT); RefRef (AGPL-3.0) contributes ideas only."
+}

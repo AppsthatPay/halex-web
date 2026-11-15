@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "pack-pipeline",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when one full pipeline run is demonstrated on a real gap.",
+  "priority": 75,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Make intake -> pack -> page routine: a gated intake run produces a pack + manifest entry + harness cases."
+}

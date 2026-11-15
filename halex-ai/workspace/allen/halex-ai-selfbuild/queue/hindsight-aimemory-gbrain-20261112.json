@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-12T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/hindsight-aimemory-gbrain-20261112.md",
+    "id": "hindsight-aimemory-gbrain-20261112",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-12T08:48:29.506116+00:00",
+  "gate_status": "done",
+  "id": "hindsight-aimemory-gbrain-20261112",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via GitHub connector 2026-11-12: Hindsight MIT (c) 2025 Vectorize AI, Inc., file SHA 8dce7b4d; ai-memory MIT (c) 2026 Fabio Akita, file SHA 746f9681; GBrain MIT (c) 2026 Garry Tan, file SHA 35029511. READMEs read in full (Hindsight 26,392 chars; ai-memory 47,344 chars; GBrain 34,919 chars). HALEX gate stricter: no LLM provider/API-key code, no server/MCP/Docker, no Postgres/pgvector/SQLite/FTS5, no vector/embeddings store, no model weights, no OAuth/bearer auth, no hosted cloud, no voice/email/calendar connectors, no credential vault. GBrain Memorable procedural memory EXCLUDED entirely (off by default, sends redacted traces off-machine). Benchmark/star/page-count/efficacy claims NOT adopted (Hindsight LongMemEval/LoCoMo figures and independent-reproduction claim; ai-memory ~700/s write ceiling; GBrain 155,795 pages / BrainBench R@5 figures). Proposal staged at workspace/agent_patterns/proposals/hindsight-aimemory-gbrain-20261112.md; NOTICE.md updated (1245 -> 1299 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-12 ~03:42 EST",
+  "spec": null,
+  "summary": "Retain/recall/reflect memory vocabulary with four memory types (world facts, experiences, observations, mental models), observations refined never overwritten with evidence plus proof count, mental models as standing questions with living markdown pages, decision models as typed judgments, strictly isolated banks with disposition traits, opt-in memory defence (Hindsight); git-backed markdown wiki as source of truth with rebuildable derived index, zero-LLM default path, typed claim-once handoffs, cross-project profile, access-weighted decay with cold-note compaction to durable facts and nothing hard-deleted, capture sanitised at a typed privacy boundary, purge honesty plus audit log (ai-memory); explicit facts with sources plus corrections/withdrawal, cited synthesis with gap analysis, typed graph with pattern-matched auto-link and provenance-preserving unresolved facts, authorable schema packs with detect-suggest-review, brain-first lookup, dream-cycle enrichment, skills beside knowledge in an authorised catalog (GBrain). Patterns only, restated in our own words; no code copied. The three repos converge on markdown-as-source-of-truth plus derived index, the doctrine HALEX-AI already holds."
+}

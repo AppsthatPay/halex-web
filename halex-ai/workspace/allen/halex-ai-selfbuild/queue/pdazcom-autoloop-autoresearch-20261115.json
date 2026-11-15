@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-15T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/pdazcom-autoloop-autoresearch-20261115.md",
+    "id": "pdazcom-autoloop-autoresearch-20261115",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-15T08:48:51.046967+00:00",
+  "gate_status": "done",
+  "id": "pdazcom-autoloop-autoresearch-20261115",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (pdazcom/laravel-referrals MIT (c) 2017 Jefferson Ochoa SHA a7fc4f44...; KKKKhazix/agent-autoloop MIT (c) 2026 SHA 2d848c9f...); karpathy/autoresearch MIT claimed ONLY in README ('## License / MIT'), NO LICENSE file in repo (LICENSE and LICENSE.md both not found; code search for 'MIT License' returns only the README line) - IDEAS ONLY for that source. READMEs read in full (pdazcom, agent-autoloop 269 lines Chinese-primary, autoresearch). Verified vs claimed separated in proposal workspace/agent_patterns/proposals/pdazcom-autoloop-autoresearch-20261115.md. pdazcom lead (open since 2026-11-14 ~11:42 run) now CLOSED as gated. HALEX gate stricter: no Laravel/PHP code, no provider/API-key code, no model weights / training / GPU code, no unattended agent execution with local permissions, no webhook listeners, no notification channels, no third-party CLI agents, no install scripts, no SQLite/FTS5 in the engine, no MCP servers, no payment execution, no hosted cloud, no affiliate-link auto-insertion. agent-autoloop performance figures, 'real-world verified' plugin claims, and star counts as quality NOT adopted; autoresearch '12 experiments/hour, ~100 overnight' NOT adopted; pdazcom 'verified against Laravel 11/12/13' NOT adopted (tests not run by us). New leads for later runs: Solana DvP toolkit (MIT per news, LICENSE unread) and pi-infected/tokenade (MIT OR Apache-2.0 per dev.to, LICENSE unread); marcelcluj-bit GeoDigital Global (self-promo Medium, unverified) - low priority.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-15 ~03:42 EST",
+  "spec": null,
+  "summary": "Multi-program referral registry plus suspend-zero-cost loop kernel plus single-file-to-modify discipline: referral program as a named object with per-program lifetime, multi-program attribution with per-program expiry and hand-enterable codes, one-payout-per-relationship and self-referral guards as explicit flags; loop waiting that parks with no process and no tokens spent and resumes the exact session; event-sourced loop state with one-command provenance and bad-config-never-stops-the-loop; instruction/data separation as a structural rule; hop-count circuit breaker capping self-re-triggering; single-file-to-modify discipline with fixed time budget per attempt and one pass/fail metric. Patterns from pdazcom/laravel-referrals (MIT) and KKKKhazix/agent-autoloop (MIT); discipline shape from karpathy/autoresearch (ideas only, license unverified)."
+}

@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-09T03:42:55-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/tenet-governed-memory-everos-20261109.md",
+    "id": "tenet-governed-memory-everos-20261109",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-09T08:52:58.404164+00:00",
+  "gate_status": "done",
+  "id": "tenet-governed-memory-everos-20261109",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-09: LICENSEs read verbatim via GitHub connector for Rishikiran98/HIEROMEM (repo now named TENET) MIT Copyright (c) 2026 Sai Rishi Kiran Mannava (file SHA c254c9c747f943982365dace67b517e6dbe36f87; repo HEAD 92d95fed3cb82ce7c3dee8ae223f646d916f65a9, last commit 2026-10-28, v0.5.0; README read in full, file SHA f9ba15b343dbfd41b1ed96ba0cc50f17901b3088) and EverMind-AI/everos-plugins Apache-2.0 (file SHA 2a8dd2346efd52266a7d9bea911bf504bbae8646; README read in part, head only ~5,000 chars, file SHA 565caae2d695338278f3e39791e1903a8c4735f4). 1476989162/memagent LICENSE NOT READ - repo 404s three ways (connector 401/404, text fetch 404, live browser 2026-11-09 03:45 EST confirmed GitHub 404 page) - ideas only from PyPI text, no entry, no code. memoryagent-lib LICENSE NOT READ - no GitHub repo found (search 0 hits), PyPI page would not load - ideas only from PyPI search text, no entry, no code. NOT adopted: TENET 161-test count and correctness-comparison results; PyPI hieromem description (disagrees with repo README); everos-plugins per-tool verification table; any star/fork counts (not retrieved); any benchmark/efficacy claim. Excluded: TENET HTTP API/bearer token/pgvector store/LLM Brain provider code; everos-plugins cloud SDK/HTTP callers. Naming wrinkles recorded: HIEROMEM PyPI framing vs TENET repo README; everos-plugins README points at EverMind-AI/everos-tools. Proposal staged at workspace/agent_patterns/proposals/tenet-governed-memory-everos-20261109.md; NOTICE.md updated (885 -> 938 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-09 ~03:42 EST (report 1)",
+  "spec": {
+    "capabilities": [
+      "governed event-sourced memory",
+      "scope-grant task authority",
+      "scan-first migration discipline"
+    ],
+    "name": "tenet_governed_memory_everos_patterns",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Governed event-sourced memory with external anchors, scope grants, and retrieve-as-data, plus scan-first migration discipline, all restated in our own words"
+  },
+  "summary": "Patterns from Rishikiran98/HIEROMEM (TENET, MIT) and EverMind-AI/everos-plugins (Apache-2.0), plus ideas only from 1476989162/memagent (repo 404s, LICENSE unread) and memoryagent-lib (repo identity unconfirmed, LICENSE unread): an append-only hash-chained event log as the only source of truth with external anchors kept off the log host; scope grants giving one task its namespaces, tools, action budget and expiry, with retrieval unable to cross the grant; a pure-function governance gate where unmatched means DENY and escalations fail closed; retrieve-as-data with a why-chain audit view; journal reconciliation that never retries an effect; and a scan-first migration discipline (report without editing, pre-flight gate before the first change, snapshot plus own branch, stop and ask on anything unmigratable, lead with what will still fail). All restated in our own words, stdlib-only, no provider/network/API-key/server/MCP/GPU/model-weight/payment code."
+}

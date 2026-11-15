@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-06T11:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/spec-verdict-ledger-20261106.md",
+    "id": "spec-verdict-ledger-20261106",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T17:36:17.889794+00:00",
+  "gate_status": "done",
+  "id": "spec-verdict-ledger-20261106",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-06: LICENSEs read verbatim via GitHub connector for github/spec-kit MIT SHA 28a50fa22639e32febe14e4ffc7a732b0ba8c90a, Copyright GitHub, Inc.; Hemanshu-Upadhyay/pairmark MIT SHA b9aea205e0c06276ffdd38e2ee3124bd51e52a94, Copyright (c) 2026 Hemanshu Upadhyay; hrithikkoduri/anchor-ai-sdk MIT SHA 54e9058525bba490e107406d26983402c8c4fe23, Copyright (c) 2026 Anchor contributors. All three READMEs read in full. Proposal: agent_patterns/proposals/spec-verdict-ledger-20261106.md. HALEX gate stricter than every source: no CLI install, no provider/network/API-key/sandbox/MCP code, no LLM judge as sole decider, no unattended full-auto modes, no benchmark/star/efficacy claims adopted. Activity verified live: spec-kit 148,123 stars / 13,303 forks, updated 2026-11-06T16:53:53Z; pairmark 0 stars, created/updated 2026-09-02, ~2 months quiet; anchor-ai-sdk 2 stars / 1 fork, created 2026-10-19, updated 2026-10-30, early alpha 0.8.12. Spar repo identity unconfirmed (no GitHub URL found); Ankara Chain has no GitHub repo (marketing site only); GeoDigital suite lead still unresolved.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-06 11:42 EST",
+  "summary": "Spec-first builds + verdict rules + requirement ledger (spec-kit, pairmark, anchor-ai-sdk \u2014 all MIT, patterns only): every builder-queue module gets a short Markdown spec artifact first and converges only when tests + mutation check + forbidden-construct scan + seal all pass; promotion adopts ordered verdict rules (deterministic checks outrank reviewer opinion, gate-config tampering flagged, split reviewers = tie with dissent printed, never averaged); each gated entry carries a requirement ledger (claim + evidence link + cleared/insufficient/unproven status) and no entry drains to done while any requirement is open; external-effect steps follow write-ahead intent, reconcile-never-replay, and report recovery_required on unknowable outcomes."
+}

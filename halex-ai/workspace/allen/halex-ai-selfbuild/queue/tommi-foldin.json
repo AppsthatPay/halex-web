@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-30T09:00:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/tommi-foldin.md",
+    "id": "tommi-foldin",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-31T09:56:19.376648+00:00",
+  "gate_status": "done",
+  "id": "tommi-foldin",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING on purpose: the forwarded reads had not landed when this entry was seeded. Do NOT promote to gated until the full texts are in hand and the intake gate checklist passes. Ideas only where the source license is unknown. GATED 2026-10-31 by HALEX-AI intel intake run: full post + 21-reply thread read via live browser read 2026-10-31 (read-only). Claim-by-claim verdict staged at workspace/user_systems/proposals/ai-publishing-workflow-20261031.md. No repos named in the thread, so license is N/A and the fold-in is IDEAS ONLY by construction (paraphrase, no thread text copied, no branding adopted, no funnel link adopted or rendered, all earnings/platform claims marked claimed-only, never fact). SCOPE CHANGE: this entry now covers the Tommi post only; the DualMint half is split to the separate dualmint-addendum entry (still pending). Drains to a lesson DRAFT for gate review only.",
+  "priority": 100,
+  "source": "HALEX-AI intel intake run 1 + TommiPedruzzi post (forwarded read pending)",
+  "summary": "Fold the TommiPedruzzi architecture-system read and the DualMintRWA profile read into a ZINIUM lesson draft once the main agent forwards the full post/profile text. See workspace/user_systems/TOMMI-PENDING.md for the fold-in checklist."
+}

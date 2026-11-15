@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-01T19:45:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/role-crew-flow-harness-20261101.md",
+    "id": "role-crew-flow-harness-20261101",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-02T01:04:25.967941+00:00",
+  "gate_status": "done",
+  "id": "role-crew-flow-harness-20261101",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-01: LICENSE files read verbatim via GitHub connector for all three sources (OpenManus MIT SHA db2216e1a5bfd392213f57a257930e9b2dcca684, Copyright (c) 2025 manna_and_poem; ruflo MIT SHA 5c4718198a4156beacc780980077043a98b0dd6a, Copyright (c) 2024-2026 ruvnet; crewAI MIT SHA a6ee25527ec07201e4373fcbf89f128f304a6f2e, Copyright (c) 2025 crewAI, Inc.); READMEs read; activity recorded (OpenManus: created 2025-03-06, 58,851 stars, updated 2026-11-01, multi-agent flow labelled unstable by its own README; ruflo: created 2025-06-02, 80,544 stars, updated 2026-11-02T00:37:14Z; crewAI: created 2023-10-27, 60,394 stars, updated 2026-11-02T00:21:43Z) as activity only. Efficacy and marketing claims NOT adopted (OpenManus benchmarks/production framing; ruflo download-badge figures and cost claims, enterprise/ruOS layer; crewAI certification and production-standard framing, AMP control plane). HALEX adaptation is STRICTER than all sources: no unattended swarms, no daemons, no auto-approval, no browser/MCP/network/wallet/key/signing/payment/API-key code, no branding, no copied code or agent rosters. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/role-crew-flow-harness-20261101.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-01: FoundationAgents/OpenManus + ruvnet/ruflo + crewAIInc/crewAI READMEs + LICENSEs read verbatim 2026-11-01",
+  "summary": "Role crews plus event flows plus an ask-first harness for HALEX-AI, restated in HALEX-AI's own words: every workflow step carries a written role card with goal, tools, and guardrails; each workflow declares sequential or manager-coordinated process before running; event steps fire only on explicit trigger conditions; the default permission is read plus ask, with no auto-approval; and completion is proven from the artifact produced, never from a subagent self-report."
+}

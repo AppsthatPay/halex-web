@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-08T19:42:55-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/himem-hymemory-mragent-20261108.md",
+    "id": "himem-hymemory-mragent-20261108",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-09T01:28:22.854042+00:00",
+  "gate_status": "done",
+  "id": "himem-hymemory-mragent-20261108",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate checklist passed 2026-11-08: LICENSEs read verbatim via GitHub connector for jojopdq/HiMem Apache-2.0 appendix Copyright [2023] [Taranjeet Singh] (file SHA d20d5102c3cf97ecbee54afd65893de4a11d26fe; repo SHA 0cd4a2500f91a0353178c9e380e491c99a0ad61f) and Tencent-Hunyuan/Hy-Memory Apache-2.0 Copyright (C) 2026 Tencent (file SHA fbcfb3ce24c5eed11aebe84a37f4480bb9834c4e; repo SHA 9737431cf8965124b115f0e26cb0ff1e5cafa323). READMEs read: HiMem in full (2,694 chars); Hy-Memory in part (intro, news, system architecture, L0-L7 hierarchy, working/coding pipelines; 17,940 chars total). Ji-shuo/MRAgent has NO LICENSE file (LICENSE and LICENSE.md both 404; README read in full, file SHA 0b3424c2e3ef935e64b309be5a7d0ee351afffb5) - ideas only. owoakuma/LycheeMemory has NO LICENSE file (LICENSE 404; README not read) - ideas only from secondary sources. refrefhq/refref AGPL-3.0 read verbatim (file SHA 29ebfa545f5580919a4e884d7014d7a3eb2df762) - ideas only; affiliate lead CLOSED. NOT adopted: HiMem LoCoMo F1 figures; Hy-Memory production-grade/benchmark claims and secondary star counts; MRAgent 96%-fewer-tokens and LoCoMo/LongMemEval figures; any SOTA language; any star/fork count for HiMem or Hy-Memory (not retrieved). Excluded: LLM provider/API-key code, vector DB, Docker, MCP/HTTP endpoints, embedding downloads, 30B model weights, LLM judge as sole decider, payment/reward execution, API-key handling. Proposal staged at workspace/agent_patterns/proposals/himem-hymemory-mragent-20261108.md; NOTICE.md updated (826 -> 885 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-08 ~19:42 EST (report 2)",
+  "spec": {
+    "capabilities": [
+      "episode-note memory indexing",
+      "layered chat memory",
+      "scene-routed retrieval"
+    ],
+    "name": "himem_hymemory_mragent_patterns",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Episode/note two-layer memory index with deterministic segmentation and conflict-aware update, L0-L7 layered chat memory with intention expiry, scene-routed fact/experience memory with coding diff-chain coordinates, and graph-reconstruction rewrite note, all restated in our own words"
+  },
+  "summary": "Patterns from jojopdq/HiMem (Apache-2.0) and Tencent-Hunyuan/Hy-Memory (Apache-2.0), plus ideas only from Ji-shuo/MRAgent (no LICENSE file), owoakuma/LycheeMemory (no LICENSE file), and refrefhq/refref (AGPL-3.0): an episode/note two-layer memory index where episodes are fine-grained temporally grounded segments and notes are stable facts/preferences/profiles, with deterministic topic-shift-or-salience segmentation and conflict-aware update keeping superseded facts traceable; an L0-L7 layered chat memory (raw append-only, atomic versioned facts, session summaries, schema/intention layers) with intention expiry and demotion to ordinary facts; a scene router sending chat/working/coding work into different pipelines, with working/coding two-layer fact+experience records, a value threshold on experiences, bidirectional links, and a coding diff-chain recording file/function/branch coordinates instead of pasted code; and a graph-reconstruction rewrite note (self-contained sentences, pronoun resolution, absolute dates, topic tags) with a deterministic keyword/topic/personal/temporal/context retrieval vocabulary. All restated in our own words, stdlib-only, no provider/network/API-key/server/MCP/GPU/model-weight/payment code."
+}

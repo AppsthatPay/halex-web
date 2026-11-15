@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-03T19:55:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/sourced-memory-correction-review-20261103.md",
+    "id": "sourced-memory-correction-review-20261103",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-04T01:23:14.942905+00:00",
+  "gate_status": "done",
+  "id": "sourced-memory-correction-review-20261103",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-03: LICENSE files read verbatim via GitHub connector for all three sources (gbrain MIT SHA 35029511144443297cad2d26e4bac17d0e352f93, Copyright (c) 2026 Garry Tan; sia MIT SHA de67384f2e62fe2b3335ec136c39f5a308a8390b, Copyright (c) 2025 Hexo; agent-memory MIT SHA d2b35c248c6ad5056eca945fc452090652b37768, Copyright (c) 2026 Masikomoore and Agent Memory contributors). READMEs read; activity recorded (gbrain 31,497 stars, updated 2026-11-04T00:43:44Z, not archived; sia paper-linked implementation; agent-memory created 2026-09-14, secondary NOASSERTION metadata corrected by the verbatim MIT LICENSE file). Efficacy and marketing claims NOT adopted (SIA benchmark gains; GBrain production-brain framing; Agent Memory vendor-independence promise). HALEX adaptation is STRICTER than all sources: source-attached plain-text facts only, corrections and withdrawals as dated entries never silent edits, three-role review with no role grading its own draft and every revision a human-reviewed draft; NO weight/adapter training, NO unattended rewriting/creation/editing/pruning, NO vector/embeddings store, NO MCP/network/provider/wallet/key/signing/payment/API-key code, no branding, no copied code. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/sourced-memory-correction-review-20261103.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-03 evening: garrytan/gbrain + hexo-ai/sia + Masikomoore/agent-memory READMEs + LICENSEs read verbatim 2026-11-03",
+  "summary": "Sourced memory plus correction/withdrawal plus three-role review for HALEX-AI, restated in HALEX-AI's own words: every standing fact carries its source, corrections and withdrawals are dated entries never silent edits, and self-revision splits builder, worker-with-log, and reviewer so no role grades its own draft \u2014 all under human review, with weight training, unattended rewriting, vector stores, and MCP/network code excluded."
+}

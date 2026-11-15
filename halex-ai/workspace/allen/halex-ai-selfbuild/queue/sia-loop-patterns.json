@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-30T20:55:00-04:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/sia-loop-patterns.md",
+    "id": "sia-loop-patterns",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-31T09:56:19.378350+00:00",
+  "gate_status": "done",
+  "id": "sia-loop-patterns",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "PENDING BY DESIGN: license field stays 'unknown' until a later run reads the LICENSE files verbatim. SIA (hexo-ai/sia) shows MIT via GitHub license detection + README badge and OpenSymphony (lawcontinue/opensymphony) is described as MIT by its author/PyPI page, but neither LICENSE file text was opened verbatim this run, so nothing here is gated for code adaptation. Patterns only, restated in HALEX-AI's own words in workspace/agent_patterns/proposals/sia-opensymphony-patterns-20261030.md: (1) generation ledger (per-generation score + improvement note, failed generations never promoted), (2) action classification safe/risky/dangerous + precedent log for executor proposals. NEVER: SIA benchmark gains, OpenSymphony test counts, Tommi earnings figures, or any RWA token/yield claim as fact; NEVER execution/wallet/key/signing/payment code; NEVER branding. Drain check: entry gates only after verbatim LICENSE reads are recorded in the proposal. PROMOTED 2026-10-31 by HALEX-AI intel intake run: the entry's own drain check (verbatim LICENSE reads recorded in the proposal) is satisfied by the 2026-10-30 evening addendum in workspace/agent_patterns/proposals/sia-opensymphony-patterns-20261030.md (SIA MIT 2025 Hexo; OpenSymphony MIT 2026 T-Mind Family, both read verbatim; rwa-sdk still secondary-only and stays out of the gated scope). Patterns only, no code copied, no figures adopted. Drains to a lesson DRAFT for gate review only.",
+  "priority": 70,
+  "source": "HALEX-AI intel intake run 2026-10-30 (evening): hexo-ai/sia README + repo page, lawcontinue/opensymphony author article + PyPI page, Chainstack rwa-sdk secondary summary (repo unread), Tommi secondary reporting (post itself still not landed)",
+  "summary": "Improvement-loop and action-classification patterns for the HALEX-AI builder loop, ideas-only: a generation ledger (score + rationale per generation) and a safe/risky/dangerous action vocabulary with a precedent log, both mapped onto HALEX-AI's existing test-then-seal gate without adding new authority."
+}

@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "retrieval-tuning",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when every tuning change ships with a before/after harness case on a real question.",
+  "priority": 75,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Tune ranked retrieval on real missed questions; add a related-entries pass for weak queries."
+}

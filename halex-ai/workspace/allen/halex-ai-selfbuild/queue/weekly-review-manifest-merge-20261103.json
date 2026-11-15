@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-03T11:55:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/weekly-review-manifest-merge-20261103.md",
+    "id": "weekly-review-manifest-merge-20261103",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-03T17:02:38.948785+00:00",
+  "gate_status": "done",
+  "id": "weekly-review-manifest-merge-20261103",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-03: LICENSE files read verbatim via GitHub connector for all three sources (session-analytics MIT SHA 9b7a724e1df4b652a864fa03ee06c23c62cc0191, Copyright (c) 2026 Shih Cheng-Wei; AgentKthx MIT SHA 846afc677746f6e89ecad9c672394a16f9407aa3, Copyright (c) 2026 Nigel Todman, self-described Alpha; x-operator MIT SHA 7e3eec997b5033c4317bfe771f4e411b35d0c590, Copyright (c) 2026 'muse-skills contributors' as written). READMEs read; activity recorded (session-analytics created 2026-07-17, stdlib-only scripts, 29-test claim NOT verified; AgentKthx created 2026-03-20, Alpha, image-heavy README; x-operator created 2026-10-07, very fresh). Efficacy and marketing claims NOT adopted (session-analytics improvement-without-accumulation framing; AgentKthx minimal/local-first/provider badges; x-operator growth efficacy and 'zero humans in the loop' operation). HALEX adaptation is STRICTER than all sources: weekly review with a capped, re-derived rules block retiring after 2 clean weeks and re-validated after a model switch, query/report-only default, shown diff approved before any edit; manifest-declared packs with no hidden wiring and no provider/backend/network code; merge-on-repeat (seen >=2 times across reviews) into standing rules via LESSON/EVIDENCE/ACTION notes; draft gates as human-reviewed discipline only; NO unattended publishing, NO unattended config editing, NO session-log ingestion, NO network/MCP/wallet/key/signing/payment/API-key code, no branding, no copied code. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/user_systems/proposals/weekly-review-manifest-merge-20261103.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-03: shihchengwei-lab/session-analytics + VTSTech/AgentKthx + kkone1238899/x-operator READMEs + LICENSEs read verbatim 2026-11-03",
+  "summary": "Weekly review plus manifest-declared packs plus merge-on-repeat for HALEX-AI, restated in HALEX-AI's own words: standing rules live in a capped, dated block re-derived weekly (retire after two clean weeks, re-validate after a model switch), with report-only query mode and approved diffs for any edit; plugin packs are declared by manifest with lifecycle hooks stated, no hidden wiring and no provider or network code; a lesson enters standing rules only after being seen at least twice across reviews, logged as LESSON/EVIDENCE/ACTION; outward drafts pass checklist, critic-score, and human-voice gates under human review only."
+}

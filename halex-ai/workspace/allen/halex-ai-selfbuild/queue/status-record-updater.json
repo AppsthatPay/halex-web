@@ -1,0 +1,31 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "drain_result": {
+    "id": "status-record-updater",
+    "kind": "module",
+    "module_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/status_record_stats/status_record_stats.py",
+    "synthesis_status": "SYNTHESIZED",
+    "test_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/status_record_stats/test_status_record_stats.py"
+  },
+  "drained_at": "2026-10-30T22:06:33.969299+00:00",
+  "gate_status": "done",
+  "id": "status-record-updater",
+  "kind": "module",
+  "license": "unknown",
+  "notes": "PENDING: gates when the module synthesizes + behavioral tests pass + mutation check (verified in /tmp during the blueprint pass).",
+  "priority": 70,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "spec": {
+    "capabilities": [
+      "draft statistics"
+    ],
+    "name": "status_record_stats",
+    "operations": [
+      "count_words",
+      "unique_words",
+      "count_lines"
+    ],
+    "purpose": "Draft statistics for the builder status record"
+  },
+  "summary": "Small tool for draft statistics in the status-record pipeline (synthesizer vocabulary only)."
+}

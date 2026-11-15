@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-10T03:42:55-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/openclaw-rwasdk-ankara-20261110.md",
+    "id": "openclaw-rwasdk-ankara-20261110",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-10T08:49:05.611996+00:00",
+  "gate_status": "done",
+  "id": "openclaw-rwasdk-ankara-20261110",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-10: LICENSEs read verbatim via GitHub connector for openclaw/openclaw MIT Copyright (c) 2026 OpenClaw Foundation (file SHA ed064819ab537575d0cad902f7e5af4a3488b1d0; repo HEAD 7f7c1a70699a5848588fcf55a14f09bca3e3cb18; README read in full in substance, 113,230 chars, file SHA d4a9d8094ad39c2b54ce8a643e4ce499bbd650f2; 394,268 stars / 82,854 forks as returned by GitHub repository search at read time, updated 2026-11-10T08:44:10Z, last commit 2026-11-10T08:43:56Z), chainstacklabs/rwa-sdk MIT Copyright (c) 2026 Chainstack Labs (file SHA 10acbe45094667ea6b9f2e55c7c66bba2ed41ed5; README read in full, file SHA 661787b1f73ec64c951d8b37d30b4e0cc73cac49; repo HEAD 1ede7f79582f9b89d570b7b142a2fcf364436d01; last commit 2026-05-22T13:16:59Z, about 5.5 months quiet; star/fork counts NOT retrieved, repository search returned no match this run), and ankarachain/ankara-core MIT Copyright (c) 2026 Cranebolt Technologies (file SHA f04a021717d3919b876c3b1006a145cb7139e931; README read in full, 2,592 chars, file SHA 97963af7b7ede7bcc450aee7774af82a3a9051c1; 0 stars / 0 forks at read time, created 2026-04-11, updated 2026-10-05). NOT adopted: any star-count or growth claim beyond the live API counts read this run (secondary OpenClaw figures 247k/346k/390k/393k disagree); any most-starred/leading/fastest-growing language; the secondary nine-CVE / CVSS 8.8 RCE report for OpenClaw (unverified, as of May 2026); rwa-sdk example price/TVL output figures (example output only) and the secondary 90%+ of on-chain RWA value framing; Ankara pre-audited claim (no audit reports read) and go-live-same-day for EVM (deployment is a future item; only Stellar testnet live, July 14, 2026). Excluded: OpenClaw Node/TypeScript code, install scripts, provider/API-key code, messaging gateway, MCP server, companion apps; rwa-sdk Python/web3 code, RPC use, API keys; Ankara Solidity/Soroban contract code, SDK/CLI/MCP code, deployment scripts, any key/custody handling. Proposal staged at workspace/agent_patterns/proposals/openclaw-rwasdk-ankara-20261110.md; NOTICE.md updated (980 -> 1029 lines). All three leads opened in the 2026-11-09 runs (OpenClaw, chainstacklabs/rwa-sdk, Ankara Chain) are now CLOSED.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-10 ~03:42 EST (report 1)",
+  "spec": {
+    "capabilities": [
+      "gateway control plane discipline",
+      "RWA read-only query shape",
+      "asset-template factory shape"
+    ],
+    "name": "openclaw_rwasdk_ankara_patterns",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Gateway-as-control-plane discipline with skills as plain-text directories and policy enforced by code, an RWA read-only query shape with normalised yield and compliance models, and an asset-template factory shape with local identity hooks and an explicit open-core boundary, all restated in our own words"
+  },
+  "summary": "Patterns from openclaw/openclaw (MIT), chainstacklabs/rwa-sdk (MIT) and ankarachain/ankara-core (MIT): a gateway-as-control-plane discipline where one local control plane owns sessions, tools, events and channel connections and every UI is a client of it, with skills as plain-text instruction directories, plugins packaging channels/providers/tools/skills, policy enforced by code (inbound messages untrusted, explicit pairing approval), and opt-in-only telemetry with a single disable flag; an RWA read-only query shape returning typed records (symbol, price, tvl, yield type, compliance method, price source naming the exact read) with four yield patterns normalised (accumulating / rebasing / ERC-4626 vault / dividend mint) and seven compliance methods behind one can_transfer-style check, with adapters validated at injection time; and an asset-template factory shape with six named asset classes behind one factory plus registry plus escrow manager, identity hooks shaped for the jurisdiction's real documents, and an explicit open-core boundary stating what is open and what is a paid tier. All restated in our own words, stdlib-only, no provider/network/API-key/server/MCP/GPU/model-weight/payment/key/custody code."
+}

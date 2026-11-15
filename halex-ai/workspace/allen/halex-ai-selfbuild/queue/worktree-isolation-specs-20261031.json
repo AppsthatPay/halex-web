@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-31T20:42:00-04:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/worktree-isolation-specs-20261031.md",
+    "id": "worktree-isolation-specs-20261031",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-01T01:39:11.940188+00:00",
+  "gate_status": "done",
+  "id": "worktree-isolation-specs-20261031",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate checklist passed 2026-10-31: LICENSE files read verbatim via GitHub connector for both sources (Agent Orchestrator Apache-2.0 SHA 0963902dbd478bcf554d8d16ece3887338520535 via Untrivial-ai path; ThinkRail Apache-2.0 SHA 9a239244ba179fe6ae7bb21c07d5df894ee6f5b5); READMEs read; activity recorded (AO: created 2026-02-13, 13,967 stars, not archived; ThinkRail: created 2026-07-08, 6,813 stars, not archived) as activity only. Agent-count claims disagree across secondary pages and are NOT adopted; ThinkRail roadmap promises NOT adopted. HALEX adaptation is STRICTER than both sources: no unattended merging/pruning, no auto-retry without a bound, no network/wallet/key/signing/payment/API-key code, no branding. No code copied. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/worktree-isolation-specs-20261031.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-10-31: Agent Orchestrator + JetBrains/thinkrail READMEs + LICENSEs read verbatim 2026-10-31",
+  "summary": "Worktree-isolated builder-task pattern for HALEX-AI, restated in HALEX-AI's own words: one queued item per branch/worktree, failures routed back to the owning worktree, finished items parked on a visible settled shelf, specs beside the code as ground truth, human decision still required before any branch or live-page change."
+}

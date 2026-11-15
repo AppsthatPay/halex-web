@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-13T16:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/stellar-cre-rwa-20261113.md",
+    "id": "stellar-cre-rwa-20261113",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-13T16:49:58.940854+00:00",
+  "gate_status": "done",
+  "id": "stellar-cre-rwa-20261113",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (stellar-contracts MIT SHA 54523a0d..., cre-templates MIT SHA e47c7df5..., rt-commission-dashboard PROPRIETARY SHA 26cfaa15...); READMEs read in full (7,401 / 22,803 / 5,934 chars); verified vs claimed separated in proposal workspace/agent_patterns/proposals/stellar-cre-rwa-20261113.md. CORRECTION: PyPI claims MIT for rt-commission-dashboard but the repo LICENSE is proprietary - ideas only, no code, no adaptation. HALEX gate stricter: no smart-contract/Rust/Solidity code, no provider/API-key/network code in the engine, no AWS/CRE/Lambda/DynamoDB, no private-key handling, no signing/payment execution, no PII in shared records. cre-templates private-key-in-.env step is a hard exclusion. Secondary news figures ($35T transfers, $32B tokenized, Apex $3.5T, T-REX Ledger Q4 2026) NOT adopted; stellar-contracts 'battle-tested' framing NOT adopted (README says experimental); star counts are live counts only.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-13 ~11:42 EST",
+  "spec": null,
+  "summary": "RWA compliance as attachable modules plus tokenized-asset lifecycle with a rebuildable off-chain mirror: compliance split into separable identity-claims, claim-topics/issuers, rules, and document-manager checks; identity as issuer-attested claims on topics re-checked at transfer time; nonce-based signature invalidation naming network and issuer; never store personal data in shared records (opaque identifier + verification status only); lifecycle as explicit named states (register, verify, mint, redeem) with one event per transition; on-chain record as source of truth with the off-chain table a derived rebuildable mirror; exact event-index discipline; off-chain-assigned UID written back on-chain as metadata; simulation before broadcast; dual triggers (event log + HTTP) for one lifecycle; plus multi-tier commission rule shapes (volume-derived tiers recomputed per sale, upline paid only the tier gap, shared-sale split with single-side volume credit, reduced flat rate for inactive participants, distinct transaction types). Patterns from OpenZeppelin stellar-contracts (MIT) and Chainlink cre-templates (MIT); rt-commission-dashboard (Proprietary) contributes ideas only."
+}

@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-05T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/holdout-ghost-review-ledger-20261105.md",
+    "id": "holdout-ghost-review-ledger-20261105",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-05T09:02:26.187561+00:00",
+  "gate_status": "done",
+  "id": "holdout-ghost-review-ledger-20261105",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-05: LICENSE files read verbatim via GitHub connector for all three sources (aeroloop MIT SHA 06e82de1e4f9215bbfbe23bb516ba8f64829a158, Copyright (c) 2026 udirobert; gbase MIT SHA 482bfa7f57350011727a454170090faf19887113, Copyright (c) 2026 Gary Lin (Lin Qian); numok MIT SHA 7ee19828971e27a01c3fd7648ceee759d8fe9335, Copyright (c) 2025 dfgonzalez). Proposal: agent_patterns/proposals/holdout-ghost-review-ledger-20261105.md. HALEX gate stricter than every source: no network/model/API-key code, no unattended self-rewrite, no scheduler daemon, no Stripe/payment/wallet/key/signing code, no efficacy figures adopted (aeroloop 24.1% MAE on synthetic data; gbase production/100-cycle claims). Affiliate links stay user-supplied only.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-05 03:42 EST",
+  "summary": "Holdout-gated self-improvement (tune on one split, judge only on a chronological holdout never seen in tuning) with rejected proposals preserved as versioned vN-rejected ghosts; multi-armed review plus a bounded pre-change snapshot/rollback registry; and affiliate ledger pending/paid states with holds on refund events. Patterns restated in our own words from udirobert/aeroloop (MIT), garyqlin/gbase (MIT), and dfg-ar/numok (MIT); no code copied, no branding."
+}

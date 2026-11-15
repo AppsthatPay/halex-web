@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-11T16:50:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/prime-weknora-rtk-20261111.md",
+    "id": "prime-weknora-rtk-20261111",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-11T18:50:11.254533+00:00",
+  "gate_status": "done",
+  "id": "prime-weknora-rtk-20261111",
+  "kind": "knowledge",
+  "license": "MIT/Apache-2.0",
+  "notes": "LICENSEs read verbatim via GitHub connector 2026-11-11: Prime Agent MIT (c) 2025-2026 Prime Intellect Ltd., file SHA 07f2032a (port of the Prime Agent TypeScript product, originally (c) 2025 Mario Zechner, MIT); WeKnora MIT (C) 2026 Tencent, file SHA 08ad298c (third-party: Apache-2.0 opencc, MIT anydoc, MIT wails); RTK DUAL license verified file by file \u2014 root LICENSE Apache-2.0 Copyright 2026 RTK AI Labs, file SHA fb19f992, engine/LICENSE BUSL-1.1, proxy/LICENSE BUSL-1.1 file SHA 0829f225. READMEs read in full (Prime Agent 10,824 chars; WeKnora 37,762 chars; RTK 23,204 chars). HALEX gate stricter: no provider login/API-key code, no MCP servers, no vector/embeddings store, no model weights, no shell execution, no server/Docker, no LLM judge as sole decider, no unattended learning. RTK BUSL-1.1 engine and proxy are IDEAS ONLY, never adapted. ARC-AGI-3 95.5% / human-baseline figure, harness comparisons, RTK 60-90% token-saving figures, WeKnora star/efficacy claims, and 'self-improving' framing NOT adopted. Secondary MIT claim for RTK is wrong (verified Apache-2.0 + BUSL-1.1). Proposal staged at workspace/agent_patterns/proposals/prime-weknora-rtk-20261111.md; NOTICE.md updated (1155 -> 1245 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-11 ~11:42 EST",
+  "spec": null,
+  "summary": "Refine-with-rollback harness state (small evidence-backed updates, immutable base prompt, snapshots + rollback), persistent goals + heartbeats + bounded autonomy with quality gates that check only what they verify, RLM programmatic-context discipline with the repo-skills-never-execute safety split (Prime Agent); three modes over one knowledge base (cited Q&A, step-shown agent, auto-wiki with graph + rollback), chunk revision diff/rollback, cross-session memory of user-confirmed facts, conversation steer/fork/rewind (WeKnora); per-command output shaping with the three promises (never blocks / never worse / nothing hidden) and a local gain-style ledger with the output-cut-is-not-a-cost-cut honesty caveat (RTK, Apache-2.0 OSS surface only). Patterns only, restated in our own words; no code copied."
+}

@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-14T16:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/sia-zhishu-aiarmada-20261114.md",
+    "id": "sia-zhishu-aiarmada-20261114",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-14T16:49:16.548617+00:00",
+  "gate_status": "done",
+  "id": "sia-zhishu-aiarmada-20261114",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (hexo-ai/sia MIT SHA de67384f...; wangguode/zhishu-agent MIT SHA 8fdc4de2...); AIArmada/referrals MIT claimed in composer.json only (SHA c8984ae5...) with NO LICENSE file in repo and no README retrievable - IDEAS ONLY for that source. READMEs read (SIA in full; zhishu-agent in substance first ~11,000 chars). Verified vs claimed separated in proposal workspace/agent_patterns/proposals/sia-zhishu-aiarmada-20261114.md. AIArmada lead (open since 2026-11-14 ~03:42 run) now CLOSED as gated-ideas-only; jobmetric/laravel-affiliate lead CLOSED as unlocatable (GitHub search 0 results, no Packagist package). HALEX gate stricter: no provider/API-key code, no model weights / LoRA / training, no H100/Modal, no sandbox Docker execution, no agent-generated code execution, no web dashboard server, no MCP servers, no Java/Spring Boot/Electron/Next.js code, no Laravel/PHP code, no payment execution, no hosted cloud. SIA benchmark figures (56.6% LawBench gain, 91.9% runtime reduction, 502% scRNA, 70.1% vs 45% SOTA, 14x TriMul, #1 MLE-Bench) NOT adopted; zhishu-agent '85%+ tokens saved' and 'production grade' claims NOT adopted; zhishu-agent is 8 days old with 1 star - no maturity claim. New affiliate lead for a later run: pdazcom/laravel-referrals (Packagist, LICENSE unread).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-14 ~11:42 EST",
+  "spec": null,
+  "summary": "Three-role generational improvement plus harness guardrails/compaction/memory plus referral-program shape: Meta/Target/Feedback roles with per-generation trajectories, written improvement rationale, and held-out evaluation (harness lever only, no weights); self-verification loop (Reason -> Edit -> Run Tests -> Parse Stderr -> Self-Heal) with fixed-verifier Goodhart caution; PreToolUse/PostToolUse hooks with HITL approval and secret masking; two-tier /compact with checkpoint summaries; 3-tier progressive skills disclosure; time-decayed memory scoring (decay applies to what the builder surfaces, never to the ZINIUM chain); referral program as a program object with fulfilment rails (cash/points/vouchers) kept separate from attribution and payout lists settled by hand. Patterns from hexo-ai/sia (MIT), wangguode/zhishu-agent (MIT); referral shape from AIArmada/referrals (ideas only, license unverified)."
+}

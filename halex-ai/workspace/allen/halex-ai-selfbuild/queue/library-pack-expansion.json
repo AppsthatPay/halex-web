@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "library-pack-expansion",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when each pack has >=10 entries, every entry linked to official docs, authorship label intact, no scraped content.",
+  "priority": 90,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "More library packs in the registry pattern: git, linux-shell, SQL, one compiled-language pack."
+}

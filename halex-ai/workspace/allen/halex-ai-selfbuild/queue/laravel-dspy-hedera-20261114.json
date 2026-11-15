@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-14T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/laravel-dspy-hedera-20261114.md",
+    "id": "laravel-dspy-hedera-20261114",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-14T08:48:25.186793+00:00",
+  "gate_status": "done",
+  "id": "laravel-dspy-hedera-20261114",
+  "kind": "knowledge",
+  "license": "MIT/Apache-2.0",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (laravel-commission MIT LICENSE.md SHA 958da6b8..., composer.json declares MIT; dspy MIT SHA be3f5c0e...; hedera ATS Apache-2.0 SHA 261eeb9e...); READMEs read (laravel-commission in substance, dspy in full 5,056 chars, hedera ATS in substance first ~7,000 of 14,859 chars); verified vs claimed separated in proposal workspace/agent_patterns/proposals/laravel-dspy-hedera-20261114.md. laravel-commission lead (open since 2026-11-13 ~11:42 run) now CLOSED as gated; Hedera Studio lead now CLOSED as gated. HALEX gate stricter: no Laravel/PHP code, no provider/API-key/LM code, no weight optimization, no teleprompter runtime, no smart-contract code, no custodian/key handling, no wallet/signing, no payment execution, no hosted cloud. DSPy docs site (dspy.ai) NOT read - unverified. laravel-commission Pest --min=98 coverage claim NOT adopted (suite not run); DSPy benchmark/paper claims NOT adopted; Hedera marketing examples and 'pre-audited' framing NOT adopted; social claims (Prime Agent, SkillOpt) NOT adopted.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-14 ~03:42 EST",
+  "spec": null,
+  "summary": "Commission rule shapes plus declarative program optimization plus RWA diamond/compliance vocabulary: commission types as rule data (percentage/fixed/combined) with dynamic basis (original price or post-commission total), min/max bounds and rounding per rule, full calculation history, a declared commissionable surface, and a calculate call returning separate totals; DSPy-style signatures as typed contracts, modules as composable steps, optimizers as scored search over prompt/demonstration variants against a fixed verifier, reflective evolution, and assertions as computational constraints; Hedera ATS-style compliance as attachable modules, diamond/facet upgradeability, transfer-time identity checks, and mass-payout batch discipline (record-date snapshot, pro-rata shares, retry path, full audit trail). Patterns from mkeremcansev/laravel-commission (MIT), stanfordnlp/dspy (MIT), hashgraph/asset-tokenization-studio (Apache-2.0)."
+}

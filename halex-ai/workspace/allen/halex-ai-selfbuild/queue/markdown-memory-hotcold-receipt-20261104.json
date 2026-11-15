@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-04T19:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/markdown-memory-hotcold-receipt-20261104.md",
+    "id": "markdown-memory-hotcold-receipt-20261104",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-05T01:32:38.588568+00:00",
+  "gate_status": "done",
+  "id": "markdown-memory-hotcold-receipt-20261104",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-04: LICENSE files read verbatim via GitHub connector for all three sources (akitaonrails/ai-memory MIT SHA 746f96818c095e6653ea158d0626d6d435127d37, Copyright (c) 2026 Fabio Akita; kevintsai1202/deep-memory MIT SHA 63f58668404c8563d07effd1ce2e5f108c5c20b8, Copyright (c) 2026 Kevin Tsai; talocode/tokenlane MIT SHA b6e80f9ab83adb9d4990390677745ef62e90ad05, Copyright (c) 2026 Talocode). Proposal: agent_patterns/proposals/markdown-memory-hotcold-receipt-20261104.md. HALEX gate stricter than every source: no server/multi-user/transcript capture, no vector/embeddings/reranker/cloud, no token issuance/contract/title/custody/payment/wallet/key/signing, no benchmark/market/pricing claims adopted. No code copied; no branding.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-04 19:42 EST",
+  "summary": "Git-backed plain-markdown memory with claimed-once handoffs and a bounded startup brief, hot/cold tiered promotion with review-gated, never-overwriting restore, ask-first capture of successful approaches, and a plan-and-receipt record where failed checks return errors and nothing pretends an issuance happened."
+}

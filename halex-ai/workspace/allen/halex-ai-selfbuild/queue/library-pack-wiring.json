@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "library-pack-wiring",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when harness cases exist and index.html diff is limited to wiring lines. Do not touch the verified plugins push set beyond the wiring lines.",
+  "priority": 90,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Wire the staged library python pack into the page: one manifest entry + one script line + harness cases."
+}

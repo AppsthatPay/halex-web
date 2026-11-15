@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-07T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/raven-evolution-bench-20261107.md",
+    "id": "raven-evolution-bench-20261107",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-07T09:22:56.489344+00:00",
+  "gate_status": "done",
+  "id": "raven-evolution-bench-20261107",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate checklist passed 2026-11-07: LICENSEs read verbatim via GitHub connector for EverMind-AI/Raven Apache-2.0 (file SHA 33068551c97e6ca2cce7c1e85ee63d97de1e9e1a; repo SHA 8448cc6280923a7b20525af259a3b6d465844c42); EverMind-AI/EvoAgentBench MIT Copyright (c) 2026 EverMind (file SHA 0f2569c5db14bc54f794e328d9a49b00cf3c05d2; repo SHA 948a17288782d5120778da16b4cf1cad9305d8b4) with benchmark/ separately Apache-2.0 (benchmark/LICENSE file SHA 24332c9ca658a345633f7f0e1251321e573d46a5). All three READMEs read in full. EverMind-AI/EverMemBench has NO LICENSE file at repo root (LICENSE and LICENSE.md both fail to resolve) - IDEAS ONLY, no code, no copied text; patterns restated in our own words. Proposal: agent_patterns/proposals/raven-evolution-bench-20261107.md. HALEX gate stricter than every source: no unattended workflow automation, no third-party agent orchestration, no provider/network/API-key/install-script code, no LLM judge as sole decider, no benchmark/star/efficacy claims adopted. Activity verified live: Raven 6,082 stars / 239 forks, updated 2026-11-07T08:37:10Z, pre-alpha; EvoAgentBench 41 stars / 5 forks, updated 2026-10-27T07:41:06Z; EverMemBench 24 stars / 2 forks, updated 2026-11-06T08:42:59Z. Affiliate scour: no new gated repo; Refferq license still unread (lead open), TraffoFlex repo not found, RefearnApp AGPL-3.0 ideas only, Reflio mixed proprietary/AGPL ideas only.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-07 03:42 EST",
+  "summary": "Host-agent DAG orchestration + four-seat Curator + ability-transfer self-evolution bench + four-stage memory eval pipeline (Raven Apache-2.0, EvoAgentBench MIT/Apache-2.0, EverMemBench ideas-only): a host plans builder-cycle work as a DAG and hands nodes to specialist stages whose loops are described by four decoupled seats (Memory/Planning/Capability/Action), with a separate Curator-style review changing one seat at a time only after verification; a bench that judges improvements by ability transfer (train, extract trace-grounded abilities, inject into a fresh run, measure held-out gain plus turn-cost vs a no-prior-knowledge baseline); and an Add-Search-Answer-Evaluate pipeline shape for checking HALEX memory packs, one adapter per backend behind a common interface."
+}

@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-07T11:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/skillcorpus-everalgo-refferq-20261107.md",
+    "id": "skillcorpus-everalgo-refferq-20261107",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-07T16:52:37.819064+00:00",
+  "gate_status": "done",
+  "id": "skillcorpus-everalgo-refferq-20261107",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate checklist passed 2026-11-07: LICENSEs read verbatim via GitHub connector for EverMind-AI/SkillCorpus Apache-2.0 Copyright 2026 EverMind AI (file SHA 459556a22aedb4d657bb8ea525bad2cfe76b1bba; repo SHA 17d0e19e3ce495c0929d30c34b2c0f39714661f0; match/evaluate/lifecycle separately MIT per README License section); EverMind-AI/EverAlgo Apache-2.0 (repo SHA 7398133c673333abe6043360fd385cedcc04b57d); Refferq/Refferq MIT Copyright (c) 2025 Refferq (file SHA 11b3911d4b112e7a28a60ca061f59a2513d4f7d1; repo SHA 25df6596a15cf1e9d26021752137d66c22dd8e34). All three READMEs read in full. Proposal: agent_patterns/proposals/skillcorpus-everalgo-refferq-20261107.md. HALEX gate stricter than every source: no provider/network/API-key/server/MCP code, no vector/embeddings store, no LLM judge as sole decider, no unattended automation, no install-script or remote-script materialisation, no payout/payment code, no email sending, no secrets; no benchmark/pass-rate/MRR/star/download/corpus-size figure adopted (SkillCorpus counts 96,401/114,190/300,473 disagree as versioned snapshots). Activity verified live: SkillCorpus 699 stars / 116 forks, updated 2026-11-06T17:17:58Z; EverAlgo 32 stars / 9 forks, updated 2026-11-06T08:55:30Z (two operators unimplemented placeholders); Refferq 135 stars / 103 forks, updated 2026-11-05T22:10:46Z. Affiliate scour: Refferq lead CLOSED (MIT read this run); TraffoFlex repo still not found; RefearnApp AGPL-3.0 ideas only; Reflio mixed proprietary/AGPL ideas only. EverMind leads remaining: HyperMem (EverMind-AI/HyperMem) and MSA (EverMind-AI/MSA) repos confirmed via SkillCorpus README ecosystem table, not yet deep-dived; EverMe CLI not yet deep-dived.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-07 11:42 EST",
+  "summary": "License-audited skill curation + stateless extraction/ranking operators + affiliate registry shape (SkillCorpus Apache-2.0/MIT, EverAlgo Apache-2.0, Refferq MIT \u2014 patterns only): every staged skill/pack row carries source, source_url, license with a GREEN whitelist gating export and curation decisions keyed on content hash; bounded skill injection (at most two per turn, on-demand preferred, kept across turns, one shared pack directory); pack retirement on the unaided level only; pure in-memory extraction/ranking operators (boundary detection, clustering, composable retrieval with fusion/rerank, Episode/Foresight/AtomicFact/Profile shapes) with no persistence, network, provider, or key; affiliate registry completed with referral status lifecycle (Pending/Approved/Rejected), partner groups with custom commission rules as data, and payout scheduling as a date rule only \u2014 no payout execution, no payment code, no email, no secrets."
+}

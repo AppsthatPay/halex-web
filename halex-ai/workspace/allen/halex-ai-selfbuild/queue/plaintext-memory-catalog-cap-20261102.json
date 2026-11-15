@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-02T11:55:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/plaintext-memory-catalog-cap-20261102.md",
+    "id": "plaintext-memory-catalog-cap-20261102",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-02T16:52:45.248562+00:00",
+  "gate_status": "done",
+  "id": "plaintext-memory-catalog-cap-20261102",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-02: LICENSE files read verbatim via GitHub connector for all three sources (memsearch MIT SHA add14e92cb4c3f819617e38931d5edf248b3a970, Copyright (c) 2025 Zilliz Inc.; source-of-truth MIT SHA ba9e9c5b533476d6b246c3bfec7b7eba19dd70d7, Copyright (c) 2026 QuangDN; cap-evolve Apache-2.0 SHA 841571bc98019517f3584150a1b4d011cc02deb5, Copyright 2026 cap-evolve contributors); READMEs read; activity recorded (memsearch: created 2026-02-09, 2,816 stars, updated 2026-11-02, Milvus named in its own description; source-of-truth: created 2026-06-23, 41 stars, updated 2026-10-14; cap-evolve: created 2026-06-15, 67 stars, 139 open issues, beta 0.x badge) as activity only. Efficacy and marketing claims NOT adopted (memsearch no-vector press framing contradicted by the repo itself; source-of-truth no-server/no-network secondary claim unverified; cap-evolve demo/benchmark figures unread). HALEX adaptation is STRICTER than all sources: plain-text Markdown memory only (no Milvus/vector/embeddings/remote reranking), catalog-before-code with gate chain, keep-only-proven-gains with sealed test scored once, no unattended optimization, no auto-commit, no network/MCP/registry/hub/sync/wallet/key/signing/payment/API-key code, no branding, no copied code or skill files. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/plaintext-memory-catalog-cap-20261102.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-02: zilliztech/memsearch + ngocquang/source-of-truth + skillberry-ai/cap-evolve READMEs + LICENSEs read verbatim 2026-11-02",
+  "summary": "Plain-text memory records plus a living catalog plus keep-only-proven-gains for HALEX-AI, restated in HALEX-AI's own words: durable memory as readable, editable, version-controllable Markdown files; read the living catalog of what exists, why, and what rules apply before writing and sync it after shipping, under a constitution-mission-roadmap-specs-code gate chain; keep any prompt, tool, or skill change only when it beats a held-out split by more than noise with a sealed test scored once and every candidate kept as a reviewable diff."
+}

@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "plugin-pack-guide",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when the guide + template build one real pack that passes the harness.",
+  "priority": 65,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Authoring guide + template for packs, turning pack creation into a contributor task."
+}

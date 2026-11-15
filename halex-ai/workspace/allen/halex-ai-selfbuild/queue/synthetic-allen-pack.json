@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "synthetic-allen-pack",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when harness cases prove the boundary entry answers 'are you Allen?' with the boundary, never a claim; persona entries match the spec in substance.",
+  "priority": 90,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Turn the synthetic Allen persona spec into a page pack + wiring; boundary entry first."
+}
