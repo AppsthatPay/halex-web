@@ -1,1 +1,17 @@
-{"created":"2026-10-30T16:00:00+00:00","gate_status":"pending","id":"fauna-intake-mammals","kind":"knowledge","license":"unknown","notes":"PENDING: continue the mammal intake from the fauna v1 seed (house mouse, red fox). Next records are chosen at drain time from Animal Diversity Web or equivalent accounts actually read then; no species list is claimed here. Every new record must follow fauna/DESIGN.md: provenance per record, NOT READ for unverified fields, no verified image until its license page is read. Priority mammals to consider first (not promised): deer mouse and other Peromyscus, gray fox, coyote as the fox lookalike thread.","priority":85,"source":"Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1","summary":"Mammal intake: grow the fauna encyclopedia's mammal spaces from the 2-record seed, keeping the fox/mouse predator and lookalike threads walkable."}
+{
+  "created": "2026-10-30T16:00:00+00:00",
+  "drain_result": {
+    "draft_path": "work/pending-builds/fauna-mammals-4-20261105.md",
+    "id": "fauna-intake-mammals",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T02:08:51.354998+00:00",
+  "gate_status": "done",
+  "id": "fauna-intake-mammals",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PROMOTED 2026-11-05 on Jeffrey's direct order (propagation order, main chat, 2026-11-05 21:04 EST: 'add your full passed encyclopedia additions, continue adding intelligently to the proper chains'): the fourth mammal pair \u2014 golden mouse (Ochrotomys nuttalli) + raccoon (Procyon lotor), staged as FAUNA-MAMMALS-4-20261105 \u2014 was folded into the live fauna pack (workspace/fauna/pack_fauna_v1.json, 7 \u2192 9 records at this fold, version 1.1.0 \u2192 1.2.0; the same run then folded the first reptile/amphibian pair, 9 \u2192 11 records, version 1.3.0), all 18 DESIGN.md fields per record, provenance and NOT READ fields preserved, disagreements carried not resolved. Gate evidence at promotion: staging validator fauna-mammals-4-20261105-check.py re-run, 152 checks pass / 0 fail; live pack suite fauna/tests/test_fauna_pack.py green with the new records counted (14 tests OK); engine suite 125 passed / 0 failed; forbidden-construct scan 2 documented raw hits / 0 violations (harvest carve-out; logical_processor.py refusal-list literal); seal chain True, 0 errors, 21 entries. Workspace chain-records promotion only \u2014 nothing pushed to gh-pages/main, no live app/page change, SuperAllen gate NOT lifted. Original gate (2026-10-30): continue the mammal intake from the fauna v1 seed (house mouse, red fox); records chosen at drain time from Animal Diversity Web or equivalent accounts actually read; provenance per record, NOT READ for unverified fields, no verified image until its license page is read. This promotion covers the fourth pair; pairs 1\u20133 (deer-mouse intake; FAUNA-MAMMALS-2; FAUNA-MAMMALS-3) stand as previously recorded.",
+  "priority": 85,
+  "source": "Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1",
+  "summary": "Mammal intake: grow the fauna encyclopedia's mammal spaces from the 2-record seed, keeping the fox/mouse predator and lookalike threads walkable."
+}

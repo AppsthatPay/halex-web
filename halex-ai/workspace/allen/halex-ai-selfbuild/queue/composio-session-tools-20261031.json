@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-31T12:42:00-04:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/composio-session-tools-20261031.md",
+    "id": "composio-session-tools-20261031",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-10T16:49:40.989458+00:00",
+  "gate_status": "done",
+  "id": "composio-session-tools-20261031",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "GATED 2026-11-10: mapping proposal staged at workspace/agent_patterns/proposals/composio-session-tools-20261031.md (session-scoped tool surfaces + runtime meta-tool discovery as allowlist descriptors only). LICENSE verified verbatim 2026-10-31 (MIT, Copyright (c) 2025 Sampark Inc., SHA 61479ac154a8e5b534361973fdfa0cce3775de9d); README read in full 2026-10-31. Vendor counts (1000+ toolkits) are claims, not adopted facts. No network, API-key, or third-party execution.",
+  "priority": 70,
+  "source": "HALEX-AI intel intake run 2026-10-31: ComposioHQ/composio README + LICENSE read verbatim 2026-10-31",
+  "summary": "Session-scoped tool-surface pattern for HALEX-AI: one session per user, tools discovered at runtime, as allowlist descriptors only."
+}

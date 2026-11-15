@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-04T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/evidence-verified-harness-20261104.md",
+    "id": "evidence-verified-harness-20261104",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-04T08:52:49.892564+00:00",
+  "gate_status": "done",
+  "id": "evidence-verified-harness-20261104",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-04: LICENSE files read verbatim via GitHub connector for all three sources (microsoft/scope MIT SHA 96a394c43c3f1b72e8edf4397e39f162c3007166, Copyright (c) Microsoft Corporation; Tencent/teamai-cli MIT SHA 935ff4be4df46d76c5ee4b8b06d8fb7bb55be3b9, Copyright (C) 2026 Tencent; saikumaresh/job-search-harness MIT SHA 70fa8dd31fbfbf94806fa3aa6c56b9531cdc9e6b, Copyright (c) 2026 Sai Kumaresh). READMEs read (Scope opening only, docs site NOT read; TeamAI opening + quick start; job-search-harness in full). Activity recorded (Scope 74 stars, 410 open issues, research preview, updated 2026-11-04T03:11:49Z; TeamAI 5,766 stars, updated 2026-11-04T08:19:50Z; job-search-harness created 2026-11-02, 0 stars, very new single-author). Efficacy and marketing claims NOT adopted (Scope docs/benchmark claims; TeamAI 6.1%/76% vendor figures with no published method; job-search-harness score anecdote and setup-time claim; affiliate-search article claims, no repo adopted from that search). HALEX adaptation is STRICTER than all sources: criteria before the run, no quote no score, read-only verifier that reads files not reasoning and rechecks maths, shared assets only by reviewed merge onto a protected main line, calibration only after human approval with its effect shown, nothing sent without a yes; NO unattended publishing/sending/calibration/adoption, NO provider/MCP/network/wallet/key/signing/payment/API-key code, NO Docker/Kubernetes machinery, no branding, no copied code. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/evidence-verified-harness-20261104.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-04 03:42 EST: microsoft/scope + Tencent/teamai-cli + saikumaresh/job-search-harness READMEs + LICENSEs read verbatim 2026-11-04",
+  "summary": "Evidence-verified harness plus git-reviewed shared assets for HALEX-AI, restated in HALEX-AI's own words: criteria defined before the run, every scored claim carrying its quoted evidence, a read-only verifier that checks files and maths rather than agreeing with reasoning, shared assets reaching the team only by reviewed merge, and calibration only after human approval with its effect shown."
+}

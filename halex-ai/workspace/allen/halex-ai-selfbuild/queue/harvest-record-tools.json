@@ -1,0 +1,30 @@
+{
+  "created": "2026-10-30T09:00:00+00:00",
+  "drain_result": {
+    "id": "harvest-record-tools",
+    "kind": "module",
+    "module_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/harvest_record_tools/harvest_record_tools.py",
+    "synthesis_status": "SYNTHESIZED",
+    "test_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/harvest_record_tools/test_harvest_record_tools.py"
+  },
+  "drained_at": "2026-10-30T17:57:47.116153+00:00",
+  "gate_status": "done",
+  "id": "harvest-record-tools",
+  "kind": "module",
+  "license": "MIT",
+  "notes": "Gated by the builder-empowerment run: vocabulary operations only, stdlib only, tested + mutation-checked by the synthesizer at drain time. First live drain after push will synthesize this into work/proposals/.",
+  "priority": 80,
+  "source": "HALEX-AI builder empowerment 2026-10-30 (seed entry)",
+  "spec": {
+    "capabilities": [
+      "harvest record filtering"
+    ],
+    "name": "harvest_record_tools",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Filter and count harvested intelligence records"
+  },
+  "summary": "A small helper for the harvest stage: filter harvested records by a field value and count records by a field. Built only from the synthesizer's safe vocabulary, so no third-party code is involved."
+}

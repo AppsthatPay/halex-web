@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-05T19:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/council-golden-memory-20261105.md",
+    "id": "council-golden-memory-20261105",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T00:53:04.438295+00:00",
+  "gate_status": "done",
+  "id": "council-golden-memory-20261105",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-05: LICENSE files read verbatim via GitHub connector for ReviewBench MIT SHA 53be16002bd0976419b159a7b34bde80d9eaf6ec, Copyright (c) 2026 review-bench, and MemoryAgentBench MIT SHA 8c00085921d0d8e099218007478e3af4546edf00, Copyright (c) 2026 Yuanzhe Hu. llm-council has NO LICENSE file at repo root (root listing verified; no LICENSE, no LICENSE.md) \u2014 IDEAS ONLY, patterns restated in our own words, no code copied. Proposal: agent_patterns/proposals/council-golden-memory-20261105.md. HALEX gate stricter than every source: no OpenRouter/API-key/network/provider code, no multi-model calling, no LLM judge as sole decider (deterministic checks first), no vector/embeddings store, no leaderboard scores or model results adopted, no branding. Activity verified live: llm-council 26,261 stars / 4,503 forks, last commit 2025-11-22, author-unsupported vibe-coded hack; ReviewBench last commit 2026-11-04, research preview; MemoryAgentBench last commit 2026-09-25, ICLR 2026 paper. Leads for later runs: Spar (Claude-vs-Codex debate, repo unread), Ankara Chain SDK (RWA, marketing site only), GeoDigital suite (MIT claimed on Medium, repos unread).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-05 19:42 EST",
+  "summary": "Anonymized peer ranking plus designated synthesizer (llm-council, unlicensed \u2014 ideas only) applied to HALEX-AI's three-role review, golden-set judging with severity/category taxonomy and offline judging before any built claim (ReviewBench, MIT), and a four-competency memory-consolidation checklist \u2014 accurate retrieval, test-time learning, long-range understanding, conflict resolution by newest-verified-wins \u2014 with inject-once-query-many efficiency (MemoryAgentBench, MIT)."
+}

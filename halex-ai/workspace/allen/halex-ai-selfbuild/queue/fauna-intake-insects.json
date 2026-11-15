@@ -1,1 +1,17 @@
-{"created":"2026-10-30T16:00:00+00:00","gate_status":"pending","id":"fauna-intake-insects","kind":"knowledge","license":"unknown","notes":"PENDING: continue the insect intake from the fauna v1 seed (monarch butterfly). Next records are chosen at drain time from Animal Diversity Web, BioKIDS, Butterflies and Moths of North America, or equivalent accounts actually read then; no species list is claimed here. Every new record must follow fauna/DESIGN.md: provenance per record, NOT READ for unverified fields, host plants and roosts as insect sign. Consider first (not promised): the viceroy (monarch lookalike thread), the queen butterfly (monarch relative), and the honeybee as a contrasting social insect.","priority":80,"source":"Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1","summary":"Insect intake: grow the fauna encyclopedia's insect spaces from the 1-record monarch seed, with migration, host-plant, and mimic threads."}
+{
+  "created": "2026-10-30T16:00:00+00:00",
+  "drain_result": {
+    "draft_path": "work/pending-builds/fauna-insects-3-20261105.md",
+    "id": "fauna-intake-insects",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T00:11:54.375389+00:00",
+  "gate_status": "done",
+  "id": "fauna-intake-insects",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PROMOTED 2026-11-05 on Jeffrey's direct order ('Promote to chain', main chat, 2026-11-05 19:00 EST): the third insect pair \u2014 western honeybee (Apis mellifera) + common eastern bumblebee (Bombus impatiens), staged as FAUNA-INSECTS-3-20261105 \u2014 was folded into the live fauna pack (workspace/fauna/pack_fauna_v1.json, 5 \u2192 7 records, version 1.0.0 \u2192 1.1.0), all 18 DESIGN.md fields per record, provenance and NOT READ fields preserved, disagreements carried not resolved. Gate evidence at promotion: staging validator fauna-insects-3-20261105-check.py re-run, 147 checks pass / 0 fail; live pack suite fauna/tests/test_fauna_pack.py green with the 2 new records counted (14 tests OK); engine suite 125 passed / 0 failed; forbidden-construct scan 2 raw hits / 0 violations (documented harvest carve-out; logical_processor.py refusal-list literal); seal chain True, 0 errors, 20 entries. Workspace chain-records promotion only \u2014 nothing pushed to gh-pages/main, no live app/page change, SuperAllen gate NOT lifted. Original gate (2026-10-30): continue the insect intake from the fauna v1 seed (monarch butterfly); records chosen at drain time from Animal Diversity Web or equivalent accounts actually read; provenance per record, NOT READ for unverified fields, host plants and roosts as insect sign. This promotion covers the third pair; pairs 1\u20132 (monarch seed; viceroy + queen, FAUNA-INSECTS-2) stand as previously recorded.",
+  "priority": 80,
+  "source": "Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1",
+  "summary": "Insect intake: grow the fauna encyclopedia's insect spaces from the 1-record monarch seed, with migration, host-plant, and mimic threads."
+}

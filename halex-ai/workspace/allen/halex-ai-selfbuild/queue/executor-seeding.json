@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "executor-seeding",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when each executor is scan-clean with a sandboxed run proof inside the tree.",
+  "priority": 85,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "First self-created executors through the lifecycle: pack-linter, queue-entry validator runner, draft-formatter."
+}

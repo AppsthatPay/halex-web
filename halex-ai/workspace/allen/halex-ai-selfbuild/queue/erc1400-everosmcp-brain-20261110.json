@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-10T16:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/erc1400-everosmcp-brain-20261110.md",
+    "id": "erc1400-everosmcp-brain-20261110",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-10T16:49:40.985945+00:00",
+  "gate_status": "done",
+  "id": "erc1400-everosmcp-brain-20261110",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate notes: erc1400-contracts Apache-2.0 SHA 261eeb9e... (0 stars/0 forks, reference-only per its README); EverOS-MCP MIT (c) 2026 EverMind AI SHA 48613629... (2 stars/1 fork); Open-Agentic-Brain Apache-2.0 SHA 57bc88a1... (0 stars/0 forks, ~3 weeks quiet). No code copied; no contract/Solidity/MCP-server/API-key/embedding/key handling. Ideas-only: yaminidesai/RWA-Tokenization (no LICENSE), Supaffi/OpenPromoter/Simple Kuma (AGPL-3.0), eLitius (GPL). EverMind everos-plugins vs everos-tools naming wrinkle CLOSED this run (everos-plugins is the plugins repo). Proposal: workspace/agent_patterns/proposals/erc1400-everosmcp-brain-20261110.md",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-10 (11:42 EST): OnDemandWorld/erc1400-contracts + EverMind-AI/EverOS-MCP + rohithhn/Open-Agentic-Brain-and-Memory READMEs + LICENSEs read verbatim",
+  "summary": "Partitioned-token compliance vocabulary + MCP memory-tool surface shape + owner-held brain loop (capture-distill-rank-inject-measure with human approval and eval gating) for HALEX-AI, patterns only, restated in our own words."
+}

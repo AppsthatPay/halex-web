@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-05T11:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/deterministic-gate-evidence-chain-20261105.md",
+    "id": "deterministic-gate-evidence-chain-20261105",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-05T17:23:04.652673+00:00",
+  "gate_status": "done",
+  "id": "deterministic-gate-evidence-chain-20261105",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-05: LICENSE files read verbatim via GitHub connector for all three sources (agent-self-edit MIT SHA 9e3675e0060cc1092623c8d19d5924600faa3104, Copyright (c) 2026 Debashish Ghosal; swarm-orchestrator ISC SHA bf69d71eac98320d112bb9837d2c817a3113b811, Copyright (c) 2026 moonrunnerkc; halo-record Apache-2.0 SHA 894f2efb3fa9130317241275ea96b4ed2819b516, Copyright 2026 Brian Kuan). Proposal: agent_patterns/proposals/deterministic-gate-evidence-chain-20261105.md. HALEX gate stricter than every source: no unattended self-rewrite, no LLM-judged promotion, no network/model/API-key code, no signing/key code (in-toto/DSSE concept only), no efficacy figures adopted (807 tests / 94.86% coverage / 0% FP are author claims, not run by us), no hosted witness/payment code. rwa-lab-2026 still has no root LICENSE \u2014 ideas only. Leads for later runs: AgentLedger, Agora, agent-ledger (ZidoCode).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-05 11:42 EST",
+  "summary": "Deterministic seven-check promotion gate (agent-self-edit, MIT) plus tamper-evident evidence chain rules (swarm-orchestrator ISC single-chokepoint ledger + halo-record Apache-2.0 RFC 8785 hash chain with external checkpoints): promote only statistically-proven winners, archive near-misses, verdict every requirement with evidence, keep the ledger outside the changed tree, and name what the chain does and does not prove."
+}

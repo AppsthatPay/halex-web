@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-11T08:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/flash-memento-mempalace-20261111.md",
+    "id": "flash-memento-mempalace-20261111",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-11T08:48:32.263255+00:00",
+  "gate_status": "done",
+  "id": "flash-memento-mempalace-20261111",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via GitHub connector 2026-11-11: Flash MIT (c) 2026-Present Nathan C., file SHA 9be9fb31; Memento MIT (c) 2026 Memento Contributors, file SHA 1c90c32d; MemPalace MIT (c) 2026 MemPalace Contributors, file SHA bb10c6d6. READMEs read in full. HALEX gate stricter: no shell/browser/web-UI/phone/voice, no model weights (Onyx gemma4 Apache-2.0 / llama3.1 Community License), no MCP servers, no provider/API-key code, no vector/embeddings store, no Docker/server, no embedding downloads, no LLM judge as sole decider, no unattended learning (drafts only, human gate). Benchmark figures NOT adopted (Memento 90.8% LongMemEval, MemPalace 96.6%/98.4% R@5, LoCoMo/ConvoMem/MemBench \u2014 all author-run). 'Self-improving' framing NOT adopted (file-writing, not weight change). Proposal staged at workspace/agent_patterns/proposals/flash-memento-mempalace-20261111.md; NOTICE.md updated (1092 -> 1155 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-11 ~03:42 EST",
+  "spec": null,
+  "summary": "Learned skills as SKILL.md files with gated background review (Flash), verify-before-done via the project's own checks (Flash), bitemporal graph memory with supersede-never-delete and tiered resolution (Memento), and verbatim palace memory with scoped index, pluggable backend contract, and honest-benchmark reporting (MemPalace). Patterns only, restated in our own words; no code copied."
+}

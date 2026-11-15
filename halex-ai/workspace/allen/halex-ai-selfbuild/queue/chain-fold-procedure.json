@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "chain-fold-procedure",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when one fold follows the written checklist exactly with height reported.",
+  "priority": 60,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Documented draft -> chain fold checklist for the intake program."
+}

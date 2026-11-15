@@ -1,0 +1,31 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "drain_result": {
+    "id": "draft-word-stats",
+    "kind": "module",
+    "module_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/draft_word_stats/draft_word_stats.py",
+    "synthesis_status": "SYNTHESIZED",
+    "test_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/proposals/draft_word_stats/test_draft_word_stats.py"
+  },
+  "drained_at": "2026-10-30T17:57:47.475294+00:00",
+  "gate_status": "done",
+  "id": "draft-word-stats",
+  "kind": "module",
+  "license": "unknown",
+  "notes": "GATED BASIS: synthesized + behavioral tests pass + mutation check verified in /tmp during the blueprint pass; vocabulary operations only, so no arbitrary code can enter through this entry. Verified in the blueprint pass 2026-10-30 (tests + synthesis + mutation check where applicable); flipped from pending by the blueprint run.",
+  "priority": 60,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "spec": {
+    "capabilities": [
+      "draft statistics"
+    ],
+    "name": "draft_word_stats",
+    "operations": [
+      "count_words",
+      "unique_words",
+      "count_lines"
+    ],
+    "purpose": "Word statistics for lesson drafts"
+  },
+  "summary": "Synthesized tool for lesson-draft word statistics."
+}

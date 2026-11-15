@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-12T16:55:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/harness2-cowagent-cbm-20261112.md",
+    "id": "harness2-cowagent-cbm-20261112",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-12T18:56:33.159017+00:00",
+  "gate_status": "done",
+  "id": "harness2-cowagent-cbm-20261112",
+  "kind": "knowledge",
+  "license": "MIT/Apache-2.0",
+  "notes": "LICENSEs read verbatim via GitHub connector 2026-11-12: Harness2 Apache-2.0 file SHA d6456956; CowAgent MIT (c) 2022 zhayujie file SHA fd03f7c2; codebase-memory-mcp MIT (c) 2025 DeusData file SHA 0b953527. READMEs: Harness2 read in full (9,350 chars); CowAgent read in full (21,066 chars); codebase-memory-mcp read in substance (119,672 chars; head, Features, MCP Tools, How It Works, Performance, Security, Graph Data Model read; install/troubleshooting/language detail scanned by heading). HALEX gate stricter: no provider/API-key code, no executors (OpenCode/Codex), no Docker, no benchmark harnesses, no network-unrestricted executor, no terminal/browser/OS tools, no scheduler, no MCP servers, no vector/embeddings store, no SQLite/FTS5, no bundled embedding model, no installer writing agent configs, no CBM Lens, no live infra parsing, no hosted cloud, no LinkAI. Benchmark/performance/efficacy/model-list claims NOT adopted (Harness2 11.5/4.5/11.8 gains and GLM-5-beats-Gemini; CowAgent future model names and self-evolution efficacy; CBM kernel-index and 10x token preprint figures; language-count badges disagree). Proposal staged at workspace/agent_patterns/proposals/harness2-cowagent-cbm-20261112.md; NOTICE.md updated (1299 -> 1364 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-12 ~11:42 EST",
+  "spec": null,
+  "summary": "Recursive harness improvement vocabulary (eight editable harness components as files; task-level Propose-Probe-Compose from behavioural contrasts with no ground truth; harnessing-level improvement harness keeping adopted harnesses plus evidence-supported lessons; parallel vs sequential recursion under a bounded budget; results/resume discipline; web-access guard) from Harness2; three-tier memory (context/daily/MEMORY.md) with nightly Deep Dream distillation into refined long-term entries plus narrative journal, topic knowledge base as auto-curated markdown wiki with knowledge-graph view, self-evolution reviewing conversations to improve skills and follow up unfinished tasks, tools-atomic vs skills-as-manifests, multi-agent teams with own role/model/skills/knowledge from CowAgent; code knowledge graph vocabulary (typed nodes/edges, structural questions: call paths, dead-code candidates, change impact plus test impact, snapshot comparison; read-only Cypher-like query subset; docs-to-code MENTIONS only on exact single-definition resolution; layered search with 11-signal combined scoring idea; coverage honesty \u2014 clean means no recorded gap, not completeness; infra tracing Service to Dockerfile to program; seal-and-verify-before-publish discipline) from codebase-memory-mcp. Patterns only, restated in our own words; no code copied. Harness2 and CowAgent converge on the harness-as-editable-files plus gated improvement loop, the shape HALEX-AI's self-build queue already has."
+}

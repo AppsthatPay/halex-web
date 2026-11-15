@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/agency-first-runs.md",
+    "id": "agency-first-runs",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-30T17:57:46.747590+00:00",
+  "gate_status": "done",
+  "id": "agency-first-runs",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "GATED BASIS: agency code is Allen-authored (no third-party code, no license question); agency tests pass in the blueprint pass; module imports no network/wallet/key/signing code (fetcher injected). Drain produces lesson DRAFTS only; gate folds drafts into ZINIUM after review. Verified in the blueprint pass 2026-10-30 (tests + synthesis + mutation check where applicable); flipped from pending by the blueprint run.",
+  "priority": 95,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "First live research runs with the agency module (research, verify, compile, draft, staged layer) via intake browser route + harvest fetcher."
+}

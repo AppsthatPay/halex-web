@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "catalog-pattern-per-task",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when one intake report shows patterns cited as patterns, never as running agents.",
+  "priority": 70,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Wire catalog-pattern consultation into every agency research task by default, with a report field."
+}

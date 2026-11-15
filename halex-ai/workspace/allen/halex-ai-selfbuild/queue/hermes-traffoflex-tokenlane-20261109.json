@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-09T11:42:55-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/hermes-traffoflex-tokenlane-20261109.md",
+    "id": "hermes-traffoflex-tokenlane-20261109",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-09T18:50:54.440120+00:00",
+  "gate_status": "done",
+  "id": "hermes-traffoflex-tokenlane-20261109",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-09: LICENSEs read verbatim via GitHub connector for NousResearch/hermes-agent MIT Copyright (c) 2025 Nous Research (file SHA 75410e73319c72cd3e991a501c5455eb78f38375; README read in part, head, file SHA 830be257308736e48f25ac4f2d097888b3a63a2c; 261,985 stars / 58,334 forks as returned by GitHub repository search at read time, updated 2026-11-09T16:41:02Z), devflex-pro/traffo-flex MIT Copyright (c) 2026 DevFlex (file SHA ed69df4af529596c70aa720cc0faad0cd2857cd8; README read in full, file SHA a783a88a51bd1baf72f0dde96b19ed30a0bedc3f; 2 stars / 0 forks at read time, updated 2026-10-09T20:00:40Z; author calls it an MVP, harden/audit before production), and talocode/tokenlane MIT Copyright (c) 2026 Talocode (file SHA b6e80f9ab83adb9d4990390677745ef62e90ad05; README read in full, file SHA 48eaeed135b76b7d465bb10eeacbfc3fa2024019; repo HEAD 3cad09ed7b1548b689fff8c8e484bc432fd5fab1; 0 stars / 0 forks at read time, v0.1.2). NOT adopted: Hermes fastest-growing/SOTA language and 242k/254k secondary star figures (disagree with live API count); the five-tool-call skill threshold (secondary-source figure only); EverOS 234.8% figure (belongs to EverOS, not Hermes); any cost claim; TraffoFlex Voluum/RedTrack/Binom/Keitaro class framing and any production-readiness; TokenLane $3T-$10T market-size claim, 43-product pricing catalog, credit prices, hold-to-earn tiers, and the $TCODE mint mention (token endorsement, excluded outright). Excluded: Hermes provider/API-key code, install scripts, messaging gateway, Honcho provider code, unattended cron automation; TraffoFlex server/payment/payout code, install script, MongoDB/ClickHouse infra; TokenLane API-key/bearer auth, hosted cloud routes, credit pricing, MCP server code. Proposal staged at workspace/agent_patterns/proposals/hermes-traffoflex-tokenlane-20261109.md; NOTICE.md updated (938 -> 980 lines). TraffoFlex affiliate lead now CLOSED.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-09 ~11:42 EST (report 2)",
+  "spec": {
+    "capabilities": [
+      "closed learning loop",
+      "affiliate postback and routing shape",
+      "RWA plan and receipt workflow"
+    ],
+    "name": "hermes_traffoflex_tokenlane_patterns",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Closed learning loop with skill creation from experience and on-demand session recall, affiliate postback normalisation and weighted routing shape, and RWA plan-and-receipt discipline, all restated in our own words"
+  },
+  "summary": "Patterns from NousResearch/hermes-agent (MIT), devflex-pro/traffo-flex (MIT) and talocode/tokenlane (MIT): a closed learning loop where a completed complex task is summarised into a plain-text skill file (approach, edge cases, domain knowledge) that self-improves during later use, session history kept in a full-text index and searched on demand instead of loaded whole, and a small curated persistent profile that loads every session; an affiliate registry shape (campaign/stream/destination/traffic-source/postback-template) with weighted destination selection, trafficback, postback normalisation plus deduplication plus outbound postback log, and traffic/conversion/revenue/cost/profit/ROI reports; and an RWA plan-and-receipt discipline where a plan is an asset record or a list of failed fields, a per-kind per-jurisdiction questionnaire asks questions and gives no legal answers, a representation spec marked spec_only names hooks without compiling them, an oracle reference is stored and never called, and a receipt id is issued per plan with a failed check returning the error and never pretending issuance. All restated in our own words, stdlib-only, no provider/network/API-key/server/MCP/GPU/model-weight/payment code."
+}

@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "dualmint-addendum",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when profile text is on file; addendum labels profile-sourced vs secondary-sourced.",
+  "priority": 60,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Fold the pending DualMint profile read into the RWA checklist proposal as an addendum."
+}

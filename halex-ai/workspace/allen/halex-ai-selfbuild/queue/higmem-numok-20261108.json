@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-08T11:42:55-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/higmem-numok-20261108.md",
+    "id": "higmem-numok-20261108",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-08T17:03:29.310388+00:00",
+  "gate_status": "done",
+  "id": "higmem-numok-20261108",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-08: LICENSEs read verbatim via GitHub connector for ZeroLoss-Lab/HiGMem MIT Copyright (c) 2026 ZeroLoss-Lab (file SHA 05a64ccb9ba5be0fee8aca251a7e331a4f387d15; repo SHA f275072f25323a01a8bff3680edbb34ed97d33be) and dfg-ar/numok MIT Copyright (c) 2025 dfgonzalez. READMEs read in full for both. LiCoMemory has NO LICENSE file (root listing read; ideas only) and H-mem repo is 404 (ideas only from paper text) \u2014 neither contributes code or an entry. NOT adopted: HiGMem LoCoMo F1 / adversarial F1 / fewer-turns figures; LiCoMemory SOTA accuracy/latency/token claims; H-Mem J-Score 72.47 / +5.6; Numok marketing copy; any star/fork count this run (HiGMem search index returned no match; others not retrieved). Excluded: OpenAI API keys, vLLM/OpenAI-compatible backends, embedding downloads, PyTorch/CUDA, LLM judge as sole decider, Stripe keys/webhooks/payment execution, PHP/MySQL/Docker setup, default admin credentials in the Numok README (security smell, never adopted). Proposal staged at workspace/agent_patterns/proposals/higmem-numok-20261108.md; NOTICE.md updated (777 -> 826 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-08 ~11:42 EST (report 1)",
+  "spec": {
+    "capabilities": [
+      "event-turn memory indexing",
+      "coarse-to-fine retrieval",
+      "affiliate registry shape"
+    ],
+    "name": "higmem_numok_patterns",
+    "operations": [
+      "filter_records",
+      "count_by"
+    ],
+    "purpose": "Two-level event-turn memory index with coarse-to-fine retrieval, CogniGraph-style three-layer index note, dual-tree temporal/semantic index note, and self-hosted affiliate program registry shape"
+  },
+  "summary": "Patterns from ZeroLoss-Lab/HiGMem (MIT) and dfg-ar/numok (MIT), plus ideas only from EverM0re/LiCoMemory (no LICENSE file) and rutgerswiselab/H-mem (repo 404): a two-level event-turn memory index where turns group into event summaries and retrieval descends from summaries to turns only inside matching events, with deterministic keyword rewrite and overlap+recency evidence filtering; a CogniGraph-style three-layer index note (pack summaries, entity-relation triples, source chunks) with a unified rerank weighing topic, recency, and keyword overlap; a dual-tree temporal/semantic index note with a deterministic mode rule; and an affiliate registry shape (partner record, referral link record, commission ledger as data only, status lifecycle, partner groups with custom commission rules, payout scheduling as a date rule only). All restated in our own words, stdlib-only, no provider/network/API-key/server/MCP/GPU/model-weight/payment code."
+}

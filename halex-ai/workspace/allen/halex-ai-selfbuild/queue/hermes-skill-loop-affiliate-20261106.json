@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-06T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/hermes-skill-loop-affiliate-20261106.md",
+    "id": "hermes-skill-loop-affiliate-20261106",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T09:12:44.922552+00:00",
+  "gate_status": "done",
+  "id": "hermes-skill-loop-affiliate-20261106",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-06: LICENSE read verbatim via GitHub connector for NousResearch/hermes-agent MIT SHA 75410e73319c72cd3e991a501c5455eb78f38375, Copyright (c) 2025 Nous Research. refrefhq/refref is GNU AGPL-3.0 SHA 29ebfa545f5580919a4e884d7014d7a3eb2df762 \u2014 IDEAS ONLY. valeriansaliou/raider has NO LICENSE file at repo root and Cargo.toml declares license MPL-2.0 \u2014 IDEAS ONLY (a secondary page's MIT claim is contradicted by the repo's own manifest). Proposal: agent_patterns/proposals/hermes-skill-loop-affiliate-20261106.md. HALEX gate stricter than every source: no provider/network/API-key/messaging-gateway/backend code, no unattended automations, no vector/embeddings store, no efficacy figures or star counts adopted, no payment/tracking/Stripe code, no branding. Activity verified live: hermes-agent 260,993 stars / 57,666 forks, updated 2026-11-06T08:40:26Z, latest commit 2026-11-06T07:03:57Z; refref last commit 2026-03-20; raider 253 stars, updated 2026-10-15, stale Rust 1.51-era stack.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-06 03:42 EST",
+  "summary": "Closed skill loop (hermes-agent, MIT): distill a completed, verified task into a plain-Markdown skill file and refine it on reuse, keeping superseded wording in a dated history note; three-layer memory as Markdown plus hash chain; full-text session search with provenance. Plus the affiliate self-service shape (refref AGPL and raider MPL-2.0 \u2014 ideas only): referrer generates own tracking link, sees own balance, requests payout, backend reports referred payments; payout stays human-approved with user-supplied links only."
+}

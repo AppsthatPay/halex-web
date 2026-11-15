@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-31T12:42:00-04:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/hermes-learning-loop-20261031.md",
+    "id": "hermes-learning-loop-20261031",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-31T17:56:38.625519+00:00",
+  "gate_status": "done",
+  "id": "hermes-learning-loop-20261031",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-10-31: LICENSE file read verbatim via GitHub connector (MIT, Copyright (c) 2025 Nous Research, SHA 75410e73319c72cd3e991a501c5455eb78f38375); README read in full; activity recorded (created 2025-07-22, 60,878 commits, 259,102 stars, not archived) as activity only, never efficacy evidence. Skill-trigger and curator details are secondary-sourced from the project's docs summaries, stated as such in the proposal \u2014 the docs pages themselves were not re-read verbatim. HALEX adaptation is STRICTER than the source: skill candidates are DRAFTS only, gate review before activation, no unattended creation/editing/pruning, no weight-training self-evolution, no gateway/portal/install/API-key material. No code copied. Drains to a lesson DRAFT for gate review only; never to live skill activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/hermes-learning-loop-patterns-20261031.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-10-31: NousResearch/hermes-agent README + LICENSE read verbatim 2026-10-31",
+  "summary": "Closed-learning-loop patterns for the HALEX-AI builder, restated in HALEX-AI's own words under a draft-only gate: skill-candidate capture after complex, error-recovered, or corrected tasks; patch-preferred refinement; curator lifecycle as gate-gated review prompts; progressive disclosure; memory/skills separation."
+}

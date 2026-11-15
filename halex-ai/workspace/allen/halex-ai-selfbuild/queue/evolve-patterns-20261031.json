@@ -1,0 +1,17 @@
+{
+  "created": "2026-10-31T09:00:00-04:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/evolve-patterns-20261031.md",
+    "id": "evolve-patterns-20261031",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-10-31T09:56:19.377694+00:00",
+  "gate_status": "done",
+  "id": "evolve-patterns-20261031",
+  "kind": "knowledge",
+  "license": "MIT-0",
+  "notes": "Gate checklist passed 2026-10-31: LICENSE file read verbatim (MIT No Attribution); GitHub metadata NOASSERTION vs LICENSE-file MIT-0 discrepancy recorded honestly in the proposal, file governs. Repo activity: created 2026-04-12, 2 commits, 0 stars, not archived. Vendor success metrics (4h->1.5h, 60% capability, >90% autonomy) are CLAIMED only, never adopted as fact. Drains to a lesson DRAFT for gate review only; never a live lesson until gated. Proposal: workspace/user_systems/proposals/evolve-protocol-patterns-20261031.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-10-31: armorbreak001/evolve-protocol README + LICENSE read verbatim 2026-10-31",
+  "summary": "Self-evolution practice patterns for the HALEX-AI builder loop, ideas restated in HALEX-AI's own words: decision log (options/choice/reasoning/risk), error-pattern library (symptom/root cause/fix/prevention/count), state snapshot before long tasks, three-tier safety vocabulary mapped onto the existing test-then-seal gate with no new authority, and an after-5-same-type-tasks review habit. No code copied (source is prose), no metric claims adopted."
+}

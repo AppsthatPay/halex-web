@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-06T19:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/harness-memory-patterns-20261106.md",
+    "id": "harness-memory-patterns-20261106",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-07T02:43:02.365388+00:00",
+  "gate_status": "done",
+  "id": "harness-memory-patterns-20261106",
+  "kind": "knowledge",
+  "license": "Apache-2.0",
+  "notes": "Gate checklist passed 2026-11-06: LICENSEs read verbatim via GitHub connector for google-research/harness2 Apache-2.0 repo SHA 6868817518876de8fd170c6a8354daca273b6191; oceanbase/powercontext Apache-2.0 repo SHA 9a424e77d5c5f04ae0147a9278570edc5927d50d; EverMind-AI/EverOS Apache-2.0 Copyright 2025 EverMind AI, repo SHA 80ef766b690dd02eb6caa4e9f78bad4a9f0c1ee9. All three READMEs read in full. Proposal: agent_patterns/proposals/harness-memory-patterns-20261106.md. HALEX gate stricter than every source: no unattended harness self-rewrite, no provider/network/API-key/server/MCP code, no vector/embeddings store, no LLM judge as sole decider, no benchmark/star/efficacy claims adopted. Activity verified live: harness2 22,942 stars / 2,295 forks, updated 2026-11-07T00:20:07Z; powercontext 1,510 stars / 601 forks, updated 2026-11-06T19:55:26Z; EverOS 13,842 stars / 965 forks, updated 2026-11-06T23:56:48Z. Zekra AGPL-3.0 ideas only, no entry. Affiliate scour: no new gated repo; Refferq + TraffoFlex leads unresolved (licenses unread).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-06 19:42 EST",
+  "summary": "Recursive harness improvement + revisioned context + Markdown-native memory (Harness\u00b2, PowerContext, EverOS \u2014 all Apache-2.0, patterns only): a contrastive Propose-Probe-Compose harness-improvement record whose edits are probed against held-out tasks and composed only on behavioral contrast, never auto-applied; revisioned context artifacts with a review inbox where only the approved current head is recalled and rejection is terminal with a reason; Markdown as the single source of truth with separate user/agent tracks, orthogonal retrieval keys, and offline reflection merging episode clusters into profiles and skills between cycles."
+}

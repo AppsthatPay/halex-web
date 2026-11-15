@@ -1,0 +1,11 @@
+{
+  "created": "2026-10-30T10:45:00+00:00",
+  "gate_status": "pending",
+  "id": "gap-loop-routine",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PENDING: gates when one full loop is demonstrated end to end on a real miss.",
+  "priority": 70,
+  "source": "HALEX-AI A->B blueprint 2026-10-30 (ZINIUM-SEED-ALLEN)",
+  "summary": "Routine: every reported page miss becomes a pending knowledge queue entry; intake gates it; drain check re-asks the live page."
+}

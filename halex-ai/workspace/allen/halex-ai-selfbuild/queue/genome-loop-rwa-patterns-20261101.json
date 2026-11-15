@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-01T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/genome-loop-rwa-patterns-20261101.md",
+    "id": "genome-loop-rwa-patterns-20261101",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-01T09:57:15.585618+00:00",
+  "gate_status": "done",
+  "id": "genome-loop-rwa-patterns-20261101",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate checklist passed 2026-11-01: LICENSE files read verbatim via GitHub connector for all three sources (azena MIT SHA a63f5d3f5062a8d233bd12c4d0d55304b6245a07, Copyright (c) 2026 azena; metaswarm MIT SHA 7f60beacf2c73f1336d6294bf334576a841dae58, Copyright (c) 2026 Dave Sifry; rwa-sdk MIT SHA 10acbe45094667ea6b9f2e55c7c66bba2ed41ed5, Copyright (c) 2026 Chainstack Labs); READMEs read; activity recorded (azena: created 2026-06-23, 3 commits, 0 stars; metaswarm: created 2026-02-02, 427 stars, updated 2026-10-30, secondary listings stale; rwa-sdk: created 2026-03-30, 16 commits, 8 stars) as activity only. Efficacy claims NOT adopted (azena battle-tested, metaswarm 100% coverage/hundreds of PRs, rwa-sdk sample prices/TVL, blog coverage ranking). HALEX adaptation is STRICTER than all sources: no human-out-of-the-loop operation, no unattended merging/PR automation, no network/wallet/key/signing/payment/API-key code, no SDK code or RPC dependency, no branding, no token endorsement. No code copied. Drains to a lesson DRAFT for gate review only; never to live activation and never to the ZINIUM chain itself. Proposal: workspace/agent_patterns/proposals/genome-loop-rwa-adapter-20261101.md.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-01: azena-ai/self-improving-loop + dsifry/metaswarm + chainstacklabs/rwa-sdk READMEs + LICENSEs read verbatim 2026-11-01",
+  "summary": "Genome-loop discipline plus adversarial validation plus an RWA research checklist for HALEX-AI, restated in HALEX-AI's own words: one queued item per tick with a versioned strategy record rewritten only after a verified step, proof taken from the artifact itself rather than any subagent self-report with a bounded iteration cap before human escalation, and a per-asset RWA checklist naming price source, yield pattern, and compliance model or recording unknown."
+}

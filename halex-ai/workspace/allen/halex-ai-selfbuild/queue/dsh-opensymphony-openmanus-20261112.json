@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-12T19:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/dsh-opensymphony-openmanus-20261112.md",
+    "id": "dsh-opensymphony-openmanus-20261112",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-13T00:59:58.781420+00:00",
+  "gate_status": "done",
+  "id": "dsh-opensymphony-openmanus-20261112",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via GitHub connector 2026-11-12: dsh-superagent-prototype MIT (c) 2026 DeepSeek Harness Team file SHA df5ef0e6; OpenSymphony MIT (c) 2026 T-Mind Family file SHA 58508f85; OpenManus MIT (c) 2025 manna_and_poem file SHA db2216e1. READMEs: dsh read in full plus docs/000-philosophy.md (SHA 8422db91) and docs/007-architecture.md (SHA 184ea543); OpenSymphony read in full (5,501 chars); OpenManus read in full (9,100 chars) \u2014 re-verification upgrading the 2026-10-30 repo-page-only entry. HALEX gate stricter: no provider/API-key code, no MCP servers, no browser automation, no shell execution, no Docker/server, no SQLite/FTS5, no vector/embeddings store, no model weights, no LLM judge as sole decider, no unattended learning or tool creation, no hosted cloud, no GitHub/Feishu listeners, no mass PR/broadcast volume, no L3 cloud memory. Claims NOT adopted: dsh star-growth figures and 'fastest-growing' framing, 'much of the engineering done by coding agents' (project's own statement, unverified), companion design article not read; OpenSymphony test counts (badge 377 vs article 395, disagree, none run), 'runs on consumer hardware' unverified, repo stale since 2026-07-13 with 1 star \u2014 no maturity claim; OpenManus 'prototype in 3 hours', star figures as quality, Hugging Face demo not endorsed, sponsor link not adopted. Proposal staged at workspace/agent_patterns/proposals/dsh-opensymphony-openmanus-20261112.md; NOTICE.md updated (1364 -> 1434 lines).",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-12 ~19:42 EST",
+  "spec": null,
+  "summary": "Attention-budget super-agent operation plus single-writer engine from dsh-superagent (act only when asked or when a written rule allows; speak only when a person must act or can use a result; one concrete question at a time; stop by impact not effort; honest reporting; proactive work starts record-only; few concepts/settings, defaults replace settings; one transaction per command, ports enqueue external work, adapters perform after commit; assessor decides, executor runs; outbox receipt discipline; pass loop; startup resumes interrupted assignments); soul plus governance onion from OpenSymphony (declarative soul identity/thinking-framework/values/veto compiled into persistent behavioral constraints; voting, precedent store, defense risk classification safe/risky/dangerous, human-in-the-loop for high-risk ops; three-tier memory shape with L3 cloud excluded; tool workshop only through the HALEX gate; agent pool with priority scheduler and sandbox limits; dynamic skill registry; intent bridge); three execution modes plus specialist agents from OpenManus (single agent, tool agent, multi-agent flow \u2014 flow labelled unstable, experimental; BaseTool class; specialist agents toggled on, disabled by default). Patterns only, restated in our own words; no code copied. All three converge on the shape HALEX-AI's self-build queue already has: a gated loop improving editable artifacts with evidence, plus a governance layer deciding before execution."
+}

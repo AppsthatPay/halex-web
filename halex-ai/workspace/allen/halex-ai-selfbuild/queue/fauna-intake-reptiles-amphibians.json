@@ -1,1 +1,17 @@
-{"created":"2026-10-30T16:00:00+00:00","gate_status":"pending","id":"fauna-intake-reptiles-amphibians","kind":"knowledge","license":"unknown","notes":"PENDING: open the reptile/amphibian intake. Zero records exist in fauna v1 for these groups — this entry starts the group, it does not claim any species. Species are chosen at drain time from Animal Diversity Web or equivalent accounts actually read then. Every new record must follow fauna/DESIGN.md: provenance per record, NOT READ for unverified fields. Regional species for Jeffrey's area (Murphy NC, southern Appalachians) are the natural first thread, but no regional list is claimed until it is read.","priority":75,"source":"Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1","summary":"Reptile/amphibian intake: open the two empty fauna groups with first verified records, following the same schema and gate."}
+{
+  "created": "2026-10-30T16:00:00+00:00",
+  "drain_result": {
+    "draft_path": "work/pending-builds/fauna-reptiles-amphibians-1-20261105.md",
+    "id": "fauna-intake-reptiles-amphibians",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-06T02:08:51.354998+00:00",
+  "gate_status": "done",
+  "id": "fauna-intake-reptiles-amphibians",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PROMOTED 2026-11-05 on Jeffrey's direct order (propagation order, main chat, 2026-11-05 21:04 EST: 'add your full passed encyclopedia additions, continue adding intelligently to the proper chains'): the first reptile/amphibian pair \u2014 common box turtle (Terrapene carolina) + American toad (Anaxyrus americanus), staged as FAUNA-REPTILES-AMPHIBIANS-1-20261105 \u2014 was folded into the live fauna pack (workspace/fauna/pack_fauna_v1.json, 9 \u2192 11 records, version 1.2.0 \u2192 1.3.0, after the same run's mammal fold), all 18 DESIGN.md fields per record, provenance and NOT READ fields preserved, disagreements carried not resolved. Gate evidence at promotion: staging validator fauna-reptiles-amphibians-1-20261105-check.py run this pass, 154 checks pass / 0 fail; live pack suite fauna/tests/test_fauna_pack.py green with the new records counted (14 tests OK); sanity suite test_fauna_v2_and_sciences.py 8 tests OK; engine suite 125 passed / 0 failed; forbidden-construct scan 2 documented raw hits / 0 violations (harvest carve-out; logical_processor.py refusal-list literal); seal chain True, 0 errors, 21 entries. Workspace chain-records promotion only \u2014 nothing pushed to gh-pages/main, no live app/page change, SuperAllen gate NOT lifted. Original gate (2026-10-30): open the reptile/amphibian intake from zero records; species chosen at drain time from Animal Diversity Web or equivalent accounts actually read; provenance per record, NOT READ for unverified fields; regional species for Jeffrey's area (Murphy NC, southern Appalachians) the natural first thread. This promotion covers the first pair; the unnumbered FAUNA-REPTILES-AMPHIBIANS draft and FAUNA-REPTILES-AMPHIBIANS-2 stand as previously recorded.",
+  "priority": 75,
+  "source": "Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1",
+  "summary": "Reptile/amphibian intake: open the two empty fauna groups with first verified records, following the same schema and gate."
+}

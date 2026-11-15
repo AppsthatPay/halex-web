@@ -1,1 +1,17 @@
-{"created":"2026-10-30T16:00:00+00:00","gate_status":"pending","id":"fauna-intake-birds","kind":"knowledge","license":"unknown","notes":"PENDING: continue the bird intake from the fauna v1 seed (northern cardinal). Next records are chosen at drain time from Animal Diversity Web, BioKIDS, or equivalent accounts actually read then; no species list is claimed here. Every new record must follow fauna/DESIGN.md: provenance per record, NOT READ for unverified fields, song as the bird field-sign where footprints do not apply. Consider first (not promised): backyard and regional songbirds that share the cardinal's range threads, so range threads become walkable.","priority":80,"source":"Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1","summary":"Bird intake: grow the fauna encyclopedia's bird spaces from the 1-record cardinal seed, with song and range threads."}
+{
+  "created": "2026-10-30T16:00:00+00:00",
+  "gate_status": "done",
+  "id": "fauna-intake-birds",
+  "kind": "knowledge",
+  "license": "unknown",
+  "notes": "PROMOTED 2026-11-05 on Jeffrey's direct order (propagation order, main chat, 2026-11-05 21:04 EST: 'add your full passed encyclopedia additions, continue adding intelligently to the proper chains'): the fourth bird pair \u2014 Carolina chickadee (Poecile carolinensis) + house finch (Haemorhous mexicanus), staged as FAUNA-BIRDS-4-20261105 \u2014 was folded into the live fauna pack (workspace/fauna/pack_fauna_v1.json, 11 \u2192 13 records, version 1.3.0 \u2192 1.4.0), all 18 DESIGN.md fields per record, provenance and NOT READ fields preserved, disagreements carried not resolved. Gate evidence at promotion: staging validator fauna-birds-4-20261105-check.py re-run by Allen, 154 checks pass / 0 fail; live pack suite fauna/tests/test_fauna_pack.py green with the new records counted (14 tests OK); sanity suite test_fauna_v2_and_sciences.py 8 tests OK; engine suite 125 passed / 0 failed; forbidden-construct scan 1 documented raw hit (logical_processor.py refusal-list literal) / 0 violations; seal chain True, 0 errors, 21 entries. The 2 new records were tokenized in the same pass (FAUNA-KNOW-POECILE-CAROLINENSIS + FAUNA-KNOW-HAEMORHOUS-MEXICANUS, 10 categories each, agentification records per CHAIN-AGENT-STANDARD-20261105-001); fauna harness 185/185, standard conformance 206/206. Workspace chain-records promotion only \u2014 nothing pushed to gh-pages/main, no live app/page change, SuperAllen gate NOT lifted. Original gate (2026-10-30): PENDING: continue the bird intake from the fauna v1 seed (northern cardinal). Next records are chosen at drain time from Animal Diversity Web, BioKIDS, or equivalent accounts actually read then; no species list is claimed here. Every new record must follow fauna/DESIGN.md: provenance per record, NOT READ for unverified fields, song as the bird field-sign where footprints do not apply. Consider first (not promised): backyard and regional songbirds that share the cardinal's range threads, so range threads become walkable. This promotion covers the fourth pair; pairs 2\u20133 (robin/bluebird; wren/titmouse) stand as previously recorded, staged and passed but not promoted.",
+  "priority": 80,
+  "source": "Jeffrey 2026-10-30 fauna encyclopedia order; fauna seed pack v1",
+  "summary": "Bird intake: grow the fauna encyclopedia's bird spaces from the 1-record cardinal seed, with song and range threads.",
+  "drained_at": "2026-11-06T02:49:51.759713+00:00",
+  "drain_result": {
+    "draft_path": "work/pending-builds/fauna-birds-4-20261105.md",
+    "id": "fauna-intake-birds",
+    "kind": "knowledge"
+  }
+}
