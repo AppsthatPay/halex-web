@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-15T16:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/dvp-tokenade-kapso-20261115.md",
+    "id": "dvp-tokenade-kapso-20261115",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-15T16:49:04.573688+00:00",
+  "gate_status": "done",
+  "id": "dvp-tokenade-kapso-20261115",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (solana-foundation/dvp MIT (c) 2026 Solana Foundation SHA e8ab5066...; pi-infected/tokenade MIT OR Apache-2.0, LICENSE-MIT SHA b4eda81a... (c) 2026 Paul Irolla, LICENSE-APACHE SHA 137069b8..., NO single LICENSE file; Leeroo-AI/kapso MIT (c) 2025 Kapso SHA d31ae979...). READMEs read in full (DvP, Tokenade, Kapso). Verified vs claimed separated in proposal workspace/agent_patterns/proposals/dvp-tokenade-kapso-20261115.md. Solana DvP + pi-infected/tokenade leads (open since 2026-11-15 ~03:42 run) now CLOSED as gated. HALEX gate stricter: no DvP Rust program code, no on-chain deployment/settlement execution, no wallet/signing/custody code; no Tokenade Rust binary, no llm-proxy, no model download, no npm/cargo install, no MCP wrapping; no Kapso Python code, no PyPI package, no Claude Code/Codex CLI dependency, no hosted lesson bank; no network/provider/API-key code anywhere; no third-party branding. NOT adopted: DvP 'ready for real funds' (Cantina audit linked not read; repo declare_id is a placeholder, README says not deployed; solana.com mainnet ID does not match it on its face - discrepancy recorded not resolved), Foundation comparison figures, any settlement volume/design partner; Tokenade '39% cheaper / #1 on THOL' (author benchmark); Kapso benchmark claims (RelBench/IOAI/MLE-Bench/ALE-Bench, Leeroo's own reports); star counts as quality; any J.P. Morgan adoption (input only). Open lead carried forward: marcelcluj-bit GeoDigital Global (self-promo, unverified) - low priority.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-15 ~11:42 EST",
+  "spec": null,
+  "summary": "Atomic two-leg settlement shape plus context-compaction discipline plus branch-per-experiment lessons with credence and boundary: DvP settlement vocabulary (two escrow legs funded by plain transfers, one named settlement authority as only settler, either party may reclaim/cancel, expiry capped with recovery always working, single-use nonce tombstones, verify-stored-terms-before-funding, settle clamps and refunds over-deposit); Tokenade compaction discipline for the builder loop's own notes (fold noisy output to failures/numbers/decisive lines, already-seen content as short reference or diff, symbol/skeleton lookup, every fold hash-recoverable, secrets scrubbed); Kapso lesson shape (each experiment on its own branch and scored, best solution deploys, every lesson carries body + boundary + credence + evidence, next cycle grounded in those lessons). Patterns from solana-foundation/dvp (MIT), pi-infected/tokenade (MIT OR Apache-2.0), Leeroo-AI/kapso (MIT); no code copied."
+}
