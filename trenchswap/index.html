@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kFz4lF7HnoM3rcMgHVPCc7FmSSX2St7+80gq0m7TGxQ=' 'sha256-8f4v+I6mvW/Su5K05Vn3zrheUX1v1adHeNTvSvCE/fs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app; frame-src 'none'; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kFz4lF7HnoM3rcMgHVPCc7FmSSX2St7+80gq0m7TGxQ=' 'sha256-D0z/c5JeX2l4zJxySD5DhX3VKZVh62igZSE+9QDYXG4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app; frame-src 'none'; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -194,9 +194,11 @@ iframe.browser{width:100%;height:52vh;border:1px solid var(--line);border-radius
 @media (prefers-reduced-motion: reduce){.ts-flame,.ts-ember{display:none}}
 .chartwrap .segtabs{margin:8px 0 4px}
 .chartwrap .segtabs button{transition:background .18s ease,color .18s ease,border-color .18s ease}
-.modetabs{display:flex;gap:6px;margin:8px 0 2px}
-.modetabs button{flex:1;background:linear-gradient(180deg,#2A1B42,#1E1032);color:var(--muted);border:1px solid var(--line);padding:8px 4px;border-radius:11px;font-weight:700;font-size:12.5px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(243,232,255,.08);transition:background .18s ease,color .18s ease,border-color .18s ease}
+.modetabs{display:flex;gap:6px;margin:8px 0 2px;flex-wrap:wrap}
+.modetabs button{flex:1 1 30%;background:linear-gradient(180deg,#2A1B42,#1E1032);color:var(--muted);border:1px solid var(--line);padding:8px 2px;border-radius:11px;font-weight:700;font-size:11px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(243,232,255,.08);transition:background .18s ease,color .18s ease,border-color .18s ease}
 .modetabs button.on{background:linear-gradient(180deg,#8B5CF6,#662D91);color:#fff;border-color:rgba(192,132,252,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 14px rgba(124,58,237,.35)}
+.ta-tabs{display:flex;gap:6px;margin:10px 0 2px}.ta-tabs button{flex:1;background:#1B1533;color:#D8CCF5;border:1px solid #2E2450;border-radius:999px;padding:6px 2px;font-weight:700;font-size:11px;cursor:pointer}.ta-tabs button.on{background:#A855F7;color:#fff;border-color:#A855F7}
+.ta-pin{cursor:pointer}.ta-panel{font-size:13px;line-height:1.6;color:#E9D5FF}.ta-panel b{color:#C084FC}.ta-bar{height:10px;border-radius:5px;background:#241A45;overflow:hidden;margin:4px 0 8px}.ta-bar i{display:block;height:100%}
 .replaybar{margin-top:10px;background:rgba(10,6,20,.55);border:1px solid var(--line);border-radius:12px;padding:10px;box-shadow:inset 0 1px 0 rgba(243,232,255,.06)}
 .replaybar input[type=range]{flex:1;accent-color:var(--cta);height:28px;padding:0;background:transparent;border:0;cursor:pointer}
 .replaybar select{width:auto;padding:8px 6px;border-radius:10px;font-size:12.5px;font-weight:700}
@@ -673,6 +675,19 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 
 </section>
 
+<!-- ============ SEARCH — SOLANA TOKENS ============ -->
+<section class="tab" id="tab-search">
+  <div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:20px">Search</h2><span class="live">● SOLANA ONLY</span></div>
+  <p class="sub" style="margin-top:6px">Search Solana tokens by name, ticker, or contract address. Results appear as you type.</p>
+  <div class="row"><input type="text" id="searchInput" class="grow" placeholder="Search name, ticker, or paste a contract…" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn small" id="searchPasteBtn" type="button" style="width:auto">Paste</button></div>
+  <div id="searchStatus" class="fee" style="margin-top:8px"></div>
+  <div id="searchResults" style="margin-top:10px"></div>
+  <div class="section" style="margin-top:16px">
+    <div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:18px">Recents</h2><button class="btn small secondary" id="searchClearBtn" type="button" style="width:auto">Clear all</button></div>
+    <div id="searchRecents" style="margin-top:8px"><p class="sub">No recent searches yet — search a token and it will show up here.</p></div>
+  </div>
+</section>
+
 <!-- ============ MINT — TRENCH MACHINE ============ -->
 <section class="tab" id="tab-mint">
   <div class="mint-hero">
@@ -859,6 +874,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
   <button data-tab="home" class="on"><span class="ic">⌂</span><span data-i18n="home">Home</span></button>
   <button data-tab="wallet"><span class="ic">▣</span><span data-i18n="wallet">Wallet</span></button>
   <button data-tab="market"><span class="ic">▥</span><span data-i18n="market">Market</span></button>
+  <button data-tab="search"><span class="ic">🔍</span><span>Search</span></button>
   <button data-tab="swap"><span class="ic">⇅</span><span data-i18n="swap">Swap</span></button>
   <button data-tab="mint"><span class="ic">◉</span><span>Mint</span></button>
   <button data-tab="info"><span class="ic">🔥⚙️</span><span data-i18n="info">Info</span></button>
@@ -1145,7 +1161,12 @@ function symForMint(mint){
  if(t)return{symbol:t.symbol,name:t.name,decimals:t.decimals};
  var meta=(state.mintMeta&&state.mintMeta[mint])||{symbol:"",name:"Token"};
  return{symbol:meta.symbol||("…"+mint.slice(-4)),name:meta.name||"Token",decimals:6}}
-function pctHtml(v){if(v==null||isNaN(v))return'<span class="pct">24h —</span>';var c=v>=0?"up":"down";return'<span class="pct '+c+'">'+(v>=0?"▲":"▼")+" "+Math.abs(v).toFixed(2)+"%</span>"}
+/* pctHtml(v, priceOk): the 24h % prints only from a pair whose price passed
+   sanePrice. priceOk===false (price NOT READ) prints NOT READ, never a raw
+   % from the rejected pool. Backstop: a price cannot fall more than 100%
+   in 24h, and a >100x (+10,000%) daily move is a mispriced-pool artifact,
+   not a market — both read NOT READ instead of printing a number. */
+function pctHtml(v,priceOk){if(priceOk===false)return'<span class="pct">24h NOT READ</span>';if(v==null||isNaN(v))return'<span class="pct">24h —</span>';v=Number(v);if(!isFinite(v)||v<-100||v>10000)return'<span class="pct">24h NOT READ</span>';var c=v>=0?"up":"down";return'<span class="pct '+c+'">'+(v>=0?"▲":"▼")+" "+Math.abs(v).toFixed(2)+"%</span>"}
 function toast(m){var t=$("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none"},3200)}
 function setLive(id,ok,label){var el=$(id);if(!el)return;el.classList.toggle("off",!ok);el.textContent=ok?("● "+label):"● RETRYING"}
 function sens(v){return state.shield?"********":v}
@@ -1226,6 +1247,151 @@ function renderUserWatchlist(){
   c.appendChild(el);
   fetch(dexTokensUrl(w.mint)).then(function(r){return r.json()}).then(function(d){var p=bestPair(d.pairs,w.mint);var t=c.querySelector('[data-watch-price="'+w.mint+'"]');if(t&&p)t.textContent=dispPrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)+(p.priceChange&&p.priceChange.h24!=null?" · "+(Number(p.priceChange.h24)>=0?"+":"")+Number(p.priceChange.h24).toFixed(2)+"% 24h":"");else if(t)t.textContent="Price: NOT READ"}).catch(function(){var t=c.querySelector('[data-watch-price="'+w.mint+'"]');if(t)t.textContent="Price: NOT READ"})})}
 loadWatch();
+/* ---------- Search — Solana tokens (DexScreener first; GeckoTerminal pools for
+   contract lookups; Jupiter registry + GeckoTerminal pools for name fallback) ----------
+   Simple by design: type a name, ticker or contract, results appear as you type.
+   Recents persist on this device. Nothing is faked — a dead source says so. */
+var SEARCH_RECENTS_KEY="trenchswap.search.recents.v1";
+var SEARCH_MAX_RECENTS=8;
+var searchSeq=0,searchTimer=null;
+function searchIsAddress(q){return /^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(q)}
+function searchLoadRecents(){try{var raw=localStorage.getItem(SEARCH_RECENTS_KEY);var arr=raw?JSON.parse(raw):[];return (Array.isArray(arr)?arr:[]).filter(function(r){return r&&r.mint})}catch(e){return[]}}
+function searchSaveRecents(list){try{localStorage.setItem(SEARCH_RECENTS_KEY,JSON.stringify(list))}catch(e){}}
+function searchAddRecent(entry){
+ var list=searchLoadRecents().filter(function(r){return r.mint!==entry.mint});
+ list.unshift({mint:entry.mint,name:entry.name||"",symbol:entry.symbol||"",img:entry.img||null,ts:Date.now()});
+ searchSaveRecents(list.slice(0,SEARCH_MAX_RECENTS));renderSearchRecents()}
+function searchSetStatus(t){var s=$("searchStatus");if(s)s.textContent=t||""}
+function searchDedupe(pairs){
+ var seen={},out=[];
+ (pairs||[]).forEach(function(p){
+  if(!p||!p.baseToken||!p.baseToken.address||p.chainId!=="solana")return;
+  var m=p.baseToken.address,cur=seen[m];
+  if(!cur){seen[m]=p;out.push(p);return}
+  var l1=(p.liquidity&&p.liquidity.usd)||0,l0=(cur.liquidity&&cur.liquidity.usd)||0;
+  if(l1>l0){var i=out.indexOf(cur);if(i>=0)out[i]=p;seen[m]=p}});
+ out.sort(function(a,b){return((b.liquidity&&b.liquidity.usd)||0)-((a.liquidity&&a.liquidity.usd)||0)});
+ return out.slice(0,10)}
+function searchRenderPairs(pairs,source){
+ var c=$("searchResults");if(!c)return;c.innerHTML="";
+ if(!pairs||!pairs.length)return;
+ pairs.forEach(function(p){
+  var row=pairRow(p,true);
+  row.addEventListener("click",function(){searchAddRecent({mint:p.baseToken.address,name:p.baseToken.name,symbol:p.baseToken.symbol,img:(p.info&&p.info.imageUrl)||null})});
+  c.appendChild(row)});
+ searchSetStatus(pairs.length+" result"+(pairs.length===1?"":"s")+" · "+source)}
+function searchNoResults(q){var c=$("searchResults");if(c)c.innerHTML='<p class="sub">No results for &ldquo;'+escapeHtml(q)+'&rdquo; on Solana. Check the spelling, or paste the full contract address.</p>';searchSetStatus("")}
+function searchUnavailable(){var c=$("searchResults");if(c)c.innerHTML="";searchSetStatus("Search unavailable — DexScreener and GeckoTerminal did not answer. Try again in a moment.")}
+/* GeckoTerminal pool attributes for one mint — same pool pick as gtTokenPools,
+   but returning price / market cap / 24h change so the row can render. */
+function gtPoolAttrs(mint){
+ return gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/tokens/"+encodeURIComponent(mint)+"/pools?page=1",{tries:2,timeoutMs:20000,priority:true}).then(function(d){
+  var rows=(d&&d.data)||[];if(!rows.length)return null;
+  function rel(p){var r=p.relationships||{};function id(x){return x&&x.data&&x.data.id?String(x.data.id).replace(/^solana_/,""):null}return{base:id(r.base_token),quote:id(r.quote_token)}}
+  function reserve(p){return Number((p.attributes&&p.attributes.reserve_in_usd)||0)}
+  var base=rows.filter(function(p){return rel(p).base===mint});
+  var pool=base.filter(function(p){return STABLE_MINTS.indexOf(rel(p).quote)>=0}).sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||base.filter(function(p){return rel(p).quote==="So11111111111111111111111111111111111111112"}).sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||base.sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||rows.sort(function(a,b){return reserve(b)-reserve(a)})[0];
+  if(!pool)return null;var a=pool.attributes||{};
+  return{pair:String(pool.id||"").replace(/^solana_/,""),priceUsd:a.base_token_price_usd!=null?Number(a.base_token_price_usd):null,mc:a.market_cap_usd!=null?Number(a.market_cap_usd):null,chg24:a.price_change_percentage&&a.price_change_percentage.h24!=null?Number(a.price_change_percentage.h24):null,vol24:a.volume_usd&&a.volume_usd.h24!=null?Number(a.volume_usd.h24):null,liqUsd:reserve(pool)}})}
+function gtTokenInfo(mint){
+ return gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/tokens/"+encodeURIComponent(mint),{tries:2,timeoutMs:20000}).then(function(d){
+  var a=d&&d.data&&d.data.attributes;if(!a)return null;
+  return{name:a.name||"",symbol:a.symbol||"",img:a.image_url||null}})}
+/* Name fallback: Jupiter's token search (Solana-only registry; the
+   GeckoTerminal /api/v2/search endpoint 404s). Prices still come from
+   GeckoTerminal pools. Returns null on error so the caller can say
+   "unavailable" instead of "no results". */
+function jupSearchTokens(q){
+ return fetchWithRetry("https://lite-api.jup.ag/tokens/v2/search?query="+encodeURIComponent(q),2).then(function(d){
+  var out=[];
+  (Array.isArray(d)?d:[]).forEach(function(t){
+   if(!t||!t.id)return;
+   out.push({mint:String(t.id),name:t.name||"",symbol:t.symbol||"",img:t.icon||t.logoURI||null})});
+  return out.slice(0,5)}).catch(function(){return null})}
+function gtPairFrom(mint,meta,attrs){
+ return{chainId:"solana",dexId:"geckoterminal",pairAddress:attrs?attrs.pair:null,baseToken:{address:mint,name:meta.name||"",symbol:meta.symbol||""},priceUsd:attrs?attrs.priceUsd:null,priceChange:{h24:attrs?attrs.chg24:null},marketCap:attrs?attrs.mc:null,fdv:attrs?attrs.mc:null,liquidity:{usd:attrs?attrs.liqUsd:null},volume:{h24:attrs?attrs.vol24:null},info:{imageUrl:meta.img||null},pairCreatedAt:null}}
+function searchGtAddress(q,seq){
+ gtTokenInfo(q).then(function(meta){
+  if(seq!==searchSeq)return;
+  if(!meta){searchNoResults(q);return}
+  return gtPoolAttrs(q).then(function(attrs){
+   if(seq!==searchSeq)return;
+   if(!attrs){searchNoResults(q);return}
+   searchRenderPairs([gtPairFrom(q,meta,attrs)],"GeckoTerminal")})}).catch(function(e){
+  if(seq!==searchSeq)return;
+  if(e&&String(e.message||"").indexOf("404")>=0)searchNoResults(q);else searchUnavailable()})}
+function searchGtName(q,seq){
+ jupSearchTokens(q).then(function(cands){
+  if(seq!==searchSeq)return;
+  if(cands===null){searchUnavailable();return}
+  if(!cands.length){searchNoResults(q);return}
+  var jobs=cands.map(function(t){
+   return gtPoolAttrs(t.mint).then(function(attrs){
+    if(!attrs)return null;
+    return gtPairFrom(t.mint,t,attrs)}).catch(function(){return null})});
+  Promise.all(jobs).then(function(rows){
+   if(seq!==searchSeq)return;
+   rows=rows.filter(Boolean);
+   if(!rows.length){searchNoResults(q);return}
+   searchRenderPairs(rows,"Jupiter + GeckoTerminal")})}).catch(function(){if(seq===searchSeq)searchUnavailable()})}
+function runSearch(q){
+ q=String(q||"").trim();
+ var seq=++searchSeq;
+ if(q.length<2){var c0=$("searchResults");if(c0)c0.innerHTML="";searchSetStatus(q.length?"Type at least 2 characters.":"");return}
+ searchSetStatus("Searching…");
+ if(searchIsAddress(q)){
+  fetch(dexTokensUrl(q)).then(function(r){return r.json()}).then(function(d){
+   if(seq!==searchSeq)return;
+   var p=bestPair(d.pairs,q);
+   if(p){searchRenderPairs([p],"DexScreener");return}
+   searchGtAddress(q,seq)}).catch(function(){searchGtAddress(q,seq)});
+  return}
+ fetch(dexSearchUrl(q)).then(function(r){return r.json()}).then(function(d){
+  if(seq!==searchSeq)return;
+  var rows=searchDedupe(d.pairs);
+  if(rows.length){searchRenderPairs(rows,"DexScreener");return}
+  searchGtName(q,seq)}).catch(function(){searchGtName(q,seq)})}
+function renderSearchRecents(){
+ var c=$("searchRecents");if(!c)return;
+ var list=searchLoadRecents();
+ if(!list.length){c.innerHTML='<p class="sub">No recent searches yet — search a token and it will show up here.</p>';return}
+ c.innerHTML="";
+ list.forEach(function(r){
+  var el=document.createElement("div");el.className="mktrow";el.setAttribute("role","button");el.setAttribute("tabindex","0");
+  el.innerHTML=imgTag(r.img,r.symbol||"?",null,r.mint)+'<div class="grow"><b>'+escapeHtml(r.name||"")+'</b> <span style="color:var(--gloss);font-weight:700">$'+escapeHtml(r.symbol||"")+'</span><div class="fee" data-search-recent-price="'+escapeHtml(r.mint)+'">Tap to open</div></div>';
+  el.addEventListener("click",function(){openReport(r.mint,null)});
+  el.addEventListener("keydown",function(e){if(e.key==="Enter")openReport(r.mint,null)});
+  c.appendChild(el)});
+ /* One batched price refresh so recents show live prices, not stale ones. */
+ fetch(dexTokensUrl(list.map(function(r){return r.mint}).join(","))).then(function(r){return r.json()}).then(function(d){
+  list.forEach(function(r){
+   var p=bestPair(d.pairs,r.mint);if(!p)return;
+   var t=c.querySelector('[data-search-recent-price="'+r.mint+'"]');
+   if(t)t.textContent=dispPrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)+" · MC "+fmt$(p.marketCap||p.fdv)+(p.priceChange&&p.priceChange.h24!=null?" · "+(Number(p.priceChange.h24)>=0?"+":"")+Number(p.priceChange.h24).toFixed(2)+"% 24h":"")})}).catch(function(){})}
+function searchBind(){
+ var inp=$("searchInput");if(!inp||inp.dataset.sb)return;
+ inp.dataset.sb="1";
+ inp.addEventListener("input",function(){
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(function(){runSearch(inp.value)},350)});
+ inp.addEventListener("keydown",function(e){if(e.key==="Enter"){clearTimeout(searchTimer);runSearch(inp.value)}});
+ var pb=$("searchPasteBtn");
+ if(pb)pb.addEventListener("click",function(){
+  function pasted(t){
+   if(t==null)return;
+   inp.value=String(t).trim();inp.focus();
+   if(inp.value){clearTimeout(searchTimer);runSearch(inp.value)}}
+  if(navigator.clipboard&&navigator.clipboard.readText){
+   navigator.clipboard.readText().then(pasted).catch(function(){inp.focus();toast("Clipboard blocked — tap the box and paste")})}
+  else{inp.focus();toast("Tap the box and paste your contract")}});
+ var cb=$("searchClearBtn");
+ if(cb)cb.addEventListener("click",function(){
+  searchSaveRecents([]);renderSearchRecents();toast("Recents cleared")});
+ renderSearchRecents()}
+searchBind();
 function tokenCard(p){
  var mc=Number(p.marketCap||p.fdv||0);var prog=Math.min(100,Math.round(mc/69000*100));if(p.dexId!=="pumpfun")prog=100;
  var el=document.createElement("div");el.className="token-card";el.setAttribute("role","button");el.setAttribute("tabindex","0");el.setAttribute("data-fire-mint",p.baseToken.address);noteMC(p.baseToken.address,mc||null);
@@ -1251,10 +1417,92 @@ function imgErr(el){if(!el||el.dataset.fb)return;var s=el.getAttribute("src")||"
    blob key. The flame-drop shows only when imageUrl is null/empty or the image truly fails to load.
    When a pair carries no imageUrl (young pump.fun pairs ship info:null), the mint's real image is
    resolved per-mint from GeckoTerminal token info — the same live source as the TrenchPex chart. */
-/* Retry helper: 3 attempts with backoff — used by the chart, replay and image sources. */
-function fetchWithRetry(url,tries){
- function attempt(n){return fetch(url).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).catch(function(e){if(n<(tries||3))return new Promise(function(res){setTimeout(res,600*n)}).then(function(){return attempt(n+1)});throw e})}
+/* Retry helper: attempts with backoff — used by the chart, replay and image sources.
+   Every call gets a hard timeout (AbortController); a hung source fails
+   instead of blocking the chart forever. A 429 is tagged on the error
+   (e.gt429) with the Retry-After value so callers can back off instead of
+   hammering a rate-limited source. */
+function fetchWithRetry(url,tries,timeoutMs){
+ var to=timeoutMs||20000;
+ function attempt(n){
+  var ctl=(typeof AbortController!=="undefined")?new AbortController():null;
+  var timer=setTimeout(function(){if(ctl)ctl.abort()},to);
+  return fetch(url,{signal:ctl?ctl.signal:undefined}).then(function(r){
+   clearTimeout(timer);
+   if(r.status===429){var ra=r.headers&&r.headers.get?parseInt(r.headers.get("Retry-After")||"0",10):0;var e429=new Error("HTTP 429");e429.gt429=true;e429.retryAfterMs=isFinite(ra)&&ra>0?ra*1000:60000;throw e429}
+   if(!r.ok)throw new Error("HTTP "+r.status);
+   return r.json()}).catch(function(e){
+   clearTimeout(timer);
+   if(e&&e.gt429)throw e;
+   if(n<(tries||3))return new Promise(function(res){setTimeout(res,600*n)}).then(function(){return attempt(n+1)});
+   throw e})}
  return attempt(1)}
+/* ---------- GeckoTerminal budget + silence (§5.9) ----------
+   Free tier is 30 calls/min per user IP, shared by the chart, the trade
+   replay and token-image resolution. The live 0-of-3 chart failure (2026-11-14)
+   is consistent with this budget being exhausted on a shared egress IP:
+   every OHLCV call 429s while DexScreener (a different host and budget)
+   keeps ticking. So: chart opens go first, prefetch and image calls are
+   capped, and a 429 marks the source silent for 60 s — while silent, chart
+   calls fail fast with a rate-limited reason instead of burning retries,
+   and image calls fall back to Jupiter without touching GeckoTerminal. */
+var GT_SILENT_UNTIL=0,GT_CALL_TIMES=[],GT_PREFETCH_TIMES=[];
+var GT_SILENCE_MS=60000,GT_BUDGET_PER_MIN=20,GT_PREFETCH_PER_MIN=8;
+function gtPruneTimes(){var cut=Date.now()-60000;while(GT_CALL_TIMES.length&&GT_CALL_TIMES[0]<cut)GT_CALL_TIMES.shift();while(GT_PREFETCH_TIMES.length&&GT_PREFETCH_TIMES[0]<cut)GT_PREFETCH_TIMES.shift()}
+function gtIsSilent(){return Date.now()<GT_SILENT_UNTIL}
+function gtMarkSilent(ms){GT_SILENT_UNTIL=Date.now()+(ms||GT_SILENCE_MS)}
+function gtImageOk(){if(gtIsSilent())return false;gtPruneTimes();return GT_CALL_TIMES.length<GT_BUDGET_PER_MIN}
+function gtFetchJson(url,opts){
+ opts=opts||{};
+ if(gtIsSilent()){var e0=new Error("GeckoTerminal silent (rate-limited)");e0.gtKind="rate-limited";return Promise.reject(e0)}
+ gtPruneTimes();
+ if(opts.prefetch){if(GT_PREFETCH_TIMES.length>=GT_PREFETCH_PER_MIN){var e1=new Error("prefetch budget spent");e1.gtKind="budget";return Promise.reject(e1)}GT_PREFETCH_TIMES.push(Date.now())}
+ if(!opts.priority&&GT_CALL_TIMES.length>=GT_BUDGET_PER_MIN){var e2=new Error("GeckoTerminal budget spent");e2.gtKind="budget";return Promise.reject(e2)}
+ GT_CALL_TIMES.push(Date.now());
+ var tries=opts.tries!=null?opts.tries:2,timeoutMs=opts.timeoutMs||20000;
+ function attempt(n){
+  var ctl=(typeof AbortController!=="undefined")?new AbortController():null;
+  var to=setTimeout(function(){if(ctl)ctl.abort()},timeoutMs);
+  return fetch(url,{signal:ctl?ctl.signal:undefined}).then(function(r){
+   clearTimeout(to);
+   if(r.status===429){var ra=r.headers&&r.headers.get?parseInt(r.headers.get("Retry-After")||"0",10):0;gtMarkSilent(isFinite(ra)&&ra>0?ra*1000:GT_SILENCE_MS);var e3=new Error("HTTP 429");e3.gtKind="rate-limited";throw e3}
+   if(!r.ok){var e4=new Error("HTTP "+r.status);e4.gtKind="failed";throw e4}
+   return r.json()}).catch(function(e){
+   clearTimeout(to);
+   if(e&&e.gtKind)return Promise.reject(e);
+   if(e&&e.name==="AbortError"){var e5=new Error("timeout after "+timeoutMs+"ms");e5.gtKind="timeout";if(n<tries&&(!opts.deadline||Date.now()<opts.deadline))return new Promise(function(res){setTimeout(res,600)}).then(function(){return attempt(n+1)});return Promise.reject(e5)}
+   if(n<tries&&(!opts.deadline||Date.now()<opts.deadline))return new Promise(function(res){setTimeout(res,600*n)}).then(function(){return attempt(n+1)});
+   var e6=e instanceof Error?e:new Error(String(e));if(!e6.gtKind)e6.gtKind="failed";return Promise.reject(e6)})}
+ return attempt(1)}
+function fetchJsonTimeout(url,timeoutMs){
+ var ctl=(typeof AbortController!=="undefined")?new AbortController():null;
+ var to=setTimeout(function(){if(ctl)ctl.abort()},timeoutMs||8000);
+ return fetch(url,{signal:ctl?ctl.signal:undefined}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).catch(function(e){clearTimeout(to);throw e})}
+/* Pair-address resolution that does NOT wait on DexScreener (§5.9b).
+   Measured 2026-11-14 ~19:05 EST: DexScreener's tokens endpoint took
+   35.1 s via fetch while curl did the same request in 6.5 s — and
+   openReport gated the whole report (chart included) behind that hop,
+   so on a slow day the chart never even started. GeckoTerminal's
+   token-pools endpoint answered in ~5-6 s with the same pair address,
+   so the chart starts from whichever source yields a pair first.
+   Pool pick: the mint as base token with a stable quote (USDC/USDT)
+   first, then SOL, then the largest reserve; never a pool where the
+   mint is only the quote side (for WSOL that would return some other
+   token's pool, e.g. HBAR/SOL). */
+var STABLE_MINTS=["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB"];
+function gtTokenPools(mint){
+ return gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/tokens/"+encodeURIComponent(mint)+"/pools?page=1",{tries:2,timeoutMs:20000,priority:true}).then(function(d){
+  var rows=(d&&d.data)||[];if(!rows.length)return null;
+  function rel(p){var r=p.relationships||{};function id(x){return x&&x.data&&x.data.id?String(x.data.id).replace(/^solana_/,""):null}return{base:id(r.base_token),quote:id(r.quote_token)}}
+  function reserve(p){var v=p.attributes&&p.attributes.reserve_in_usd;return Number(v)||0}
+  function addr(p){return String(p.id||"").replace(/^solana_/,"")}
+  var base=rows.filter(function(p){return rel(p).base===mint});
+  var pool=base.filter(function(p){return STABLE_MINTS.indexOf(rel(p).quote)>=0}).sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||base.filter(function(p){return rel(p).quote==="So11111111111111111111111111111111111111112"}).sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||base.sort(function(a,b){return reserve(b)-reserve(a)})[0]
+   ||rows.sort(function(a,b){return reserve(b)-reserve(a)})[0];
+  if(!pool)return null;
+  return{pair:addr(pool),createdAt:pool.attributes&&pool.attributes.pool_created_at?Date.parse(pool.attributes.pool_created_at):null,name:pool.attributes&&pool.attributes.name||null}})}
 var gxCache={},gxInflight=0;
 function applyGx(img,u){var s=safeUrl(u);if(!s||img.dataset.fb)return;img.dataset.ok="";img.dataset.r1="";img.dataset.ts=String(Date.now());img.src=s}
 /* Fallback order after DexScreener info.imageUrl: GeckoTerminal token image, then Jupiter logoURI.
@@ -1265,7 +1513,16 @@ function gxResolve(img){var mint=img&&img.dataset&&img.dataset.mint;if(!mint||im
  if(Object.prototype.hasOwnProperty.call(gxCache,mint)){img.dataset.gx="1";if(gxCache[mint])applyGx(img,gxCache[mint]);else imgFallback(img);return}
  if(gxInflight>=6){setTimeout(function(){var s2=img.getAttribute("src")||"";if(!img.dataset.fb&&s2.indexOf("http")!==0){img.dataset.gx="";gxResolve(img)}},3000);return}
  img.dataset.gx="1";gxInflight++;
- fetchWithRetry("https://api.geckoterminal.com/api/v2/networks/solana/tokens/"+encodeURIComponent(mint),3).then(function(d){var a=d&&d.data&&d.data.attributes;var u=a&&a.image_url?String(a.image_url):null;gxCache[mint]=u;gxInflight--;if(u)applyGx(img,u);else jupResolve(img,mint)}).catch(function(){gxInflight--;jupResolve(img,mint)})}
+ /* Image resolution shares GeckoTerminal's 30/min budget with the chart.
+    While the source is silent (429) or the budget is spent, skip straight
+    to the Jupiter logo instead of starving a chart open. */
+ if(!gtImageOk()){gxInflight--;jupResolve(img,mint);return}
+ /* Route the GT image call through gtFetchJson so it counts against the
+    GT budget and respects the 429 silence window (before, fetchWithRetry
+    bypassed both: image calls were the biggest GT leak and could 429 the
+    chart's own OHLCV fetch). On budget/silence it fails fast and falls
+    back to the Jupiter logo, exactly as gtImageOk() already intends. */
+ gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/tokens/"+encodeURIComponent(mint),{tries:2,timeoutMs:20000}).then(function(d){var a=d&&d.data&&d.data.attributes;var u=a&&a.image_url?String(a.image_url):null;gxCache[mint]=u;gxInflight--;if(u)applyGx(img,u);else jupResolve(img,mint)}).catch(function(){gxInflight--;jupResolve(img,mint)})}
 function imgTag(url,sym,extra,mint){var u=safeUrl(url);var fb=letterAvatar(sym);var attrs=' data-sym="'+escapeHtml(sym||"?")+'" referrerpolicy="no-referrer" alt="'+escapeHtml((sym||"Token")+" token icon")+'"';if(u)attrs+=' data-ts="'+Date.now()+'"';if(mint)attrs+=' data-mint="'+escapeHtml(mint)+'"';return '<img src="'+(u?escapeHtml(u):fb)+'"'+attrs+' '+(extra||"")+'>'}
 /* M5: no inline image handlers anywhere — load/error are handled by delegation. */
 document.addEventListener("load",function(e){var t=e.target;if(t&&t.tagName==="IMG")imgOk(t)},true);
@@ -1287,7 +1544,7 @@ function fetchPump(){
   state.pairs=pairs.slice(0,30);
   var c=$("pumpFeed");c.innerHTML="";state.pairs.slice(0,8).forEach(function(p){c.appendChild(tokenCard(p))});
   if(!state.pairs.length)c.innerHTML='<p class="sub">No live pairs returned — retrying…</p>';
-  $("pumpError").style.display="none";setLive("pumpLive",state.pairs.length>0,"LIVE");renderPopular("daily");renderStrip();
+  $("pumpError").style.display="none";setLive("pumpLive",state.pairs.length>0,"LIVE");renderPopular("daily");renderStrip();schedulePrefetch();
  }).catch(function(){$("pumpError").style.display="block";setLive("pumpLive",false);$("pumpFeed").innerHTML='<p class="sub">Feed unavailable, retrying…</p>'})}
 function renderStrip(){var s=$("swapStrip");s.innerHTML="";var items=state.pairs.slice(0,10);if(!items.length){TOKENS.forEach(function(t){items.push({baseToken:{address:t.mint,symbol:t.symbol,name:t.name},priceChange:{h24:null},info:{}})});}
  items.forEach(function(p){var b=document.createElement("button");var ch=p.priceChange&&p.priceChange.h24;b.innerHTML=imgTag(p.info&&p.info.imageUrl,p.baseToken.symbol,null,p.baseToken.address)+escapeHtml(p.baseToken.symbol||"")+' <span class="'+(Number(ch)>=0?"up":"down")+'">'+(ch==null?"—":Number(ch).toFixed(1)+"%")+'</span>';b.addEventListener("click",function(){setToken("recv",{mint:p.baseToken.address,symbol:p.baseToken.symbol,name:p.baseToken.name,decimals:6});goTab("swap")});s.appendChild(b)})}
@@ -3410,10 +3667,129 @@ function fetchHoneypot(mint){
    set("Buy quote OK \u00b7 Sell quote OK \u2014 Jupiter routes the full round trip: 0.05 SOL in \u2192 token \u2192 "+(Number(q2.outAmount)/1e9).toFixed(4)+" SOL back at quote (difference = price impact, DEX fees and spread). Quotes only \u2014 nothing executed.");
   }).catch(function(){set("Sell quote FAILED \u2014 Jupiter returned no route to sell the amount the buy quote returns. This token can be bought but not exited at quote level.")});
  }).catch(function(){set("NOT READ \u2014 Jupiter returned no buy quote for this token, so the round trip cannot be checked")})}
+/* ---------- TrenchPex chart section: shared by the full report and the
+   fast chart shell (§5.9b). One markup source, one init — the shell and
+   the full report can never drift apart. ---------- */
+/* Chart style picker (§5.14, Jeffrey 2026-11-15): Bars, Lines, TrenCHART 1
+   (the flame line), TrenCHART 2 (hourly volume bars), TrenchAnalytics
+   (the §4 fine-line technical graph, tokens over 1h old only). The choice
+   persists per device; new users default to TrenCHART 1. Replay is a tool,
+   not a style, so it is never persisted. */
+var CHART_STYLE_KEY="trenchswap.chartStyle";
+var CHART_STYLES=["candles","line","trenchart","volbars","analytics"];
+function chartStoredMode(){try{var m=localStorage.getItem(CHART_STYLE_KEY);if(CHART_STYLES.indexOf(m)>=0)return m}catch(e){}return"trenchart"}
+function chartSaveMode(m){if(m==="replay")return;try{localStorage.setItem(CHART_STYLE_KEY,m)}catch(e){}}
+function chartModeTabsHtml(){
+ var sm=chartStoredMode();
+ var defs=[["candles","Bars"],["line","Lines"],["trenchart","TrenCHART 1"],["volbars","TrenCHART 2"],["analytics","TrenchAnalytics"],["replay","Replay 1h"]];
+ return defs.map(function(d){return'<button data-mode="'+d[0]+'"'+(sm===d[0]?' class="on"':"")+'>'+d[1]+"</button>"}).join("")}
+function chartWrapHtml(){
+ return '<div class="chartwrap"><div class="row" style="justify-content:space-between"><span class="lbl">TRENCHPEX CHART — RENDERED BY TRENCHSWAP</span><span class="stamp" id="chartStamp">Chart: loading…</span></div><div class="segtabs" id="chartTabs"><button data-tf="1s">1s</button><button data-tf="1m">1m</button><button data-tf="5m">5m</button><button data-tf="15m">15m</button><button data-tf="1h">1h</button><button data-tf="4h">4h</button><button data-tf="D">D</button></div><div class="modetabs" id="chartModeTabs">'+chartModeTabsHtml()+'</div><div id="chartBox"><p class="sub" style="padding:12px 4px">Loading live candles…</p></div><div class="replaybar" id="replayBar" style="display:none"><div class="row"><button class="btn small" id="replayPlay" style="width:auto;min-width:96px">▶ Play</button><input type="range" id="replayScrub" min="0" max="0" value="0" step="1" aria-label="Replay position"><select id="replaySpeed" aria-label="Replay speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></div><p class="fee" id="replayStatus" style="margin-top:6px">Replay loads the real trades from the last hour on this pool — every trade shown is real.</p></div></div>'}
+function initChartSection(mint,pair,birthMs,dexId){
+ stopReplay();stopTickLine();
+ /* Age-aware open (§5.1): the opening timeframe is the finest one the
+    token has actually been alive for — a 2-minute-old token never asks
+    for an hour of history. Default style is TrenCHART 1 (§5.14); the
+    saved per-device style wins for returning users. TrenCHART 2 is
+    hourly by definition, so it opens on 1h whatever the age TF says. */
+ var ageSel=chartAgeTf(birthMs||null);
+ var openMode=chartStoredMode();
+ var openTf=openMode==="volbars"?"1h":ageSel.tf;
+ state.chart={pair:pair,mint:mint,tf:openTf,mode:openMode,trades:null,birth:birthMs||null,dexId:dexId||null,trace:null,traceCacheKey:null,lastGtError:null,taTrades:null,taTradesPair:null,taTradesState:null,taTab:"overview",taSelEv:null,taGateNote:null};
+ /* Stored TrenchAnalytics on a gated token falls back to TrenCHART 1 with
+    the gate note — the stored choice itself is left alone. */
+ if(openMode==="analytics"){var og=taGateReason();if(og){state.chart.mode="trenchart";state.chart.taGateNote=og;document.querySelectorAll("#chartModeTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.mode==="trenchart")})}}
+ document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf===openTf)});
+ document.querySelectorAll("#chartTabs button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x===b)});state.chart.tf=b.dataset.tf;if(state.chart.mode==="replay"){setChartMode("candles")}else{fetchChart()}})});
+ document.querySelectorAll("#chartModeTabs button").forEach(function(b){b.addEventListener("click",function(){setChartMode(b.dataset.mode)})});
+ $("replayPlay").addEventListener("click",toggleReplayPlay);
+ $("replayScrub").addEventListener("input",function(){pauseReplay();state.chart.rIdx=Number(this.value)||0;drawReplayFrame()});
+ $("replaySpeed").addEventListener("change",function(){state.chart.rSpeed=Number(this.value)||1;if(state.chart.rPlaying){startReplayTimer()}});
+ fetchChart()}
+function renderChartShell(mint,first,seq){
+ /* Fast chart shell (§5.9b): the chart does not wait for DexScreener.
+    As soon as GeckoTerminal yields a pair address, the chart section
+    renders and fetchChart starts. If DexScreener answers later, the full
+    report re-renders over this shell and re-inits the chart from cache. */
+ if(seq!==state.reportSeq)return;
+ if(!$("reportOverlay")||!$("reportOverlay").classList.contains("open"))return;
+ var rb=$("reportBody");if(!rb)return;
+ if(rb.querySelector("#chartStamp"))return;
+ if(rb.dataset.noSane)return; /* a no-sane-pair report already owns this body */
+ var sym=first.name?String(first.name).split(" / ")[0]:null;
+ rb.innerHTML='<div class="row"><div><h2 style="margin:0">'+escapeHtml(sym||mint.slice(0,8))+'</h2><div class="fee" id="reportDexNote">Token details still loading from DexScreener — the chart below is live.</div></div></div>'
+  +chartWrapHtml()
+  +'<div id="deployerLine" class="fee" style="margin-top:6px"></div>'
+  +'<div class="mono" style="color:var(--muted)">'+escapeHtml(mint)+'</div>';
+ initChartSection(mint,first.pair,first.createdAt||null,null)}
+/* No-sane-pair report: no DexScreener pool for this mint passed sanePrice,
+   so price, pct and every money stat read NOT READ — never a figure from a
+   rejected pool — and the chart is never init'd from a rejected pair
+   address. If the GeckoTerminal fast-path chart is already live for this
+   mint, it is kept (re-init'd from the GT pair, a separate source's own
+   pick) so the chart falls back honestly instead of being faked or blanked.
+   Sets dataset.noSane so the late GT shell and the 30s timeout do not
+   overwrite this honest body. */
+function renderNoSaneReport(mint,rawPair){
+ var rb=$("reportBody");if(!rb)return;
+ rb.dataset.noSane="1";
+ var sym=rawPair&&rawPair.baseToken?String(rawPair.baseToken.symbol||""):"";
+ var nm=rawPair&&rawPair.baseToken?String(rawPair.baseToken.name||""):"";
+ var gtPair=(state.chart&&state.chart.mint===mint)?state.chart.pair:null;
+ var gtBirth=(state.chart&&state.chart.mint===mint)?state.chart.birth:null;
+ rb.innerHTML='<div class="row"><div><h2 style="margin:0">'+escapeHtml(nm||mint.slice(0,8))+'</h2><div class="fee">$'+escapeHtml(sym||"")+' · price NOT READ — no live pool passed the price sanity check</div></div></div>'
+  +'<div class="row" style="margin-top:10px;gap:10px"><span style="font-size:24px;font-weight:800" class="head">NOT READ</span><span class="pct">24h NOT READ</span></div>'
+  +(gtPair?chartWrapHtml():'<p class="fee" style="margin-top:10px">Chart: NOT READ — no sane pair address for this token.</p>')
+  +'<div class="mono" style="color:var(--muted)">'+escapeHtml(mint)+'</div>'
+  +'<div class="statgrid">'
+  +'<div class="stat"><small>LIQUIDITY</small><b>NOT READ</b></div>'
+  +'<div class="stat"><small>MARKET CAP</small><b>NOT READ</b></div>'
+  +'<div class="stat"><small>VOLUME 24H</small><b>NOT READ</b></div>'
+  +'<div class="stat"><small>BUYS / SELLS 24H</small><b>NOT READ</b></div>'
+  +'<div class="stat"><small>FDV</small><b>NOT READ</b></div></div>'
+  +'<p class="fee" style="margin-top:10px">Sources: DexScreener · GeckoTerminal — no pool for this token passed the price sanity check, so no price, market cap, volume or chart pair is shown from a rejected pool. Try again later, or pick another token.</p>';
+ if(gtPair)initChartSection(mint,gtPair,gtBirth,null)}
 function openReport(mint,knownPair){
+ var rb0=$("reportBody");if(rb0)delete rb0.dataset.noSane;
  $("reportBody").innerHTML='<p class="sub">Loading live report…</p>';$("reportOverlay").classList.add("open");
+ var seq=(state.reportSeq=(state.reportSeq||0)+1);
+ /* Chart fast path (§5.9b): DexScreener's tokens endpoint took 35 s via
+    fetch on 2026-11-14 while GeckoTerminal's token-pools answered in ~6 s
+    with the same pair address. The chart starts from whichever source
+    yields a pair first; the full report fills in when DexScreener lands. */
+ gtTokenPools(mint).then(function(first){
+  if(!first)return;
+  /* Late birth adoption: if the full report already init'd the chart with
+     an unknown birth (DexScreener returns pairCreatedAt null for pump.fun
+     pairs) and GT knows the pool's birth, adopt it and re-pick the
+     age-aware timeframe — but only before anything has drawn. */
+  if(state.chart&&state.chart.mint===mint&&!state.chart.birth&&first.createdAt&&state.chart.tf==="1m"){
+   /* The 1m sample often draws before GT's pool list lands (pool list
+      takes 20s+ under the boot flood), so the guard cannot require
+      "nothing drawn yet" — re-pick the age TF even over a drawn sample.
+      Fires once per open: after adoption, birth is set. */
+   state.chart.birth=first.createdAt;
+   var sel=chartAgeTf(first.createdAt);
+   if(sel.tf!==state.chart.tf){
+    state.chart.tf=sel.tf;
+    document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf===sel.tf)});
+    fetchChart()}}
+  renderChartShell(mint,first,seq)}).catch(function(){});
+ /* If neither source answers at all, say so instead of spinning forever. */
+ setTimeout(function(){if(seq!==state.reportSeq)return;var rb=$("reportBody");if(!rb||rb.querySelector("#chartStamp")||rb.dataset.noSane)return;rb.innerHTML='<p class="sub">Report: NOT READ — DexScreener and GeckoTerminal did not answer. Try again, or pick another token.</p>'},30000);
  fetch(dexTokensUrl(mint)).then(function(r){return r.json()}).then(function(d){
-  var p=bestPair(d.pairs,mint)||knownPair;if(!p){$("reportBody").innerHTML='<p class="sub">No live pair found for this contract on DexScreener. Report: NOT READ.</p>';return}
+  /* JUP header fix: the report header AND the chart pair come from the
+     sanity-filtered pair only. bestPair is liquidity-sorted with no sanity
+     check, so one mispriced pool (e.g. the Meteora DLMM MET/JUP pool
+     quoting JUP at $1,270.88 with a $4.2T market cap) used to set price,
+     MC, FDV, volume, pct and the chart pair. bestSanePair rejects any pool
+     whose price fails sanePrice and cross-checks the top-liquid pick
+     against the median pair price. */
+  var sane=bestSanePair(d.pairs,mint);
+  var p=sane?sane.pair:null;
+  if(!p&&knownPair&&sanePrice(knownPair.priceUsd,knownPair.baseToken&&knownPair.baseToken.symbol)!=null)p=knownPair;
+  var rawPair=!p?(bestPair(d.pairs,mint)||knownPair):null;
+  if(!p){renderNoSaneReport(mint,rawPair);return}
   noteMC(mint,Number(p.marketCap||p.fdv||0)||null);
   var info=p.info||{};var socials=[];var seen={};
   (info.websites||[]).forEach(function(w){socials.push({label:"Website",url:w.url})});
@@ -3422,10 +3798,11 @@ function openReport(mint,knownPair){
   var age=p.pairCreatedAt?new Date(p.pairCreatedAt).toLocaleString():"NOT READ";
   var tx=p.txns&&p.txns.h24?p.txns.h24:{buys:"—",sells:"—"};
   $("reportBody").innerHTML=
-   '<div class="row">'+imgTag(info.imageUrl,p.baseToken.symbol,'style="width:64px;height:64px;border-radius:16px"',mint)+'<div><h2 style="margin:0">'+escapeHtml(p.baseToken.name||"")+'</h2><div class="fee">$'+escapeHtml(p.baseToken.symbol||"")+' · '+escapeHtml(p.dexId||"")+' / '+escapeHtml((p.labels||[]).join(", ")||"")+'</div></div></div>'
-   +'<div class="row" style="margin-top:10px;gap:10px"><span style="font-size:24px;font-weight:800" class="head">'+dispPrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)+'</span>'+pctHtml(p.priceChange&&p.priceChange.h24)+'</div>'
+   '<div class="row">'+imgTag(info.imageUrl,p.baseToken.symbol,'style="width:64px;height:64px;border-radius:16px"',mint)+'<div><h2 style="margin:0">'+escapeHtml(p.baseToken.name||"")+'</h2><div class="fee">$'+escapeHtml(p.baseToken.symbol||"")+' · '+escapeHtml(p.dexId||"")+' / '+escapeHtml((p.labels||[]).join(", ")||"")+'</div><span id="bundlePill" style="margin-left:2px"></span></div></div>'
+   +'<div class="row" style="margin-top:10px;gap:10px"><span style="font-size:24px;font-weight:800" class="head">'+dispPrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)+'</span>'+pctHtml(p.priceChange&&p.priceChange.h24,sanePrice(p.priceUsd,p.baseToken&&p.baseToken.symbol)!=null)+'</div>'
    +((typeof fireBadgeHtml==="function"&&(fireBadgeHtml(mint)||tnTagHtml(mint)))?'<div class="row" style="margin-top:8px;gap:8px">'+fireBadgeHtml(mint)+tnTagHtml(mint)+'</div>':"")
-   +(p.pairAddress?'<div class="chartwrap"><div class="row" style="justify-content:space-between"><span class="lbl">TRENCHPEX CHART — RENDERED BY TRENCHSWAP</span><span class="stamp" id="chartStamp">Chart: loading…</span></div><div class="segtabs" id="chartTabs"><button data-tf="1s">1s</button><button data-tf="1m">1m</button><button data-tf="5m">5m</button><button data-tf="15m">15m</button><button data-tf="1h" class="on">1h</button><button data-tf="4h">4h</button><button data-tf="D">D</button></div><div class="modetabs" id="chartModeTabs"><button data-mode="candles" class="on">Candles</button><button data-mode="line">Line</button><button data-mode="trenchart">TrenChART</button><button data-mode="replay">Replay 1h</button></div><div id="chartBox"><p class="sub" style="padding:12px 4px">Loading live candles…</p></div><div class="replaybar" id="replayBar" style="display:none"><div class="row"><button class="btn small" id="replayPlay" style="width:auto;min-width:96px">▶ Play</button><input type="range" id="replayScrub" min="0" max="0" value="0" step="1" aria-label="Replay position"><select id="replaySpeed" aria-label="Replay speed"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option><option value="8">8×</option></select></div><p class="fee" id="replayStatus" style="margin-top:6px">Replay loads the real trades from the last hour on this pool — every trade shown is real.</p></div></div>':'<p class="fee" style="margin-top:10px">Chart: NOT READ — no pair address for this token.</p>')
+   +(p.pairAddress?chartWrapHtml():'<p class="fee" style="margin-top:10px">Chart: NOT READ — no pair address for this token.</p>')
+   +'<div id="deployerLine" class="fee" style="margin-top:6px"></div>'
    +'<div class="socials">'+socHtml+'</div>'
    +'<div id="reportTokenPage"></div>'
    +'<div class="mono" style="color:var(--muted)">'+mint+'</div>'
@@ -3454,13 +3831,7 @@ function openReport(mint,knownPair){
    +'<button class="btn secondary" id="reportCallBtn" style="margin-top:8px">Call this token — Trenching</button>'
    +'<button class="btn ghost" id="reportClaimBtn" style="margin-top:8px">Claim this token</button>';
   var sym=p.baseToken.symbol,name=p.baseToken.name;
-  if(p.pairAddress){stopReplay();stopTickLine();state.chart={pair:p.pairAddress,mint:mint,tf:"1h",mode:"candles",trades:null};
-   document.querySelectorAll("#chartTabs button").forEach(function(b){b.addEventListener("click",function(){document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x===b)});state.chart.tf=b.dataset.tf;if(state.chart.mode==="replay"){setChartMode("candles")}else{fetchChart()}})});
-   document.querySelectorAll("#chartModeTabs button").forEach(function(b){b.addEventListener("click",function(){setChartMode(b.dataset.mode)})});
-   $("replayPlay").addEventListener("click",toggleReplayPlay);
-   $("replayScrub").addEventListener("input",function(){pauseReplay();state.chart.rIdx=Number(this.value)||0;drawReplayFrame()});
-   $("replaySpeed").addEventListener("change",function(){state.chart.rSpeed=Number(this.value)||1;if(state.chart.rPlaying){startReplayTimer()}});
-   fetchChart()}
+  if(p.pairAddress){initChartSection(mint,p.pairAddress,p.pairCreatedAt||(state.chart&&state.chart.birth)||null,p.dexId||null)}
   var rws=$("reportWatchSlot");if(rws)rws.appendChild(watchBtn({mint:mint,symbol:sym,name:name,img:info.imageUrl||null}));
   $("reportSwapBtn").addEventListener("click",function(){stopReplay();setToken("recv",{mint:mint,symbol:sym,name:name,decimals:6});$("reportOverlay").classList.remove("open");goTab("swap")});
   $("reportCallBtn").addEventListener("click",function(){stopReplay();$("reportOverlay").classList.remove("open");openTrenchComposer({mint:mint,symbol:sym,name:name,img:info.imageUrl||null})});
@@ -3487,80 +3858,182 @@ function openReport(mint,knownPair){
    parts.push("First-seen (pair creation): this token "+fd(firstMine)+" \u00b7 earliest $"+sym+" pair "+fd(firstAny)+(firstDex?" ("+firstDex+")":""));
    el.textContent=parts.join(" \u00b7 ");
   }).catch(function(){var el=document.getElementById("copycat-"+mint.slice(0,6));if(el)el.textContent="NOT READ \u2014 DexScreener search did not answer"});
- }).catch(function(){$("reportBody").innerHTML='<p class="sub">Report unavailable, retrying… DexScreener did not answer.</p>'})}
+ }).catch(function(){var n=$("reportDexNote");if(n){n.textContent="Token details: DexScreener did not answer — chart only.";return}var rb=$("reportBody");if(rb&&!rb.querySelector("#chartStamp"))rb.innerHTML='<p class="sub">Report unavailable, retrying… DexScreener did not answer.</p>'})}
 /* ---------- TrenchPex chart: TrenchSwap's own candlestick renderer (blacklight purple), live OHLCV ---------- */
 var TF_MAP={"1m":["minute",1],"5m":["minute",5],"15m":["minute",15],"1h":["hour",1],"4h":["hour",4],"D":["day",1]};
 function chartPriceFmt(v){if(v==null||isNaN(v))return"\u2014";return String(Number(Number(v).toPrecision(3)))}
 function setChartMode(mode){
- if(!state.chart)return;state.chart.mode=mode;
+ if(!state.chart)return;
+ /* TrenchAnalytics age gate (§4): tokens under 1h old — or with an
+    unreadable birth — fall back to the stored style with the gate note;
+    "analytics" is never persisted for a gated token. */
+ if(mode==="analytics"){
+  var gate=taGateReason();
+  if(gate){
+   var back=chartStoredMode();if(back==="analytics")back="trenchart";
+   state.chart.mode=back;state.chart.taGateNote=gate;
+   document.querySelectorAll("#chartModeTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.mode===back)});
+   var bar0=$("replayBar");if(bar0)bar0.style.display="none";
+   pauseReplay();fetchChart();return}
+  state.chart.taGateNote=null;
+  /* Analytics draws from candles, never the 1s tick line. */
+  if(state.chart.tf==="1s"){var selA=chartAgeTf(state.chart.birth);state.chart.tf=selA.tf;document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf===selA.tf)})}
+ }else state.chart.taGateNote=null;
+ state.chart.mode=mode;chartSaveMode(mode);
  document.querySelectorAll("#chartModeTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.mode===mode)});
  var bar=$("replayBar");if(bar)bar.style.display=mode==="replay"?"block":"none";
+ /* TrenCHART 2 is hourly by definition: force 1h and light the 1h tab. */
+ if(mode==="volbars"){state.chart.tf="1h";document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf==="1h")})}
  if(mode==="replay"){stopTickLine();enterReplay()}else{pauseReplay();fetchChart()}}
 var TF_ORDER=["1m","5m","15m","1h","4h","D"];
 var TF_BUCKET={"1m":"minute","5m":"5 minutes","15m":"15 minutes","1h":"hour","4h":"4 hours","D":"day"};
-/* Phase 0 chart data layer: a fixed candle COUNT per timeframe (100), so the
-   window scales with the timeframe (15m covers about a day, 1h about 4 days,
-   D about 100 days). The last good OHLCV per pair + timeframe is cached in
-   memory and in localStorage; a render shows the cache first with its
-   timestamp and the live fetch only refreshes it in the background. A failed
-   refresh never blanks a chart that already rendered. Concurrent fetches per
-   pair + timeframe are deduped, and retries are capped at 2 with backoff. */
+/* Chart data layer (§5.1–§5.6): the candle COUNT per timeframe is computed
+   from the token's age, never a fixed 100 — a 2-minute-old token asks for
+   a few 1-minute candles, not an hour of history that does not exist yet.
+   The last good OHLCV per pair + timeframe is cached in memory and in
+   localStorage with a TTL per timeframe (§5.6) and a 40-entry LRU cap; a
+   render shows the cache first with its timestamp and the live fetch only
+   refreshes it in the background. A failed refresh never blanks a chart
+   that already rendered. Concurrent fetches per pair + timeframe are
+   deduped. Every fetch goes through gtFetchJson: 20 s hard timeout, 1 retry,
+   429 silence window, total budget 30 s per chart open. */
 var CHART_LIMIT=100;
+var OHLCV_TTL={"1m":60e3,"5m":300e3,"15m":900e3,"1h":1800e3,"4h":3600e3,"D":3600e3};
+var OHLCV_CACHE_MAX=40;
 var ohlcvMem={},ohlcvInflight={};
 function ohlcvKey(pair,tf){return pair+"|"+tf}
-function ohlcvCacheGet(pair,tf){var k=ohlcvKey(pair,tf);if(ohlcvMem[k]&&ohlcvMem[k].c&&ohlcvMem[k].c.length)return ohlcvMem[k];try{var raw=localStorage.getItem("trenchswap.ohlcv."+k);if(raw){var o=JSON.parse(raw);if(o&&o.c&&o.c.length){ohlcvMem[k]=o;return o}}}catch(e){}return null}
-function ohlcvCachePut(pair,tf,candles){var o={c:candles,at:Date.now()};ohlcvMem[ohlcvKey(pair,tf)]=o;try{localStorage.setItem("trenchswap.ohlcv."+ohlcvKey(pair,tf),JSON.stringify(o))}catch(e){}}
-function ohlcvFetch(pair,tf){
+function ohlcvCacheRead(pair,tf){
+ var k=ohlcvKey(pair,tf);
+ if(ohlcvMem[k]&&ohlcvMem[k].c&&ohlcvMem[k].c.length)return ohlcvMem[k];
+ try{var raw=localStorage.getItem("trenchswap.ohlcv."+k);if(raw){var o=JSON.parse(raw);if(o&&o.c&&o.c.length){ohlcvMem[k]=o;return o}}}catch(e){}
+ return null}
+function ohlcvCacheGet(pair,tf){var o=ohlcvCacheRead(pair,tf);if(!o)return null;if(Date.now()-o.at>(OHLCV_TTL[tf]||60e3))return null;return o}
+function ohlcvCacheStaleGet(pair,tf){return ohlcvCacheRead(pair,tf)}
+function ohlcvCachePrune(){
+ var keys=Object.keys(ohlcvMem);
+ if(keys.length>OHLCV_CACHE_MAX){keys.sort(function(a,b){return ohlcvMem[a].at-ohlcvMem[b].at});while(keys.length>OHLCV_CACHE_MAX){var k=keys.shift();delete ohlcvMem[k];try{localStorage.removeItem("trenchswap.ohlcv."+k)}catch(e){}}}
+ try{
+  var all=[],i;for(i=0;i<localStorage.length;i++){var kk=localStorage.key(i);if(kk&&kk.indexOf("trenchswap.ohlcv.")===0)all.push(kk)}
+  if(all.length>OHLCV_CACHE_MAX){all.sort(function(a,b){var oa,oB;try{oa=JSON.parse(localStorage.getItem(a)||"{}").at||0}catch(e){oa=0}try{oB=JSON.parse(localStorage.getItem(b)||"{}").at||0}catch(e){oB=0}return oa-oB});while(all.length>OHLCV_CACHE_MAX){localStorage.removeItem(all.shift())}}
+ }catch(e){}}
+function ohlcvCachePut(pair,tf,candles){
+ var k=ohlcvKey(pair,tf),ex=ohlcvMem[k];
+ /* Keep the longest FRESH series: a 30-candle sample never overwrites a
+    fresh 100-candle window, but an expired entry is always replaced. */
+ if(ex&&ex.c&&ex.c.length>=candles.length&&(Date.now()-ex.at)<(OHLCV_TTL[tf]||60e3))return;
+ var o={c:candles,at:Date.now()};ohlcvMem[k]=o;ohlcvCachePrune();
+ try{localStorage.setItem("trenchswap.ohlcv."+k,JSON.stringify(o))}catch(e){}}
+/* Age-aware window (§5.1): the finest timeframe that yields at least 20
+   complete candles for the token's life, capped at 100. Never requests a
+   window that starts before the token's birth. */
+function chartAgeTf(birthMs){
+ if(!birthMs)return{tf:"1m",limit:30,ageUnknown:true};
+ var ageS=Math.max(0,(Date.now()-birthMs)/1000);
+ if(ageS<1200)return{tf:"1m",limit:Math.min(100,Math.ceil(ageS/60)+1)};
+ if(ageS<7200)return{tf:"1m",limit:Math.min(100,Math.ceil(ageS/60)+1)};
+ if(ageS<43200)return{tf:"5m",limit:Math.min(100,Math.ceil(ageS/300)+1)};
+ if(ageS<259200)return{tf:"15m",limit:Math.min(100,Math.ceil(ageS/900)+1)};
+ if(ageS<1036800)return{tf:"1h",limit:Math.min(100,Math.ceil(ageS/3600)+1)};
+ if(ageS<3456000)return{tf:"4h",limit:Math.min(100,Math.ceil(ageS/14400)+1)};
+ return{tf:"D",limit:Math.min(100,Math.ceil(ageS/86400)+1)}}
+function chartLimitFor(tf,birthMs){var sel=chartAgeTf(birthMs);return tf===sel.tf?sel.limit:CHART_LIMIT}
+function bucketSeconds(tf){var m=TF_MAP[tf];if(!m)return 60;return m[0]==="minute"?m[1]*60:m[0]==="hour"?m[1]*3600:86400}
+function ohlcvFetch(pair,tf,limit,birthMs,opts){
  var k=ohlcvKey(pair,tf);
  if(ohlcvInflight[k])return ohlcvInflight[k];
  var m=TF_MAP[tf];if(!m)return Promise.resolve(null);
- var url="https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/ohlcv/"+m[0]+"?aggregate="+m[1]+"&limit="+CHART_LIMIT;
- var p=fetchWithRetry(url,2).then(function(d){
+ var lim=limit||CHART_LIMIT;
+ var url="https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/ohlcv/"+m[0]+"?aggregate="+m[1]+"&limit="+lim;
+ var go=opts||{};
+ var p=gtFetchJson(url,{tries:go.prefetch?1:2,timeoutMs:20000,priority:!go.prefetch,prefetch:!!go.prefetch,deadline:go.deadline}).then(function(d){
   var list=d&&d.data&&d.data.attributes&&d.data.attributes.ohlcv_list;
   if(!list||!list.length)return[];
   list=list.slice().sort(function(a,b){return a[0]-b[0]});
+  /* Accuracy rule 1: never plot a candle older than the token's birth. */
+  if(birthMs){var bSec=birthMs/1000;list=list.filter(function(c){return c[0]>=bSec})}
+  if(!list.length)return[];
   ohlcvCachePut(pair,tf,list);
-  return list}).catch(function(){return null});
+  return list}).catch(function(e){if(state.chart)state.chart.lastGtError=e&&e.gtKind?e.gtKind:"failed";return null});
  ohlcvInflight[k]=p;
  p.then(function(){if(ohlcvInflight[k]===p)delete ohlcvInflight[k]});
  return p}
+function gtFailWords(){var k=state.chart&&state.chart.lastGtError;if(k==="rate-limited")return"the live OHLCV source is rate-limited right now — retry in a minute";if(k==="timeout")return"the live OHLCV source timed out";if(k==="budget")return"the live OHLCV budget for this minute is spent";return"the live OHLCV source did not answer after retries"}
+/* Progressive rendering (§5.3): S0 the frame + last known price is already
+   on screen from the report header; S1 a 1-minute sample (limit 30) paints
+   first on a cold open; S2 the full age-selected window replaces it in
+   place. Total budget per open: 30 s — after that the chart shows cache or
+   the honest empty state, never a hung spinner. */
 function fetchChart(){
  var box=$("chartBox");if(!box||!state.chart||state.chart.mode==="replay")return;
- stopTickLine();
- var tf=state.chart.tf,pair=state.chart.pair;
+ stopTickLine();stopChartRefresh();
+ /* TrenCHART 2 is hourly by definition — a timeframe tap while it is
+    active re-forces 1h here (the 1h tab stays lit). */
+ if(state.chart.mode==="volbars"){state.chart.tf="1h";document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf==="1h")})}
+ var tf=state.chart.tf,pair=state.chart.pair,birth=state.chart.birth;
  if(tf==="1s"){startTickLine();return}
  if(!TF_MAP[tf])return;
+ state.chart.openDeadline=Date.now()+30000;
  var cached=ohlcvCacheGet(pair,tf);
+ var stale=(!cached)?ohlcvCacheStaleGet(pair,tf):null;
  if(cached&&cached.c.length>=2){
   state.chart.candles=cached.c;state.chart.shownTf=tf;
   drawChart(box,cached.c,tf);
   chartStampSet(chartModeWord()+": cached "+tf+" candles, saved "+new Date(cached.at).toLocaleTimeString()+" - refreshing live…");
+  refreshChart(pair,tf,true,chartLimitFor(tf,birth));
+  return}
+ if(stale&&stale.c.length>=2){
+  state.chart.candles=stale.c;state.chart.shownTf=tf;
+  drawChart(box,stale.c,tf);
+  chartStampSet(chartModeWord()+": showing stale "+tf+" candles, saved "+new Date(stale.at).toLocaleTimeString()+" - refreshing live…");
+  refreshChart(pair,tf,true,chartLimitFor(tf,birth));
+  return}
+ chartStampSet("Chart: loading "+tf+"…");
+ box.innerHTML='<p class="sub" style="padding:14px 4px">Loading live candles…</p>';
+ if(tf!=="1m"){
+  /* S1: the 1-minute sample paints first; S2 follows with the full window.
+     In TrenCHART 2 mode the sample paints as volume bars too — minute
+     labels and an honest "last 43m" window header, so the scale is never
+     misread; the 1h series replaces it the moment it lands. */
+  ohlcvFetch(pair,"1m",30,birth,{deadline:state.chart.openDeadline}).then(function(sample){
+   if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pair||state.chart.tf!==tf)return;
+   if(sample&&sample.length>=2&&!state.chart.candles){
+    state.chart.candles=sample;state.chart.shownTf="1m";
+    drawChart(box,sample,"1m");
+    chartStampSet(chartModeWord()+": 1m sample - loading full "+tf+" history…")}
+   refreshChart(pair,tf,false,chartLimitFor(tf,birth))});
  }else{
-  chartStampSet("Chart: loading "+tf+"…");
-  box.innerHTML='<p class="sub" style="padding:14px 4px">Loading live candles…</p>';
- }
- refreshChart(pair,tf,!!(cached&&cached.c.length>=2))}
-function refreshChart(pair,tf,hadCache){
- ohlcvFetch(pair,tf).then(function(list){
+  refreshChart(pair,tf,false,chartLimitFor(tf,birth))}}
+function refreshChart(pair,tf,hadCache,limit){
+ ohlcvFetch(pair,tf,limit,state.chart?state.chart.birth:null,{deadline:state.chart?state.chart.openDeadline:null}).then(function(list){
   if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pair||state.chart.tf!==tf)return;
   var box=$("chartBox");if(!box)return;
   if(list===null){
    /* The refresh failed. A chart that already rendered stays exactly as it
-      is, with its cached timestamp; only a chart with nothing to show
-      reports NOT READ. */
-   if(hadCache){var c=ohlcvCacheGet(pair,tf);chartStampSet(chartModeWord()+": refresh did not answer - showing cached "+tf+" candles, saved "+(c?new Date(c.at).toLocaleTimeString():"earlier")+".")}
-   else{chartStampSet("Chart: NOT READ");box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ - the live OHLCV source did not answer after retries, and no cached candles exist for this pair yet. Try again, or pick another timeframe.</p>'}
+      is; only a chart with nothing to show reports NOT READ — and the
+      stamp now says WHY (rate-limited / timeout / budget), not just that
+      the source "did not answer". */
+   if(hadCache){var c=ohlcvCacheGet(pair,tf)||ohlcvCacheStaleGet(pair,tf);chartStampSet(chartModeWord()+": refresh did not answer - showing cached "+tf+" candles, saved "+(c?new Date(c.at).toLocaleTimeString():"earlier")+".")}
+   else if(state.chart.candles&&state.chart.candles.length){
+    /* The refresh failed but a sample is in hand. Re-draw it if the box
+       is blank (the cold path clears it before the fetch) — the stamp
+       says "showing the 1m sample for now", so the sample must be on
+       screen, in whatever style is active. */
+    if(!box.querySelector("svg"))drawChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf);
+    chartStampSet(chartModeWord()+": "+gtFailWords()+" - showing the 1m sample for now.")}
+   else{chartStampSet("Chart: NOT READ - "+gtFailWords());box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ - '+gtFailWords()+', and no cached candles exist for this pair yet. Try again, or pick another timeframe.</p>'}
    return}
   if(list.length>=2){
    state.chart.candles=list;state.chart.shownTf=tf;
-   drawChart(box,list,tf);return}
+   drawChart(box,list,tf);
+   startChartRefresh();runDeployerTrace();
+   return}
   /* No completed candles at this timeframe (the pair is younger than one
      bucket): fall back to the finest timeframe that has at least 2 closes. */
   fallbackTf(tf,pair,list.length?list:null)})}
 function fallbackTf(want,pairAddr,partial){
  var order=TF_ORDER.filter(function(x){return x!==want});
  var ci=0;
- function fbNote(tf2){return want+" candles start after the first full "+TF_BUCKET[want]+" - showing "+tf2+" "+(state.chart.mode==="candles"?"candles":"line")+"."}
+ function fbNote(tf2){return want+" candles start after the first full "+TF_BUCKET[want]+" - showing "+tf2+" "+chartModeWord()+"."}
  function useCandles(tf2,list,note){
   if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
   var box=$("chartBox");if(!box)return;
@@ -3572,14 +4045,69 @@ function fallbackTf(want,pairAddr,partial){
   if(!state.chart||state.chart.mode==="replay"||state.chart.pair!==pairAddr)return;
   if(ci>=order.length){
    if(partial&&partial.length){useCandles(want,partial,"Only one "+want+" candle exists so far - this pair is brand new.");return}
+   /* No candles on any timeframe. A bonding-curve token has no pool yet,
+      so OHLCV is empty BY CONSTRUCTION — open the live-price line instead
+      of a NOT READ (§5.10). Anything else reports honestly. */
+   if(state.chart.dexId==="pumpfun"){
+    state.chart.tf="1s";
+    document.querySelectorAll("#chartTabs button").forEach(function(x){x.classList.toggle("on",x.dataset.tf==="1s")});
+    startTickLine();
+    chartStampSet("Bonding curve - live price line. Candles start when the pool opens.");
+    return}
    chartStampSet("Chart: NOT READ");var box=$("chartBox");if(box)box.innerHTML='<p class="sub" style="padding:14px 4px">Chart: NOT READ - no candles on any timeframe for this pair right now.</p>';return}
   var tf2=order[ci++];
-  var cached2=ohlcvCacheGet(pairAddr,tf2);
+  var cached2=ohlcvCacheGet(pairAddr,tf2)||ohlcvCacheStaleGet(pairAddr,tf2);
   if(cached2&&cached2.c.length>=2){useCandles(tf2,cached2.c,fbNote(tf2));return}
-  ohlcvFetch(pairAddr,tf2).then(function(l2){
+  ohlcvFetch(pairAddr,tf2,chartLimitFor(tf2,state.chart?state.chart.birth:null),state.chart?state.chart.birth:null).then(function(l2){
    if(l2&&l2.length>=2)useCandles(tf2,l2,fbNote(tf2));
    else next()})}
  next()}
+/* S3 — live: while a token report stays open, the newest few candles are
+   merged in every 30 s (never a full re-download) and the deployer trace
+   refreshes on the same cadence. Both timers stop themselves the moment
+   the report overlay closes. */
+function stopChartRefresh(){
+ if(!state.chart)return;
+ if(state.chart.refreshTimer){clearInterval(state.chart.refreshTimer);state.chart.refreshTimer=null}
+ if(state.chart.traceTimer){clearInterval(state.chart.traceTimer);state.chart.traceTimer=null}}
+function chartReportOpen(){var ov=$("reportOverlay");return !!(ov&&ov.classList.contains("open"))}
+function startChartRefresh(){
+ if(!state.chart)return;stopChartRefresh();
+ state.chart.refreshTimer=setInterval(function(){
+  if(!state.chart||state.chart.mode==="replay"||state.chart.tf==="1s"||!chartReportOpen())return;
+  var pair=state.chart.pair,tf=state.chart.shownTf||state.chart.tf;
+  ohlcvFetch(pair,tf,5,state.chart.birth).then(function(list){
+   if(!state.chart||!list||!list.length||state.chart.pair!==pair||!chartReportOpen())return;
+   var cur=state.chart.candles||[],byT={};
+   cur.forEach(function(c){byT[c[0]]=c});list.forEach(function(c){byT[c[0]]=c});
+   var merged=Object.keys(byT).map(function(k){return byT[k]}).sort(function(a,b){return a[0]-b[0]});
+   if(merged.length>CHART_LIMIT)merged=merged.slice(merged.length-CHART_LIMIT);
+   state.chart.candles=merged;
+   var box=$("chartBox");if(box)drawChart(box,merged,state.chart.shownTf||tf);
+  }).catch(function(){});
+ },30000);
+ state.chart.traceTimer=setInterval(function(){
+  if(state.chart&&state.chart.mode!=="replay"&&state.chart.tf!=="1s"&&chartReportOpen())runDeployerTrace();
+ },30000)}
+/* ---------- Preemptive chart data gathering (§5.4) ----------
+   When the pump feed renders, quietly fetch a 1-minute sample (limit 30)
+   for the top 8 visible tokens in the background, inside the same budget
+   (§5.9): max 4 concurrent, max 8 prefetch calls per minute, never while
+   the tab is hidden, never while GeckoTerminal is silent, and a chart the
+   user actually opens always jumps the queue (prefetch never starves a
+   live open — it only fills the cache the open reads first). */
+var CHART_PREFETCH_INFLIGHT=0;
+function prefetchCharts(){
+ if(document.hidden||gtIsSilent())return;
+ if(chartReportOpen())return; /* a live chart open owns the GT budget — prefetch never starves it */
+ var toks=(state.pairs||[]).slice(0,8).filter(function(p){return p&&p.pairAddress});
+ toks.forEach(function(p){
+  if(CHART_PREFETCH_INFLIGHT>=4)return;
+  var k=ohlcvKey(p.pairAddress,"1m");
+  if(ohlcvCacheGet(p.pairAddress,"1m")||ohlcvInflight[k])return;
+  CHART_PREFETCH_INFLIGHT++;
+  ohlcvFetch(p.pairAddress,"1m",30,p.pairCreatedAt||null,{prefetch:true}).then(function(){CHART_PREFETCH_INFLIGHT--}).catch(function(){CHART_PREFETCH_INFLIGHT--})})}
+function schedulePrefetch(){if(typeof requestIdleCallback==="function")requestIdleCallback(prefetchCharts,{timeout:2000});else setTimeout(prefetchCharts,300)}
 /* ---------- 1s view: a live tick line, not a candle ----------
    DexScreener pair price polled once a second; Jupiter Price v3 read every
    2 seconds as a cross-check and shown in the stamp. If the tick line
@@ -3662,25 +4190,94 @@ function chartTail(g,tf,list,last){
  s+='<text x="0" y="'+(g.H-4)+'" fill="#C9BCE8" font-size="9.5" font-family="monospace">'+escapeHtml(tLbl(list[0][0]))+'</text>';
  s+='<text x="'+g.plotW+'" y="'+(g.H-4)+'" fill="#C9BCE8" font-size="9.5" font-family="monospace" text-anchor="end">'+escapeHtml(tLbl(list[list.length-1][0]))+'</text>';
  return s+'</svg>'}
+function fmtVol(n){if(n==null||isNaN(n))return"—";if(n>=1e6)return(n/1e6).toFixed(1)+"M";if(n>=1e3)return(n/1e3).toFixed(1)+"K";if(n>=1)return n.toFixed(0);return n.toFixed(2)}
+/* Deployer-trace colours per candle bucket (§5.13): the bar turns green
+   when the deployer's net USD flow in that bucket is a buy, red when it
+   is a net sell; both sides in one bucket follows the most recent
+   deployer trade in the bucket. Every other bar stays purple. */
+function deployerBucketColors(list,tf){
+ var colors={};var tr=state.chart&&state.chart.trace;
+ if(!tr||!tr.trades||!tr.trades.length)return colors;
+ var bs=bucketSeconds(tf),first=list[0][0];
+ tr.trades.forEach(function(t){
+  var idx=Math.floor((t.t-first)/bs);if(idx<0||idx>=list.length)return;
+  var cur=colors[idx]||{net:0,last:null};
+  cur.net+=t.kind==="buy"?t.vol:-t.vol;cur.last=t.kind;colors[idx]=cur});
+ return colors}
+/* Volume bars panel (§5.12, Jeffrey's mockup 02): one purple rounded bar
+   per candle bucket of the selected timeframe, value above, time below.
+   The bars are the OHLCV volume of the same series — never a second
+   dataset. The "Now" bar is the forming candle's volume, growing live. */
+function volumePanelHtml(list,tf){
+ var n=list.length;if(!n)return"";
+ var vmax=0;list.forEach(function(c){if(c[5]>vmax)vmax=c[5]});
+ var W=340,barH=44,top=16,bot=14,H=top+barH+bot;
+ var step=W/n,bw=Math.max(2,Math.floor(step*0.62));
+ var colors=deployerBucketColors(list,tf);
+ function tLbl(ts){var d=new Date(ts*1000);return tf==="D"?d.toLocaleDateString([],{month:"short",day:"numeric"}):d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}
+ var s='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block;margin-top:6px" role="img" aria-label="Volume bars">';
+ s+='<text x="0" y="10" fill="#C9BCE8" font-size="9.5" font-family="monospace">VOLUME'+(tf==="D"?"":" "+tf.toUpperCase())+'</text>';
+ var labelEvery=Math.max(1,Math.ceil(n/7));
+ for(var i=0;i<n;i++){var c=list[i];var vh=vmax?c[5]/vmax*barH:0;var x=i*step+(step-bw)/2;
+  var col="#B45CF7";var bc=colors[i];
+  if(bc)col=bc.net>=0?"#22C55E":"#EF4444";
+  var up=c[4]>=c[1];
+  s+='<rect x="'+x.toFixed(1)+'" y="'+(top+barH-vh).toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" rx="1.5" fill="'+col+'" opacity="'+(bc?"0.95":(up?"0.85":"0.55"))+'"/>';
+  if((i%labelEvery===0||i===n-1)&&vh>10)s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(top+barH-vh-3).toFixed(1)+'" fill="#E9D5FF" font-size="8" font-family="monospace" text-anchor="middle">'+escapeHtml(fmtVol(c[5]))+'</text>';
+  if(i%labelEvery===0||i===n-1)s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-2)+'" fill="#C9BCE8" font-size="8.5" font-family="monospace" text-anchor="middle">'+escapeHtml(tLbl(c[0]))+'</text>'}
+ return s+'</svg>'}
+/* Bundle marks (§5.13): a small 6px square at the trade's (time, price) —
+   green where the deploying wallet bought, red where it sold. One square
+   per verified deployer trade; trades outside the visible window are not
+   drawn. No trace means no squares, never a guess. */
+function deployerMarkSvg(list,tf,pts,Y){
+ var tr=state.chart&&state.chart.trace;if(!tr||!tr.trades||!tr.trades.length)return"";
+ var bs=bucketSeconds(tf),first=list[0][0],s="";
+ tr.trades.forEach(function(t){
+  var idx=Math.floor((t.t-first)/bs);if(idx<0||idx>=list.length)return;
+  var x=pts[idx][0],y=Y(t.price);
+  s+='<rect x="'+(x-3).toFixed(1)+'" y="'+(y-3).toFixed(1)+'" width="6" height="6" fill="'+(t.kind==="buy"?"#22C55E":"#EF4444")+'" stroke="#0A0614" stroke-width="0.8"/>'});
+ return s}
+/* Stamp extras, appended by every candle/line draw: the age note when the
+   birth time is unknown, and the deployer-trace state. */
+function chartStampExtras(){
+ var st=$("chartStamp");if(!st||!state.chart)return;
+ var tr=state.chart.trace,extra="";
+ if(!state.chart.birth)extra+=" · age NOT READ — showing 1m";
+ if(tr)extra+=tr.state==="ok"?(" · deployer trace: "+(tr.trades||[]).length+" trades"):(" · deployer trace NOT READ");
+ if(extra)st.textContent+=extra}
 function chartStampSet(txt){var st=$("chartStamp");if(st)st.textContent=txt}
-function chartModeWord(){if(!state.chart)return"Candles";return state.chart.mode==="line"?"Line":state.chart.mode==="trenchart"?"TrenChART":"Candles"}
+function chartModeWord(){if(!state.chart)return"Bars";return state.chart.mode==="line"?"Lines":state.chart.mode==="trenchart"?"TrenCHART 1":state.chart.mode==="volbars"?"TrenCHART 2":state.chart.mode==="analytics"?"TrenchAnalytics":"Bars"}
 function drawChart(box,list,tf){
- if(state.chart&&state.chart.mode==="line"){drawLineChart(box,list,tf);return}
- if(state.chart&&state.chart.mode==="trenchart"){drawTrenchChart(box,list,tf);return}
+ /* A leftover gate note clears itself the moment the token ages past 1h. */
+ if(state.chart&&state.chart.taGateNote&&!taGateReason())state.chart.taGateNote=null;
+ if(state.chart&&state.chart.mode==="line"){drawLineChart(box,list,tf)}
+ else if(state.chart&&state.chart.mode==="trenchart"){drawTrenchChart(box,list,tf)}
+ else if(state.chart&&state.chart.mode==="volbars"){drawVolBarsChart(box,list,tf)}
+ else if(state.chart&&state.chart.mode==="analytics"){drawAnalyticsChart(box,list,tf)}
+ else{
  var g=chartGeom(list);
  function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
  var n=list.length,step=g.plotW/n,bw=Math.max(1,Math.floor(step*0.62)),i,c;
- var s=chartHead(g,tf,"CANDLES",list);
+ var s=chartHead(g,tf,"BARS",list);
  s+='<defs><filter id="tsCandleGlow" x="-60%" y="-60%" width="220%" height="220%"><feDropShadow dx="0" dy="2.5" stdDeviation="2" flood-color="#4C1D95" flood-opacity="0.55"/></filter><linearGradient id="tsCandleUp" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8B4FE"/><stop offset="0.45" stop-color="#B45CF7"/><stop offset="1" stop-color="#7C3AED"/></linearGradient><linearGradient id="tsCandleDn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A855F7"/><stop offset="1" stop-color="#4C1D95"/></linearGradient></defs>';
+ /* One glow pass for the whole candle group — the old per-candle
+    feDropShadow filter was the most expensive thing in the render. */
+ var vol="",cand="",pts=[];
  for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;var up=c[4]>=c[1];var col=up?"url(#tsCandleUp)":"url(#tsCandleDn)";var edge=up?"#22C55E":"#EF4444";
+  pts.push([x,Y(c[4])]);
   var vh=g.vmax?c[5]/g.vmax*g.volH:0;
-  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.7"/>';
-  s+='<line x1="'+x.toFixed(1)+'" y1="'+Y(c[2]).toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+Y(c[3]).toFixed(1)+'" stroke="'+edge+'" stroke-width="1.2"/>';
+  vol+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.7"/>';
+  cand+='<line x1="'+x.toFixed(1)+'" y1="'+Y(c[2]).toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+Y(c[3]).toFixed(1)+'" stroke="'+edge+'" stroke-width="1.2"/>';
   var yO=Y(c[1]),yC=Y(c[4]);var top=Math.min(yO,yC),hgt=Math.max(1,Math.abs(yC-yO));
-  s+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw+'" height="'+hgt.toFixed(1)+'" fill="'+col+'" stroke="'+edge+'" stroke-width="1.4" filter="url(#tsCandleGlow)"/>'}
+  cand+='<rect x="'+(x-bw/2).toFixed(1)+'" y="'+top.toFixed(1)+'" width="'+bw+'" height="'+hgt.toFixed(1)+'" fill="'+col+'" stroke="'+edge+'" stroke-width="1.4"/>'}
+ s+=vol+'<g filter="url(#tsCandleGlow)">'+cand+'</g>';
+ s+=deployerMarkSvg(list,tf,pts,Y);
  s+=chartTail(g,tf,list,list[n-1][4]);
- box.innerHTML=s;
- chartStampSet("Candles: GeckoTerminal (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString())}
+ box.innerHTML=s+volumePanelHtml(list,tf);
+ chartStampSet("Bars: GeckoTerminal (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString());chartStampExtras()}
+ if(state.chart&&state.chart.taGateNote){box.insertAdjacentHTML("afterbegin",'<p class="fee" style="padding:2px 4px 8px">'+escapeHtml(state.chart.taGateNote)+'</p>')}
+}
 function smoothPath(pts){
  if(pts.length<2)return"";
  var d="M"+pts[0][0].toFixed(1)+" "+pts[0][1].toFixed(1);
@@ -3691,7 +4288,7 @@ function drawLineChart(box,list,tf){
  var g=chartGeom(list);
  function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
  var n=list.length,step=g.plotW/n,i,c;
- var s=chartHead(g,tf,"LINE",list);
+ var s=chartHead(g,tf,"LINES",list);
  s+='<defs><linearGradient id="tsLineFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A855F7" stop-opacity="0.42"/><stop offset="1" stop-color="#A855F7" stop-opacity="0.02"/></linearGradient><linearGradient id="tsLineStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C3AED"/><stop offset="0.55" stop-color="#C084FC"/><stop offset="1" stop-color="#F3E8FF"/></linearGradient></defs>';
  var pts=[];
  for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;pts.push([x,Y(c[4])]);
@@ -3701,11 +4298,12 @@ function drawLineChart(box,list,tf){
  s+='<path d="'+line+'" transform="translate(0,3)" fill="none" stroke="rgba(38,10,74,.5)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>';
  s+='<path d="'+line+' L'+pts[n-1][0].toFixed(1)+' '+g.priceH+' L'+pts[0][0].toFixed(1)+' '+g.priceH+' Z" fill="url(#tsLineFill)" stroke="none"/>';
  s+='<path d="'+line+'" fill="none" stroke="url(#tsLineStroke)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+ s+=deployerMarkSvg(list,tf,pts,Y);
  s+='<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="3.5" fill="#FFFFFF" stroke="#A855F7" stroke-width="2"/>';
  s+=chartTail(g,tf,list,list[n-1][4]);
- box.innerHTML=s;
- chartStampSet("Line: GeckoTerminal closes (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString())}
-/* ---------- TrenChART: the Line chart played as purple flames ----------
+ box.innerHTML=s+volumePanelHtml(list,tf);
+ chartStampSet("Lines: GeckoTerminal closes (live) \u00b7 "+tf+" \u00b7 rendered "+new Date().toLocaleTimeString());chartStampExtras()}
+/* ---------- TrenCHART 1: the Line chart played as purple flames ----------
    Same OHLCV closes, same points, same glossy line as Line mode (identical
    path math, so the settled chart is the true line chart). On top, one
    flame tongue per sampled point plays for about 2.3 seconds: every flame
@@ -3718,7 +4316,7 @@ function drawTrenchChart(box,list,tf){
  var g=chartGeom(list);
  function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
  var n=list.length,step=g.plotW/n,i,c;
- var s=chartHead(g,tf,"TRENCHART",list);
+ var s=chartHead(g,tf,"TRENCHART 1",list);
  s+='<defs><linearGradient id="tsFireFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C3AED" stop-opacity="0.6"/><stop offset="0.55" stop-color="#A855F7" stop-opacity="0.28"/><stop offset="1" stop-color="#A855F7" stop-opacity="0.03"/></linearGradient><linearGradient id="tsLineStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C3AED"/><stop offset="0.55" stop-color="#C084FC"/><stop offset="1" stop-color="#F3E8FF"/></linearGradient><linearGradient id="tsFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3E8FF"/><stop offset="0.35" stop-color="#C084FC"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0.25"/></linearGradient><linearGradient id="tsFlameHot" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF7ED"/><stop offset="0.3" stop-color="#FDBA74"/><stop offset="0.62" stop-color="#F97316"/><stop offset="1" stop-color="#7C3AED" stop-opacity="0.3"/></linearGradient></defs>';
  var pts=[],hiIdx=0;
  for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;pts.push([x,Y(c[4])]);
@@ -3748,15 +4346,468 @@ function drawTrenchChart(box,list,tf){
  s+='<circle cx="'+hx.toFixed(1)+'" cy="'+hy.toFixed(1)+'" r="3.6" fill="#F97316" stroke="#FFF7ED" stroke-width="1.4"/>';
  s+='<rect x="'+lx.toFixed(1)+'" y="'+ly.toFixed(1)+'" width="'+tw.toFixed(1)+'" height="15" rx="7.5" fill="rgba(24,8,46,.88)" stroke="rgba(249,115,22,.65)"/>';
  s+='<text x="'+(lx+tw/2).toFixed(1)+'" y="'+(ly+11).toFixed(1)+'" fill="#FED7AA" font-size="9.5" font-weight="bold" font-family="monospace" text-anchor="middle">'+escapeHtml(lbl)+'</text>';
+ s+=deployerMarkSvg(list,tf,pts,Y);
  s+='<circle cx="'+pts[n-1][0].toFixed(1)+'" cy="'+pts[n-1][1].toFixed(1)+'" r="3.5" fill="#FFFFFF" stroke="#A855F7" stroke-width="2"/>';
  s+=chartTail(g,tf,list,list[n-1][4]);
+ box.innerHTML=s+volumePanelHtml(list,tf);
+ chartStampSet("TrenCHART 1: GeckoTerminal closes (live) · "+tf+" · rendered "+new Date().toLocaleTimeString());chartStampExtras()}
+/* ---------- TrenCHART 2: hourly volume bars (§5.14, Jeffrey 2026-11-15) --
+   The reference is his $comma screenshot + mockup 02: big glowing purple
+   bars, one per hourly bucket, -6h to Now, value label above each bar,
+   time below, "volume 24h" header. Same OHLCV series as every other mode
+   (GeckoTerminal, cached or live) — never the mockup's sample numbers.
+   Shows the last 7 buckets of the loaded series; a token younger than 7
+   buckets shows what exists honestly, labelled with its real window.
+   The newest bucket is the forming candle, growing live. Deployer-trace
+   recolouring is NOT applied here — the reference is all purple; the
+   trace still shows in the stamp and in the other styles. */
+function drawVolBarsChart(box,list,tf){
+ if(!list||!list.length){box.innerHTML='<p class="sub" style="padding:14px 4px">TrenCHART 2: NOT READ - no candles for this pair yet.</p>';return}
+ var bs=bucketSeconds(tf)||3600;
+ var shown=list.slice(-7),n=shown.length;
+ var vmax=0;shown.forEach(function(c){if(c[5]>vmax)vmax=c[5]});
+ /* 24h volume: sum every loaded bucket inside the last 24 hours. */
+ var nowS=Date.now()/1000,vol24=0,firstTs=Infinity,lastTs=0;
+ list.forEach(function(c){if(c[0]>=nowS-86400)vol24+=c[5];if(c[0]<firstTs)firstTs=c[0];if(c[0]>lastTs)lastTs=c[0]});
+ var covH=lastTs>firstTs?(lastTs-firstTs)/3600:0;
+ var W=340,headH=20,barH=150,botH=18,H=headH+barH+botH;
+ var step=W/n,bw=Math.max(6,Math.floor(step*0.62));
+ function relLbl(k){if(k===0)return"Now";if(bs>=86400)return"-"+k+"d";if(bs>=3600)return"-"+(k*bs/3600)+"h";return"-"+(k*bs/60)+"m"}
+ var headTxt=covH>=24?"volume 24h $"+fmtVol(vol24):"volume · last "+(covH>=1?covH.toFixed(0)+"h":Math.max(1,Math.round(covH*60))+"m")+" $"+fmtVol(vol24);
+ var s='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block" role="img" aria-label="TrenCHART 2 volume bars">';
+ s+='<defs><linearGradient id="tsVolBar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9D5FF"/><stop offset="0.35" stop-color="#C084FC"/><stop offset="0.7" stop-color="#A855F7"/><stop offset="1" stop-color="#7C3AED"/></linearGradient><filter id="tsVolGlow" x="-40%" y="-40%" width="180%" height="180%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#A855F7" flood-opacity="0.55"/></filter></defs>';
+ s+='<text x="2" y="12" fill="#E9D5FF" font-size="11" font-weight="bold" font-family="monospace">'+escapeHtml(headTxt)+'</text>';
+ s+='<text x="'+(W-2)+'" y="12" fill="#C9BCE8" font-size="9.5" font-family="monospace" text-anchor="end">'+escapeHtml("TRENCHART 2 · "+tf+" · "+n+" bar"+(n===1?"":"s"))+'</text>';
+ s+='<line x1="0" y1="'+(headH+barH)+'" x2="'+W+'" y2="'+(headH+barH)+'" stroke="rgba(192,132,252,.35)" stroke-width="1"/>';
+ var i,c;
+ for(i=0;i<n;i++){c=shown[i];
+  var vh=vmax?c[5]/vmax*(barH-16):0;
+  var x=i*step+(step-bw)/2;
+  var y=headH+barH-vh;
+  s+='<g filter="url(#tsVolGlow)"><rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+bw+'" height="'+Math.max(1,vh).toFixed(1)+'" rx="3" fill="url(#tsVolBar)"/></g>';
+  s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(y-4).toFixed(1)+'" fill="#E9D5FF" font-size="9" font-family="monospace" text-anchor="middle">'+escapeHtml(fmtVol(c[5]))+'</text>';
+  s+='<text x="'+(x+bw/2).toFixed(1)+'" y="'+(H-4)+'" fill="#C9BCE8" font-size="9.5" font-family="monospace" text-anchor="middle">'+escapeHtml(relLbl(n-1-i))+'</text>'}
+ box.innerHTML=s+'</svg>';
+ chartStampSet("TrenCHART 2: GeckoTerminal volume (live) · "+tf+" · "+n+" bars · rendered "+new Date().toLocaleTimeString());chartStampExtras()}
+/* ---------- TrenchAnalytics (§4, deep-charts-apex2-trenchanalytics-20261115.md) ----------
+   New style alongside Bars/Lines/TrenCHART 1/TrenCHART 2 — tokens over 1h
+   old only (younger tokens keep the normal chart + a gate note). Fine-line
+   price graph in the purple TrenchSwap theme, volume strip, NO bubbles:
+   every event marker is a thin stem with a diamond head. Size lanes:
+   over-1-SOL buys are tall gold ticks above the line, under-0.05-SOL buys
+   short teal ticks below it; tap any tick for its value. Measurements are
+   thin dimension lines between the lowest buy and the lowest sell (and
+   range high/low), computed from the real series + the real trade tape.
+   Bundled-wallet buys are the deployer wallet's own buys — the only wallet
+   verified as tied in TrenchSwap — drawn as violet pins with the tie
+   stated. No "bundled" verdict is rendered anywhere here; the D7 10%
+   definition is still a proposal and is not hard-coded. Data: the same
+   GeckoTerminal OHLCV + pool trades, DexScreener pair data and Solana RPC
+   the other styles already use. No new endpoints, no funds, no signing. */
+var TA_GATE_MS=3600000;
+var TA_SOL_BIG=1,TA_SOL_SMALL=0.05,TA_SMALL_CAP=80,TA_EV_CAP=200;
+function taGateReason(){
+ if(!state.chart)return"TrenchAnalytics is not available right now.";
+ if(!state.chart.birth)return"TrenchAnalytics unlocks at 1h — this token's pool birth time is NOT READ, so its age cannot be verified.";
+ var ageMs=Date.now()-state.chart.birth;
+ if(ageMs<TA_GATE_MS){var mins=Math.max(1,Math.ceil((TA_GATE_MS-ageMs)/60000));return"TrenchAnalytics unlocks at 1h — this token is "+Math.max(0,Math.floor(ageMs/60000))+"m old, unlocks in about "+mins+"m."}
+ return null}
+function taSolSize(tr){
+ if(tr.sol!=null&&isFinite(tr.sol))return{sol:tr.sol,exact:true};
+ var sp=state.prices&&Number(state.prices.SOL);
+ if(isFinite(sp)&&sp>0&&tr.vol>0)return{sol:tr.vol/sp,exact:false};
+ return null}
+function taTime(ts){return new Date(ts*1000).toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})}
+function taDate(ts){return new Date(ts*1000).toLocaleString()}
+function taPx6(v){if(v==null||!isFinite(v))return"—";return String(parseFloat(Number(v).toPrecision(6)))}
+function taAptFmt(v){if(!(v>0))return"0";if(v>=1e-6)return chartPriceFmt(v);return v.toFixed(12).replace(/0+$/,"").replace(/\.$/,"")}
+function taDiamondPath(x,y,r){return"M"+x.toFixed(1)+" "+(y-r).toFixed(1)+" L"+(x+r).toFixed(1)+" "+y.toFixed(1)+" L"+x.toFixed(1)+" "+(y+r).toFixed(1)+" L"+(x-r).toFixed(1)+" "+y.toFixed(1)+" Z"}
+/* Trade tape for analytics: the same GeckoTerminal pool-trades endpoint
+   Replay already uses, but NOT cut to the last hour — the latest trades
+   the endpoint returns (its most recent window). One fetch per pair per
+   report open; a failed fetch stays NOT READ until the report reopens. */
+var taTradesBusy=false;
+function fetchAnalyticsTrades(){
+ if(!state.chart||taTradesBusy)return;
+ var pair=state.chart.pair,mint=state.chart.mint;
+ if(!pair||!mint)return;
+ if(state.chart.taTradesPair===pair&&state.chart.taTrades)return;
+ taTradesBusy=true;state.chart.taTradesState="loading";
+ gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/trades",{tries:2,timeoutMs:20000,priority:true}).then(function(d){
+  taTradesBusy=false;
+  if(!state.chart||state.chart.pair!==pair)return;
+  var rows=(d&&d.data)||[],trades=[];
+  rows.forEach(function(row){var a=row&&row.attributes;if(!a)return;
+   var price=null;
+   if(a.to_token_address===mint)price=parseFloat(a.price_to_in_usd);
+   else if(a.from_token_address===mint)price=parseFloat(a.price_from_in_usd);
+   var t=Date.parse(a.block_timestamp)/1000;
+   if(price&&isFinite(price)&&isFinite(t)){
+    var solAmt=null;
+    if(a.from_token_address===SOL_MINT)solAmt=Number(a.from_token_amount);
+    else if(a.to_token_address===SOL_MINT)solAmt=Number(a.to_token_amount);
+    if(!isFinite(solAmt))solAmt=null;
+    trades.push({t:t,price:price,kind:a.kind==="sell"?"sell":"buy",vol:parseFloat(a.volume_in_usd)||0,sol:solAmt,tx:a.tx_hash||null})}});
+  trades.sort(function(x,y){return x.t-y.t});
+  state.chart.taTrades=trades;state.chart.taTradesPair=pair;
+  state.chart.taTradesState=trades.length?"ok":"empty";
+  if(state.chart.mode==="analytics"&&state.chart.candles&&state.chart.candles.length){var box=$("chartBox");if(box)drawChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)}
+ }).catch(function(){
+  taTradesBusy=false;
+  if(!state.chart||state.chart.pair!==pair)return;
+  state.chart.taTradesState="notread";
+  if(state.chart.mode==="analytics"&&state.chart.candles&&state.chart.candles.length){var box=$("chartBox");if(box)drawChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)}
+ })}
+function taBuildEvents(list,tf,tape,trace){
+ if(!list||!list.length)return[];
+ var evs=[],bs=bucketSeconds(tf),first=list[0][0],n=list.length;
+ function idxFor(t){var i=Math.floor((t-first)/bs);return(i>=0&&i<n)?i:-1}
+ var small=[];
+ (tape||[]).forEach(function(tr){
+  if(tr.kind!=="buy")return;
+  var i=idxFor(tr.t);if(i<0)return;
+  var sz=taSolSize(tr);if(!sz)return;
+  var ev={lane:null,t:tr.t,price:tr.price,vol:tr.vol,sol:sz.sol,solExact:sz.exact,tx:tr.tx||null,idx:i};
+  if(sz.sol>=TA_SOL_BIG){ev.lane="big";evs.push(ev)}
+  else if(sz.sol<=TA_SOL_SMALL){ev.lane="small";small.push(ev)}});
+ small.sort(function(a,b){return b.t-a.t});
+ small=small.slice(0,TA_SMALL_CAP);
+ small.forEach(function(e){evs.push(e)});
+ var trs=trace&&trace.trades||[];
+ trs.forEach(function(t){
+  var i=idxFor(t.t);if(i<0)return;
+  evs.push({lane:t.kind==="buy"?"deployerbuy":"deployersell",t:t.t,price:t.price,vol:t.vol,sol:null,solExact:false,tx:null,idx:i})});
+ evs.sort(function(a,b){return a.t-b.t});
+ if(evs.length>TA_EV_CAP)evs=evs.slice(evs.length-TA_EV_CAP);
+ return evs}
+function taPressure(tape,list,tf){
+ var out={buckets:{},buys:0,sells:0,buyVol:0,sellVol:0,unclass:0};
+ if(!list||!list.length)return out;
+ var bs=bucketSeconds(tf),first=list[0][0],n=list.length;
+ (tape||[]).forEach(function(tr){
+  var i=Math.floor((tr.t-first)/bs);if(i<0||i>=n)return;
+  var b=out.buckets[i]||(out.buckets[i]={buys:0,sells:0,buyVol:0,sellVol:0});
+  if(tr.kind==="buy"){out.buys++;out.buyVol+=tr.vol;b.buys++;b.buyVol+=tr.vol;if(!taSolSize(tr))out.unclass++}
+  else{out.sells++;out.sellVol+=tr.vol;b.sells++;b.sellVol+=tr.vol}});
+ return out}
+function taMeasurements(tape,list){
+ var lb=null,ls=null,hi=null,lo=null,hiT=0,loT=0;
+ (list||[]).forEach(function(c){if(hi===null||c[4]>hi){hi=c[4];hiT=c[0]}if(lo===null||c[4]<lo){lo=c[4];loT=c[0]}});
+ (tape||[]).forEach(function(tr){
+  if(tr.kind==="buy"&&(!lb||tr.price<lb.p))lb={p:tr.price,t:tr.t};
+  if(tr.kind==="sell"&&(!ls||tr.price<ls.p))ls={p:tr.price,t:tr.t}});
+ return{lowBuy:lb,lowSell:ls,hi:hi,hiT:hiT,lo:lo,loT:loT}}
+function taLifespanHtml(meas,trace){
+ var birth=state.chart&&state.chart.birth;
+ if(!birth)return'<p class="fee" style="margin-top:8px">Lifespan: pool birth NOT READ — the strip needs the pool birth time.</p>';
+ var now=Date.now(),W=340,H=58;
+ function X(ts){return 10+Math.max(0,Math.min(1,(ts-birth)/(now-birth)))*(W-20)}
+ function mark(ts,color,up,label){
+  var x=X(ts),halfW=String(label).length*2.7+2,tx=Math.max(halfW,Math.min(W-halfW,x));
+  return'<path d="'+taDiamondPath(x,28,4.6)+'" fill="'+color+'" stroke="#0A0614" stroke-width="0.8"/><text x="'+tx.toFixed(1)+'" y="'+(up?14:46)+'" fill="'+color+'" font-size="9" font-family="monospace" text-anchor="middle">'+escapeHtml(label)+'</text>'}
+ var s='<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block;margin-top:8px" role="img" aria-label="Lifespan strip">';
+ s+='<line x1="10" y1="28" x2="'+(W-10)+'" y2="28" stroke="#A855F7" stroke-width="2"/>';
+ s+=mark(birth,"#2DD4BF",false,"Birth · "+new Date(birth).toLocaleDateString());
+ if(meas&&meas.hiT)s+=mark(meas.hiT*1000,"#E79A10",true,"High");
+ if(meas&&meas.loT)s+=mark(meas.loT*1000,"#C084FC",false,"Low");
+ var trs=trace&&trace.trades||[],fb=null,fs=null;
+ trs.forEach(function(t){if(t.kind==="buy"&&!fb)fb=t;if(t.kind==="sell"&&!fs)fs=t});
+ if(fb)s+=mark(fb.t*1000,"#A855F7",true,"Deployer buy");
+ if(fs)s+=mark(fs.t*1000,"#FF6B5E",false,"Deployer sell");
+ s+=mark(now,"#22C55E",true,"Now");
+ return s+'</svg>'}
+function taPanelHtml(tab,list,tf,tape,tapeState,trace,meas,pres){
+ var out="";
+ if(tab==="overview"){
+  var tot=(pres.buys+pres.sells)||0;
+  var buyPct=tot?Math.round(pres.buys/tot*100):0;
+  out+='<div class="ta-panel"><b>Buy / sell pressure</b> — from the real trade tape';
+  if(tapeState==="ok"){
+   out+='<br>Buys '+pres.buys+' ('+buyPct+'%) · sells '+pres.sells+' ('+(100-buyPct)+'%) · buy volume $'+fmtVol(pres.buyVol)+' · sell volume $'+fmtVol(pres.sellVol);
+   out+='<div class="ta-bar"><i style="width:'+buyPct+'%;background:#31C48D"></i></div>';
+   if(pres.unclass)out+='<span class="fee">'+pres.unclass+' buy(s) could not be sized in SOL — the SOL price was not read, so they sit in neither size lane.</span><br>';
+  }else if(tapeState==="loading"){out+='<br>Reading the trade tape…'}
+  else if(tapeState==="empty"){out+='<br>The trade source answered — no trades in its window for this pair.'}
+  else{out+='<br>Trade tape NOT READ — the live trade source did not answer. Reopen the report to retry.'}
+  var bigs=(state.chart.taEvents||[]).filter(function(e){return e.lane==="big"});
+  var smalls=(state.chart.taEvents||[]).filter(function(e){return e.lane==="small"});
+  var bigMax=0;bigs.forEach(function(e){if(e.vol>bigMax)bigMax=e.vol});
+  out+='<br><b>Size lanes</b> — over-1-SOL buys: '+bigs.length+(bigs.length?', largest $'+fmtVol(bigMax):'')+' · under-0.05-SOL buys: '+smalls.length+(smalls.length>=TA_SMALL_CAP?' (latest '+TA_SMALL_CAP+' shown)':'');
+  out+='<br><b>Measurements</b> — range high '+chartPriceFmt(meas.hi)+' ('+escapeHtml(taDate(meas.hiT))+') · range low '+chartPriceFmt(meas.lo);
+  if(meas.lowBuy&&meas.lowSell)out+=' · lowest buy '+taPx6(meas.lowBuy.p)+' → lowest sell '+taPx6(meas.lowSell.p)+' · '+taAptFmt(Math.abs(meas.lowSell.p-meas.lowBuy.p))+' apart';
+  else out+=' · buy/sell measurements need the trade tape.';
+  out+='<br><span class="fee">Tape coverage: the latest '+(tape?tape.length:0)+' trades from GeckoTerminal — its trades feed returns the most recent trades only, so earlier history is not shown. Nothing here is sampled or invented.</span></div>';
+  return out}
+ if(tab==="buys"){
+  out+='<div class="ta-panel"><b>Buys &amp; sells per bucket</b> ('+escapeHtml(tf)+' buckets, latest first)';
+  if(tapeState==="ok"){
+   var keys=Object.keys(pres.buckets).map(Number).sort(function(a,b){return b-a}).slice(0,8);
+   if(!keys.length){out+='<br>No trades fall inside the drawn window.'}
+   else{out+='<br>';keys.forEach(function(k){
+    var b=pres.buckets[k],ts=list[0][0]+k*bucketSeconds(tf);
+    out+=taTime(ts)+' · '+b.buys+' buys ($'+fmtVol(b.buyVol)+') / '+b.sells+' sells ($'+fmtVol(b.sellVol)+')<br>'})}
+  }else if(tapeState==="loading"){out+='<br>Reading the trade tape…'}
+  else if(tapeState==="empty"){out+='<br>The trade source answered — no trades in its window for this pair.'}
+  else{out+='<br>Trade tape NOT READ — the live trade source did not answer. Reopen the report to retry.'}
+  return out+'</div>'}
+ if(tab==="bundled"){
+  out+='<div class="ta-panel"><b>Bundled-wallet buys</b> — trades from deployer-tied wallets, with the tie stated.';
+  if(!trace||trace.state!=="ok"){
+   out+='<br>Deployer trace NOT READ — no tied-wallet trades can be shown. Nothing is guessed.';
+  }else{
+   var dbuys=(trace.trades||[]).filter(function(t){return t.kind==="buy"}).slice(-10).reverse();
+   var dep=trace.deployer?String(trace.deployer).slice(0,8)+'…':'';
+   if(!dbuys.length){out+='<br>No deployer-wallet buys in the traced window (the last 300 trades, 24h).'}
+   else{out+='<br>';dbuys.forEach(function(t){out+=escapeHtml(taDate(t.t))+' · buy '+chartPriceFmt(t.price)+' · $'+fmtVol(t.vol)+' · tie: deployer wallet '+escapeHtml(dep)+'<br>'})}
+   out+='<br><span class="fee">Only the deployer wallet itself is verified as tied in TrenchSwap — other tied wallets are NOT READ (no fund-trail source here). No "bundled" verdict is rendered: the 10% deployer-hold definition is still a proposal, not a rule.</span>';
+  }
+  return out+'</div>'}
+ out+='<div class="ta-panel"><b>Events</b> — chronological, from the real series and tape.';
+ var evts=[];
+ var birth=state.chart&&state.chart.birth;
+ if(birth)evts.push({t:birth/1000,label:'Pair introduced — pool birth',detail:new Date(birth).toLocaleString()});
+ if(list.length&&meas.hiT)evts.push({t:meas.hiT,label:'Range high '+chartPriceFmt(meas.hi),detail:taDate(meas.hiT)});
+ if(list.length&&meas.loT)evts.push({t:meas.loT,label:'Range low '+chartPriceFmt(meas.lo),detail:taDate(meas.loT)});
+ var trs=(trace&&trace.trades)||[],fb=null,fs=null;
+ trs.forEach(function(t){if(t.kind==="buy"&&!fb)fb=t;if(t.kind==="sell"&&!fs)fs=t});
+ if(fb)evts.push({t:fb.t,label:'Deployer first buy '+chartPriceFmt(fb.price),detail:'$'+fmtVol(fb.vol)+' · deployer wallet'});
+ if(fs)evts.push({t:fs.t,label:'Deployer first sell '+chartPriceFmt(fs.price),detail:'$'+fmtVol(fs.vol)+' · deployer wallet'});
+ var bigs2=(tape||[]).filter(function(t){if(t.kind!=="buy")return false;var sz=taSolSize(t);return sz&&sz.sol>=TA_SOL_BIG});
+ bigs2.sort(function(a,b){return b.vol-a.vol});
+ if(bigs2.length)evts.push({t:bigs2[0].t,label:'Largest over-1-SOL buy — $'+fmtVol(bigs2[0].vol),detail:taDate(bigs2[0].t)+' · '+chartPriceFmt(bigs2[0].price)});
+ evts.sort(function(a,b){return a.t-b.t});
+ evts=evts.slice(0,12);
+ if(!evts.length)out+='<br>No events verified for this token yet.';
+ else{out+='<br>';evts.forEach(function(e){out+=escapeHtml(taDate(e.t))+' · <b>'+escapeHtml(e.label)+'</b> · '+escapeHtml(e.detail)+'<br>'})}
+ return out+'</div>'}
+function taRenderPanel(){
+ var p=$("taPanel");
+ if(!p||!state.chart||state.chart.mode!=="analytics")return;
+ var list=state.chart.candles||[],tf=state.chart.shownTf||state.chart.tf;
+ var tape=state.chart.taTrades||null;
+ p.innerHTML=taPanelHtml(state.chart.taTab||"overview",list,tf,tape,state.chart.taTradesState||null,state.chart.trace||null,taMeasurements(tape,list),taPressure(tape,list,tf));
+ document.querySelectorAll("[data-ta-tab]").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-ta-tab")===(state.chart.taTab||"overview"))})}
+function taShowCard(html){var el=$("taEventCard");if(el)el.innerHTML=html}
+function taEventCardHtml(ev){
+ var kindLbl={big:"Over-1-SOL buy",small:"Under-0.05-SOL buy",deployerbuy:"Deployer-wallet buy (bundled)",deployersell:"Deployer-wallet sell"}[ev.lane]||"Trade";
+ var s='<b>'+escapeHtml(kindLbl)+'</b> · '+escapeHtml(taDate(ev.t))+'<br>Price '+escapeHtml(chartPriceFmt(ev.price))+' · $'+escapeHtml(Number(ev.vol||0).toLocaleString(undefined,{maximumFractionDigits:2}));
+ if(ev.sol!=null)s+=' · '+(ev.solExact?"":"~")+Number(ev.sol).toFixed(4)+' SOL';
+ if(ev.lane==="deployerbuy"||ev.lane==="deployersell")s+='<br>Tie: deployer wallet — verified via the deployer trace (pump.fun creator, else the mint-creation transaction).';
+ if(ev.tx)s+='<br>Tx '+escapeHtml(String(ev.tx).slice(0,12))+'…';
+ return s}
+function taScrubTo(svg,e){
+ if(!state.chart||!state.chart.candles||!state.chart.candles.length)return;
+ var r=svg.getBoundingClientRect();if(!r.width)return;
+ var px=(e.clientX-r.left)/r.width*340;
+ var list=state.chart.candles,n=list.length;
+ var g=chartGeom(list);
+ var idx=Math.max(0,Math.min(n-1,Math.floor(px/(g.plotW/n))));
+ var c=list[idx];
+ var line=svg.querySelector("#taScrub"),lbl=svg.querySelector("#taScrubLbl");
+ var x=idx*(g.plotW/n)+(g.plotW/n)/2;
+ if(line){line.setAttribute("x1",x.toFixed(1));line.setAttribute("x2",x.toFixed(1));line.setAttribute("opacity","1")}
+ if(lbl){lbl.setAttribute("x",Math.max(2,Math.min(g.plotW-120,x+4)).toFixed(1));lbl.setAttribute("opacity","1");lbl.textContent=taTime(c[0])+" · "+chartPriceFmt(c[4])+" · vol $"+fmtVol(c[5])}
+ taShowCard("<b>Scrub · "+escapeHtml(taDate(c[0]))+"</b><br>Open "+escapeHtml(chartPriceFmt(c[1]))+" · high "+escapeHtml(chartPriceFmt(c[2]))+" · low "+escapeHtml(chartPriceFmt(c[3]))+" · close "+escapeHtml(chartPriceFmt(c[4]))+" · volume $"+escapeHtml(fmtVol(c[5])))}
+function drawAnalyticsChart(box,list,tf){
+ var gate=taGateReason();
+ if(gate){state.chart.mode="trenchart";state.chart.taGateNote=gate;drawTrenchChart(box,list,tf);return}
+ state.chart.taGateNote=null;
+ if(!list||list.length<2){box.innerHTML='<p class="sub" style="padding:14px 4px">TrenchAnalytics: NOT READ — not enough candles for this pair yet.</p>';return}
+ var g=chartGeom(list);
+ function Y(v){return (g.max-v)/(g.max-g.min)*g.priceH}
+ var n=list.length,step=g.plotW/n,i,c;
+ var tape=state.chart.taTrades||null,tapeState=state.chart.taTradesState||null;
+ var trace=state.chart.trace||null;
+ var evs=taBuildEvents(list,tf,tape,trace);
+ state.chart.taEvents=evs;
+ var meas=taMeasurements(tape,list);
+ var pres=taPressure(tape,list,tf);
+ var volLife=0;list.forEach(function(cc){volLife+=cc[5]||0});
+ var bigN=0,smallN=0;evs.forEach(function(e){if(e.lane==="big")bigN++;if(e.lane==="small")smallN++});
+ var birth=state.chart.birth;
+ var ageH=birth?((Date.now()-birth)/3600000):null;
+ var s='<div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:8px">'
+  +'<span class="fee">TRENCHANALYTICS · lifespan view · '+escapeHtml(tf)+'</span>'
+  +(ageH!=null?'<span class="fee">Age '+ageH.toFixed(1)+'h</span>':'')
+  +'<span class="fee">Lifespan volume $'+escapeHtml(fmtVol(volLife))+'</span>'
+  +(tapeState==="ok"?'<span class="fee">Buys / sells '+pres.buys+' / '+pres.sells+'</span>':'<span class="fee">Trade tape: '+(tapeState==="loading"?"reading…":tapeState||"reading…")+'</span>')
+  +(tapeState==="ok"?'<span class="fee">Over-1-SOL buys '+bigN+' · under-0.05-SOL buys '+smallN+'</span>':'')
+  +(meas.lowBuy&&meas.lowSell?'<span class="fee">Lowest buy '+escapeHtml(taPx6(meas.lowBuy.p))+' · lowest sell '+escapeHtml(taPx6(meas.lowSell.p))+'</span>':'')
+  +'</div>';
+ s+=chartHead(g,tf,"TRENCHANALYTICS",list);
+ s=s.replace('<svg viewBox=','<svg id="taSvg" viewBox=');
+ s+='<defs><linearGradient id="taLineFill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A855F7" stop-opacity="0.42"/><stop offset="1" stop-color="#A855F7" stop-opacity="0.02"/></linearGradient><linearGradient id="taLineStroke" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7C3AED"/><stop offset="0.55" stop-color="#C084FC"/><stop offset="1" stop-color="#F3E8FF"/></linearGradient></defs>';
+ var pts=[],hiIdx=0,loIdx=0;
+ for(i=0;i<n;i++){c=list[i];var x=i*step+step/2;pts.push([x,Y(c[4])]);
+  if(c[4]>list[hiIdx][4])hiIdx=i;
+  if(c[4]<list[loIdx][4])loIdx=i;
+  var vh=g.vmax?c[5]/g.vmax*g.volH:0;var up=c[4]>=c[1];
+  s+='<rect x="'+(x-Math.max(1,Math.floor(step*0.62))/2).toFixed(1)+'" y="'+(g.volTop+g.volH-vh).toFixed(1)+'" width="'+Math.max(1,Math.floor(step*0.62))+'" height="'+Math.max(1,vh).toFixed(1)+'" fill="'+(up?"#B45CF7":"#7C3AED")+'" opacity="0.6"/>'}
+ var line=smoothPath(pts);
+ s+='<path d="'+line+'" transform="translate(0,3)" fill="none" stroke="rgba(38,10,74,.5)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>';
+ s+='<path d="'+line+' L'+pts[n-1][0].toFixed(1)+' '+g.priceH+' L'+pts[0][0].toFixed(1)+' '+g.priceH+' Z" fill="url(#taLineFill)" stroke="none"/>';
+ s+='<path d="'+line+'" fill="none" stroke="url(#taLineStroke)" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>';
+ if(meas.lowBuy&&meas.lowSell){
+  var yB=Y(meas.lowBuy.p),yS=Y(meas.lowSell.p);
+  s+='<line x1="0" y1="'+yB.toFixed(1)+'" x2="'+g.plotW+'" y2="'+yB.toFixed(1)+'" stroke="#FFD98A" stroke-width="1" stroke-dasharray="3 3" opacity="0.8"/>';
+  s+='<line x1="0" y1="'+yS.toFixed(1)+'" x2="'+g.plotW+'" y2="'+yS.toFixed(1)+'" stroke="#FFD98A" stroke-width="1" stroke-dasharray="3 3" opacity="0.8"/>';
+  s+='<line x1="'+(g.plotW-6)+'" y1="'+Math.min(yB,yS).toFixed(1)+'" x2="'+(g.plotW-6)+'" y2="'+Math.max(yB,yS).toFixed(1)+'" stroke="#FFD98A" stroke-width="1"/>';
+  var mLbl="lowest buy "+taPx6(meas.lowBuy.p)+" → lowest sell "+taPx6(meas.lowSell.p)+" · "+taAptFmt(Math.abs(meas.lowSell.p-meas.lowBuy.p))+" apart";
+  var mY=Math.min(yB,yS)-5;if(mY<12)mY=Math.max(yB,yS)+12;
+  s+='<text x="2" y="'+mY.toFixed(1)+'" fill="#FFD98A" font-size="9" font-family="monospace">'+escapeHtml(mLbl)+'</text>'}
+ var hx=pts[hiIdx][0],hy=pts[hiIdx][1];
+ var htx=Math.max(46,Math.min(g.plotW-46,hx));
+ s+='<text x="'+htx.toFixed(1)+'" y="'+(hy-8<10?hy+16:hy-8).toFixed(1)+'" fill="#FDBA74" font-size="9.5" font-weight="bold" font-family="monospace" text-anchor="middle">High '+escapeHtml(chartPriceFmt(list[hiIdx][4]))+'</text>';
+ var lx2=pts[loIdx][0],ly2=pts[loIdx][1];
+ var ltx=Math.max(46,Math.min(g.plotW-46,lx2));
+ s+='<text x="'+ltx.toFixed(1)+'" y="'+(ly2+16>g.priceH?ly2-8:ly2+16).toFixed(1)+'" fill="#C9BCE8" font-size="9.5" font-weight="bold" font-family="monospace" text-anchor="middle">Low '+escapeHtml(chartPriceFmt(list[loIdx][4]))+'</text>';
+ evs.forEach(function(ev,k){
+  var px=pts[ev.idx][0],py=Y(ev.price),col,len,up2,r;
+  if(ev.lane==="big"){col="#E79A10";len=26;up2=true;r=4.6}
+  else if(ev.lane==="small"){col="#2DD4BF";len=12;up2=false;r=3.6}
+  else if(ev.lane==="deployerbuy"){col="#A855F7";len=16+Math.min(14,Math.log10((ev.vol||0)+10)*4);up2=true;r=4.6}
+  else{col="#FF6B5E";len=20;up2=false;r=4.6}
+  var ey=up2?py-len:py+len;
+  var dy=up2?ey-6:ey+6;
+  s+='<g data-ta-ev="'+k+'" class="ta-pin"><line x1="'+px.toFixed(1)+'" y1="'+py.toFixed(1)+'" x2="'+px.toFixed(1)+'" y2="'+ey.toFixed(1)+'" stroke="'+col+'" stroke-width="1.6"/><path d="'+taDiamondPath(px,dy,r)+'" fill="'+col+'" stroke="#0A0614" stroke-width="0.8"/></g>'});
+ s+='<line id="taScrub" x1="0" y1="0" x2="0" y2="'+g.priceH+'" stroke="#FFFFFF" stroke-width="1" opacity="0"/>';
+ s+='<text id="taScrubLbl" x="2" y="'+(g.priceH+10)+'" fill="#FFFFFF" font-size="9.5" font-family="monospace" opacity="0"></text>';
+ s+=chartTail(g,tf,list,list[n-1][4]);
+ s+='<p class="fee" style="margin:6px 0 0"><span style="color:#C084FC">— price line</span> &nbsp; <span style="color:#E79A10">◆ over-1-SOL buy</span> &nbsp; <span style="color:#2DD4BF">◆ under-0.05-SOL buy</span> &nbsp; <span style="color:#A855F7">◆ deployer-wallet buy</span> &nbsp; <span style="color:#FF6B5E">◆ deployer sell</span> &nbsp; <span style="color:#FFD98A">- - lowest buy / sell</span><br>Tap a pin or tick for its trade. Drag across the chart to scrub the series. No bubbles — stems with diamond heads only.</p>';
+ s+=taLifespanHtml(meas,trace);
+ s+='<div id="taEventCard" class="fee" style="margin-top:8px">Tap a gold, teal or violet pin to see its trade. Drag across the chart to scrub the series.</div>';
+ var tab=state.chart.taTab||"overview";
+ s+='<div class="ta-tabs" role="tablist">'
+  +'<button data-ta-tab="overview"'+(tab==="overview"?' class="on"':"")+'>Overview</button>'
+  +'<button data-ta-tab="buys"'+(tab==="buys"?' class="on"':"")+'>Buys &amp; Sells</button>'
+  +'<button data-ta-tab="bundled"'+(tab==="bundled"?' class="on"':"")+'>Bundled</button>'
+  +'<button data-ta-tab="events"'+(tab==="events"?' class="on"':"")+'>Events</button></div>'
+  +'<div id="taPanel">'+taPanelHtml(tab,list,tf,tape,tapeState,trace,meas,pres)+'</div>';
  box.innerHTML=s;
- chartStampSet("TrenChART: GeckoTerminal closes (live) · "+tf+" · rendered "+new Date().toLocaleTimeString())}
+ if(state.chart.taSelEv!=null&&evs[state.chart.taSelEv])taShowCard(taEventCardHtml(evs[state.chart.taSelEv]));
+ var svg=box.querySelector("#taSvg");
+ if(svg){
+  svg.style.touchAction="none";
+  svg.addEventListener("pointerdown",function(e){
+   if(e.target&&e.target.closest&&e.target.closest("[data-ta-ev]"))return;
+   e.preventDefault();
+   if(!state.chart)return;state.chart.taScrubbing=true;
+   taScrubTo(svg,e);
+   function mv(ev){if(state.chart&&state.chart.taScrubbing)taScrubTo(svg,ev)}
+   function up(){if(state.chart)state.chart.taScrubbing=false;svg.removeEventListener("pointermove",mv);svg.removeEventListener("pointerup",up);svg.removeEventListener("pointercancel",up)}
+   svg.addEventListener("pointermove",mv);
+   svg.addEventListener("pointerup",up);
+   svg.addEventListener("pointercancel",up)})}
+ if(!tape&&!tapeState)fetchAnalyticsTrades();
+ chartStampSet("TrenchAnalytics: GeckoTerminal (live) · "+tf+(tapeState==="ok"?" · tape: "+(tape||[]).length+" trades":" · tape: "+(tapeState||"reading"))+" · rendered "+new Date().toLocaleTimeString());chartStampExtras()}
+/* Tap a TrenchAnalytics pin/tick for its event card; tap an info tab to
+   switch its panel. Delegated: the analytics markup is re-rendered on
+   every chart refresh, so no per-render listeners survive. */
+document.addEventListener("click",function(e){
+ var t=e.target;if(!t||!t.closest)return;
+ var pin=t.closest("[data-ta-ev]");
+ if(pin){
+  if(!pin.closest("#chartBox"))return;
+  var idx=Number(pin.getAttribute("data-ta-ev"));
+  if(!state.chart||!state.chart.taEvents||!state.chart.taEvents[idx])return;
+  state.chart.taSelEv=idx;
+  taShowCard(taEventCardHtml(state.chart.taEvents[idx]));
+  return}
+ var tab=t.closest("[data-ta-tab]");
+ if(tab){
+  if(!state.chart||state.chart.mode!=="analytics")return;
+  state.chart.taTab=tab.getAttribute("data-ta-tab");
+  taRenderPanel()}
+});
+
 document.addEventListener("click",function(e){
  if(!state.chart||state.chart.mode!=="trenchart"||!state.chart.candles||!state.chart.candles.length)return;
  var t=e.target;if(!t||!t.closest)return;
  var box=t.closest("#chartBox");if(!box)return;
  drawTrenchChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)});
+/* ---------- Deployer trace + bundle marks (§5.13, TrenchSwap only) ----------
+   Display only — NOT a filter, no other bundle features. The deployer is
+   the pump.fun coin creator where that resolves, else the fee payer of the
+   transaction that ran initializeMint for this mint (oldest signature).
+   The trace is the GeckoTerminal pool trades endpoint (already used by
+   Replay), filtered on tx_from_address === deployer — the last 300 trades
+   in 24 h, so marks are a LOWER BOUND and the stamp says so. "Bundled"
+   (D7 PROPOSAL — Jeffrey has not confirmed the 10% threshold yet): the
+   deployer wallet itself holds >= 10% of supply on-chain. If the deployer
+   is unknown or the trace fails: no label, no squares, no recolored bars,
+   and the stamp says the trace is NOT READ. A trade is never attributed
+   unless tx_from_address matches exactly. */
+var BUNDLED_PCT=10; /* D7 proposal — pending Jeffrey's call */
+var deployerTraceBusy=false;
+function resolveDeployer(mint,pair,dexId){
+ /* 1) pump.fun coin creator. The frontend API may Cloudflare-challenge
+    non-browser callers; a failure falls through to the on-chain read. */
+ function viaPump(){
+  return fetchJsonTimeout("https://frontend-api-v3.pump.fun/coins/"+encodeURIComponent(mint),8000).then(function(d){
+   var c=d&&d.creator;return (typeof c==="string"&&c.length>=32)?c:null}).catch(function(){return null})}
+ /* 2) On-chain: the fee payer of the tx that created the mint. */
+ function viaChain(){
+  return rpcCall("getSignaturesForAddress",[mint,{limit:100}]).then(function(d){
+   var sigs=(d&&d.result)||[];if(!sigs.length)return null;
+   var oldest=sigs[sigs.length-1];
+   return rpcCall("getTransaction",[oldest.signature,{encoding:"jsonParsed",maxSupportedTransactionVersion:0}]).then(function(td){
+    var tx=td&&td.result;if(!tx)return null;
+    var found=false;
+    function scanIx(ixs){(ixs||[]).forEach(function(ix){if(ix&&ix.parsed&&(ix.parsed.type==="initializeMint"||ix.parsed.type==="initializeMint2")&&ix.parsed.info&&ix.parsed.info.mint===mint)found=true})}
+    var msg=tx.transaction&&tx.transaction.message;scanIx(msg&&msg.instructions);
+    ((tx.meta&&tx.meta.innerInstructions)||[]).forEach(function(gr){scanIx(gr.instructions)});
+    if(!found)return null;
+    var keys=msg&&msg.accountKeys||[];
+    var first=keys[0];return first?(typeof first==="string"?first:first.pubkey||null):null}).catch(function(){return null})}).catch(function(){return null})}
+ return viaPump().then(function(c){if(c)return c;return viaChain()})}
+function fetchDeployerTrades(pair,mint,deployer){
+ return gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/trades",{tries:2,timeoutMs:20000,priority:true}).then(function(d){
+  var rows=(d&&d.data)||[];var out=[];
+  rows.forEach(function(row){var a=row&&row.attributes;if(!a||a.tx_from_address!==deployer)return;
+   var price=null;
+   if(a.to_token_address===mint)price=parseFloat(a.price_to_in_usd);
+   else if(a.from_token_address===mint)price=parseFloat(a.price_from_in_usd);
+   var t=Date.parse(a.block_timestamp)/1000;
+   if(price&&isFinite(price)&&isFinite(t))out.push({t:t,price:price,kind:a.kind==="sell"?"sell":"buy",vol:parseFloat(a.volume_in_usd)||0})});
+  out.sort(function(x,y){return x.t-y.t});
+  return out}).catch(function(){return null})}
+function fetchDeployerShare(mint,deployer){
+ return rpcCall("getTokenAccountsByOwner",[deployer,{mint:mint},{encoding:"jsonParsed"}]).then(function(d){
+  var accs=(d&&d.result&&d.result.value)||[];var bal=0;
+  accs.forEach(function(a){var amt=a&&a.account&&a.account.data&&a.account.data.parsed&&a.account.data.parsed.info&&a.account.data.parsed.info.tokenAmount;if(amt&&amt.uiAmount)bal+=Number(amt.uiAmount)||0});
+  return rpcCall("getTokenSupply",[mint]).then(function(s){
+   var sup=s&&s.result&&s.result.value&&s.result.value.uiAmount;
+   if(!sup||!(sup>0))return{pct:null};
+   return{pct:bal/sup*100}})}).catch(function(){return{pct:null}})}
+function applyDeployerTrace(){
+ if(!state.chart)return;
+ var tr=state.chart.trace;var pill=$("bundlePill"),line=$("deployerLine");
+ if(tr&&tr.state==="ok"){
+  var buys=0,sells=0;(tr.trades||[]).forEach(function(t){if(t.kind==="buy")buys++;else sells++});
+  if(pill){pill.innerHTML=tr.bundled?'<span style="background:#7F1D1D;color:#FECACA;border:1px solid #EF4444;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700">BUNDLED — deployer holds '+(tr.sharePct!=null?tr.sharePct.toFixed(1):"?")+'%</span>':""}
+  if(line){line.textContent=(tr.trades.length?("Deployer: "+buys+" buys · "+sells+" sells (traced, last 24h"+((tr.trades||[]).length>=300?" — covers the last 300 trades, earlier trades may exist":"")+")."):"Deployer: no trades traced in the last 24h.")+(tr.sharePct!=null?(" Deployer holds "+tr.sharePct.toFixed(1)+"% of supply."):"")}
+ }else{
+  if(pill)pill.innerHTML="";
+  if(line)line.textContent="Deployer trace NOT READ — no marks shown."}
+ var box=$("chartBox");
+ if(box&&state.chart.candles&&state.chart.candles.length&&state.chart.mode!=="replay"&&state.chart.tf!=="1s"){
+  drawChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)}}
+function runDeployerTrace(){
+ if(!state.chart||state.chart.mode==="replay"||deployerTraceBusy)return;
+ var pair=state.chart.pair,mint=state.chart.mint;
+ if(!pair||!mint)return;
+ var now=Date.now();
+ if(state.chart.traceCacheKey===mint+"|"+pair&&state.chart.trace&&now-state.chart.trace.at<300000){applyDeployerTrace();return}
+ deployerTraceBusy=true;
+ resolveDeployer(mint,pair,state.chart.dexId).then(function(deployer){
+  if(!deployer){state.chart.trace={at:Date.now(),state:"notread"};applyDeployerTrace();return}
+  return fetchDeployerTrades(pair,mint,deployer).then(function(trades){
+   if(trades===null){state.chart.trace={at:Date.now(),state:"notread"};applyDeployerTrace();return}
+   return fetchDeployerShare(mint,deployer).then(function(share){
+    state.chart.trace={at:Date.now(),state:"ok",deployer:deployer,trades:trades,sharePct:share&&share.pct!=null?share.pct:null,bundled:!!(share&&share.pct!=null&&share.pct>=BUNDLED_PCT)};
+    state.chart.traceCacheKey=mint+"|"+pair;
+    applyDeployerTrace()})})
+ }).catch(function(){if(state.chart)state.chart.trace={at:Date.now(),state:"notread"};applyDeployerTrace()}).then(function(){deployerTraceBusy=false})}
 /* ---------- 1-hour trade replay: real trades only (GeckoTerminal pool trades) ---------- */
 function replayStatus(txt){var el=$("replayStatus");if(el)el.textContent=txt}
 function pauseReplay(){
@@ -3790,7 +4841,7 @@ function enterReplay(){
  box.innerHTML='<p class="sub" style="padding:14px 4px">Loading the last hour of real trades\u2026</p>';
  replayStatus("Fetching real trades for this pool from the live trade source\u2026");
  var pair=state.chart.pair,mint=state.chart.mint;
- fetchWithRetry("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/trades",3).then(function(d){
+ gtFetchJson("https://api.geckoterminal.com/api/v2/networks/solana/pools/"+encodeURIComponent(pair)+"/trades",{tries:2,timeoutMs:20000,priority:true}).then(function(d){
   if(!state.chart||state.chart.pair!==pair||state.chart.mode!=="replay")return;
   var rows=(d&&d.data)||[];
   var trades=[];
