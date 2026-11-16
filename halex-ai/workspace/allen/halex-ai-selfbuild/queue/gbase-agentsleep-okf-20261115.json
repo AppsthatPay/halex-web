@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-16T00:50:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/gbase-agentsleep-okf-20261115.md",
+    "id": "gbase-agentsleep-okf-20261115",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-16T00:49:09.060369+00:00",
+  "gate_status": "done",
+  "id": "gbase-agentsleep-okf-20261115",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (garyqlin/gbase MIT (c) 2026 Gary Lin (Lin Qian) SHA 482bfa7f...; mocodainteractive-pixel/agent-sleep MIT (c) 2026 Mocoda SHA 93fe3cf5...; okf-memory/okf-agent-memory MIT (c) 2026 sknr and the OKF Memory Contributors SHA e789485f...). READMEs read in full. Verified vs claimed separated in proposal workspace/agent_patterns/proposals/gbase-agentsleep-okf-20261115.md. HALEX gate stricter: no GBase Python/LLM/API-key code, no unattended self-modification of engine, no web-search tool code, no Feishu/webchat channels, no Glink/GBase World; no agent-sleep bash scripts, no install-trigger wiring, no third-party CLI agent adapters, no cron daemon dependency; no OKF Go binary, no MCP server, no hub sync/registry pull, no vendor bundles, no external database; no network/wallet/signing/payment/API-key code anywhere; no third-party branding. NOT adopted: GBase '100 RSI cycles / 9 failed security evaluation' and 'in production' (author's own report); agent-sleep arXiv-cited percentages (secondary citations) and 'same system our own agents run every day' (vendor claim); OKF performance figures (<300us search, ~4ms validation, 78-85% token savings - author's own benchmarks); star counts as quality. Open leads carried forward: marcelcluj-bit GeoDigital Global (self-promo, unverified) - low priority; dualmint-addendum still pending; zinium5-web-fallback-lane pending gate.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-15 ~19:42 EST",
+  "spec": null,
+  "summary": "Recursive self-improvement guardrails plus sleep-cycle memory plus dual-memory push/pull: GBase RSI guardrail shape (Ebbinghaus-style credence decay where verified knowledge fades slower, build/audit/judge quality-gate shape, pre-mutation snapshot/rollback one command away, experience distilled into structured patterns not raw logs); agent-sleep lifecycle for the intake + builder loop (consolidate against raw source, daily check of TTL/pointers/fixtures, reconcile on contradiction, rebuild from source when maintenance exceeds value, rollback to last-known-good, gate list pinned outside write scope); OKF dual-memory split (capped push codex of standing rules + zero-token-baseline pull bundle retrieved on demand, search-before-write, stale_after lifecycle metadata, quality-floor scorecard before drain). Patterns from garyqlin/gbase (MIT), mocodainteractive-pixel/agent-sleep (MIT), okf-memory/okf-agent-memory (MIT); no code copied."
+}
