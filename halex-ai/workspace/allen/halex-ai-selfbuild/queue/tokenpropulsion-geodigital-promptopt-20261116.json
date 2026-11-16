@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-16T08:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/tokenpropulsion-geodigital-promptopt-20261116.md",
+    "id": "tokenpropulsion-geodigital-promptopt-20261116",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-16T08:48:42.384436+00:00",
+  "gate_status": "done",
+  "id": "tokenpropulsion-geodigital-promptopt-20261116",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (Ciprian-LocalPulse/tokenpropulsion MIT (c) 2026 Ciprian Stefan Plesca SHA 378b86d5...; marcelcluj-bit/GeoDigital-Global-project MIT (c) 2026 Marcelcluj SHA f5780d72...; linshenkx/prompt-optimizer AGPL-3.0 (C) 2025 linshenkx SHA fd2472b2... - IDEAS ONLY). READMEs read (TokenPropulsion + GeoDigital in full, prompt-optimizer in part). Verified vs claimed separated in proposal workspace/agent_patterns/proposals/tokenpropulsion-geodigital-promptopt-20261116.md. HALEX gate stricter: no TokenPropulsion Python code, no xAI/REST/tokenizer/embedding integrations, no tiktoken download, no model weights; no GeoDigital smart contracts, no Gemini API pipeline, no PostGIS/GEE code, no fee/royalty execution, no $GEO, no settlement/custody code; no prompt-optimizer code, no MCP server, no Chrome extension, no Docker/Vercel/Cloudflare deployment, no hosted service; no network/wallet/signing/payment/API-key code anywhere; no third-party branding. NOT adopted: TokenPropulsion 29.557% synthetic reduction and 2.450 ms overhead (author's own 30-case synthetic dataset, cl100k_base), any Grok billing savings or output-quality equivalence; GeoDigital 'over 70% faster pre-feasibility', sovereign settlement, fractional mining rights, $GEO economics, any production/compliance status; prompt-optimizer star/user/pull/efficacy figures (secondary ~41.3K star figure unverified). Correction recorded: secondary index said prompt-optimizer license unidentified; LICENSE file governs - AGPL-3.0. Open leads carried forward: marcelcluj-bit sibling repos (Agro-Smart-2026, Global-Infrastructure) low priority, LICENSEs unread; dualmint-addendum still pending; zinium5-web-fallback-lane pending gate.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-16 ~03:42 EST",
+  "spec": null,
+  "summary": "Auditable prompt-compression discipline plus RWA checklist extension plus prompt-asset refine loop: TokenPropulsion pattern (explicit task contract before any pack transform, conservative fallback that never drops instructions or protected content, restore() round-trip check before a transform lands, honest token-count labels - provider-exact / verified-compatible local / heuristic / unspecified - protected content never deduplicated); GeoDigital RWA checklist extension (per-jurisdiction compliance-template rows - Eurocode 7 / NP 074, JORC, NI 43-101, EIA, Natura 2000 - each marked verified/claimed/untested, never a compliance verdict; fee/royalty schedules as data-only registry entries, never executed); prompt-optimizer ideas-only pattern (draft -> fixed-case test -> quality-floor evaluation -> save-on-pass loop for builder prompts and skill drafts, reusable templates with swappable variables, hard-nosed reviewer shape for the audit step). Patterns from Ciprian-LocalPulse/tokenpropulsion (MIT) and marcelcluj-bit/GeoDigital-Global-project (MIT); linshenkx/prompt-optimizer (AGPL-3.0) ideas only, restated in our own words; no code copied."
+}
