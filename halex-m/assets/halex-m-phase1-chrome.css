@@ -1,0 +1,9 @@
+/* HALEX-M phase-1 chrome (sandbox copy) — companion styles for
+   halex-m-phase1-chrome.js. The live index references this stylesheet
+   but it was never pushed to the live repo (404 there too); this local
+   copy styles only the chrome layer's own scrolled state, using the
+   page's existing palette variables so it matches the shell. */
+.topstrip.hm-chrome-scrolled {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  border-bottom-color: var(--line2, #2e3547);
+}
