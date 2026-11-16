@@ -5360,7 +5360,7 @@ function runWalletSmokeTest(){
 setTimeout(runWalletSmokeTest,1200);
 
 /* ================= V24: Info tab, i18n, currency, shared Trenching ================= */
-var SHARED_CALLS_URL="https://raw.githubusercontent.com/AppsthatPay/trenchswap-feed/main/calls.json";
+var SHARED_CALLS_URL="https://raw.githubusercontent.com/AppsthatPay/TrenchSwap_formFeeds/main/calls.json";
 function infoGo(name){document.querySelectorAll("#infoSubtabs button").forEach(function(b){b.classList.toggle("on",b.dataset.info===name)});document.querySelectorAll(".info-pane").forEach(function(pn){pn.classList.toggle("on",pn.id==="info-"+name)})}
 document.querySelectorAll("#infoSubtabs button").forEach(function(b){b.addEventListener("click",function(){infoGo(b.dataset.info)})});
 var ttb=$("topTrenchInfoBtn");if(ttb)ttb.addEventListener("click",function(){goTab("info")});
@@ -5974,7 +5974,7 @@ function zeroHoldingsHtml(){
    validated on every read; every rendered field is escaped, links are
    https-only. Unclaimed tokens render nothing here and keep the plain
    report. --- */
-var TOKEN_PAGES_URL="https://raw.githubusercontent.com/AppsthatPay/trenchswap-feed/main/token-pages.json";
+var TOKEN_PAGES_URL="https://raw.githubusercontent.com/AppsthatPay/TrenchSwap_formFeeds/main/token-pages.json";
 state.tokenPages={};state.claim=null;state.claimLogoData=null;state.tpSubmission=null;
 function tokenPageFor(mint){return (state.tokenPages&&state.tokenPages[mint])||null}
 function validateTokenPage(p){

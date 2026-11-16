@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SERVICE+ — Tourniquet (Prototype)</title>
+<style>
+  :root { --gold:#c9a227; --ink:#111; --paper:#fff; --grey:#f2f2f2; --line:#ddd; --red:#b3261e; --green:#1e7d32; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:#111; color:#111; }
+  #app { max-width:640px; margin:0 auto; background:#fff; min-height:100vh; }
+  header { display:flex; align-items:center; gap:12px; padding:14px 16px; background:#111; color:#fff; }
+  header img { width:52px; height:52px; border-radius:12px; background:#fff; }
+  header h1 { font-size:20px; margin:0; }
+  header h1 span { color:var(--gold); }
+  header p { margin:2px 0 0; font-size:12px; color:#bbb; }
+  .demo { background:#fff3cd; color:#5c4300; padding:8px 16px; font-size:13px; border-bottom:1px solid #e6c87a; }
+  nav { display:flex; flex-wrap:wrap; gap:6px; padding:10px 12px; background:#f2f2f2; border-bottom:1px solid var(--line); }
+  nav button { flex:1 1 30%; padding:10px 4px; font-size:13px; border:1px solid #bbb; background:#fff; border-radius:8px; cursor:pointer; }
+  nav button.active { background:#111; color:#fff; border-color:#111; }
+  main { padding:14px 16px 40px; }
+  .view { display:none; }
+  .view.active { display:block; }
+  .card { border:1px solid var(--line); border-radius:10px; padding:12px; margin:10px 0; background:#fff; }
+  .card h3 { margin:0 0 4px; font-size:16px; }
+  .card .meta { font-size:13px; color:#444; line-height:1.5; }
+  .band { display:inline-block; background:#eef6ee; color:var(--green); border:1px solid #bcd8bc; border-radius:20px; padding:2px 10px; font-size:12px; margin-top:6px; }
+  .tag { display:inline-block; background:#eee; border-radius:4px; padding:1px 7px; font-size:12px; margin-right:4px; }
+  label { display:block; font-size:13px; font-weight:600; margin:10px 0 3px; }
+  input, select, textarea { width:100%; padding:10px; font-size:15px; border:1px solid #bbb; border-radius:8px; }
+  .row { display:flex; gap:8px; }
+  .row > div { flex:1; }
+  .btn { display:inline-block; margin-top:12px; padding:12px 18px; font-size:15px; border:0; border-radius:8px; background:#111; color:#fff; cursor:pointer; }
+  .btn.gold { background:var(--gold); color:#111; }
+  .btn.ghost { background:#fff; color:#111; border:1px solid #bbb; }
+  .btn.small { padding:8px 12px; font-size:13px; margin:4px 4px 0 0; }
+  .btn.danger { background:var(--red); }
+  .muted { color:#666; font-size:13px; line-height:1.5; }
+  .ok { color:var(--green); font-weight:600; }
+  .warn { color:var(--red); font-weight:600; }
+  #statusLine { padding:8px 16px; font-size:13px; background:#eef6ee; border-bottom:1px solid #bcd8bc; }
+  .check { font-size:14px; margin:4px 0; }
+  .roles { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+  .roles label { display:inline-flex; align-items:center; gap:5px; border:1px solid #bbb; border-radius:20px; padding:7px 12px; font-weight:400; margin:0; cursor:pointer; }
+  .roles input { width:auto; }
+  pre { background:#f6f6f6; border:1px solid var(--line); border-radius:8px; padding:10px; overflow:auto; font-size:12px; }
+  details { margin:12px 0; }
+  summary { cursor:pointer; font-weight:600; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  td, th { border:1px solid var(--line); padding:6px; text-align:left; vertical-align:top; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <img id="hdrIcon" src="data:image/webp;base64,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" alt="SERVICE+ icon — black and white square, plus sign">
+    <div>
+      <h1>SERVICE<span>+</span> &nbsp;·&nbsp; Tourniquet</h1>
+      <p>Help Wanted shifts near you. We connect the dots — you call, you work, you get paid direct.</p>
+    </div>
+  </header>
+  <div class="demo"><strong>PROTOTYPE — demo data only.</strong> Demo postings stay on this device. Real owner postings are sent to the team for review. Postings, workers and shifts below are labelled DEMO. No paywall, launch runs free, platform pricing is not set.</div>
+  <div id="statusLine">Ready.</div>
+  <nav id="tabBar">
+    <button data-view="view-feed" class="active">Find shifts</button>
+    <button data-view="view-post">Post a shift</button>
+    <button data-view="view-mine">My postings</button>
+    <button data-view="view-shifts">My shifts</button>
+    <button data-view="view-profile">Profile &amp; range</button>
+    <button data-view="view-ledger">Ledger &amp; feed</button>
+  </nav>
+  <main>
+    <section class="view active" id="view-feed">
+      <h2>Find shifts</h2>
+      <p class="muted">Only open shifts in your roles, inside your Can Work Range. Nearest first, soonest first. Distance is a band, never precise. <span id="feedSummary"></span></p>
+      <button class="btn ghost small" id="feedRefresh">Refresh feed</button>
+      <div id="feedList"></div>
+      <p class="muted" id="feedEmpty" style="display:none"></p>
+    </section>
+
+    <section class="view" id="view-post">
+      <h2>Post a shift</h2>
+      <p class="muted">Your posting goes live immediately to in-range workers in this role. It is recorded in the shared tracking ledger. You set the pay — SERVICE+ never touches wages, never takes a cut. Launch runs free.</p>
+      <form id="postForm">
+        <label>Business name <input id="pf-business" required maxlength="80" placeholder="e.g. Murphy Diner"></label>
+        <label>Role
+          <select id="pf-role"></select>
+        </label>
+        <div class="row">
+          <div><label>Shift date <input id="pf-date" type="date" required></label></div>
+          <div><label>Start time <input id="pf-start" type="time" required value="17:00"></label></div>
+          <div><label>End time <input id="pf-end" type="time" required value="23:00"></label></div>
+        </div>
+        <div class="row">
+          <div><label>Pay amount <input id="pf-payAmount" required maxlength="20" placeholder="e.g. 18"></label></div>
+          <div><label>Pay type
+            <select id="pf-payType"><option value="hourly">per hour</option><option value="flat">flat for the shift</option></select>
+          </label></div>
+        </div>
+        <label>Phone number (workers call or text this) <input id="pf-phone" type="tel" required maxlength="20" placeholder="e.g. 828-555-0100"></label>
+        <label>Restaurant address <input id="pf-address" maxlength="120" placeholder="e.g. 123 Main St, Murphy, NC"></label>
+        <div class="row">
+          <div><label>Latitude <input id="pf-lat" type="number" step="0.0001" required value="35.0913"></label></div>
+          <div><label>Longitude <input id="pf-lng" type="number" step="0.0001" required value="-84.0378"></label></div>
+        </div>
+        <button type="button" class="btn ghost small" id="pf-useMyLoc">Use my current location for the restaurant</button>
+        <label>Notes (dress code, parking, knives provided…) <textarea id="pf-notes" maxlength="200" rows="2"></textarea></label>
+        <div class="card" id="postPreview"></div>
+        <button class="btn gold" type="submit">Post this shift — live now</button>
+        <p class="muted" id="postSendStatus" aria-live="polite"></p>
+      </form>
+      <p class="muted">Anti-spam: one open posting per role per shift window. A posting can be marked filled or removed any time from My postings.</p>
+    </section>
+
+    <section class="view" id="view-mine">
+      <h2>My postings</h2>
+      <p class="muted">You see contact counts only — never who called, never any worker location. Mark a posting filled the moment you have someone; it leaves every worker feed at once.</p>
+      <div id="myPostings"></div>
+    </section>
+
+    <section class="view" id="view-shifts">
+      <h2>My shifts</h2>
+      <p class="muted">Check in at the restaurant (200&nbsp;m geofence, GPS-verified) or tap “I am here” if GPS cannot fix — that check-in is marked <b>unverified</b>, never faked as verified. The hourly tracker runs from check-in. Hours are your record; show or send them to the owner yourself.</p>
+      <div id="myShifts"></div>
+    </section>
+
+    <section class="view" id="view-profile">
+      <h2>Profile &amp; range</h2>
+      <p class="muted">Owners never see your location — only a count of in-range workers per role. Your base point is stored coarse (about 1&nbsp;km). No background location tracking, ever. Location is read only here, when you open this tab, and at check-in/out.</p>
+      <form id="profileForm">
+        <label>Roles I will work</label>
+        <div class="roles" id="pr-roles"></div>
+        <label>Can Work Range
+          <select id="pr-range">
+            <option value="5">5 miles</option>
+            <option value="10">10 miles</option>
+            <option value="25" selected>25 miles</option>
+            <option value="50">50 miles</option>
+          </select>
+        </label>
+        <div class="row">
+          <div><label>Base point — latitude <input id="pr-lat" type="number" step="0.0001" value="35.0913"></label></div>
+          <div><label>Base point — longitude <input id="pr-lng" type="number" step="0.0001" value="-84.0378"></label></div>
+        </div>
+        <button type="button" class="btn ghost small" id="pr-useMyLoc">Use my current location (stored coarse, ~1 km)</button>
+        <label>My phone (for my own use — never shown to owners) <input id="pr-phone" type="tel" maxlength="20" placeholder="e.g. 828-555-0199"></label>
+        <label>ServSafe / food-handler card <select id="pr-cred"><option value="none">Not on file</option><option value="self">Self-reported — on file</option></select></label>
+        <button class="btn" type="submit">Save profile</button>
+      </form>
+      <div class="card" id="profileInfo"></div>
+    </section>
+
+    <section class="view" id="view-ledger">
+      <h2>Ledger &amp; feed</h2>
+      <p class="muted">Every posting is one envelope (spec §5.2) — the same tracking system as TrenchSwap call-outs and HALEX-M call-outs. The envelope carries the <b>restaurant's</b> public location, never a worker's. Local queue first, then send. v1 distribution is the GitHub JSON feed (spec §5.5 option 1); the envelope is built so options 2 and 3 drop in later.</p>
+      <label>Shared feed URL (GitHub raw JSON — option 1). Leave empty to use this device only.
+        <input id="feedUrlInput" placeholder="https://raw.githubusercontent.com/…/tourniquet-feed.json">
+      </label>
+      <button class="btn small" id="feedLoadBtn">Load shared feed</button>
+      <button class="btn ghost small" id="feedExportBtn">Copy my postings as feed JSON</button>
+      <p class="muted" id="feedStatus">No shared feed loaded. D1 (which shared store launches) is still Jeffrey's call — until then this device is the store.</p>
+      <div id="ledgerList"></div>
+      <details>
+        <summary>How the shared feed works (spec §5.5)</summary>
+        <p class="muted">Approved postings are committed as a JSON file in a repo; apps poll the raw file. Free, no server. The repo does not exist yet — only Jeffrey can create it. The “Copy my postings as feed JSON” button gives you the exact file to commit. Options 2 (inbox + watch publish) and 3 (small server) use the same envelope, so switching needs no app change.</p>
+      </details>
+      <details>
+        <summary>Open decisions still needing Jeffrey (D1–D13)</summary>
+        <div id="decisionsList"></div>
+      </details>
+    </section>
+
+    <hr>
+    <p class="muted">Tourniquet tab prototype v0.1 — built 2026-11-15 from ~/workspace/your_files/service-plus-tourniquet-tab-design-20261115.md. Spec § references: matching §3.1, privacy §3.2, flows §4, envelope §5.2, pricing hooks §6 (all unset), risks §7, decisions §8, build sequence §9 steps 1–5. SERVICE+ never touches wages; workers pay nothing, ever.</p>
+  </main>
+</div>
+<script>
+'use strict';
+/* Tourniquet tab prototype — spec §2–§6. Pure logic first, UI after. */
+
+/* ---------- constants ---------- */
+var ROLES = ['Chef','Line Cook','Prep Cook','Server','Bartender','Dishwasher','Host','Banquet Server','Busser','Barback'];
+var RANGES = [5, 10, 25, 50];
+var GEOFENCE_M = 200;                 /* spec §4.6 / D9: 200 m */
+var EXPIRE_GRACE_MS = 2 * 3600 * 1000; /* shift start + 2 h grace, §2.1 */
+var LS = { postings:'tq.v1.postings', contacts:'tq.v1.contacts', shifts:'tq.v1.shifts',
+           worker:'tq.v1.worker', demoWorkers:'tq.v1.demoWorkers', seeded:'tq.v1.seeded', feedUrl:'tq.v1.feedUrl' };
+var DECISIONS = [
+ ['D1','Shared posting store for launch: GitHub JSON feed vs inbox+watch vs small server','Postings reaching any worker phone.'],
+ ['D2','Launch metro: pick ONE metro to seed first','Cold start.'],
+ ['D3','Owner verification level: phone only, or business verification too','Fake-posting trust.'],
+ ['D4','Claim model: pure phone contact, or add an in-app "I\'m interested" tap','Lifecycle design.'],
+ ['D5','Moderation: who reviews reported postings, and how fast','Trust and safety.'],
+ ['D6','Pay: confirm SERVICE+ never touches wages — pure lead-gen board','Classification risk.'],
+ ['D7','Range presets: 5/10/25/50 miles, or a free slider','Onboarding copy.'],
+ ['D8','Launch role list: which roles ship on day one','Posting form + matching filter.'],
+ ['D9','Check-in geofence radius: 200 m recommended — confirm or change','What counts as "showed up".'],
+ ['D10','Pricing: per-post vs subscription vs both, and amounts (launch runs free)','Revenue.'],
+ ['D11','Credential verification: self-reported, or verified at onboarding','Owner trust.'],
+ ['D12','Shift alerts: push notifications in v1, or feed-only','Workers learning about shifts.'],
+ ['D13','Worker reliability visibility: worker screen only, or shared with owners','Repeat trust vs privacy.']
+];
+
+/* ---------- pure logic (spec §3) ---------- */
+var EARTH_R_MI = 3958.8;
+function toRad(d){ return d * Math.PI / 180; }
+function haversineMi(a, b){ /* straight-line miles between two {lat,lng} points */
+  var dLat = toRad(b.lat - a.lat), dLng = toRad(b.lng - a.lng);
+  var s = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(toRad(a.lat))*Math.cos(toRad(b.lat))*Math.sin(dLng/2)*Math.sin(dLng/2);
+  return 2 * EARTH_R_MI * Math.asin(Math.sqrt(s));
+}
+function coarsePoint(p){ /* store base point coarse, ~1 km (§3.2): 0.01 deg ≈ 1.1 km */
+  return { lat: Math.round(p.lat*100)/100, lng: Math.round(p.lng*100)/100 };
+}
+function distanceBand(mi){
+  if (mi <= 5) return 'within 5 miles';
+  if (mi <= 10) return 'within 10 miles';
+  if (mi <= 25) return 'within 25 miles';
+  if (mi <= 50) return 'within 50 miles';
+  return 'over 50 miles';
+}
+function shiftStartMs(p){
+  return new Date(p.record.shiftDate + 'T' + p.record.startTime + ':00').getTime();
+}
+function isExpired(p, nowMs){
+  return nowMs > shiftStartMs(p) + EXPIRE_GRACE_MS;
+}
+function isLive(p){ return p.status === 'posted'; } /* 'posted' = live to in-range workers (§5.2) */
+function matchPosting(p, worker){ /* §3.1: open + role + distance */
+  if (!isLive(p)) return false;
+  if (worker.roles.indexOf(p.record.role) === -1) return false;
+  return haversineMi(worker.basePoint, p.record.location) <= worker.canWorkRangeMiles;
+}
+function workersInRange(posting, workers){ /* owner sees COUNTS only, never locations (§3.2) */
+  var n = 0;
+  for (var i=0;i<workers.length;i++){
+    var w = workers[i];
+    if (w.roles.indexOf(posting.record.role) === -1) continue;
+    if (haversineMi(w.basePoint, posting.record.location) <= w.canWorkRangeMiles) n++;
+  }
+  return n;
+}
+function makeEnvelope(record, submitter){ /* §5.2 — one envelope, three apps */
+  return {
+    id: 'tq-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7),
+    kind: 'serviceplus-shift',
+    app: 'SERVICE+',
+    submittedAt: new Date().toISOString(),
+    submitter: submitter,
+    record: record,
+    status: 'posted'
+  };
+}
+/* ---------- FormSubmit delivery (Gmail leg only) ---------- */
+/* The owner-side posting record is fine to send: business name, role,
+   shift times, pay, contact phone the owner chose to post, notes, and the
+   restaurant's public location. NEVER send a worker location, seed phrase,
+   private key, PIN, vault content, or balance. This strips anything that
+   looks like one of those before sending, even if it somehow got into
+   the envelope. The restaurant location stays: it is a public business
+   address, per spec §3.2 / §5.2. */
+var SEND_STRIP_KEY = /seed|mnemonic|private.?key|pin|vault|password|secret|balance|worker.?location|worker.?base|base.?point|worker.?gps|worker.?lat|worker.?lng/i;
+function sanitizeEnvelopeForSend(env){
+  var copy;
+  try { copy = JSON.parse(JSON.stringify(env)); } catch(e){ return null; }
+  function clean(obj){
+    if (!obj || typeof obj !== 'object') return;
+    Object.keys(obj).forEach(function(k){
+      if (SEND_STRIP_KEY.test(k)){ delete obj[k]; return; }
+      var v = obj[k];
+      if (typeof v === 'string'){
+        if (v.indexOf('data:') === 0){ delete obj[k]; return; }
+        if (v.length > 2000) obj[k] = v.slice(0, 2000);
+      } else if (v && typeof v === 'object'){ clean(v); }
+    });
+  }
+  clean(copy);
+  return copy;
+}
+function setPostSendStatus(msg){
+  var n = document.getElementById('postSendStatus');
+  if (n) n.textContent = msg;
+}
+function sendPostingViaFormSubmit(env){
+  var payload = sanitizeEnvelopeForSend(env);
+  if (!payload) { setPostSendStatus('Send failed; your copy is saved on this device.'); return; }
+  var body = {
+    _subject: 'SERVICE+ Tourniquet posting',
+    summary: payload.record.businessName + ' - ' + payload.record.role,
+    submission_json: JSON.stringify(payload),
+    _template: 'table'
+  };
+  function attempt(){
+    return fetch('https://formsubmit.co/ajax/sharpchefjeff@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    }).then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r; });
+  }
+  setPostSendStatus('Sending for review...');
+  attempt().then(function(){
+    setPostSendStatus('Sent for review.');
+  }).catch(function(){
+    setTimeout(function(){
+      attempt().then(function(){
+        setPostSendStatus('Sent for review.');
+      }).catch(function(){
+        setPostSendStatus('Send failed; your copy is saved on this device.');
+      });
+    }, 2000);
+  });
+}
+function makePostingRecord(o){
+  return {
+    businessName:o.businessName, role:o.role, shiftDate:o.shiftDate,
+    startTime:o.startTime, endTime:o.endTime,
+    pay:o.pay, payType:o.payType, phone:o.phone, notes:o.notes || '',
+    location:{ lat:o.lat, lng:o.lng }, address:o.address || '',
+    contactCount:0,
+    pricingModel:'not-set', pricingStatus:'not-set' /* §6 hooks — prices stay UNSET */
+  };
+}
+function fmtHours(ms){ var h = ms/3600000; return (Math.round(h*100)/100) + ' h'; }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function uid(){ return 'id-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,7); }
+function todayPlus(days){ var d = new Date(); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10); }
+
+/* ---------- store (localStorage, local-queue-first §5.3) ---------- */
+function storeGet(k, fallback){ try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fallback; } catch(e){ return fallback; } }
+function storeSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function getPostings(){ return storeGet(LS.postings, []); }
+function setPostings(a){ storeSet(LS.postings, a); }
+function getContacts(){ return storeGet(LS.contacts, []); }
+function getShifts(){ return storeGet(LS.shifts, []); }
+function setShifts(a){ storeSet(LS.shifts, a); }
+function getWorker(){ return storeGet(LS.worker, null); }
+function setWorker(w){ storeSet(LS.worker, w); }
+function getDemoWorkers(){ return storeGet(LS.demoWorkers, []); }
+
+/* ---------- seed demo data (clearly labelled DEMO) ---------- */
+function seedDemo(){
+  if (storeGet(LS.seeded, false)) return;
+  var me = { workerId:'demo-worker-1', roles:['Line Cook','Prep Cook'], basePoint:coarsePoint({lat:35.0913,lng:-84.0378}),
+             canWorkRangeMiles:25, phone:'', credentials:'none', reliability:{completed:0, noShows:0} };
+  setWorker(me);
+  var demoWorkers = [
+    { roles:['Line Cook'],            basePoint:coarsePoint({lat:35.09,lng:-84.04}), canWorkRangeMiles:25 },
+    { roles:['Line Cook'],            basePoint:coarsePoint({lat:35.12,lng:-84.01}), canWorkRangeMiles:10 },
+    { roles:['Line Cook','Prep Cook'],basePoint:coarsePoint({lat:35.05,lng:-84.08}), canWorkRangeMiles:25 },
+    { roles:['Server','Banquet Server'], basePoint:coarsePoint({lat:35.10,lng:-84.02}), canWorkRangeMiles:25 },
+    { roles:['Server'],               basePoint:coarsePoint({lat:35.08,lng:-84.06}), canWorkRangeMiles:10 },
+    { roles:['Dishwasher'],           basePoint:coarsePoint({lat:35.09,lng:-84.03}), canWorkRangeMiles:25 },
+    { roles:['Dishwasher','Busser'],  basePoint:coarsePoint({lat:35.15,lng:-84.10}), canWorkRangeMiles:50 },
+    { roles:['Prep Cook'],            basePoint:coarsePoint({lat:35.07,lng:-84.00}), canWorkRangeMiles:25 }
+  ];
+  storeSet(LS.demoWorkers, demoWorkers);
+  var submitter = { account:'demo-owner', handle:'' };
+  var seeds = [
+    { businessName:'Demo Diner (DEMO)', role:'Line Cook', shiftDate:todayPlus(0), startTime:'17:00', endTime:'23:00',
+      pay:'18', payType:'hourly', phone:'828-555-0100', notes:'Friday dinner rush. Knives provided.', lat:35.0913, lng:-84.0378, address:'123 Main St, Murphy, NC' },
+    { businessName:'Demo Bistro (DEMO)', role:'Server', shiftDate:todayPlus(0), startTime:'18:00', endTime:'22:00',
+      pay:'15', payType:'hourly', phone:'828-555-0101', notes:'Tips on top. Black shirt, black pants.', lat:35.0830, lng:-84.0450, address:'45 Valley River Ave, Murphy, NC' },
+    { businessName:'Demo Smokehouse (DEMO)', role:'Dishwasher', shiftDate:todayPlus(1), startTime:'11:00', endTime:'15:00',
+      pay:'14', payType:'hourly', phone:'828-555-0102', notes:'Lunch shift, steady pace.', lat:35.1020, lng:-84.0200, address:'8 Peachtree St, Murphy, NC' },
+    { businessName:'Demo Cafe (DEMO)', role:'Prep Cook', shiftDate:todayPlus(1), startTime:'08:00', endTime:'14:00',
+      pay:'16', payType:'hourly', phone:'828-555-0103', notes:'Morning prep, breakfast service.', lat:35.0750, lng:-84.0550, address:'210 Tennessee St, Murphy, NC' }
+  ];
+  var postings = seeds.map(function(s){
+    var env = makeEnvelope(makePostingRecord(s), submitter);
+    env.submittedAt = new Date(Date.now() - 3600*1000).toISOString();
+    return env;
+  });
+  setPostings(postings);
+  storeSet(LS.seeded, true);
+}
+
+/* ---------- lifecycle ---------- */
+function sweepExpired(){ /* shift start + grace passed -> expired (§2.1) */
+  var now = Date.now(), changed = false;
+  var ps = getPostings();
+  for (var i=0;i<ps.length;i++){
+    if (ps[i].status === 'posted' && isExpired(ps[i], now)){ ps[i].status = 'expired'; changed = true; }
+  }
+  if (changed) setPostings(ps);
+  return changed;
+}
+function logContact(postingId, channel){ /* §2.4: tap counts only, never who called */
+  var w = getWorker();
+  var ev = { id:uid(), postingId:postingId, workerId:w ? w.workerId : 'unknown', channel:channel, at:new Date().toISOString() };
+  var cs = getContacts(); cs.push(ev); storeSet(LS.contacts, cs);
+  var ps = getPostings();
+  for (var i=0;i<ps.length;i++) if (ps[i].id === postingId){ ps[i].record.contactCount = (ps[i].record.contactCount||0)+1; }
+  setPostings(ps);
+  return ev;
+}
+function setPostingStatus(id, status){
+  var ps = getPostings();
+  for (var i=0;i<ps.length;i++) if (ps[i].id === id){ ps[i].status = status; }
+  setPostings(ps);
+}
+function checkIn(postingId, mode, gps){ /* §4.6 */
+  var shifts = getShifts();
+  var existing = null;
+  for (var i=0;i<shifts.length;i++) if (shifts[i].postingId === postingId && !shifts[i].checkOutAt){ existing = shifts[i]; }
+  if (existing) return { ok:false, msg:'Already checked in to this shift.' };
+  var w = getWorker();
+  var ps = getPostings(), p = null;
+  for (var j=0;j<ps.length;j++) if (ps[j].id === postingId) p = ps[j];
+  if (!p) return { ok:false, msg:'Posting not found.' };
+  var verified = false, note = '';
+  if (mode === 'gps' && gps){
+    var dMi = haversineMi(gps, p.record.location);
+    var dM = dMi * 1609.34;
+    if (dM <= GEOFENCE_M){ verified = true; note = 'GPS-verified — ' + Math.round(dM) + ' m from the restaurant (fence 200 m).'; }
+    else { return { ok:false, msg:'Outside the 200 m geofence (' + Math.round(dM) + ' m away). Use “I am here” instead — it will be marked unverified.' }; }
+  } else {
+    note = 'Manual check-in — marked UNVERIFIED (no GPS fix).';
+  }
+  var rec = { id:uid(), postingId:postingId, workerId:w ? w.workerId : 'unknown',
+    checkInAt:new Date().toISOString(), checkOutAt:null, checkInOk:verified, checkOutOk:null, hours:null, ownerConfirmed:false };
+  shifts.push(rec); setShifts(shifts);
+  return { ok:true, msg:'Checked in. ' + note, shift:rec };
+}
+function checkOut(shiftId, mode, gps){
+  var shifts = getShifts();
+  var rec = null;
+  for (var i=0;i<shifts.length;i++) if (shifts[i].id === shiftId) rec = shifts[i];
+  if (!rec || rec.checkOutAt) return { ok:false, msg:'Shift not open.' };
+  var ps = getPostings(), p = null;
+  for (var j=0;j<ps.length;j++) if (ps[j].id === rec.postingId) p = ps[j];
+  var verified = false, note = '';
+  if (mode === 'gps' && gps && p){
+    var dM = haversineMi(gps, p.record.location) * 1609.34;
+    if (dM <= GEOFENCE_M){ verified = true; note = 'GPS-verified — ' + Math.round(dM) + ' m from the restaurant.'; }
+    else { return { ok:false, msg:'Outside the 200 m geofence (' + Math.round(dM) + ' m away). Use manual check-out — marked unverified.' }; }
+  } else { note = 'Manual check-out — marked UNVERIFIED.'; }
+  rec.checkOutAt = new Date().toISOString();
+  rec.checkOutOk = verified;
+  rec.hours = (new Date(rec.checkOutAt).getTime() - new Date(rec.checkInAt).getTime()) / 3600000;
+  setShifts(shifts);
+  return { ok:true, msg:'Checked out. ' + note + ' Hours: ' + fmtHours(rec.hours*3600000) + '.', shift:rec };
+}
+function setStatusLine(msg){ var el = document.getElementById('statusLine'); if (el) el.textContent = msg; }
+
+/* ---------- shared feed, option 1 (spec §5.5) ---------- */
+function feedEnvelopeFor(p){ return p; } /* envelope IS the feed record — same shape, no conversion */
+function loadSharedFeed(){
+  var url = (document.getElementById('feedUrlInput').value || '').trim();
+  if (!url){ setStatusLine('Enter a feed URL first.'); return; }
+  storeSet(LS.feedUrl, url);
+  var st = document.getElementById('feedStatus');
+  fetch(url).then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(data){
+      var incoming = Array.isArray(data) ? data : (data.postings || []);
+      var ps = getPostings(), seen = {};
+      ps.forEach(function(p){ seen[p.id]=1; });
+      var added = 0;
+      incoming.forEach(function(p){
+        if (p && p.kind === 'serviceplus-shift' && p.id && !seen[p.id]){ ps.push(p); seen[p.id]=1; added++; }
+      });
+      setPostings(ps);
+      if (st) st.textContent = 'Feed loaded: ' + incoming.length + ' postings in file, ' + added + ' new. ' + url;
+      setStatusLine('Shared feed loaded — ' + added + ' new postings.');
+      renderAll();
+    })
+    .catch(function(e){
+      if (st) st.textContent = 'Feed could not be loaded (' + e.message + '). Local postings only. Check the URL or the repo.';
+      setStatusLine('Feed load failed: ' + e.message);
+    });
+}
+function exportFeedJson(){
+  var ps = getPostings().filter(function(p){ return p.status === 'posted' || p.status === 'filled' || p.status === 'expired'; });
+  var json = JSON.stringify({ app:'SERVICE+', kind:'tourniquet-feed', version:1, updatedAt:new Date().toISOString(), postings:ps }, null, 2);
+  var ta = document.getElementById('feedJson');
+  if (ta){ ta.value = json; }
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(json).then(function(){ setStatusLine('Feed JSON copied — commit it to the shared feed repo.'); });
+  } else { setStatusLine('Feed JSON shown below — copy it into the shared feed repo.'); }
+}
+</script>
+<script>
+'use strict';
+/* ---------- UI ---------- */
+function el(id){ return document.getElementById(id); }
+function showView(id){
+  var views = document.querySelectorAll('.view');
+  for (var i=0;i<views.length;i++) views[i].classList.remove('active');
+  el(id).classList.add('active');
+  var btns = document.querySelectorAll('#tabBar button');
+  for (var j=0;j<btns.length;j++) btns[j].classList.toggle('active', btns[j].getAttribute('data-view') === id);
+}
+function postingCard(p, worker){
+  var r = p.record;
+  var d = worker ? haversineMi(worker.basePoint, r.location) : null;
+  var pay = esc(r.pay) + (r.payType === 'hourly' ? ' / hour' : ' flat for the shift');
+  var html = '<div class="card"><h3>' + esc(r.role) + ' — ' + esc(r.businessName) + '</h3>' +
+    '<div class="meta">' + esc(r.shiftDate) + ' · ' + esc(r.startTime) + '–' + esc(r.endTime) +
+    '<br>Pay: <b>' + pay + '</b> (set by the owner — SERVICE+ takes no cut)' +
+    '<br>' + esc(r.address) + (d !== null ? '<br>About ' + Math.round(d) + ' miles away — check your drive time' : '') +
+    (r.notes ? '<br>Notes: ' + esc(r.notes) : '') + '</div>' +
+    (d !== null ? '<span class="band">' + distanceBand(d) + '</span>' : '') +
+    '<div style="margin-top:10px">' +
+    '<a class="btn small gold" href="tel:' + esc(r.phone) + '" data-contact="' + p.id + '" data-channel="call">Call ' + esc(r.phone) + '</a> ' +
+    '<a class="btn small" href="sms:' + esc(r.phone) + '" data-contact="' + p.id + '" data-channel="text">Text</a> ' +
+    '<button class="btn ghost small" data-checkin="' + p.id + '">Check in for this shift</button>' +
+    '</div></div>';
+  return html;
+}
+function renderFeed(){
+  sweepExpired();
+  var worker = getWorker();
+  var list = el('feedList'), empty = el('feedEmpty');
+  if (!worker){ list.innerHTML = ''; empty.style.display = 'block'; empty.textContent = 'Set your roles and range in Profile & range first — the feed needs to know what you can work and how far you will drive.'; return; }
+  var ps = getPostings().filter(function(p){ return matchPosting(p, worker); });
+  ps.sort(function(a,b){
+    var da = haversineMi(worker.basePoint, a.record.location), db = haversineMi(worker.basePoint, b.record.location);
+    if (da !== db) return da - db;
+    return shiftStartMs(a) - shiftStartMs(b);
+  });
+  el('feedSummary').textContent = 'You: ' + worker.roles.join(', ') + ' · within ' + worker.canWorkRangeMiles + ' miles · ' + ps.length + ' open shift' + (ps.length===1?'':'s') + '.';
+  if (!ps.length){
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    empty.textContent = 'No open shifts in your roles within ' + worker.canWorkRangeMiles + ' miles right now. That is an honest empty — nothing from another state is shown. Try widening your range in Profile & range.';
+    return;
+  }
+  empty.style.display = 'none';
+  list.innerHTML = ps.map(function(p){ return postingCard(p, worker); }).join('');
+}
+function renderMine(){
+  var ps = getPostings();
+  var mine = ps.filter(function(p){ return p.submitter && p.submitter.account === 'demo-owner'; });
+  var box = el('myPostings');
+  if (!mine.length){ box.innerHTML = '<p class="muted">No postings yet. Post your first shift from “Post a shift”.</p>'; return; }
+  box.innerHTML = mine.map(function(p){
+    var r = p.record;
+    var count = workersInRange(p, getDemoWorkers());
+    return '<div class="card"><h3>' + esc(r.role) + ' — ' + esc(r.businessName) + '</h3>' +
+      '<div class="meta">Status: <b>' + esc(p.status) + '</b> · ' + esc(r.shiftDate) + ' ' + esc(r.startTime) + '–' + esc(r.endTime) +
+      '<br>Pay: ' + esc(r.pay) + (r.payType==='hourly'?' / hour':' flat') + ' · Phone: ' + esc(r.phone) +
+      '<br><span class="ok">' + count + ' in-range workers in this role can see this</span> (count only — never locations)' +
+      '<br>Contact taps: <b>' + (r.contactCount||0) + '</b> (call + text taps — never who called)</div>' +
+      (p.status==='posted' ? '<button class="btn small gold" data-fill="'+p.id+'">Mark filled</button>' : '') +
+      (p.status==='posted' ? '<button class="btn small danger" data-remove="'+p.id+'">Remove posting</button>' : '') +
+      '</div>';
+  }).join('');
+}
+function renderShifts(){
+  var shifts = getShifts();
+  var ps = getPostings();
+  var box = el('myShifts');
+  if (!shifts.length){ box.innerHTML = '<p class="muted">No shifts yet. Find a shift, call the owner, agree it, then check in here when you arrive.</p>'; return; }
+  box.innerHTML = shifts.map(function(s){
+    var p = null;
+    for (var i=0;i<ps.length;i++) if (ps[i].id === s.postingId) p = ps[i];
+    var title = p ? esc(p.record.role) + ' — ' + esc(p.record.businessName) : 'Shift';
+    var h = '<div class="card"><h3>' + title + '</h3><div class="meta">' +
+      'Check-in: ' + esc(s.checkInAt) + (s.checkInOk ? ' <span class="ok">GPS-verified</span>' : ' <span class="warn">UNVERIFIED (manual)</span>') +
+      (s.checkOutAt ? '<br>Check-out: ' + esc(s.checkOutAt) + (s.checkOutOk ? ' <span class="ok">GPS-verified</span>' : ' <span class="warn">UNVERIFIED (manual)</span>') +
+      '<br>Hours: <b>' + fmtHours(s.hours*3600000) + '</b>' : '<br><i>Checked in — hourly tracker running.</i>') +
+      (s.ownerConfirmed ? '<br><span class="ok">Owner confirmed: they showed up.</span>' : '') +
+      '</div>';
+    if (!s.checkOutAt){
+      h += '<button class="btn small gold" data-checkout-gps="'+s.id+'">Check out (GPS)</button>' +
+           '<button class="btn ghost small" data-checkout-manual="'+s.id+'">Check out — I am here (unverified)</button>';
+    } else if (!s.ownerConfirmed){
+      h += '<button class="btn ghost small" data-owner-confirm="'+s.id+'">Owner confirmed: they showed up (demo)</button>';
+    }
+    return h + '</div>';
+  }).join('');
+}
+function renderProfile(){
+  var w = getWorker();
+  var rolesBox = el('pr-roles');
+  rolesBox.innerHTML = ROLES.map(function(r){
+    var checked = w && w.roles.indexOf(r) !== -1 ? 'checked' : '';
+    return '<label><input type="checkbox" value="' + esc(r) + '" ' + checked + '> ' + esc(r) + '</label>';
+  }).join('');
+  if (w){
+    el('pr-range').value = String(w.canWorkRangeMiles);
+    el('pr-lat').value = w.basePoint.lat;
+    el('pr-lng').value = w.basePoint.lng;
+    el('pr-phone').value = w.phone || '';
+    el('pr-cred').value = w.credentials || 'none';
+    el('profileInfo').innerHTML = '<b>Stored profile (coarse, ~1 km):</b><br>Roles: ' + esc(w.roles.join(', ')) +
+      '<br>Base point: ' + w.basePoint.lat + ', ' + w.basePoint.lng + ' (rounded — not your address)' +
+      '<br>Can Work Range: ' + w.canWorkRangeMiles + ' miles' +
+      '<br>Shifts completed: ' + (w.reliability.completed||0) + ' · No-shows: ' + (w.reliability.noShows||0) +
+      ' (shown on your screen only — owners never see a score)';
+  }
+}
+function renderLedger(){
+  var ps = getPostings();
+  var box = el('ledgerList');
+  if (!ps.length){ box.innerHTML = '<p class="muted">Ledger is empty.</p>'; }
+  else {
+    var rows = ps.map(function(p){
+      return '<tr><td>' + esc(p.id.slice(0,18)) + '…</td><td>' + esc(p.kind) + '</td><td>' + esc(p.record.businessName) + ' — ' + esc(p.record.role) + '</td><td>' + esc(p.status) + '</td><td>' + (p.record.contactCount||0) + '</td><td>' + esc(p.submittedAt.slice(0,19).replace('T',' ')) + '</td></tr>';
+    }).join('');
+    box.innerHTML = '<table><tr><th>ID</th><th>Kind</th><th>Posting</th><th>Status</th><th>Contacts</th><th>Submitted</th></tr>' + rows + '</table>' +
+      '<p class="muted">Statuses: posted (live) → filled / expired, plus removed / rejected. The envelope never carries a worker location — only the restaurant’s public location.</p>' +
+      '<label>Feed JSON (the exact file to commit to the shared feed repo)</label><textarea id="feedJson" rows="8" readonly></textarea>';
+  }
+  el('decisionsList').innerHTML = '<table><tr><th>#</th><th>Decision</th><th>Blocks</th></tr>' +
+    DECISIONS.map(function(d){ return '<tr><td>' + d[0] + '</td><td>' + esc(d[1]) + '</td><td>' + esc(d[2]) + '</td></tr>'; }).join('') + '</table>';
+}
+function renderPostForm(){
+  var sel = el('pf-role');
+  sel.innerHTML = ROLES.map(function(r){ return '<option>' + esc(r) + '</option>'; }).join('');
+  el('pf-date').value = todayPlus(0);
+  updatePostPreview();
+}
+function updatePostPreview(){
+  var role = el('pf-role').value;
+  var lat = parseFloat(el('pf-lat').value), lng = parseFloat(el('pf-lng').value);
+  var box = el('postPreview');
+  if (!role || isNaN(lat) || isNaN(lng)){ box.innerHTML = 'Fill in role and location to see who will see this.'; return; }
+  var fake = { record:{ role:role, location:{lat:lat,lng:lng} } };
+  var count = workersInRange(fake, getDemoWorkers());
+  box.innerHTML = '<b>Before you post:</b> ' + count + ' in-range workers in the role “' + esc(role) + '” can see this (demo worker base — count only, never locations). ' +
+    'The posting goes live immediately. Launch runs free — no platform fee in v1, pricing not set.';
+}
+function renderAll(){ renderFeed(); renderMine(); renderShifts(); renderProfile(); renderLedger(); }
+
+/* ---------- events ---------- */
+function bindEvents(){
+  document.querySelectorAll('#tabBar button').forEach(function(b){
+    b.addEventListener('click', function(){ showView(b.getAttribute('data-view')); renderAll(); });
+  });
+  el('feedRefresh').addEventListener('click', function(){ renderFeed(); setStatusLine('Feed refreshed.'); });
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    var c = t.getAttribute && t.getAttribute('data-contact');
+    if (c){ logContact(c, t.getAttribute('data-channel')); setStatusLine('Contact tap logged (' + t.getAttribute('data-channel') + '). The owner sees the count go up — never who called.'); renderMine(); renderLedger(); return; }
+    var ci = t.getAttribute && t.getAttribute('data-checkin');
+    if (ci){
+      var w = getWorker();
+      if (!w){ setStatusLine('Set your profile first.'); showView('view-profile'); return; }
+      if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(pos){
+          var r = checkIn(ci, 'gps', { lat:pos.coords.latitude, lng:pos.coords.longitude });
+          setStatusLine(r.msg); renderAll();
+        }, function(){
+          var r2 = checkIn(ci, 'manual', null);
+          setStatusLine('GPS could not fix. ' + r2.msg); renderAll();
+        }, { timeout:8000 });
+      } else {
+        var r3 = checkIn(ci, 'manual', null);
+        setStatusLine('No GPS on this device. ' + r3.msg); renderAll();
+      }
+      return;
+    }
+    var fill = t.getAttribute && t.getAttribute('data-fill');
+    if (fill){ setPostingStatus(fill, 'filled'); setStatusLine('Marked filled — it has left every worker feed.'); renderAll(); return; }
+    var rem = t.getAttribute && t.getAttribute('data-remove');
+    if (rem){ setPostingStatus(rem, 'removed'); setStatusLine('Posting removed.'); renderAll(); return; }
+    var coG = t.getAttribute && t.getAttribute('data-checkout-gps');
+    if (coG){
+      if (navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(function(pos){
+          var r = checkOut(coG, 'gps', { lat:pos.coords.latitude, lng:pos.coords.longitude });
+          setStatusLine(r.msg); renderAll();
+        }, function(){
+          var r2 = checkOut(coG, 'manual', null);
+          setStatusLine('GPS could not fix. ' + r2.msg); renderAll();
+        }, { timeout:8000 });
+      } else { var r3 = checkOut(coG, 'manual', null); setStatusLine('No GPS on this device. ' + r3.msg); renderAll(); }
+      return;
+    }
+    var coM = t.getAttribute && t.getAttribute('data-checkout-manual');
+    if (coM){ var r = checkOut(coM, 'manual', null); setStatusLine(r.msg); renderAll(); return; }
+    var oc = t.getAttribute && t.getAttribute('data-owner-confirm');
+    if (oc){
+      var shifts = getShifts();
+      for (var i=0;i<shifts.length;i++) if (shifts[i].id === oc) shifts[i].ownerConfirmed = true;
+      setShifts(shifts);
+      var w2 = getWorker();
+      if (w2){ w2.reliability.completed = (w2.reliability.completed||0)+1; setWorker(w2); }
+      setStatusLine('Owner confirmed the worker showed up.'); renderAll(); return;
+    }
+  });
+  el('postForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var role = el('pf-role').value;
+    var date = el('pf-date').value, start = el('pf-start').value, end = el('pf-end').value;
+    var ps = getPostings();
+    for (var i=0;i<ps.length;i++){ /* anti-spam: one open posting per role per shift window */
+      var r = ps[i].record;
+      if (ps[i].status === 'posted' && r.role === role && r.shiftDate === date && r.startTime === start){
+        setStatusLine('You already have an open ' + role + ' posting for ' + date + ' at ' + start + '. Mark it filled or remove it first.');
+        return;
+      }
+    }
+    var rec = makePostingRecord({
+      businessName: el('pf-business').value.trim(), role: role, shiftDate: date, startTime: start, endTime: end,
+      pay: el('pf-payAmount').value.trim(), payType: el('pf-payType').value,
+      phone: el('pf-phone').value.trim(), notes: el('pf-notes').value.trim(),
+      lat: parseFloat(el('pf-lat').value), lng: parseFloat(el('pf-lng').value),
+      address: el('pf-address').value.trim()
+    });
+    var env = makeEnvelope(rec, { account:'demo-owner', handle:'' });
+    ps.push(env); setPostings(ps);
+    sendPostingViaFormSubmit(env); /* local save first, Gmail send second */
+    setStatusLine('Posted — live now to in-range workers in the role “' + role + '”. Recorded in the ledger.');
+    renderAll(); showView('view-mine');
+  });
+  ['pf-role','pf-lat','pf-lng'].forEach(function(id){ el(id).addEventListener('change', updatePostPreview); el(id).addEventListener('input', updatePostPreview); });
+  el('pf-useMyLoc').addEventListener('click', function(){
+    if (!navigator.geolocation){ setStatusLine('No GPS on this device — type the restaurant coordinates.'); return; }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      el('pf-lat').value = pos.coords.latitude.toFixed(4); el('pf-lng').value = pos.coords.longitude.toFixed(4);
+      updatePostPreview(); setStatusLine('Restaurant location set from GPS.');
+    }, function(){ setStatusLine('GPS could not fix — type the restaurant coordinates.'); }, { timeout:8000 });
+  });
+  el('profileForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var roles = [];
+    document.querySelectorAll('#pr-roles input:checked').forEach(function(c){ roles.push(c.value); });
+    if (!roles.length){ setStatusLine('Pick at least one role.'); return; }
+    var w = getWorker() || { workerId:uid(), reliability:{completed:0, noShows:0} };
+    w.roles = roles;
+    w.canWorkRangeMiles = parseInt(el('pr-range').value, 10);
+    w.basePoint = coarsePoint({ lat:parseFloat(el('pr-lat').value), lng:parseFloat(el('pr-lng').value) });
+    w.phone = el('pr-phone').value.trim();
+    w.credentials = el('pr-cred').value;
+    setWorker(w);
+    setStatusLine('Profile saved. Base point stored coarse (~1 km). Owners never see it.');
+    renderAll();
+  });
+  el('pr-useMyLoc').addEventListener('click', function(){
+    if (!navigator.geolocation){ setStatusLine('No GPS on this device — type coordinates or use the defaults.'); return; }
+    navigator.geolocation.getCurrentPosition(function(pos){
+      var c = coarsePoint({ lat:pos.coords.latitude, lng:pos.coords.longitude });
+      el('pr-lat').value = c.lat; el('pr-lng').value = c.lng;
+      setStatusLine('Base point set from GPS, stored coarse (~1 km).');
+    }, function(){ setStatusLine('GPS could not fix — type coordinates or use the defaults.'); }, { timeout:8000 });
+  });
+  el('feedLoadBtn').addEventListener('click', loadSharedFeed);
+  el('feedExportBtn').addEventListener('click', exportFeedJson);
+}
+
+/* ---------- init ---------- */
+seedDemo();
+renderPostForm();
+bindEvents();
+renderAll();
+var savedFeed = storeGet(LS.feedUrl, '');
+if (savedFeed) el('feedUrlInput').value = savedFeed;
+</script>
+</body>
+</html>
