@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kFz4lF7HnoM3rcMgHVPCc7FmSSX2St7+80gq0m7TGxQ=' 'sha256-D0z/c5JeX2l4zJxySD5DhX3VKZVh62igZSE+9QDYXG4='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app; frame-src 'none'; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-kFz4lF7HnoM3rcMgHVPCc7FmSSX2St7+80gq0m7TGxQ=' 'sha256-ebFIOdfChU2wU7myLrFz3jMagq8VWrWMaSZ2R8M+IRg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app; frame-src 'none'; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -5145,6 +5145,8 @@ if($("dexForm"))$("dexForm").addEventListener("submit",function(e){e.preventDefa
    if(own.status.indexOf("REJECTED")===0)return fail("Ownership verification: "+own.status+" — submission not prepared.");
    var sub={type:"DexStream banner submission",mint:mint,banner:"1200x200 (file held by submitter until review)",qualityInspection:dexInspectNote,destinationLink:link,destinationHostCheck:hostStatus,payerWallet:payer,paymentTx:tx,payment:"5 USDC on Solana to "+DEX_PAY_ADDR,paymentVerification:pay.status,ownershipVerification:own.status,rotation:"100 open spaces per 6-hour window (max 400 per 24 hours) · 5.5 seconds per showing, 3 times per hour, 24-hour run · house banners fill empty spaces",terms:"24h from activation, no returns, no refunds",status:"PENDING manual review (second gate) — publishes only when verified + quality-inspected + approved"};
    var txt=JSON.stringify(sub,null,2);
+    var dq=localQueue("trenchswap.dexstream.v1");dq.unshift(sub);saveQueue("trenchswap.dexstream.v1",dq);
+    tsTrackPost("dexstream",sub,function(ok){sub.trackStatus=ok?"sent":"failed";var dq2=localQueue("trenchswap.dexstream.v1");if(dq2[0]&&dq2[0].paymentTx===sub.paymentTx)dq2[0].trackStatus=sub.trackStatus;saveQueue("trenchswap.dexstream.v1",dq2);tsTrackNote("dexFormStatus",ok)});
    function done(){$("dexFormStatus").innerHTML="Submission prepared and copied for manual review.<br>Destination: "+escapeHtml(hostStatus)+"<br>Payment: "+escapeHtml(pay.status)+"<br>Ownership: "+escapeHtml(own.status)+"<br>Quality: "+escapeHtml(dexInspectNote)+"<br><b>Nothing is live yet</b> — the banner publishes only after manual approval (the second gate) on top of these verifications and the quality inspection, and then runs 24 hours from activation.";toast("DexStream submission copied — verified checks attached, pending approval")}
    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){$("dexFormStatus").textContent="Copy failed — your prepared submission: "+txt})}else{$("dexFormStatus").textContent="Your prepared submission: "+txt}});
  }).catch(function(){fail("Verification reads did not answer (DexScreener / Solana RPC) — submission not prepared. Try again.")})});
@@ -5333,6 +5335,7 @@ $("trenchPostBtn").addEventListener("click",function(){
      queue. Approval is a manual commit to the shared feed file; the app
      holds no GitHub token and never writes to GitHub. */
   var q=localQueue("trenchswap.sharedQueue.v1");q.unshift({mint:call.mint,symbol:call.symbol,text:call.text,by:call.by,ts:call.ts,status:"Pending review"});saveQueue("trenchswap.sharedQueue.v1",q);
+    tsTrackPost("callout",{mint:call.mint,symbol:call.symbol,text:call.text,by:call.by,ts:call.ts,holding:g.detail||""},function(ok){call.trackStatus=ok?"sent":"failed";saveCalls()});
   $("trenchOverlay").classList.remove("open");
   var f=$("trenchFeed");if(f)f.scrollLeft=0;
   toast("Call submitted: saved under YOUR CALLS and sent to review ("+g.detail+"). It appears in Shared calls once approved.")}).catch(function(){btn.disabled=false;st.textContent="The holding check could not run. Try again in a moment."})});
@@ -5365,12 +5368,101 @@ var tab=$("trenchInfoApplyBtn");if(tab)tab.addEventListener("click",function(){i
 /* --- Rentals + Referrals: local review queues (no backend; saved on device, reviewed by hand) --- */
 function localQueue(key){try{var a=JSON.parse(localStorage.getItem(key)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveQueue(key,a){try{localStorage.setItem(key,JSON.stringify(a.slice(0,50)))}catch(e){}}
-function renderRentals(){var q=localQueue("trenchswap.rentals.v1");var c=$("rentList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.name||"")+' · '+escapeHtml(r.plan)+'</span><b>Pending review</b></div>'}).join(""):'<p class="fee">No applications yet on this device.</p>'}
-$("rentApplyBtn").addEventListener("click",function(){var name=$("rentName").value.trim();if(!name){$("rentApplyStatus").textContent="Add the token / project name first.";return}var q=localQueue("trenchswap.rentals.v1");q.unshift({name:name,mint:$("rentMint").value.trim(),plan:$("rentPlan").value==="week"?"Highlighted one week — 300 USDC":"One day — 100 USDC",graphic:$("rentGraphic").value.trim(),contact:$("rentContact").value.trim(),ts:Date.now(),status:"Pending review"});saveQueue("trenchswap.rentals.v1",q);renderRentals();$("rentApplyStatus").textContent="Application saved on this device for hand review. Nothing is published or charged until it is approved and payment is confirmed."});
+var TS_TRACK_ENDPOINT="https://formsubmit.co/ajax/sharpchefjeff@gmail.com";
+var TS_TRACK_DENY=["mnemonic","seed","privatekey","private_key","pin","vault","password","secret","importfield"];
+function tsTrackClean(v,depth){
+  if(depth>4)return "[too deep]";
+  if(v==null)return v;
+  if(typeof v==="string"){
+    if(v.indexOf("data:")===0)return "[file held by submitter]";
+    return v.length>2000?v.slice(0,2000)+"…":v;
+  }
+  if(typeof v!=="object")return v;
+  if(Array.isArray(v))return v.slice(0,50).map(function(x){return tsTrackClean(x,depth+1)});
+  var o={};
+  for(var k in v){
+    if(!Object.prototype.hasOwnProperty.call(v,k))continue;
+    var lk=String(k).toLowerCase();
+    var denied=false;
+    for(var i=0;i<TS_TRACK_DENY.length;i++){if(lk.indexOf(TS_TRACK_DENY[i])>=0){denied=true;break}}
+    if(denied)continue;
+    if((lk==="image"||lk==="logo")&&typeof v[k]==="string"&&v[k].indexOf("data:")===0){o[k]="[image held by submitter]";continue}
+    o[k]=tsTrackClean(v[k],depth+1);
+  }
+  return o;
+}
+function tsTrackId(){
+  return "ts-"+Date.now().toString(36)+"-"+Math.floor(Math.random()*46656).toString(36);
+}
+function tsTrackSubmitter(){
+  try{
+    var w=(typeof activeWalletObj==="function")?activeWalletObj():null;
+    return {wallet:(w&&w.address)?w.address:"",handle:""};
+  }catch(e){return {wallet:"",handle:""}}
+}
+function tsTrackSummary(kind,rec){
+  rec=rec||{};
+  if(kind==="referral")return "Referral: "+(rec.handle||"")+" - "+(rec.link||"");
+  if(kind==="callout")return "Call-out: "+(rec.by||"")+" on $"+(rec.symbol||"")+" - "+String(rec.text||"").slice(0,100);
+  if(kind==="mint")return "Mint package: "+(rec.name||"")+" ($"+(rec.ticker||"")+")";
+  if(kind==="tokenpage")return "Token Page: "+(rec.page&&rec.page.name||"")+" - mint "+(rec.mint||"");
+  if(kind==="rental300")return "300x300 rental: "+(rec.name||"")+" - "+(rec.plan||"");
+  if(kind==="rentalstrip")return "Small strip rental: "+(rec.name||"")+" - "+(rec.link||"");
+  if(kind==="dexstream")return "DexStream banner: mint "+(rec.mint||"")+" - payer "+(rec.payerWallet||"");
+  if(kind==="claim")return "Claim: mint "+(rec.mint||"")+" - "+(rec.amount||"")+" USDC";
+  return kind;
+}
+function tsTrackNote(elId,ok){
+  try{
+    var el=document.getElementById(elId);if(!el)return;
+    el.textContent+=ok?" - Sent for review.":" - Send failed; your copy is saved on this device.";
+  }catch(e){}
+}
+function tsTrackPost(kind,record,onDone){
+  var env={
+    id:tsTrackId(),
+    kind:kind,
+    app:"TrenchSwap",
+    submittedAt:new Date().toISOString(),
+    submitter:tsTrackSubmitter(),
+    record:tsTrackClean(record,0),
+    status:"pending"
+  };
+  if(kind==="referral"&&record&&record.handle)env.submitter.handle=record.handle;
+  if(kind==="rental300"||kind==="rentalstrip"){if(record&&record.contact)env.submitter.handle=record.contact}
+  var payload={
+    _subject:"TrenchSwap submission - "+kind,
+    _template:"table",
+    summary:tsTrackSummary(kind,env.record),
+    submission_json:JSON.stringify(env)
+  };
+  function sendOnce(){
+    return fetch(TS_TRACK_ENDPOINT,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    }).then(function(r){return r.json()}).then(function(d){
+      if(d&&(d.success==="true"||d.success===true))return true;
+      throw new Error("track rejected");
+    });
+  }
+  sendOnce().catch(function(){
+    return new Promise(function(res){
+      setTimeout(function(){sendOnce().then(function(){res(true)}).catch(function(){res(false)})},2000);
+    });
+  }).then(function(ok){if(onDone)onDone(!!ok)});
+}
+
+function renderRentals(){var q=localQueue("trenchswap.rentals.v1");var c=$("rentList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.name||"")+' · '+escapeHtml(r.plan)+'</span><b>Pending review'+(r.trackStatus==="sent"?" · sent":r.trackStatus==="failed"?" · send failed":"")+'</b></div>'}).join(""):'<p class="fee">No applications yet on this device.</p>'}
+$("rentApplyBtn").addEventListener("click",function(){var name=$("rentName").value.trim();if(!name){$("rentApplyStatus").textContent="Add the token / project name first.";return}var q=localQueue("trenchswap.rentals.v1");var rec={name:name,mint:$("rentMint").value.trim(),plan:$("rentPlan").value==="week"?"Highlighted one week — 300 USDC":"One day — 100 USDC",graphic:$("rentGraphic").value.trim(),contact:$("rentContact").value.trim(),ts:Date.now(),status:"Pending review"};
+    q.unshift(rec);saveQueue("trenchswap.rentals.v1",q);renderRentals();
+    tsTrackPost("rental300",rec,function(ok){rec.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.rentals.v1",q);renderRentals();tsTrackNote("rentApplyStatus",ok)});$("rentApplyStatus").textContent="Application saved on this device for hand review. Nothing is published or charged until it is approved and payment is confirmed."});
 renderRentals();
 /* --- Small banner (1200 x 200) rentals: same hand-review queue pattern --- */
-function renderSRentals(){var q=localQueue("trenchswap.smallrentals.v1");var c=$("srentList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.name||"")+' · Small banner 1200 × 200 — 24 hours — 5 USDC</span><b>Pending review</b></div>'}).join(""):'<p class="fee">No small banner applications yet on this device.</p>'}
-var srb=$("srentApplyBtn");if(srb)srb.addEventListener("click",function(){var name=$("srentName").value.trim();if(!name){$("srentApplyStatus").textContent="Add the token / project name first.";return}var q=localQueue("trenchswap.smallrentals.v1");q.unshift({name:name,mint:$("srentMint").value.trim(),plan:"Small banner 1200 × 200 — 24 hours — 5 USDC",link:$("srentLink").value.trim(),graphic:$("srentGraphic").value.trim(),contact:$("srentContact").value.trim(),ts:Date.now(),status:"Pending review"});saveQueue("trenchswap.smallrentals.v1",q);renderSRentals();$("srentApplyStatus").textContent="Application saved on this device for hand review. Nothing is published or charged until it is approved and payment is confirmed."});
+function renderSRentals(){var q=localQueue("trenchswap.smallrentals.v1");var c=$("srentList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.name||"")+' · Small banner 1200 × 200 — 24 hours — 5 USDC</span><b>Pending review'+(r.trackStatus==="sent"?" · sent":r.trackStatus==="failed"?" · send failed":"")+'</b></div>'}).join(""):'<p class="fee">No small banner applications yet on this device.</p>'}
+var srb=$("srentApplyBtn");if(srb)srb.addEventListener("click",function(){var name=$("srentName").value.trim();if(!name){$("srentApplyStatus").textContent="Add the token / project name first.";return}var q=localQueue("trenchswap.smallrentals.v1");var rec={name:name,mint:$("srentMint").value.trim(),plan:"Small banner 1200 × 200 — 24 hours — 5 USDC",link:$("srentLink").value.trim(),graphic:$("srentGraphic").value.trim(),contact:$("srentContact").value.trim(),ts:Date.now(),status:"Pending review"};
+    q.unshift(rec);saveQueue("trenchswap.smallrentals.v1",q);renderSRentals();
+    tsTrackPost("rentalstrip",rec,function(ok){rec.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.smallrentals.v1",q);renderSRentals();tsTrackNote("srentApplyStatus",ok)});$("srentApplyStatus").textContent="Application saved on this device for hand review. Nothing is published or charged until it is approved and payment is confirmed."});
 renderSRentals();
 /* --- Trench Machine (Mint tab): form, metadata package, review sheet ---
    Launches run on TrenchSwap's platform on Raydium LaunchLab. The form
@@ -5385,7 +5477,7 @@ var mb=$("mintImgBtn");if(mb)mb.addEventListener("click",function(){$("mintImgFi
 var mf=$("mintImgFile");if(mf)mf.addEventListener("change",function(){var f=mf.files&&mf.files[0];var st=$("mintImgStatus");if(!f)return;if(f.type==="image/svg+xml"||/\.svg$/i.test(f.name)){st.textContent="SVG is rejected — use PNG, JPEG or WebP.";return}if(["image/png","image/jpeg","image/webp"].indexOf(f.type)<0){st.textContent="That file is not a PNG, JPEG or WebP image.";return}if(f.size>2*1024*1024){st.textContent="Image is over the 2 MB cap.";return}var url=URL.createObjectURL(f);var img=new Image();img.onload=function(){var side=Math.min(img.naturalWidth,img.naturalHeight,512);var cv=document.createElement("canvas");cv.width=side;cv.height=side;var cx=cv.getContext("2d");cx.drawImage(img,(img.naturalWidth-side)/2,(img.naturalHeight-side)/2,side,side,0,0,side,side);try{mintImgData=cv.toDataURL("image/webp",0.9)}catch(e){mintImgData=cv.toDataURL("image/png")}URL.revokeObjectURL(url);$("mintImgPreview").src=mintImgData;st.textContent="Image accepted — re-encoded to WebP ("+side+" × "+side+"). The original file bytes are stripped."};img.onerror=function(){URL.revokeObjectURL(url);st.textContent="That file could not be read as an image."};img.src=url});
 var md=$("mintDesc");if(md)md.addEventListener("input",function(){$("mintDescCount").textContent=md.value.length+" / 200"});
 ["mintPair","mintTarget","mintFirstBuy"].forEach(function(id){var el=$(id);if(el){el.addEventListener("change",mintUpdateInfo);el.addEventListener("input",mintUpdateInfo)}});
-function renderMints(){var q=localQueue("trenchswap.mints.v1");var c=$("mintList");if(!c)return;c.innerHTML=q.length?q.map(function(m){return '<div class="kv"><span>'+escapeHtml(m.name||"")+' — $'+escapeHtml(m.ticker||"")+'</span><b style="text-align:right">'+escapeHtml(m.status||"")+'</b></div>'}).join(""):'<p class="fee">No launches prepared on this device yet.</p>'}
+function renderMints(){var q=localQueue("trenchswap.mints.v1");var c=$("mintList");if(!c)return;c.innerHTML=q.length?q.map(function(m){return '<div class="kv"><span>'+escapeHtml(m.name||"")+' — $'+escapeHtml(m.ticker||"")+'</span><b style="text-align:right">'+escapeHtml(m.status||"")+(m.trackStatus==="sent"?" · sent":m.trackStatus==="failed"?" · send failed":"")+'</b></div>'}).join(""):'<p class="fee">No launches prepared on this device yet.</p>'}
 var mcb=$("mintCreateBtn");if(mcb)mcb.addEventListener("click",function(){var st=$("mintCreateStatus");var name=$("mintName").value.trim(),ticker=$("mintTicker").value.trim().toUpperCase();if(!name){st.textContent="Add the token name first.";return}if(!ticker){st.textContent="Add the ticker first.";return}if(!mintImgData){st.textContent="Upload the token image first — a launch needs name, ticker and image.";return}var links={website:$("mintWebsite").value.trim(),x:$("mintX").value.trim(),telegram:$("mintTg").value.trim(),discord:$("mintDiscord").value.trim()};for(var k in links){if(!mintHttpsOk(links[k])){st.textContent="Links must start with https:// — check the "+k+" link.";return}}var pair=$("mintPair").value,tgt=$("mintTarget").value,buy=parseFloat($("mintFirstBuy").value)||0;if(buy>0&&buy<0.0001){st.textContent="Initial buy minimum is 0.0001 "+pair+" if set.";return}
  mintPackage={name:name,symbol:ticker,description:$("mintDesc").value.trim(),image:"IMAGE: uploaded by creator, re-encoded WebP — uploaded to permanent storage at launch",external_url:links.website||"",extensions:{website:links.website||"",twitter:links.x||"",telegram:links.telegram||"",discord:links.discord||""},launch:{platform:"TrenchSwap on Raydium LaunchLab",supply:1000000000,decimals:6,quotePair:pair,curveAllocationPct:79.31,graduationTarget:tgt+" "+pair,graduatesTo:"Raydium CPMM pool",creationFee:"0.05 SOL to TrenchSwap",initialBuy:buy>0?(String(buy)+" "+pair):"none"}};
  $("mintReviewBody").innerHTML='<div class="kv"><span>Token</span><b>'+escapeHtml(name)+' — $'+escapeHtml(ticker)+'</b></div>'
@@ -5399,10 +5491,14 @@ var mcb=$("mintCreateBtn");if(mcb)mcb.addEventListener("click",function(){var st
  +'<div class="kv"><span>Your initial buy</span><b>'+(buy>0?escapeHtml(String(buy))+" "+escapeHtml(pair):"none")+'</b></div>'
  +'<p class="fee" style="margin-top:8px">Metadata that will be locked at creation:</p><textarea rows="7" readonly style="font-family:JetBrains Mono,monospace;font-size:11px">'+escapeHtml(JSON.stringify(mintPackage,null,2))+'</textarea>';
  st.textContent="";$("mintPrepareStatus").textContent="";$("mintOverlay").classList.add("open")});
-var mpb=$("mintPrepareBtn");if(mpb)mpb.addEventListener("click",function(){if(!mintPackage)return;var q=localQueue("trenchswap.mints.v1");q.unshift({name:mintPackage.name,ticker:mintPackage.symbol,ts:Date.now(),status:"Launch package prepared — awaiting TrenchSwap LaunchLab platform registration",package:mintPackage});saveQueue("trenchswap.mints.v1",q);renderMints();var txt=JSON.stringify(mintPackage,null,2);function done(){$("mintPrepareStatus").innerHTML="<b>Launch package prepared and copied.</b> It is saved under “Tokens you minted” on the Mint tab. Nothing was minted and nothing was charged — the launch signs and goes on-chain the moment TrenchSwap's LaunchLab platform registration confirms.";toast("Launch package prepared — nothing minted yet")}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){$("mintPrepareStatus").textContent="Copy failed — your package is saved under “Tokens you minted” on the Mint tab."})}else{done()}});
+var mpb=$("mintPrepareBtn");if(mpb)mpb.addEventListener("click",function(){if(!mintPackage)return;var q=localQueue("trenchswap.mints.v1");var rec={name:mintPackage.name,ticker:mintPackage.symbol,ts:Date.now(),status:"Launch package prepared — awaiting TrenchSwap LaunchLab platform registration",package:mintPackage};
+    q.unshift(rec);saveQueue("trenchswap.mints.v1",q);renderMints();
+    tsTrackPost("mint",rec,function(ok){rec.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.mints.v1",q);renderMints();tsTrackNote("mintPrepareStatus",ok)});var txt=JSON.stringify(mintPackage,null,2);function done(){$("mintPrepareStatus").innerHTML="<b>Launch package prepared and copied.</b> It is saved under “Tokens you minted” on the Mint tab. Nothing was minted and nothing was charged — the launch signs and goes on-chain the moment TrenchSwap's LaunchLab platform registration confirms.";toast("Launch package prepared — nothing minted yet")}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){$("mintPrepareStatus").textContent="Copy failed — your package is saved under “Tokens you minted” on the Mint tab."})}else{done()}});
 renderMints();mintUpdateInfo();
-function renderRefs(){var q=localQueue("trenchswap.referrals.v1");var pend=q.filter(function(r){return r.status==="Approved"}).length*10000;$("refBalance").textContent=pend.toLocaleString()+" TRSW pending";var c=$("refList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.handle||"")+' — '+escapeHtml(r.link||"")+'</span><b>'+escapeHtml(r.status)+(r.reason?": "+escapeHtml(r.reason):"")+'</b></div>'}).join(""):'<p class="fee">No submissions yet.</p>'}
-$("refSubmitBtn").addEventListener("click",function(){var h=$("refHandle").value.trim(),l=$("refLink").value.trim();var st=$("refStatus");if(!h||l.indexOf("x.com/")<0&&l.indexOf("twitter.com/")<0){st.textContent="Add your X handle and a link to your X post (x.com). One submission per post.";return}var q=localQueue("trenchswap.referrals.v1");if(q.some(function(r){return r.link===l})){st.textContent="That post was already submitted — one submission per post.";return}q.unshift({handle:h,link:l,ts:Date.now(),status:"Pending hand review",reason:""});saveQueue("trenchswap.referrals.v1",q);renderRefs();st.textContent="Submitted for hand review. Approval is manual, with a reason either way. Approved rewards accrue as pending TRSW and pay out only after $TRSW launches."});
+function renderRefs(){var q=localQueue("trenchswap.referrals.v1");var pend=q.filter(function(r){return r.status==="Approved"}).length*10000;$("refBalance").textContent=pend.toLocaleString()+" TRSW pending";var c=$("refList");if(!c)return;c.innerHTML=q.length?q.map(function(r){return '<div class="kv"><span>'+escapeHtml(r.handle||"")+' — '+escapeHtml(r.link||"")+'</span><b>'+escapeHtml(r.status)+(r.trackStatus==="sent"?" · sent":r.trackStatus==="failed"?" · send failed":"")+(r.reason?": "+escapeHtml(r.reason):"")+'</b></div>'}).join(""):'<p class="fee">No submissions yet.</p>'}
+$("refSubmitBtn").addEventListener("click",function(){var h=$("refHandle").value.trim(),l=$("refLink").value.trim();var st=$("refStatus");if(!h||l.indexOf("x.com/")<0&&l.indexOf("twitter.com/")<0){st.textContent="Add your X handle and a link to your X post (x.com). One submission per post.";return}var q=localQueue("trenchswap.referrals.v1");if(q.some(function(r){return r.link===l})){st.textContent="That post was already submitted — one submission per post.";return}var rec={handle:h,link:l,ts:Date.now(),status:"Pending hand review",reason:""};
+    q.unshift(rec);saveQueue("trenchswap.referrals.v1",q);renderRefs();
+    tsTrackPost("referral",rec,function(ok){rec.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.referrals.v1",q);renderRefs();tsTrackNote("refStatus",ok)});st.textContent="Submitted for hand review. Approval is manual, with a reason either way. Approved rewards accrue as pending TRSW and pay out only after $TRSW launches."});
 renderRefs();
 /* --- Blog: bundled per release, newest first --- */
 var BLOG_POSTS=[
@@ -6002,6 +6098,7 @@ function claimVerified(sig){
  var c=state.claim;if(!c)return;
  c.verified=true;c.paySig=sig;clearInterval(state._claimTimer);
  var list=loadOpenClaims().filter(function(o){return !(o.mint===c.mint&&Number(o.amount)===Number(c.amount))});saveOpenClaims(list);
+    tsTrackPost("claim",{mint:c.mint,symbol:c.symbol||"",name:c.name||"",amount:Number(c.amount).toFixed(4),creatorWallet:c.creator||null,paymentTx:sig,submittedAt:new Date().toISOString()},function(){});
  $("claimStepPay").style.display="none";$("claimStepEditor").style.display="block";
  $("tpName").value=c.name||"";$("tpSubmitStatus").textContent="";
  toast("Claim payment verified — build your Token Page")}
@@ -6040,6 +6137,7 @@ $("tpSubmitBtn").addEventListener("click",function(){
  if(!validateTokenPage(payload.page)){st.textContent="The page did not pass validation — check the fields and links.";return}
  state.tpSubmission=payload;
  var q=localQueue("trenchswap.tokenPageQueue.v1");q.unshift(payload);saveQueue("trenchswap.tokenPageQueue.v1",q);
+    tsTrackPost("tokenpage",payload,function(ok){payload.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.tokenPageQueue.v1",q);tsTrackNote("tpSubmitStatus",ok)});
  $("tpCopyBtn").style.display="block";$("tpDownloadBtn").style.display="block";
  st.innerHTML="<b>Saved to the review queue on this device.</b> Use Copy or Download below to send the submission into the GitHub catcher review queue. It appears in the app only after the payment is re-verified in review, the page is approved, and it is committed — nothing auto-publishes."});
 $("tpCopyBtn").addEventListener("click",function(){

@@ -342,6 +342,10 @@ label.flabel{display:block; font-size:12px; font-weight:600; color:var(--muted);
   padding:11px 15px; font-size:13px; max-width:min(92vw,480px); opacity:0; pointer-events:none; transition:.22s; box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+/* Feedback prompt: small non-blocking invite, shown from the 3rd session. */
+.hx-fb-prompt{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(var(--nav-h) + 18px); z-index:81; background:var(--panel3); color:var(--text); border:1px solid var(--line2); border-radius:12px; padding:12px 14px; font-size:13px; max-width:min(92vw,480px); box-shadow:0 10px 30px rgba(0,0,0,.4); display:flex; gap:10px; align-items:center}
+.hx-fb-prompt[hidden]{display:none}
+.hx-fb-prompt p{margin:0; flex:1}
 
 /* ---------- checks / verdicts ---------- */
 .check{display:flex; gap:10px; padding:10px 0; border-bottom:1px solid var(--line); align-items:flex-start}
@@ -3074,6 +3078,24 @@ nav.tabbar .rail{touch-action:pan-x}
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Advisory only. HALEX-M AI explains and reads; it never trades, never signs, and never moves funds. A scan that cannot read says NOT READ — an unread check is never counted as a pass.</span></div>
 </section>
 
+<section class="tab" id="tab-feedback">
+  <div class="tabhead">
+    <h2>Feedback</h2>
+    <p>Tell us what works, what confuses you, or what you would like to see next in HALEX-M.</p>
+  </div>
+  <div class="card">
+    <p class="note" style="margin:0 0 12px">Your feedback goes to the HALEX team for review.</p>
+    <form id="hx-feedback-form">
+      <div class="field"><label class="flabel" for="hx-fb-name">Name</label><input id="hx-fb-name" name="name" type="text" required autocomplete="name" placeholder="Your name" /></div>
+      <div class="field"><label class="flabel" for="hx-fb-email">Email</label><input id="hx-fb-email" name="email" type="email" required autocomplete="email" placeholder="you@example.com" /></div>
+      <div class="field"><label class="flabel" for="hx-fb-message">Message</label><textarea id="hx-fb-message" name="message" rows="5" required placeholder="What should the HALEX team know?"></textarea></div>
+      <div style="display:flex; gap:8px; margin-top:10px; flex-wrap:wrap"><button class="btn primary" type="submit" id="hx-fb-submit">Send feedback</button></div>
+      <p class="note" id="hx-fb-status" style="margin-top:8px" aria-live="polite"></p>
+      <p class="note" style="margin-top:6px">Please do not include wallet addresses, seed phrases, private keys, PINs, or balances in your message. HALEX-M never asks for them here.</p>
+    </form>
+  </div>
+</section>
+
 <p class="footer-note">HALEX-M Sandbox · a test build. Live data: DexScreener + GeckoTerminal public APIs. Anything not yet wired says so on its face.</p>
 </main>
 
@@ -3105,6 +3127,12 @@ nav.tabbar .rail{touch-action:pan-x}
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="hx-fb-prompt" id="hx-fb-prompt" hidden>
+  <p>Enjoying HALEX-M? Share a quick note with the HALEX team.</p>
+  <button class="btn primary" type="button" id="hx-fb-prompt-open">Share feedback</button>
+  <button class="btn ghost" type="button" id="hx-fb-prompt-dismiss">Not now</button>
+</div>
 
 <!-- bottom nav -->
 <nav class="tabbar"><div class="rail" id="tabbar"></div></nav>
@@ -3179,7 +3207,8 @@ var TABS = [
   {id:"swap",   label:"Swap",    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h13M13.5 3.5L17 7l-3.5 3.5M20 17H7M10.5 13.5L7 17l3.5 3.5"/></svg>'},
   {id:"wallet", label:"Wallet",  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18M16 15h2"/></svg>'},
   {id:"referral", label:"Referral", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8s-4.5.5-4.5-2.5S12 3 12 8zm0 0s4.5.5 4.5-2.5S12 3 12 8z"/></svg>'},
-  {id:"halexmai", label:"HALEX-M AI", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'}
+  {id:"halexmai", label:"HALEX-M AI", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></svg>'},
+  {id:"feedback", label:"Feedback", icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>'}
 ];
 var currentTab = "home";
 /* Infinite looping tab rail: the tab set is rendered three times and the
@@ -16942,5 +16971,83 @@ initGate();
 })();
 </script>
 <script src="assets/halex-m-phase1-chrome.js"></script>
+<script>
+/* HALEX-M Feedback (2026-11-16). Greenfield form: Name, Email, Message.
+   Submit posts to FormSubmit (ajax endpoint) so it reaches Jeffrey's Gmail.
+   No wallet addresses, seeds, keys, PINs, or balances are collected here.
+   Session prompt: localStorage halexm.sessions.v1 counts page loads; from
+   the 3rd session a small prompt invites feedback. Dismiss or a successful
+   submit sets halexm.feedback.prompt.v1 and the prompt never shows again. */
+(function(){
+  var SESS_KEY = "halexm.sessions.v1";
+  var FLAG_KEY = "halexm.feedback.prompt.v1";
+  function getFlag(){ try{ return localStorage.getItem(FLAG_KEY) || ""; }catch(e){ return ""; } }
+  function setFlag(v){ try{ localStorage.setItem(FLAG_KEY, v); }catch(e){} }
+  function countSession(){
+    var n = 0;
+    try{
+      n = parseInt(localStorage.getItem(SESS_KEY) || "0", 10) || 0;
+      n += 1;
+      localStorage.setItem(SESS_KEY, String(n));
+    }catch(e){ n = 0; }
+    return n;
+  }
+  function promptEl(){ return document.getElementById("hx-fb-prompt"); }
+  function showPrompt(){
+    if(getFlag()) return;
+    var p = promptEl();
+    if(p) p.hidden = false;
+  }
+  function hidePrompt(){
+    var p = promptEl();
+    if(p) p.hidden = true;
+  }
+  var openBtn = document.getElementById("hx-fb-prompt-open");
+  if(openBtn) openBtn.addEventListener("click", function(){
+    hidePrompt();
+    if(typeof showTab === "function") showTab("feedback");
+  });
+  var dismissBtn = document.getElementById("hx-fb-prompt-dismiss");
+  if(dismissBtn) dismissBtn.addEventListener("click", function(){
+    hidePrompt();
+    setFlag("dismissed");
+  });
+  var form = document.getElementById("hx-feedback-form");
+  if(form) form.addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var nameEl = document.getElementById("hx-fb-name");
+    var emailEl = document.getElementById("hx-fb-email");
+    var msgEl = document.getElementById("hx-fb-message");
+    var statusEl = document.getElementById("hx-fb-status");
+    var btn = document.getElementById("hx-fb-submit");
+    var name = nameEl ? nameEl.value.trim() : "";
+    var email = emailEl ? emailEl.value.trim() : "";
+    var message = msgEl ? msgEl.value.trim() : "";
+    function say(m){ if(statusEl) statusEl.textContent = m; }
+    if(!name || !email || !message){ say("Please fill in your name, email, and message."); return; }
+    if(btn) btn.disabled = true;
+    fetch("https://formsubmit.co/ajax/sharpchefjeff@gmail.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ _subject: "HALEX-M feedback", name: name, email: email, message: message, _template: "table" })
+    }).then(function(r){
+      if(!r.ok) throw new Error("send failed");
+      return r.json().catch(function(){ return {}; });
+    }).then(function(){
+      if(btn) btn.disabled = false;
+      say("Sent for review.");
+      setFlag("submitted");
+      hidePrompt();
+      form.reset();
+      if(typeof toast === "function") toast("Sent for review.");
+    }, function(){
+      if(btn) btn.disabled = false;
+      say("Send failed, please try again.");
+    });
+  });
+  var sessions = countSession();
+  if(sessions >= 3) showPrompt();
+})();
+</script>
 </body>
 </html>
