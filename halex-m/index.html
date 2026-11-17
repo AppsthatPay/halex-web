@@ -3393,6 +3393,57 @@ var feedMode = "all";     /* "all" = every pool on the rail · "pump" = pump.fun
 var feedSeen = {};        /* chainId|address keys the stream has already shown */
 var feedPrimed = false;   /* true after the first non-empty render — later arrivals flash NEW */
 var hosePaused = false;
+/* ---------------- feed last-good cache + request sequencing (chain-switch
+   fix, 2026-11-17) ----
+   The old shape kept ONE list (feedTokens) for every chain: each chain
+   click replaced it with that chain's trending pools, so a failed revisit
+   (GeckoTerminal 429 on the shared 30 req/min bucket, burned by the
+   3-attempt retries plus the 30 s auto-refresh) left the previous
+   chain's tokens filtered out and the panel blank. Now every chain keeps
+   its own last-good list (memory + localStorage, same pattern as
+   hxChartCache): a failed fetch renders the saved list for THAT chain
+   with an honest stale stamp, and the panel is empty only when a chain
+   has genuinely never loaded. */
+var feedChainCache = {};   /* chain filter -> { tokens, savedAt } */
+var FEED_CACHE_KEY = "halexm.feedcache.v1";
+try{
+  var _fc = JSON.parse(localStorage.getItem(FEED_CACHE_KEY) || "{}");
+  if(_fc && typeof _fc === "object") feedChainCache = _fc;
+}catch(e){ feedChainCache = {}; }
+function feedCacheSave(){
+  try{
+    var keys = Object.keys(feedChainCache);
+    if(keys.length > 16){
+      keys.sort(function(a, b){ return (feedChainCache[a].savedAt || 0) - (feedChainCache[b].savedAt || 0); });
+      keys.slice(0, keys.length - 16).forEach(function(k){ delete feedChainCache[k]; });
+    }
+    localStorage.setItem(FEED_CACHE_KEY, JSON.stringify(feedChainCache));
+  }catch(e){}
+}
+function feedCacheGet(chain){
+  var e = feedChainCache[chain];
+  if(!e || !Array.isArray(e.tokens) || !e.tokens.length) return null;
+  return e;
+}
+function feedCachePut(chain, tokens){
+  if(!tokens || !tokens.length) return;
+  feedChainCache[chain] = { tokens: tokens.slice(0, 100), savedAt: Date.now() };
+  feedCacheSave();
+}
+function feedTimeStr(ts){
+  var d = new Date(ts);
+  return String(d.getHours()).padStart(2,"0") + ":" + String(d.getMinutes()).padStart(2,"0");
+}
+/* Request sequencing + rate-limit gate for the GeckoTerminal feed:
+   feedSeqByChain stamps each load so a late response for a chain the
+   user already left (or an older read of the same chain) cannot
+   overwrite the current view; feedInFlight dedupes identical in-flight
+   loads; feedPausedUntil stops ALL GeckoTerminal calls for 60 s after
+   a 429 instead of burning the shared bucket on retries. */
+var feedSeqByChain = {};
+var feedInFlight = {};
+var feedPausedUntil = 0;
+var pumpInFlight = false;
 /* GeckoTerminal network slug per canonical chain id, and the reverse
    canonicalisation for the slugs its token ids carry. */
 var GT_CHAIN_SLUG = { solana:"solana", base:"base", ethereum:"eth", bsc:"bsc", polygon:"polygon_pos", arbitrum:"arbitrum", avalanche:"avax", optimism:"optimism", sui:"sui", cronos:"cronos", fantom:"ftm", ink:"ink", thundercore:"thundercore", etc:"etc" };
@@ -3531,9 +3582,18 @@ function renderPump(){
    floor: raw, in birth order. Two pages ≈ the last couple of minutes of
    launches across Solana, of which pump.fun is the large majority. */
 function loadPumpFeed(){
+  /* Same 429 pause as the trending rail: the tape is two more
+     GeckoTerminal calls per tick, so it stays quiet while rate-limited,
+     and never overlaps itself on a slow connection. */
+  if(Date.now() < feedPausedUntil) return Promise.resolve(false);
+  if(pumpInFlight) return Promise.resolve(false);
+  pumpInFlight = true;
   var pages = [1, 2].map(function(n){
     return fetchJsonResilient("https://api.geckoterminal.com/api/v2/networks/solana/new_pools?include=base_token&page=" + n, { attempts: 2 })
-      .catch(function(){ return null; });
+      .catch(function(e){
+        if(/429/.test(String(e && e.message))) feedPausedUntil = Date.now() + 60000;
+        return null;
+      });
   });
   return Promise.all(pages).then(function(js){
     var seen = {}, out = [];
@@ -3550,7 +3610,7 @@ function loadPumpFeed(){
     renderHomeHose();
     updateHoseBar();
     return pumpTokens.length > 0;
-  });
+  }).then(function(ok){ pumpInFlight = false; return ok; }, function(e){ pumpInFlight = false; throw e; });
 }
 function renderProfiles(){
   var box = $("#apex1-profiles");
@@ -3621,44 +3681,112 @@ function fetchJsonResilient(url, opts){
   }
   return p;
 }
+/* Stale-but-honest render: the saved list for this chain, stamped with
+   the time it was saved. Never presented as live. */
+function feedStale(chain, cached, rateLimited){
+  setFeedPill("", "Feed: saved " + feedTimeStr(cached.savedAt));
+  $("#apex1-status").textContent = "Showing saved " + chain + " list from " + feedTimeStr(cached.savedAt) +
+    (rateLimited ? " — GeckoTerminal rate-limited us, retrying shortly." : " — the live feed did not answer.") +
+    " Tap the chain chip again for a fresh read.";
+  renderFeed();
+}
 function loadFeedCore(){
   var chain = feedChainFilter;
-  setFeedPill("", "Feed: connecting…");
-  $("#apex1-status").textContent = "Loading live feed…";
+  var mySeq = (feedSeqByChain[chain] = (feedSeqByChain[chain] || 0) + 1);
+  /* Rate-limited: fire nothing. Show the saved list for this chain (or
+     the honest empty state) and let the auto-refresh resume after the
+     pause instead of burning the shared bucket. */
+  if(Date.now() < feedPausedUntil){
+    var pausedCached = feedCacheGet(chain);
+    if(pausedCached){
+      feedTokens = pausedCached.tokens;
+      feedStale(chain, pausedCached, true);
+    } else {
+      feedTokens = [];
+      setFeedPill("err", "Feed: paused — rate limited");
+      $("#apex1-status").textContent = "GeckoTerminal rate-limited us — the saved list will show once this chain has loaded once; retry in a moment.";
+      renderFeed();
+    }
+    return Promise.resolve(false);
+  }
+  /* A load for this chain is already in flight — its response will fill
+     the cache. Firing a second one only burns the shared 30 req/min
+     bucket, which is what blanked revisits. */
+  if(feedInFlight[chain]) return Promise.resolve(false);
+  feedInFlight[chain] = true;
+  /* First paint from the saved list when the panel is empty (reload, or
+     a chain never shown this session): a revisit never starts blank. */
+  var paintedCache = null;
+  if(!feedTokens.length){
+    paintedCache = feedCacheGet(chain);
+    if(paintedCache){ feedTokens = paintedCache.tokens; renderFeed(); }
+  }
+  if(paintedCache){
+    setFeedPill("", "Feed: saved " + feedTimeStr(paintedCache.savedAt) + " · refreshing…");
+    $("#apex1-status").textContent = "Showing saved " + chain + " list from " + feedTimeStr(paintedCache.savedAt) + " — refreshing…";
+  } else {
+    setFeedPill("", "Feed: connecting…");
+    $("#apex1-status").textContent = "Loading live feed…";
+  }
   var url = chain === "all"
     ? "https://api.geckoterminal.com/api/v2/networks/trending_pools?include=base_token&page=1"
     : "https://api.geckoterminal.com/api/v2/networks/" + gtSlug(chain) + "/trending_pools?include=base_token&page=1";
   var gtOk = false, viaFallback = false;
-  var job = fetchJsonResilient(url);
+  /* Two attempts, not three: the cache-first render + the 429 pause make
+     a third attempt pure bucket burn on a chip click. */
+  var job = fetchJsonResilient(url, { attempts: 2 });
   if(chain === "all"){
     /* The cross-network trending endpoint is one shared, rate-limited
        bucket. If it will not answer, fall back to the Solana trending
        endpoint — a separate bucket — instead of declaring the whole
-       market feed down. */
-    job = job.catch(function(){
-      return fetchJsonResilient("https://api.geckoterminal.com/api/v2/networks/solana/trending_pools?include=base_token&page=1")
+       market feed down. A 429 on the first bucket is not retried on the
+       second: it would 429 too, and the pause below handles it. */
+    job = job.catch(function(e){
+      if(/429/.test(String(e && e.message))) throw e;
+      return fetchJsonResilient("https://api.geckoterminal.com/api/v2/networks/solana/trending_pools?include=base_token&page=1", { attempts: 2 })
         .then(function(j){ viaFallback = true; return j; });
     });
   }
   return job
     .then(function(j){
       if(!j || !Array.isArray(j.data)) throw new Error("gt: unexpected response shape");
-      feedTokens = mapGtPools(j);
+      /* Superseded: the user already switched chains, or a newer read of
+         this chain started. A late response must not overwrite the
+         current view. */
+      if(chain !== feedChainFilter || mySeq !== feedSeqByChain[chain]) return;
+      var toks = mapGtPools(j);
+      feedCachePut(chain, toks);
+      feedTokens = toks;
       setFeedPill("live", "Feed: live · " + clockStr(false));
       $("#apex1-status").textContent = "Live · GeckoTerminal " + (chain === "all" ? (viaFallback ? "Solana trending pools (the cross-network view did not answer)" : "trending pools · all chains") : chain + " trending pools") + " · " + feedTokens.length + " tokens · " + clockStr(true);
       gtOk = true;
       renderFeed();
     })
-    .catch(function(){
-      if(chain === "all"){
-        setFeedPill("err", "Feed: unreachable");
-        $("#apex1-status").textContent = "Live feed unreachable — retry in a moment.";
+    .catch(function(e){
+      /* A 429 is a global signal, even from a superseded request: pause
+         every GeckoTerminal call for 60 s. */
+      var hit429 = /429/.test(String(e && e.message));
+      if(hit429) feedPausedUntil = Date.now() + 60000;
+      if(chain !== feedChainFilter || mySeq !== feedSeqByChain[chain]) return;
+      /* Failed read: fall back to this chain's own saved list, stamped
+         stale — never a blank panel for a chain that loaded before.
+         Empty only when the chain has genuinely never loaded. */
+      var cached = feedCacheGet(chain);
+      if(cached){
+        feedTokens = cached.tokens;
+        feedStale(chain, cached, hit429);
       } else {
-        $("#apex1-status").textContent = "No live pools answered for " + chain + " — GeckoTerminal may not index this chain yet; nothing is filled in its place.";
+        feedTokens = [];
+        if(chain === "all"){
+          setFeedPill("err", "Feed: unreachable");
+          $("#apex1-status").textContent = "Live feed unreachable — retry in a moment.";
+        } else {
+          $("#apex1-status").textContent = "No live pools answered for " + chain + " — GeckoTerminal may not index this chain yet; nothing is filled in its place.";
+        }
+        renderFeed();
       }
-      renderFeed();
     })
-    .then(function(){ return gtOk; });
+    .then(function(){ delete feedInFlight[chain]; return gtOk; });
 }
 function loadProfiles(){
   return fetchJsonResilient("https://api.dexscreener.com/token-profiles/latest/v1")
@@ -3710,7 +3838,17 @@ $$("#apex1-filters .fchip").forEach(function(b){
     $$("#apex1-filters .fchip").forEach(function(x){ x.classList.remove("on"); });
     b.classList.add("on");
     feedChainFilter = b.getAttribute("data-chain");
-    $("#apex1-feed").innerHTML = '<div class="skel"></div><div class="skel"></div>';
+    /* Switch the panel at once from this chain's saved list — no blank
+       while the fresh read is in flight. Skeletons only when the chain
+       has genuinely never loaded. */
+    var cached = feedCacheGet(feedChainFilter);
+    if(cached){
+      feedTokens = cached.tokens;
+      renderFeed();
+    } else {
+      feedTokens = [];
+      $("#apex1-feed").innerHTML = '<div class="skel"></div><div class="skel"></div>';
+    }
     loadFeedCore();
   });
 });
