@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-17T16:42:00+00:00",
+  "drain_result": {
+    "draft_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/queue-lessons/tencentdb-numok-otas-20261117.md",
+    "id": "tencentdb-numok-otas-20261117",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-17T17:06:25.443027+00:00",
+  "gate_status": "done",
+  "id": "tencentdb-numok-otas-20261117",
+  "kind": "knowledge",
+  "license": "MIT; CC-BY-4.0",
+  "notes": "Gate: LICENSEs read verbatim via GitHub connector (TencentCloud/TencentDB-Agent-Memory MIT (C) 2026 Tencent SHA 86fd8a12...; dfg-ar/numok MIT (c) 2025 dfgonzalez SHA 7ee19828...; OpenTokenizedAssetStandard/whitepaper CC BY 4.0 SHA 39bb71fe...). READMEs read in full (TencentDB SHA 7ec506d6..., 24,139 chars; numok readme.md SHA 5088bf6b..., 4,897 chars; OTAS README SHA c50a71e8..., 3,198 chars; OTAS whitepaper.md 56,951 chars NOT read \u2014 patterns from README framing only). Verified vs claimed separated in proposal workspace/agent_patterns/proposals/tencentdb-numok-otas-20261117.md. HALEX gate stricter: no TencentDB TypeScript/Node services, no Memory Core/Hub/Proxy servers, no Docker, no SQLite/sqlite-vec store, no LLM provider or API-key wiring, no OpenClaw/Hermes/Claude Code adapters, no npm packages, no hosted backend; no Numok PHP/MySQL code, no Stripe keys/webhook secrets/handlers, no payment execution, no Docker, no dashboards; no OTAS whitepaper text beyond short attributed framing, no smart-contract/settlement code; no network/wallet/signing/payment/API-key code anywhere; no third-party branding. NOT adopted: TencentDB PersonaMem 48% -> 76% benchmark row and secondary 61.38% token / 51.52% pass-rate figures; Numok 'launch in minutes' / 'unlimited affiliates' / commission-type claims (secondary only; readme is install/config only); OTAS production-readiness or adoption claims (draft v0.2, body unread). CORRECTION: secondary review claimed TencentDB declares no recognised licence (NOASSERTION); the LICENSE file is MIT and governs. Numok readme clone URL (github.com/numok/numok.git) disagrees with canonical repo dfg-ar/numok \u2014 recorded, unresolved. Open leads carried forward: marcelcluj-bit sibling repos (Agro-Smart-2026, Global-Infrastructure) low priority; OpenPartner (MIT core per secondary) and Raider (MIT, valeriansaliou/raider) affiliate lane, LICENSEs unread; OTAS reference implementation repo (whitepaper repo is docs only); dualmint-addendum still pending; zinium5-web-fallback-lane pending gate.",
+  "priority": 75,
+  "source": "HALEX-AI intel intake run 2026-11-17 ~11:42 EST",
+  "spec": null,
+  "summary": "Layered memory distillation plus governed memory assets plus Stripe-webhook attribution triggers plus composable token-primitive standard: TencentDB pattern (four-layer distillation L0 raw / L1 atoms / L2 scenarios / L3 persona with capped layered retrieval; memory assets with ownership, version, status, visibility private/team/restricted/agent, Fixed Binding + ACL, per-agent loadouts, private-by-default sharing, cold-start save-file import as digests); Numok pattern (Stripe webhook event vocabulary checkout.session.completed / payment_intent.succeeded / invoice.paid as referral attribution triggers, admin/partner separation, default-credential rotation as an obligation); OTAS pattern (composable primitives at the seams \u2014 settlement / identity / compliance / asset metadata \u2014 as an interface layer, never a new ledger or token; draft cited as draft). Patterns restated in our own words; no code copied. Feeds HALEX-AI memory-record layering, governed-asset discipline, referral attribution vocabulary, and RWA description discipline."
+}
