@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-19T08:42:00+00:00",
+  "drain_result": {
+    "draft_path": "/home/hatch/workspace/halex-public-data/halex-ai/workspace/allen/halex-ai-selfbuild/work/queue-lessons/metaharness-semantica-rwasdk-20261119.md",
+    "id": "metaharness-semantica-rwasdk-20261119",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-19T08:49:19.417562+00:00",
+  "gate_status": "done",
+  "id": "metaharness-semantica-rwasdk-20261119",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-19: ruvnet/metaharness 753 stars (MIT, Copyright (c) 2026 RuvNet); semantica-agi/semantica 14,664 stars (MIT, Copyright (c) 2026 Semantica); chainstacklabs/rwa-sdk 8 stars (MIT, Copyright (c) 2026 Chainstack Labs). Proposal staged at workspace/agent_patterns/proposals/metaharness-semantica-rwasdk-20261119.md; NOTICE.md updated (2167 -> 2176 lines). MetaHarness 2,254-test badge and DRACO/SWE-bench/LiveCodeBench/BFCL/FRAMES/OpenEnv Arena figures are vendor-published runs, NOT verified; Semantica 118,000-node performance figures are vendor-measured, explicitly not test assertions, NOT verified; GHSA-j4mq auth advisory is a secondary report, NOT verified; rwa-sdk example price/TVL outputs are author-run examples, NOT verified live. MetaHarness is v0.1.x beta with credibility/doc reconciliation open; Semantica Rete matcher is explicitly simple and must be validated before any compliance gate; rwa-sdk covers five issuers by design, quiet since July 2026.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-19 ~03:42 EST",
+  "spec": null,
+  "summary": "Harness-factory + governed self-evolution patterns (MetaHarness: mint a custom branded harness from a repo, Darwin Mode sandbox-tested config mutation keeping only measurable improvements, governed autonomous variation with immutable capabilities/budgets/quarantine/rollback/signed receipts, contrastive development with evidence-backed proposers, cost routing and cheap-tier distillation, score-before-you-build report card, default-deny MCP with static-only scan, fail-closed sandbox posture, Ed25519 witness-signed releases with claim gates), deterministic decision-graph + provenance patterns (Semantica: context graph memory layer, decision intelligence with causal links/ancestry/precedent/impact/policy gates, W3C PROV-O provenance, conflict detection, deterministic Rete/Datalog/SPARQL reasoning, OWL/SHACL ontology governance, one shared context graph per team), and read-only RWA compliance-querying patterns (rwa-sdk: one typed interface across five issuers, unified can_transfer() over six compliance models, yield-pattern normalization, adapter validation at injection). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, performance, star-count, or deployment claims as fact."
+}
