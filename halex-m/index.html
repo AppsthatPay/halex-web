@@ -293,6 +293,8 @@ label.flabel{display:block; font-size:12px; font-weight:600; color:var(--muted);
 .deep-legend i{display:inline-block; width:9px; height:9px; transform:rotate(45deg); margin:0 4px 0 12px}
 .deep-narr{background:#101623; border:1px solid #3a2f10; border-radius:10px; padding:12px; margin-top:12px}
 .deep-narr .transcript{font-size:13.5px; line-height:1.55; color:#d5dbe8; margin-top:10px; white-space:pre-wrap}
+.deep-voice-row{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:10px}
+.deep-voice-row select{flex:1; min-width:180px; background:var(--panel); color:var(--text); border:1px solid var(--line2); border-radius:8px; padding:7px 9px; font-size:13px}
 .deep-unity{border:1px dashed var(--gold); border-radius:10px; padding:10px; font-size:12.5px; color:var(--gold); margin-top:12px}
 .deep-flow{width:100%; height:auto; display:block}
 .deep-flow .node{cursor:pointer}
@@ -1317,6 +1319,10 @@ nav.tabbar button span{letter-spacing:.015em}
 /* token / wallet planetarium (moon system) overlay */
 #moon-view{position:absolute; inset:0; z-index:40; background:radial-gradient(120% 120% at 50% 30%, #0d1524 0%, #04060b 78%); display:none}
 #moon-view.open{display:block}
+#unity-view{position:absolute; inset:0; z-index:41; background:#04060b; display:none}
+#unity-view.open{display:block}
+#unity-frame{position:absolute; inset:0; width:100%; height:100%; border:0; background:#04060b}
+#unity-close{pointer-events:auto; flex:none}
 #moon-canvas{position:absolute; inset:0; width:100%; height:100%; touch-action:none; cursor:grab}
 #moon-labels{position:absolute; inset:0; overflow:hidden; pointer-events:none}
 .moon-head{
@@ -2421,6 +2427,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <button class="btn on" id="chain-visit-active" aria-pressed="true">Visit Active system</button>
     <button class="btn" id="chain-visit-semi" aria-pressed="false">Visit Semi-Active system</button>
     <button class="btn" id="chain-visit-blackhole" aria-pressed="false">Visit Blackhole system</button>
+    <button class="btn" id="chain-unity-open" aria-pressed="false">Chaintarium Unity 3D</button>
     <span id="chain-live-status">Transfers shown are a model until a live feed is wired.</span>
   </div>
   <div id="chain-stage" class="tools-closed">
@@ -2466,6 +2473,14 @@ nav.tabbar .rail{touch-action:pan-x}
       <div id="moon-progress" hidden><i></i></div>
       <div class="moon-step" id="moon-step" hidden></div>
       <p class="moon-note" id="moon-note"></p>
+    </div>
+    <div id="unity-view" aria-label="Chaintarium Unity 3D">
+      <iframe id="unity-frame" title="Chaintarium Unity" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe>
+      <div class="moon-head">
+        <div class="mh-card"><b>Chaintarium Unity</b><span class="mh-sub">The production 3D cosmos rendered by the Unity build: the same three systems and 49 worlds from the same chain data. It boots on open; give it a few seconds.</span></div>
+        <button class="btn" id="unity-close">✕ Close</button>
+      </div>
+      <p class="moon-note">Unity build of Chaintarium. Closing this view returns to the web cosmos exactly where you left it.</p>
     </div>
     <div class="chain-screenbar" id="chain-screenbar" role="tablist" aria-label="Chaintarium screens">
       <button class="btn" id="chain-screen-back" hidden>← Overview</button>
@@ -3074,6 +3089,20 @@ nav.tabbar .rail{touch-action:pan-x}
       <button class="btn" id="halexmai-open-lab">Open the Skills Lab builder</button>
     </div>
     <p class="note" style="margin:9px 0 0">Chat history lives in this page only — never stored, sent, or filed. The SMT draft is the same one the Skills Lab and Trading chat write to.</p>
+  </div>
+  <div class="sec-title">Read-back voice — how the AI sounds</div>
+  <div class="card" id="voice-settings">
+    <p style="margin:0 0 10px; font-size:14px">The deep-chart AI reading talks out loud. Pick the voice it uses — the friendliest natural voice on this device is chosen for you, and your pick is remembered on this device only.</p>
+    <div class="field" style="margin:0 0 10px"><label class="flabel" for="voice-provider">Voice provider</label><select id="voice-provider" style="width:100%"><option value="device">On-device speech — free, private, no account</option><option value="elevenlabs">ElevenLabs — human-sounding cloud voice (needs a key)</option></select></div>
+    <div class="field" style="margin:0 0 10px"><label class="flabel" for="voice-sel">On-device voice</label><select id="voice-sel" class="deep-voice-sel" style="width:100%"></select></div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap"><button class="btn" id="voice-preview-btn" type="button">Preview this voice</button></div>
+    <div id="voice-eleven" hidden style="margin-top:12px">
+      <p class="note" style="margin:0 0 10px">ElevenLabs is a paid cloud voice service — it bills per character spoken, so check their current pricing before you switch it on. No key is saved here yet, no audio leaves this device, and nothing is charged while the provider stays on-device.</p>
+      <div class="field" style="margin:0 0 10px"><label class="flabel" for="voice-eleven-key">ElevenLabs API key</label><input id="voice-eleven-key" type="password" autocomplete="off" placeholder="Paste your key here — stored only on this device" style="width:100%"></div>
+      <div class="field" style="margin:0"><label class="flabel" for="voice-eleven-id">ElevenLabs voice ID</label><input id="voice-eleven-id" type="text" autocomplete="off" placeholder="The voice ID from your ElevenLabs account" style="width:100%"></div>
+      <p class="note" id="voice-eleven-state" style="margin-top:8px">Cloud voice is off — add a key and a voice ID to switch it on.</p>
+    </div>
+    <p class="note" id="voice-state" style="margin:10px 0 0"></p>
   </div>
   <div class="tag-note"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.5v.5"/></svg><span>Advisory only. HALEX-M AI explains and reads; it never trades, never signs, and never moves funds. A scan that cannot read says NOT READ — an unread check is never counted as a pass.</span></div>
 </section>
@@ -5192,22 +5221,245 @@ function hxDeepFlagList(t){
 }
 /* Narration: script is generated at render time from the computed chart
    data only. Facts only — no advice, no invented events. No auto-play. */
-function hxDeepListen(){
-  var st = document.getElementById("deep-narr-state"); var d = hxDeep.data;
-  if(!d || !d.script){ if(st) st.textContent = "No reading is ready yet."; return; }
+/* ---------------- Read-back voice (2026-11-17) ----------------
+   The old code spoke with whatever voice the browser chose by
+   default — usually the flat system voice, which is why the reading
+   sounded robotic. Phase 1 (free, no key): enumerate the device's
+   real speechSynthesis voices, rank natural ones first (Google
+   natural voices on Android, neural/natural voices on desktop),
+   remember the user's pick per device, and let them preview.
+   Phase 2 (staged, inert without a key): ElevenLabs cloud voice.
+   No key is stored, no audio leaves the device, nothing is charged
+   until the user adds a key and switches the provider on. */
+var HX_VOICE_KEY = "halexm.deepvoice";
+var HX_VOICE_PROVIDER_KEY = "halexm.deepvoice.provider";
+var HX_VOICE_ELEVEN_KEY = "halexm.deepvoice.elevenlabs.key";
+var HX_VOICE_ELEVEN_ID = "halexm.deepvoice.elevenlabs.voice";
+var hxVoiceCache = null;
+var hxVoiceAudio = null;
+var hxVoiceInitDone = false;
+function hxVoiceStore(k, v){ try{ if(v == null || v === "") localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){} }
+function hxVoiceRead(k){ try{ return localStorage.getItem(k) || ""; }catch(e){ return ""; } }
+function hxVoiceProvider(){ var p = hxVoiceRead(HX_VOICE_PROVIDER_KEY); return p === "elevenlabs" ? "elevenlabs" : "device"; }
+function hxVoiceElevenKey(){ return hxVoiceRead(HX_VOICE_ELEVEN_KEY); }
+function hxVoiceElevenId(){ return hxVoiceRead(HX_VOICE_ELEVEN_ID); }
+function hxVoiceId(v){ return (v && v.voiceURI) ? v.voiceURI : ((v ? v.name : "") + "|" + (v ? v.lang : "")); }
+function hxVoiceList(){
+  if(!("speechSynthesis" in window)) return [];
+  try{
+    var vs = speechSynthesis.getVoices() || [];
+    hxVoiceCache = vs;
+    return vs;
+  }catch(e){ return []; }
+}
+function hxVoiceScore(v){
+  var name = String(v.name || "").toLowerCase();
+  var lang = String(v.lang || "").toLowerCase();
+  var s = 0;
+  if(lang.indexOf("en-us") === 0) s += 30;
+  else if(lang.indexOf("en-gb") === 0) s += 25;
+  else if(lang.indexOf("en") === 0) s += 15;
+  else s -= 20;
+  if(/natural/.test(name)) s += 40;
+  if(/neural/.test(name)) s += 35;
+  if(/google us english|google uk english/.test(name)) s += 30;
+  if(/samantha|karen|moira|tessa|fiona|zira|aria|jenny|guy|daniel|veena/.test(name)) s += 20;
+  if(/microsoft/.test(name) && /online|natural|neural/.test(name)) s += 25;
+  if(/espeak|festival|compact/.test(name)) s -= 40;
+  if(v.localService) s += 5;
+  if(v.default) s -= 5;
+  return s;
+}
+function hxVoiceSorted(){
+  var vs = hxVoiceList().slice(0);
+  vs.sort(function(a, b){ return hxVoiceScore(b) - hxVoiceScore(a); });
+  return vs;
+}
+function hxVoicePick(){
+  var vs = hxVoiceSorted();
+  if(!vs.length) return null;
+  var want = hxVoiceRead(HX_VOICE_KEY);
+  var i;
+  if(want){
+    for(i = 0; i < vs.length; i++){ if(hxVoiceId(vs[i]) === want) return vs[i]; }
+  }
+  return vs[0];
+}
+function hxVoiceLabel(v){
+  return (v.name || "Voice") + " (" + (v.lang || "?") + ")" + (v.localService ? " · on-device" : "");
+}
+function hxVoiceFillSelects(){
+  var sels = document.querySelectorAll(".deep-voice-sel");
+  if(!sels.length) return;
+  var vs = hxVoiceSorted();
+  var pick = hxVoicePick();
+  var pickId = pick ? hxVoiceId(pick) : "";
+  var i, j;
+  for(i = 0; i < sels.length; i++){
+    var sel = sels[i];
+    var cur = sel.value || pickId;
+    sel.innerHTML = "";
+    if(!vs.length){
+      var o0 = document.createElement("option");
+      o0.textContent = "No voices on this device yet";
+      o0.disabled = true; o0.selected = true; o0.value = "";
+      sel.appendChild(o0);
+    } else {
+      for(j = 0; j < vs.length; j++){
+        var o = document.createElement("option");
+        o.value = hxVoiceId(vs[j]);
+        o.textContent = hxVoiceLabel(vs[j]);
+        if(hxVoiceId(vs[j]) === cur) o.selected = true;
+        sel.appendChild(o);
+      }
+    }
+    if(!sel.getAttribute("data-voice-wired")){
+      sel.setAttribute("data-voice-wired", "1");
+      sel.addEventListener("change", function(){
+        hxVoiceStore(HX_VOICE_KEY, this.value);
+        hxVoiceSyncSelects(this.value);
+        hxVoiceState();
+      });
+    }
+  }
+}
+function hxVoiceSyncSelects(id){
+  var sels = document.querySelectorAll(".deep-voice-sel");
+  for(var i = 0; i < sels.length; i++){ if(sels[i].value !== id) sels[i].value = id; }
+}
+function hxVoiceState(){
+  var el = document.getElementById("voice-state");
+  if(el){
+    var p = hxVoiceProvider();
+    var v = hxVoicePick();
+    if(p === "elevenlabs"){
+      el.textContent = hxVoiceElevenKey()
+        ? "Cloud voice on — ElevenLabs will read the chart. If it fails, the on-device voice takes over."
+        : "Cloud voice is selected but no ElevenLabs key is saved yet — readings still use the on-device voice until you add one.";
+    } else {
+      el.textContent = v ? ("Reading with " + hxVoiceLabel(v) + ".") : "No on-device voices found — the transcript below is the full reading.";
+    }
+  }
+  var ev = document.getElementById("voice-eleven-state");
+  if(ev) ev.textContent = hxVoiceElevenKey()
+    ? "Key saved on this device. Cloud voice is live when the provider above is set to ElevenLabs."
+    : "Cloud voice is off — add a key and a voice ID to switch it on. Nothing is charged while the provider stays on-device.";
+}
+function hxVoicePreview(){
+  var v = hxVoicePick();
+  var st = document.getElementById("deep-narr-state");
+  if(!("speechSynthesis" in window)){ if(st) st.textContent = "Audio is not available in this browser."; return; }
+  if(!v){ if(st) st.textContent = "No on-device voices found — the transcript below is the full reading."; return; }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  var u = new SpeechSynthesisUtterance("This is the voice that will read the chart for you.");
+  u.rate = 0.95;
+  if(v) u.voice = v;
+  u.onend = function(){ if(st) st.textContent = "Preview finished."; };
+  u.onerror = function(){ if(st) st.textContent = "Preview could not play in this browser."; };
+  try{
+    speechSynthesis.speak(u);
+    if(st) st.textContent = "Previewing " + (v ? hxVoiceLabel(v) : "the default voice") + "…";
+  }catch(e){ if(st) st.textContent = "Preview could not start in this browser."; }
+}
+function hxVoiceSpeakDevice(text, st){
   if(!("speechSynthesis" in window)){ if(st) st.textContent = "Audio is not available in this browser — the transcript below is the full reading."; return; }
-  try { speechSynthesis.cancel(); } catch(e){}
-  var u = new SpeechSynthesisUtterance(d.script); u.rate = 0.95;
+  var v = hxVoicePick();
+  if(!v){ if(st) st.textContent = "No on-device voices found — the transcript below is the full reading."; return; }
+  try{ speechSynthesis.cancel(); }catch(e){}
+  var u = new SpeechSynthesisUtterance(text);
+  u.rate = 0.95;
+  if(v) u.voice = v;
   hxDeep.utter = u;
   u.onend = function(){ if(st) st.textContent = "Finished."; };
   u.onerror = function(){ if(st) st.textContent = "Audio could not play in this browser — the transcript below is the full reading."; };
-  try {
+  try{
     speechSynthesis.speak(u);
-    if(st) st.textContent = "Playing… (on-device speech, generated from the chart data)";
-  } catch(e){ if(st) st.textContent = "Audio could not start in this browser — the transcript below is the full reading."; }
+    if(st) st.textContent = "Playing… (" + (v ? hxVoiceLabel(v) : "on-device speech") + ", generated from the chart data)";
+  }catch(e){ if(st) st.textContent = "Audio could not start in this browser — the transcript below is the full reading."; }
+}
+/* ElevenLabs cloud voice — STAGED, inert without a key. The settings
+   card collects the key + voice ID; nothing calls this unless the
+   provider is elevenlabs AND a key is saved. No account exists, no
+   key is stored, no audio leaves the device today. */
+function hxVoiceSpeakElevenLabs(text, st){
+  var key = hxVoiceElevenKey();
+  var vid = hxVoiceElevenId();
+  if(!key || !vid) return false;
+  if(hxVoiceAudio){ try{ hxVoiceAudio.pause(); }catch(e){} hxVoiceAudio = null; }
+  if(st) st.textContent = "Playing… (ElevenLabs cloud voice)";
+  try{
+    fetch("https://api.elevenlabs.io/v1/text-to-speech/" + encodeURIComponent(vid), {
+      method: "POST",
+      headers: { "xi-api-key": key, "Content-Type": "application/json", "Accept": "audio/mpeg" },
+      body: JSON.stringify({ text: text, model_id: "eleven_multilingual_v2", voice_settings: { stability: 0.5, similarity_boost: 0.75 } })
+    }).then(function(r){
+      if(!r.ok) throw new Error("ElevenLabs " + r.status);
+      return r.blob();
+    }).then(function(b){
+      var url = URL.createObjectURL(b);
+      var a = new Audio(url);
+      hxVoiceAudio = a;
+      a.onended = function(){ if(st) st.textContent = "Finished."; URL.revokeObjectURL(url); };
+      a.onerror = function(){ if(st) st.textContent = "Cloud voice could not play — falling back to the on-device voice."; hxVoiceSpeakDevice(text, st); };
+      a.play().catch(function(){ if(st) st.textContent = "Cloud voice could not play — falling back to the on-device voice."; hxVoiceSpeakDevice(text, st); });
+    }).catch(function(){
+      if(st) st.textContent = "Cloud voice failed — falling back to the on-device voice.";
+      hxVoiceSpeakDevice(text, st);
+    });
+  }catch(e){
+    if(st) st.textContent = "Cloud voice could not start — falling back to the on-device voice.";
+    hxVoiceSpeakDevice(text, st);
+  }
+  return true;
+}
+function hxVoiceInit(){
+  if(hxVoiceInitDone) return;
+  hxVoiceInitDone = true;
+  hxVoiceFillSelects();
+  if(("speechSynthesis" in window)){
+    if(typeof speechSynthesis.addEventListener === "function"){
+      speechSynthesis.addEventListener("voiceschanged", function(){ hxVoiceCache = null; hxVoiceFillSelects(); hxVoiceState(); });
+    } else {
+      speechSynthesis.onvoiceschanged = function(){ hxVoiceCache = null; hxVoiceFillSelects(); hxVoiceState(); };
+    }
+  }
+  var pv = document.getElementById("voice-provider");
+  if(pv){
+    pv.value = hxVoiceProvider();
+    pv.addEventListener("change", function(){
+      hxVoiceStore(HX_VOICE_PROVIDER_KEY, this.value);
+      var box = document.getElementById("voice-eleven");
+      if(box) box.hidden = this.value !== "elevenlabs";
+      hxVoiceState();
+    });
+    var box = document.getElementById("voice-eleven");
+    if(box) box.hidden = pv.value !== "elevenlabs";
+  }
+  var k = document.getElementById("voice-eleven-key");
+  if(k){
+    k.value = hxVoiceElevenKey();
+    k.addEventListener("change", function(){ hxVoiceStore(HX_VOICE_ELEVEN_KEY, this.value.trim()); hxVoiceState(); });
+  }
+  var vi = document.getElementById("voice-eleven-id");
+  if(vi){
+    vi.value = hxVoiceElevenId();
+    vi.addEventListener("change", function(){ hxVoiceStore(HX_VOICE_ELEVEN_ID, this.value.trim()); hxVoiceState(); });
+  }
+  var pb = document.getElementById("voice-preview-btn");
+  if(pb) pb.addEventListener("click", hxVoicePreview);
+  hxVoiceState();
+}
+function hxDeepListen(){
+  var st = document.getElementById("deep-narr-state"); var d = hxDeep.data;
+  if(!d || !d.script){ if(st) st.textContent = "No reading is ready yet."; return; }
+  if(hxVoiceProvider() === "elevenlabs" && hxVoiceElevenKey()){
+    if(hxVoiceSpeakElevenLabs(d.script, st)) return;
+  }
+  hxVoiceSpeakDevice(d.script, st);
 }
 function hxDeepStop(){
-  if(("speechSynthesis" in window)){ try { speechSynthesis.cancel(); } catch(e){} }
+  if(hxVoiceAudio){ try{ hxVoiceAudio.pause(); }catch(e){} hxVoiceAudio = null; }
+  if(("speechSynthesis" in window)){ try{ speechSynthesis.cancel(); }catch(e){} }
   var st = document.getElementById("deep-narr-state"); if(st) st.textContent = "Stopped.";
 }
 /* Deep-chart painter: fine price line over the full range, volume
@@ -5624,6 +5876,7 @@ function hxDeepRender(){
     '<div class="deep-pane" data-pane="suspicious" ' + (hxDeep.tab === "suspicious" ? "" : "hidden") + '>' + flagRows +
       '<p class="note" style="margin-top:8px">Flags come only from the APEX² gate results already in this app. A flag the app cannot verify is never shown.</p></div>' +
     '<div class="deep-narr" id="deep-narr"><b>AI reading — listen</b><div style="margin-top:8px"><button class="btn primary" id="deep-listen-btn">▶ Listen</button> <button class="btn" id="deep-stop-btn">■ Stop</button> <span class="note" id="deep-narr-state">Audio: on-device speech, generated from the chart data.</span></div>' +
+    '<div class="deep-voice-row"><label class="flabel" for="deep-voice-sel" style="margin:0">Voice</label><select id="deep-voice-sel" class="deep-voice-sel" aria-label="Read-back voice"></select><button class="btn" id="deep-voice-preview-btn" type="button">Preview voice</button></div>' +
     '<div class="transcript" id="deep-transcript">' + esc(d.script) + '</div></div>' +
     '<div class="deep-unity">Unity scene — in build. The animated 3D wallet-flow galaxy will load here when the Unity WebGL export is ready. The canvas chart and flow diagram above are the working version — not Unity.</div>' +
     '</div>';
@@ -5633,6 +5886,8 @@ function hxDeepRender(){
   });
   var lb = document.getElementById("deep-listen-btn"); if(lb) lb.addEventListener("click", hxDeepListen);
   var sb = document.getElementById("deep-stop-btn"); if(sb) sb.addEventListener("click", hxDeepStop);
+  hxVoiceFillSelects();
+  var pvb = document.getElementById("deep-voice-preview-btn"); if(pvb) pvb.addEventListener("click", hxVoicePreview);
   var cv = document.getElementById("deep-chart");
   if(cv){
     bindCrosshair(cv, { series: function(){ return (hxDeep.data && hxDeep.data.series) || []; }, setHover: function(i){ if(i !== hxDeep.hover){ hxDeep.hover = i; hxDeepPaint(); var rd = document.getElementById("deep-read"); if(rd && hxDeep.data && hxDeep.data.series) rd.textContent = chartReadText(hxDeep.data.series, i >= 0 ? i : hxDeep.data.series.length - 1, hxDeep.data.range); } } });
@@ -5679,6 +5934,8 @@ window.addEventListener("DOMContentLoaded", function(){
   hxDeep.open = true; hxDeep.addr = m[1];
   if(typeof openToken === "function") openToken("solana", m[1]);
 });
+/* Read-back voice: fill the voice pickers once the page is ready. */
+window.addEventListener("DOMContentLoaded", function(){ hxVoiceInit(); });
 var chartRszT = null;
 window.addEventListener("resize", function(){
   clearTimeout(chartRszT);
@@ -11927,6 +12184,33 @@ function startChaintarium(){
     showScreen(SCREEN_ORDER[n]);
   }
   window.chaintariumShowScreen = showScreen;
+  /* Chaintarium Unity player — the production Unity WebGL build wired
+     in as a stage overlay, the same pattern as the moon view above.
+     The iframe src is set on first open only, so the player downloads
+     and boots once, on demand, never on page load. The player folder
+     sits beside this page at chaintarium-unity/ (its own index.html,
+     Build/ and TemplateData/ straight from the Unity export). */
+  var unityFrameLoaded = false;
+  function openUnityView(){
+    var view = document.getElementById("unity-view"); if(!view) return;
+    var frame = document.getElementById("unity-frame");
+    if(frame && !unityFrameLoaded){ frame.src = "chaintarium-unity/index.html"; unityFrameLoaded = true; }
+    view.classList.add("open");
+    var btn = document.getElementById("chain-unity-open");
+    if(btn){ btn.classList.add("on"); btn.setAttribute("aria-pressed", "true"); }
+  }
+  function closeUnityView(){
+    var view = document.getElementById("unity-view"); if(!view) return;
+    view.classList.remove("open");
+    var btn = document.getElementById("chain-unity-open");
+    if(btn){ btn.classList.remove("on"); btn.setAttribute("aria-pressed", "false"); }
+  }
+  var unityOpenBtn = document.getElementById("chain-unity-open");
+  if(unityOpenBtn) unityOpenBtn.addEventListener("click", openUnityView);
+  var unityCloseBtn = document.getElementById("unity-close");
+  if(unityCloseBtn) unityCloseBtn.addEventListener("click", closeUnityView);
+  window.halexmOpenUnity = openUnityView;
+  window.halexmCloseUnity = closeUnityView;
   /* back-compat wrapper: the pre-3-system visit names map onto the
      screens ("main" → Active screen, "dying" → Blackhole screen) */
   function visitSystem(sys){ showScreen(sys === "main" ? "active" : (sys === "dying" ? "blackhole" : sys)); }
