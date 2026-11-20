@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-20T00:52:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/mempalace-hindsight-erc6960-20261119.md",
+    "id": "mempalace-hindsight-erc6960-20261119",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-20T00:51:35.914383+00:00",
+  "gate_status": "done",
+  "id": "mempalace-hindsight-erc6960-20261119",
+  "kind": "knowledge",
+  "license": "MIT + MIT + CC0-1.0",
+  "notes": "Licenses read verbatim, READMEs/EIP read in full 2026-11-19: MemPalace/mempalace 60,629 stars (MIT, Copyright (c) 2026 MemPalace Contributors); vectorize-io/hindsight 62,042 stars (MIT, Copyright (c) 2025 Vectorize AI, Inc.); ERC-6960 EIP Draft (CC0). CORRECTION: no standalone Aboudjem/ERC-6960 repo exists (GitHub search 0 results); the prior run's 'MIT per secondary' note was wrong \u2014 EIP text and interface are CC0, reference implementation lives in ethereum/EIPs assets; DLT.sol direct fetch returned empty, only the EIP's description of it was read. Proposal staged at workspace/agent_patterns/proposals/mempalace-hindsight-erc6960-20261119.md; NOTICE.md updated (2185 -> 2194 lines). MemPalace benchmark figures (LongMemEval R@5 96.6% raw / 98.4% hybrid held-out / >=99% reranked, LoCoMo, ConvoMem, MemBench) and 'best-benchmarked' tagline are vendor claims, NOT verified; Hindsight 'most accurate ever tested' / SOTA LongMemEval, benchmark chart figures, Virginia Tech Sanghani Center / Washington Post independent-reproduction claim, and 'Fortune 500 production use' are vendor claims, NOT verified; ERC-6960 is Draft (author: still in open PR #1614, not merged into the ERCs repo), not Final.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-19 ~19:42 EST",
+  "spec": null,
+  "summary": "Verbatim-first local memory with scoped namespaces (MemPalace: store exact text, never summarize on write; wings/rooms/drawers scopes; pluggable retrieval backend contract; temporal knowledge graph with validity windows; auto-save hooks and per-message verbatim sweep; canonical-source discipline) + learn-not-just-recall memory (Hindsight: retain/recall/reflect triad; world facts/experiences/observations/mental models; observations with evidence quotes and proof counts refined not overwritten; mental models as standing answers and pages as living wiki docs; decision models as typed judgments; isolated memory banks with disposition traits; memory defense scanning every retain for secrets/PII; multilingual-by-default storage) + dual-layer token classification (ERC-6960: mainId asset category, subId class/variation, two levels only; used as a classification scheme for RWA asset records, not a contract; allowance-race, reentrancy, batch-gas, and overflow notes as design checks). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, performance, star-count, or deployment claims as fact."
+}
