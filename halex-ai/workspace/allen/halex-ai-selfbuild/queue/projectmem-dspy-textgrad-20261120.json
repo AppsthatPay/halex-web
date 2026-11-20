@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-20T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/projectmem-dspy-textgrad-20261120.md",
+    "id": "projectmem-dspy-textgrad-20261120",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-20T08:49:33.776027+00:00",
+  "gate_status": "done",
+  "id": "projectmem-dspy-textgrad-20261120",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-20: riponcm/projectmem 875 stars (MIT, Copyright (c) 2026 projectmem contributors); stanfordnlp/dspy (MIT, Copyright (c) 2023 Stanford Future Data Systems); zou-group/textgrad (MIT, Copyright (c) 2024 Zou Group). Proposal staged at workspace/agent_patterns/proposals/projectmem-dspy-textgrad-20261120.md; NOTICE.md updated (2194 -> 2203 lines). TokenF (@tokenf/contracts): repo identity NOT confirmed \u2014 GitHub search returned 1,136 results with no TokenF RWA repo among top hits, direct reads of tokenf/contracts, TokenF/contracts, tokenf/tokenf, TokenF/TokenF all 404, npm page carries no repo link; MIT claim is npm-only, no LICENSE file read \u2014 stays an open lead, ideas only, no entry. projectmem 207-event dogfooding study, 8,974-to-3,458-token summary reduction, and comparison-table claims are vendor/author claims, NOT verified; DSPy paper results (GSM8K 33->82%, HotPotQA 32->46%) and secondary star/download figures NOT adopted; TextGrad Nature publication is not an efficacy guarantee and the repo is quiet since mid-2025 (stable-but-static). DSPy/TextGrad star counts not retrieved this run (connector search returned forks/wrappers only) \u2014 no count claimed.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-20 ~03:42 EST",
+  "spec": null,
+  "summary": "Typed event memory with a deterministic pre-commit judgment gate (projectmem: issues/attempts/fixes/decisions/notes as typed records with worked/failed/partial outcomes in an append-only log plus distilled files; a lookup warns before a commit repeats a recorded failed approach, citing the prior failure; memory never deleted, staleness flagged for human decision; bounded summaries; plan.md intent separate from the event log; project-scoped plain files) + declarative self-improving pipelines (DSPy: typed signatures composed into modules instead of hand-written prompts; optimizers compile prompts and few-shot demos against a defined metric; compiled prompts versioned/reviewed/sealed like code; bounded optimization, never recursive self-improvement) + textual-gradient optimization as a review discipline (TextGrad: natural-language critique flows backward, rewriting each variable against a stated loss; human-written evaluation instruction, recorded critique, proposed rewrite through the same promotion gate; no unattended self-rewriting, no weight training). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, performance, star-count, or deployment claims as fact."
+}
