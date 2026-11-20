@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-20T16:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/trace-agentmerge-omninode-20261120.md",
+    "id": "trace-agentmerge-omninode-20261120",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-20T16:48:43.022364+00:00",
+  "gate_status": "done",
+  "id": "trace-agentmerge-omninode-20261120",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-20: microsoft/Trace 765 stars (MIT, Copyright (c) Microsoft Corporation); GuanZhengPM/agent-merge 2 stars (MIT, Copyright (c) 2026 The agent-merge authors); Hilbras/OmniNode 2 stars (MIT, Copyright (c) 2026 Hilbras). Proposal staged at workspace/agent_patterns/proposals/trace-agentmerge-omninode-20261120.md; NOTICE.md updated (2203 -> 2212 lines). Trace/OptoPrime '2-3x faster than TextGrad' claim, 1.3x mapper speedup, and paper evaluation results are author claims, NOT verified; Trace is beta, research-only, human oversight required per its own README. agent-merge capabilities are README-described only (no test run performed here); repo six weeks old, 2 stars. OmniNode '24 phases shipped' / 'full audit PASS' / 'fixes every critical and high finding' are maintainer self-reports, audit document not read or verified; repo six weeks old, 2 stars. TokenF lead still NOT closed (repo identity unconfirmed, MIT claim npm-only, no LICENSE read) \u2014 stays open, ideas only, no entry.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-20 ~11:42 EST",
+  "spec": null,
+  "summary": "Execution traces as gradients (Trace/OptoPrime: workflow execution traces propagate as minimal subgraphs to interchangeable optimizers; only explicitly trainable nodes may change; feedback in scores, words, test failures, or compiler errors flows back; bounded review slices with a slower narrower fallback past the context bound; adopted as a review discipline, never unattended self-rewriting) + content-addressed DAG session history with test-gated patch selection (agent-merge: immutable events addressed by SHA-256 content hash, steps forming a DAG, branches as named pointers, context materialization as a pure function of traversal; only test-passing patches eligible, smallest passing patch wins, failed rounds feed back for repair, losing branches' annotations survive, deterministic bisect for fault localization) + provider-agnostic orchestration (OmniNode: providers behind one contract with normalized errors, zero vendor dependencies in the core; DAG pipeline scheduling; report aggregation preserving both sides of a conflict; memory contract with budgeted retrieval; atomic writes, corruption quarantine, never destroying a newer store file; inline-secret refusal). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, speed, audit, star-count, or deployment claims as fact."
+}
