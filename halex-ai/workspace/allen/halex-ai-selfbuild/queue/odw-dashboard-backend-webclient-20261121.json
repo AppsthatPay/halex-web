@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-21T16:52:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/odw-dashboard-backend-webclient-20261121.md",
+    "id": "odw-dashboard-backend-webclient-20261121",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-21T16:50:00.442911+00:00",
+  "gate_status": "done",
+  "id": "odw-dashboard-backend-webclient-20261121",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-21: OnDemandWorld/erc1400-dashboard 0 stars (MIT, Copyright (c) 2022 Mauricio Siu, LICENSE SHA f534c47b...); OnDemandWorld/sto-backend-api 0 stars NOT GATED (README says ISC but no LICENSE or LICENSE.md at repo root, both 404); OnDemandWorld/sto-web-client 0 stars NOT GATED (README says MIT and package.json says MIT, but no LICENSE or LICENSE.md at repo root, both 404). Proposal staged at workspace/agent_patterns/proposals/odw-dashboard-backend-webclient-20261121.md; NOTICE.md updated (2215 -> 2218 lines, erc1400-dashboard entry only). ODW AssetTech lead CLOSED: all four repos now read (contracts gated 2026-11-18 Apache 2.0; dashboard gated this run MIT; backend + web-client not gated, ideas only). hexo-ai/sia and NousResearch/hermes-agent re-verified as already gated (2026-11-18), no duplicate entries; secondary star figures conflict and are not adopted. TokenF lead still NOT closed (repo identity unconfirmed, MIT claim npm-only, no LICENSE read).",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-21 ~11:42 EST",
+  "spec": null,
+  "summary": "ERC-1400 admin-dashboard patterns (erc1400-dashboard, GATED: services-layer split keeping contract interactions apart from wallet utilities; partition-aware token operations grouped as one surface with admin functions visibly separated; env-var discipline with required-vs-optional named explicitly; migration discipline naming the successor stack when a dependency is unmaintained) + STO glue-layer backend and role-aware web client (sto-backend-api, sto-web-client, ideas only: controllers-services-repositories-databases layering with dual-database discipline; API docs generated from the same decorators as the routes; wallet login as message-signature-verify-link; role-aware views as a first-class UI split; one unified transaction hook with shared loading states; centralized error handling and validation; startup validation of required env vars; contract addresses as configuration). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no vendor figures, star counts, or deployment claims as fact."
+}
