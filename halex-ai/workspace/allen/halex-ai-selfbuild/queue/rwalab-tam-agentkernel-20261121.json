@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-21T08:45:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/rwalab-tam-agentkernel-20261121.md",
+    "id": "rwalab-tam-agentkernel-20261121",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-21T08:46:04.608804+00:00",
+  "gate_status": "done",
+  "id": "rwalab-tam-agentkernel-20261121",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-21: vbcherepanov/total-agent-memory 76 stars (MIT, Copyright (c) 2025-2026 Claude Total Memory Contributors, LICENSE SHA fda74a54...); hgwoops/rwa-lab-2026 0 stars / 22 forks NOT GATED (no LICENSE or LICENSE.md at repo root, both 404; only vendored OpenZeppelin licenses); oguzbilgic/agent-kernel 338 stars NOT GATED (README says MIT but no LICENSE file at repo root, 404). Proposal staged at workspace/agent_patterns/proposals/rwalab-tam-agentkernel-20261121.md; NOTICE.md updated (2212 -> 2215 lines, Total Agent Memory entry only). TAM benchmark figures (LongMemEval R@5 95.1%, LoCoMo 0.607, BEAM 0.448), JOSS-review measurements, '74 vs 79 MCP tools' counts, '100% local', '9 IDEs' NOT adopted. rwa-lab '7 passed; 0 failed' test claim and Sepolia claims NOT adopted (not run/verified here). agent-kernel kern-ai runtime claims NOT adopted (not read). CORRECTION: the 2026-11-20 ~19:42 run's 'ODW AssetTech ERC-1400 lead still NOT closed' line is stale \u2014 OnDemandWorld/erc1400-contracts was already gated 2026-11-18 (Apache 2.0, LICENSE SHA 261eeb9e, NOTICE.md line 2166); the lead is narrowed to the other three ODW repos (erc1400-dashboard, sto-backend-api, sto-web-client), licenses still unread. TokenF lead still NOT closed (repo identity unconfirmed, MIT claim npm-only, no LICENSE read).",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-21 ~03:42 EST",
+  "spec": null,
+  "summary": "Fused multi-signal recall with temporal fact supersession (Total Agent Memory: BM25 full-text + local dense embeddings + fuzzy matching + knowledge graph fused by reciprocal rank fusion, local cross-encoder rerank that can be switched off for deterministic reruns; facts with validity intervals, newer value of a single-valued fact retires the older one; default profile makes no LLM call on write or search so retrieval is measurable offline; one directory per store around a SQLite database; personal/department/company areas as separate stores behind one gateway with roles, authorship, audit trail) + RWA bridge invariants and decimal discipline (rwa-lab-2026, ideas only: on-chain token is a claim on an off-chain asset, not the asset; four planks custody/attestation/redemption/permissioning; escrow conservation and settlement solvency invariants; shares 18 / NAV 8 / cash 6 decimal scales with exact conversion; attestation as the reporter's only way to move NAV, with the FalseNav question always asked) + three-file markdown kernel (agent-kernel, ideas only: generic kernel file + identity file + knowledge index; mutable facts separate from append-only daily session logs; git repo as the memory store, plain markdown source of truth, rebuildable index). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, speed, audit, star-count, or deployment claims as fact."
+}
