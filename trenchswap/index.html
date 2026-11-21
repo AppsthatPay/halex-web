@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-ej4vSNF9kFEZD6Tbxbk2ClgUiYP7hHnwsR4eOK2b8wY='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-2A4XNGuc5DR300CkPmvZPq1xHcWphhGx6KaF1UIFC6U='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://tokens.jup.ag https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://*.github.io https://open.er-api.com https://api.frankfurter.app https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3445,10 +3445,30 @@ function assembleSwapWithFee(txB64,feeInfo){
    ensureStatic(feeInfo.feeAtaMint,false);
    ensureStatic(feeInfo.feeAtaProgram,false);
    ensureStatic(ATA_PROGRAM,false);
+   /* v43: Jupiter's own transaction already creates the output account
+      when it does not exist yet, and when the swapping wallet IS the fee
+      wallet, that account IS the fee account, so the create instruction
+      Jupiter carries is already the fee-account creation this step would
+      add. Inserting a second identical create makes verify-before-sign
+      count two and refuse a good transaction (Jeffrey's 2026-11-21 swap:
+      the same refusal text as the v42 bug, a different cause). Skip the
+      insert when the transaction already carries an identical
+      CreateIdempotent for the fee account (same funder, account, owner,
+      mint, system program and token program). For any other wallet the
+      output account and the fee account differ, so Jupiter's create never
+      matches and the insert proceeds as before. */
+   var wantCreateAccs=[0,findIdx(feeInfo.feeAccount),findIdx(FEE_WALLET),findIdx(feeInfo.feeAtaMint),findIdx(sysLabel),findIdx(feeInfo.feeAtaProgram)];
+   var createExists=false;
+   if(wantCreateAccs.every(function(x){return x>=0})){
+    for(var ceI=0;ceI<parsed.ixs.length;ceI++){var ceIx=parsed.ixs[ceI];
+     if(ceIx.prog===findIdx(ATA_PROGRAM)&&ceIx.data&&ceIx.data.length===1&&ceIx.data[0]===1&&ceIx.accs&&ceIx.accs.length===6){
+      var ceMatch=true;for(var ceA=0;ceA<6;ceA++)if(ceIx.accs[ceA]!==wantCreateAccs[ceA]){ceMatch=false;break}
+      if(ceMatch){createExists=true;break}}}}
+   if(!createExists){
    var createIx={prog:findIdx(ATA_PROGRAM),accs:[0,findIdx(feeInfo.feeAccount),findIdx(FEE_WALLET),findIdx(feeInfo.feeAtaMint),findIdx(sysLabel),findIdx(feeInfo.feeAtaProgram)],data:new Uint8Array([1])};
    var cbIdx=findIdx(COMPUTE_BUDGET_PROGRAM),insPos=0;
    while(insPos<parsed.ixs.length&&cbIdx>=0&&parsed.ixs[insPos].prog===cbIdx)insPos++;
-   parsed.ixs.splice(insPos,0,createIx)}
+   parsed.ixs.splice(insPos,0,createIx)}}
   function currentB64(){return u8ToB64(assembleTxBytes(parsed))}
   function checkSize(){
    var n=assembleTxBytes(parsed).length;
@@ -6693,9 +6713,6 @@ function verifyFirefoxSwap(txB64,ctx){
      if(inPre!=null&&inPost!=null){var spent=inPre-inPost;var wantIn=BigInt(String(q.inAmount));
       if(spent!==wantIn)return{ok:false,reason:"the transaction spends "+spent.toString()+" raw units of the input, not the quoted "+wantIn.toString()}}}
     if(feeAta&&q.platformFee&&q.platformFee.amount){
-     var feePost=simAmt(2),feePre=preAmt(2);
-     if(feePost==null)return{ok:false,reason:"the fee account is missing after simulation — the quoted fee is not paid"};
-     var feeGot=feePost-(feePre==null?0n:feePre);
      var quotedFee=BigInt(String(q.platformFee.amount));
      /* v36: the fee is a percentage of the ACTUAL output at execution time,
         so the simulated fee drifts a few lamports from the quoted fee as
@@ -6707,7 +6724,37 @@ function verifyFirefoxSwap(txB64,ctx){
         fee, far outside this band, and skimming inside it is worth at most
         a few lamports. */
      var feeTol=quotedFee*5n/1000n+2n;
-     if(feeGot<quotedFee-feeTol||feeGot>quotedFee+feeTol)return{ok:false,reason:"the fee in the transaction ("+feeGot.toString()+") does not match the quoted fee ("+String(q.platformFee.amount)+")"}}
+     /* v43: when the swapping wallet IS the fee wallet, the output account
+        and the fee account are the same account, so that account's balance
+        delta is the output PLUS the fee by construction, so the fee alone
+        cannot be read off the balance, and the comparison below
+        false-refuses every such swap (live-proven 2026-11-21 on the real
+        Jupiter transaction: fee measured 162153531049 against a quoted fee
+        of 16215353, the whole output read as the fee). For a token output
+        the merged total must instead cover minimum-out plus the quoted fee
+        (within the same drift tolerance): the output can slip at most the
+        enforced 0.5% below the quote, so the fee can fall at most 0.5%
+        below the quoted fee, and the output check above already bounds the
+        total at minimum-out. When the output is SOL the fee account is the
+        wSOL account the unwrap closes, so no post-simulation balance exists
+        to read. The fee rides inside the wallet's SOL delta, which the
+        SOL-output check above bounds, and this balance check is skipped.
+        Residual limit, stated plainly: in the merged case a fee diversion
+        inside Jupiter's opaque swap instruction is not balance-detectable
+        (the fee is 0.01% against the 0.5% slippage band); the fee is
+        verified at quote level (present, and the fee account is the fee
+        wallet's account, checked above) and the output is bounded below. */
+     var feeMerged=(feeAta===outAta);
+     if(feeMerged&&outIsSol){
+      /* fee rides inside the wallet SOL delta; nothing to read here */
+     }else{
+      var feePost=simAmt(2),feePre=preAmt(2);
+      if(feePost==null)return{ok:false,reason:"the fee account is missing after simulation — the quoted fee is not paid"};
+      var feeGot=feePost-(feePre==null?0n:feePre);
+      if(feeMerged){
+       if(feeGot<minOut+quotedFee-feeTol)return{ok:false,reason:"the fee wallet's merged output-plus-fee account received less than the quoted minimum out plus the quoted fee ("+feeGot.toString()+" < "+(minOut+quotedFee-feeTol).toString()+" raw units)"}
+      }else if(feeGot<quotedFee-feeTol||feeGot>quotedFee+feeTol){
+       return{ok:false,reason:"the fee in the transaction ("+feeGot.toString()+") does not match the quoted fee ("+String(q.platformFee.amount)+")"}}}}
     return{ok:true}})})})})}
 function verifyBeforeSign(txB64,feeAccount,seed,opts){
  var w=activeWalletObj();opts=opts||{};
