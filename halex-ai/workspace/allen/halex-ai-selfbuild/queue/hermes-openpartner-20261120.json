@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-21T00:50:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/hermes-openpartner-20261120.md",
+    "id": "hermes-openpartner-20261120",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-21T00:50:02.907473+00:00",
+  "gate_status": "done",
+  "id": "hermes-openpartner-20261120",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-20: NousResearch/hermes-agent 264,990 stars (MIT, Copyright (c) 2025 Nous Research); getcoherence/openpartner 15 stars (MIT, Copyright (c) 2026 OpenPartner contributors); jevinjojo/AssetGate 0 stars NOT GATED \u2014 README claims MIT but no LICENSE file exists at the repo root (LICENSE and LICENSE.md both 404; only vendored forge-std license files found), so its two-gate transfer / modular compliance / Merkle dividend ideas are restated in our own words only in the proposal, with no entry and no adoption claim. Proposal staged at workspace/agent_patterns/proposals/hermes-openpartner-assetgate-20261120.md; NOTICE.md updated (2212 -> 2218 lines). Hermes 'only agent with a built-in learning loop' / 'best personal AI agent' claims, learning-loop effectiveness, Honcho modelling, and FTS5 session search are README-described or secondary-site claims, NOT verified; star/fork counts not adopted as quality. OpenPartner attribution/payout behavior is README-described only (no test run performed here); hosted-tier prices read from README, not checked live. AssetGate deployment claims (BOT Chain Mainnet, verified contracts, live dashboard/API) NOT verified; README's own not-audited / not-production-ready disclaimer recorded. TokenF, ODW AssetTech ERC-1400, and hgwoops/rwa-lab-2026 leads still NOT closed \u2014 licenses unread or repo identity unconfirmed.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-20 ~19:42 EST",
+  "spec": null,
+  "summary": "Closed learning loop with self-authored skills (Hermes Agent: after a complex task of five or more tool calls, distill procedure, failure points, and verification steps into a portable skill document; refine the skill during later use; nudge the agent to persist knowledge between tasks; three-layer memory \u2014 persistent notes always loaded, full-text session search with summarization, skills library as procedural memory; dialectic user modelling from the tension between stated preference and observed correction; skills as portable files in an open format) + event-sourced partner attribution (OpenPartner: raw events immutable, attribution a re-derivable view; four attribution models \u2014 last_click, first_click, linear, position \u2014 selectable per campaign and re-derivable from the same raw tables; identity stitching with late-binding backlog attribution; two-tier commissions with a human review queue where reversal is a first-class operation; spec generated from validators with a drift test; round-trippable CSV/JSON/SQL export) + AssetGate ideas only (two-gate transfer shape, modular compliance checks, Merkle distribution with pull-payment claims, corporate controls as named audited operations \u2014 NOT gated, no LICENSE file). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no benchmark, speed, deployment, audit, star-count, or pricing claims as fact."
+}
