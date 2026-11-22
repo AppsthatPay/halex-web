@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-22T03:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/trustmint-suiassettok-reflio-20261122.md",
+    "id": "trustmint-suiassettok-reflio-20261122",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-22T08:48:01.618979+00:00",
+  "gate_status": "done",
+  "id": "trustmint-suiassettok-reflio-20261122",
+  "kind": "knowledge",
+  "license": "MIT / Apache-2.0",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-22: zeemscript/TrustMint 131 stars (MIT, Copyright (c) 2026 TrustMint contributors, LICENSE SHA ae5e52b0...); MystenLabs/asset-tokenization 12 stars (Apache 2.0, LICENSE SHA 261eeb9e... \u2014 standard Apache boilerplate, same SHA as ODW erc1400-contracts); hirajanwin/reflio NOT GATED (GPL-3.0, Copyright (c) 2022-present Reflio (McIlroy Limited), LICENSE SHA f6ce2ab7...; ideas only, restated in our own words). Proposal staged at workspace/agent_patterns/proposals/trustmint-suiassettok-reflio-20261122.md; NOTICE.md updated (2224 -> 2230 lines, TrustMint + MystenLabs asset-tokenization entries only; Reflio carries no NOTICE entry). Numok and hashgraph/asset-tokenization-studio already gated 2026-11-17, GenericAgent/Hermes Agent already gated \u2014 none re-dived. ViralPayouts lead stays open in the weak sense (repo 404 as named; AGPL attribution engine stays ideas-only even if it reappears). dualmint-addendum stays pending; zinium5-web-fallback-lane stays pending.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-22 ~03:42 EST",
+  "summary": "RWA compliance-engine patterns (TrustMint: verifier-recorded KYC registry, separate policy engine, per-asset-class templates, placeholder-data discipline, CI-is-not-audit) + Sui fractional-asset patterns (MystenLabs asset-tokenization: consistent whole-asset and per-fraction metadata, NFT-vs-FT shape distinction, supply-preserving burns, template package per asset) + referral-tracking ideas only (Reflio, GPL-3.0: EU consent before cookie, cross-sub-domain tracking, one central affiliate dashboard, small embed discipline). Patterns restated in our own words; no code, no branding, no vendor figures adopted."
+}
