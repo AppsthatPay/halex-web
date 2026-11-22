@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-22T11:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/resimind-kickrail-20261122.md",
+    "id": "resimind-kickrail-20261122",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-22T17:18:19.430447+00:00",
+  "gate_status": "done",
+  "id": "resimind-kickrail-20261122",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-22: 1105216375-alt/ResiMind 293 stars (MIT, Copyright (c) 2026 1105216375-alt and ResiMind contributors, LICENSE SHA df15b7ac...; README SHA b5b0cba9..., 42,311 chars); Railhq/Kickrail NOT GATED (AGPL-3.0, LICENSE SHA fe6b9036...; README SHA 196a559d...; ideas only, restated in our own words). Proposal staged at workspace/agent_patterns/proposals/resimind-kickrail-20261122.md; NOTICE.md updated (2230 -> 2233 lines, ResiMind entry only; Kickrail carries no NOTICE entry). PromoterKit: no repo found, MIT claim is a marketing-page claim only \u2014 no patterns, no entry, lead open. ViralPayouts repo STILL 404 (third confirmation) \u2014 AGPL attribution engine stays ideas-only even if it reappears. ERC-6960 already covered 2026-11-19 (EIP CC0, no standalone repo) \u2014 not re-dived. Hermes Agent already gated 2026-11-18 \u2014 not re-dived. dualmint-addendum stays pending; zinium5-web-fallback-lane stays pending.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-22 ~11:42 EST",
+  "summary": "Verified-memory agent patterns (ResiMind: verifier-before-commit, residual feedback, admission-gated rule memory with re-verification on reload and per-application re-check, revocation by statement digest, distrust-the-stored-verdict, persistence split between durable Python API and process-local MCP, local-first zero-model-call routes, bounded budgets, scope honesty) + Stripe-affiliate attribution ideas only (Kickrail, AGPL-3.0: server-reported signup as the reliable path, idempotent commissions, refund-proportional clawback, self-referral flag-and-hold, hold period plus minimum, internal-token backend gate, env-var prefix discipline). Patterns restated in our own words; no code, no branding, no vendor figures adopted."
+}
