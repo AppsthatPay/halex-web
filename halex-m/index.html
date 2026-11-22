@@ -1615,18 +1615,18 @@ nav.tabbar .rail{touch-action:pan-x}
 <body>
 
 <!-- ================= SUPPORTER GATE ================= -->
-<div class="launch lock" id="gate" role="dialog" aria-modal="true" aria-label="HALEX-M supporter entry">
+<div class="launch lock" id="gate" role="dialog" aria-modal="true" aria-label="HALEX-M supporter donation">
   <div class="launch-card lock-card">
     <div class="launch-brand">
       <svg class="halex-mark" width="54" height="54" viewBox="0 0 48 48" role="img" aria-label="HALEX gold shield"><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 C13.4 42.3 6.5 34.5 6.5 23 V8 Z" fill="#e79a10"/><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 Z" fill="#cf8507"/><path d="M24 2.5 L41.5 8 L24 13.2 L6.5 8 Z" fill="#ffc94d"/><path d="M24 2.5 L41.5 8 V23 C41.5 34.5 34.6 42.3 24 45.8 C13.4 42.3 6.5 34.5 6.5 23 V8 Z" fill="none" stroke="rgba(96,58,0,.6)" stroke-width="1.1"/><path d="M6.5 8 L24 13.2 L41.5 8" fill="none" stroke="rgba(96,58,0,.45)" stroke-width="1"/><path d="M17 16.5 V31.5 M31 16.5 V31.5 M17 24 H31" fill="none" stroke="#150e02" stroke-width="4.4"/></svg>
       <div>
         <b>HALEX-M</b>
-        <span>Supporter entry</span>
+        <span>Support the build</span>
       </div>
       <span class="chip warn" style="margin-left:auto">SANDBOX</span>
     </div>
-    <h2>Supporters keep this build open</h2>
-    <p class="launch-lede">HALEX-M is supporter-funded. Send a one-time donation of <b>0.05–0.5 SOL</b> to the project wallet below, then enter the wallet you sent it from — HALEX-M reads the chain itself and unlocks the moment it finds your donation.</p>
+    <h2>Support HALEX-M</h2>
+    <p class="launch-lede">HALEX-M is open to everyone — no donation is needed to use the app. If you would like to support the build, send a one-time donation of <b>0.05–0.5 SOL</b> to the project wallet below, then enter the wallet you sent it from — HALEX-M reads the chain itself and confirms it here.</p>
     <div class="preview-panel" id="gate-preview" hidden>
       <div class="pp-top">
         <b>Founding 25 — free preview</b>
@@ -1644,14 +1644,8 @@ nav.tabbar .rail{touch-action:pan-x}
         <button class="btn block preview-enter" id="f25-claim">Claim my spot</button>
         <p class="launch-note">Sandbox preview — this copy does not collect signups and sends nothing anywhere. Claim your Founding 25 spot on the live HALEX-M site, where your email is your sign-in.</p>
       </div>
-      <div class="field" style="margin:14px 0 10px">
-        <label class="flabel" for="f25-launch-email">Founding member? Enter your email to launch</label>
-        <input id="f25-launch-email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false" />
-      </div>
-      <button class="btn block" id="f25-enter">Launch with my email</button>
-      <p class="launch-note" id="f25-status" hidden></p>
     </div>
-    <p class="launch-note" id="gate-preview-over" hidden>The 24-hour Founding 25 preview has ended — thanks for taking a look. Entry is back to the supporter donation below.</p>
+    <p class="launch-note" id="gate-preview-over" hidden>The 24-hour Founding 25 preview has ended — thanks for taking a look. HALEX-M is open to everyone now: create or import a wallet to get started.</p>
     <div class="gate-addr">
       <span class="gate-addr-label">Project wallet · Solana</span>
       <div class="gate-addr-row">
@@ -1667,6 +1661,7 @@ nav.tabbar .rail{touch-action:pan-x}
     <p class="launch-note" id="gate-status" hidden></p>
     <p class="launch-fine">Any single donation between 0.05 and 0.5 SOL counts — less or more doesn't unlock. The check runs in your browser against the public Solana chain: no account, no sign-up, and nothing is stored. Already sent it? Enter the sending wallet above and check.</p>
     <p class="launch-note">Prefer to sign up first, or paying through X instead? The <a href="../access/">HALEX Access Portal</a> takes sign-ups for HALEX-M and Nishido — email sign-in plus proof of transaction.</p>
+    <button class="btn ghost block" id="gate-close" style="margin-top:16px">Close — back to HALEX-M</button>
   </div>
 </div>
 
@@ -1682,21 +1677,21 @@ nav.tabbar .rail{touch-action:pan-x}
       <span class="chip warn" style="margin-left:auto">SANDBOX</span>
     </div>
 
-    <!-- step 1: ask for an agent connection -->
-    <div class="launch-screen on" id="launch-agent">
-      <h2>Connect an agent</h2>
-      <p class="launch-lede">HALEX-M is built to run with an AI agent wired in through the agent socket — the agent operates the app while the app itself stays hardwired. Before anything loads, HALEX-M asks for that connection.</p>
-      <div class="agent-status">
-        <span class="agent-dot" aria-hidden="true"></span>
-        <div>
-          <b>Agent status: not connected</b>
-          <p>No agent is connected to this build. Nothing is operating HALEX-M on your behalf right now.</p>
-        </div>
+    <!-- step 1: wallet onboarding -->
+    <div class="launch-screen on" id="launch-onboard">
+      <h2>Set up your HALEX wallet</h2>
+      <p class="launch-lede">HALEX-M starts with your own wallet. One recovery phrase, generated on this device, derives your addresses on Solana, Ethereum, Base and more. Keys are encrypted under a PIN or passphrase and never leave this device — HALEX cannot recover them.</p>
+      <button class="btn primary block" id="onboard-create">Create a wallet</button>
+      <button class="btn block" id="onboard-import" style="margin-top:10px">Import a wallet</button>
+      <button class="btn ghost block" id="onboard-skip" style="margin-top:9px">Continue without a wallet</button>
+      <p class="launch-fine">No wallet yet? The Wallet tab always offers the same choice — create or import — whenever you are ready.</p>
+      <div class="field" style="margin:14px 0 10px">
+        <label class="flabel" for="f25-launch-email">Founding 25 member? Enter your email to launch</label>
+        <input id="f25-launch-email" type="email" placeholder="you@example.com" autocomplete="email" spellcheck="false" />
       </div>
-      <button class="btn primary block" id="agent-connect">Connect an agent</button>
-      <p class="launch-note" id="agent-note" hidden></p>
-      <button class="btn ghost block" id="agent-skip" style="margin-top:9px">Continue without an agent</button>
-      <p class="launch-fine">Continuing without an agent is fine — every tab still opens and the live market data works. Agent-operated features stay off, and any panel that needs an agent says so on its face.</p>
+      <button class="btn block" id="f25-enter">Launch with my email</button>
+      <p class="launch-note" id="f25-status" hidden></p>
+      <p class="launch-note" style="margin-top:14px">Want to support HALEX-M? <a href="#" id="onboard-support">Open the supporter donation</a> — optional, never required to use the app.</p>
     </div>
 
     <!-- step 2: dependency loading -->
@@ -16123,17 +16118,20 @@ function lkCopyText(text, doneMsg){
 
 
 /* ---------------- supporter gate ----------------
-   Entry is supporter-funded: a one-time donation of 0.05–0.5 SOL to
-   the project wallet unlocks this session. The visitor enters the
-   wallet they are sending from; the check reads the public Solana
-   chain in this browser (through the shared solRpc helper) and
-   unlocks when a transfer from that wallet to the project address
-   lands inside the band. The owner entry is compared as a SHA-256
-   digest only — the plaintext never appears in this page. Donation
-   and owner unlocks are in-memory only: nothing is stored, a reload
-   asks again. The one exception is a Founding 25 email claim, which
-   is saved on the visitor's own device so a returning claimant
-   skips the gate (see the Founding 25 section below). */
+   The supporter donation is OPTIONAL now, not the entry: HALEX-M
+   opens with wallet onboarding (see the launch flow below) and the
+   gate stays available as a non-blocking support panel. A visitor
+   can still send a one-time donation of 0.05–0.5 SOL to the project
+   wallet and confirm it here: they enter the wallet they are
+   sending from; the check reads the public Solana chain in this
+   browser (through the shared solRpc helper) and confirms when a
+   transfer from that wallet to the project address lands inside
+   the band. The owner entry is compared as a SHA-256 digest only —
+   the plaintext never appears in this page. Donation and owner
+   confirmations are in-memory only: nothing is stored. The one
+   exception is a Founding 25 email claim, which is saved on the
+   visitor's own device so a returning claimant is recognised as a
+   founding member (see the Founding 25 section below). */
 var GATE_PROJECT_ADDR = "utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww";
 var GATE_MIN_LAMPORTS = 50000000;   /* 0.05 SOL */
 var GATE_MAX_LAMPORTS = 500000000;  /* 0.5 SOL */
@@ -16145,9 +16143,9 @@ var gateState = { unlocked:false, method:"" };
    Fri Oct 23, 2026 at 8:00 PM EDT and closes exactly 24 hours later.
    While it runs, the gate carries the Founding 25 panel beside the
    donation (see the constants right below). When the window closes
-   the panel removes itself and the gate is donation-only again.
-   In-memory only, like every unlock here: nothing is stored, a
-   reload asks at the gate again. */
+   the panel removes itself; the gate stays available as a support
+   panel. In-memory only, like every unlock here: nothing is stored,
+   a reload opens onboarding again. */
 var PREVIEW_START_MS = Date.UTC(2026, 9, 24, 0, 0, 0); /* Fri Oct 23, 2026 · 8:00 PM EDT */
 var PREVIEW_END_MS = PREVIEW_START_MS + 24 * 60 * 60 * 1000;
 
@@ -16235,7 +16233,7 @@ function f25TryEmail(){
   if(!val){ f25Status("Enter the email you signed up with."); return; }
   var hit = FOUNDING25_EMAILS.some(function(e){ return String(e).trim().toLowerCase() === val; });
   if(hit){ gateUnlock("founding"); return; }
-  f25Status("That email isn't on the founding list yet. New signups are added in batches — if you just claimed a spot, give it a little time and try again. The supporter donation below works right now, too.");
+  f25Status("That email isn't on the founding list yet. New signups are added in batches — if you just claimed a spot, give it a little time and try again. The supporter donation works right now, too — open it from the link below.");
 }
 
 function sha256Hex(str){
@@ -16298,6 +16296,15 @@ function gateFindDonation(fromAddr){
   });
 }
 function initGate(){
+  /* Onboarding is the entry now: the supporter gate stays available as a
+     non-blocking support panel, opened from the launch screen. */
+  var g0 = $("#gate");
+  if(g0) g0.classList.add("hidden");
+  var gc = $("#gate-close");
+  if(gc) gc.addEventListener("click", function(){
+    var gg = $("#gate");
+    if(gg) gg.classList.add("hidden");
+  });
   $("#f25-claim").addEventListener("click", f25ClaimSpot);
   $("#f25-email").addEventListener("keydown", function(e){
     if(e.key === "Enter"){ e.preventDefault(); f25ClaimSpot(); }
@@ -16345,10 +16352,10 @@ function initGate(){
 
 /* ---------------- launch flow ----------------
    First run, every open (in-memory only — nothing is stored).
-   Step 1 asks for an agent connection and reports the truth:
-   this sandbox has no agent endpoint, so nothing ever connects here.
+   Step 1 is wallet onboarding: create a wallet in-app, import one,
+   or continue without a wallet. Agent pairing lives in the Sockets
+   tab; the launch screen no longer asks for an agent.
    Step 2 runs the real dependency checks and degrades honestly. */
-var AGENT_ENDPOINT = null; /* no agent endpoint is configured in this sandbox build */
 var DEPS = [
   { id:"gt",     label:"Market data feed", sub:"GeckoTerminal trending pools — the live APEX¹ firehose" },
   { id:"ds",     label:"Feed sources",     sub:"DexScreener token profiles — fresh launches and pair data" },
@@ -16418,33 +16425,41 @@ function runDeps(){
 }
 function initLaunch(){
   document.body.classList.add("launching");
-  $("#agent-connect").addEventListener("click", function(){
-    var btn = this;
-    btn.disabled = true;
-    btn.textContent = "Looking for an agent endpoint…";
-    setTimeout(function(){
-      btn.disabled = false;
-      btn.textContent = "Connect an agent";
-      if(!AGENT_ENDPOINT){
-        var note = $("#agent-note");
-        note.hidden = false;
-        note.textContent = "No agent endpoint is configured in this sandbox build, so nothing connected — the status above stays “not connected”, and it will keep saying so. In the production build this button opens the agent-socket pairing.";
-        toast("No agent connected — no endpoint is configured in this sandbox.");
-      }
-    }, 800);
-  });
-  $("#agent-skip").addEventListener("click", function(){
-    $("#launch-agent").classList.remove("on");
-    $("#launch-deps").classList.add("on");
+  var onboardScreen = $("#launch-onboard"), depsScreen = $("#launch-deps");
+  function showDeps(){
+    if(onboardScreen) onboardScreen.classList.remove("on");
+    if(depsScreen) depsScreen.classList.add("on");
     $("#launch-step-label").textContent = "First run · Step 2 of 2";
     runDeps();
-  });
-  $("#launch-enter").addEventListener("click", function(){
+  }
+  function enterApp(){
     $("#launch").classList.add("hidden");
     document.body.classList.remove("launching");
     window.scrollTo({ top: 0 });
+  }
+  function openWalletTab(which){
+    enterApp();
+    try{ showTab("wallet"); }catch(e){}
+    /* Wallet tab renders create/import first; open the matching panel. */
+    setTimeout(function(){
+      try{
+        var btn = $(which === "import" ? "#hxw-show-import" : "#hxw-show-create");
+        if(btn) btn.click();
+      }catch(e){}
+    }, 60);
+  }
+  $("#onboard-create").addEventListener("click", function(){ openWalletTab("create"); });
+  $("#onboard-import").addEventListener("click", function(){ openWalletTab("import"); });
+  $("#onboard-skip").addEventListener("click", showDeps);
+  $("#onboard-support").addEventListener("click", function(e){
+    if(e) e.preventDefault();
+    var g = $("#gate");
+    if(g) g.classList.remove("hidden");
   });
+  $("#launch-enter").addEventListener("click", enterApp);
   $("#dep-retry").addEventListener("click", function(){ runDeps(); });
+  /* Returning wallet on this device: skip onboarding, go straight to the checks. */
+  if(typeof hxwVaultPresent !== "undefined" && hxwVaultPresent) showDeps();
 }
 
 /* ---------------- boot ---------------- */
