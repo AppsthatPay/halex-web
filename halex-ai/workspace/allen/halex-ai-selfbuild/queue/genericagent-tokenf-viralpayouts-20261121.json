@@ -1,0 +1,18 @@
+{
+  "created": "2026-11-21T19:42:00-05:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/genericagent-tokenf-viralpayouts-20261121.md",
+    "id": "genericagent-tokenf-viralpayouts-20261121",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-22T00:48:27.587150+00:00",
+  "gate_status": "done",
+  "id": "genericagent-tokenf-viralpayouts-20261121",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "Licenses read verbatim, READMEs read in full 2026-11-21: lsdefine/GenericAgent 14,441 stars (MIT, Copyright (c) 2025 lsdefine, LICENSE SHA 641d051c...); dl-tokenf/contracts 77 stars (MIT, Copyright (c) 2025 Distributed Lab, LICENSE.md SHA 5c70f39b...); viralpayouts/viralpayouts NOT GATED (repo 404 on connector + direct page fetch, no LICENSE file read; page claims tracking MIT / attribution AGPL-3.0 / MCP MIT are secondary only). Proposal staged at workspace/agent_patterns/proposals/genericagent-tokenf-viralpayouts-20261121.md; NOTICE.md updated (2218 -> 2224 lines, GenericAgent + TokenF entries only). TokenF lead CLOSED: repo identity confirmed (dl-tokenf/contracts, found via code search for TokenF.sol), npm MIT claim verified against a real LICENSE.md file. OpenPartner already gated 2026-11-17 and Weferral is the known-stale pattern source \u2014 neither re-dived, no duplicate entries.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-21 ~19:42 EST",
+  "spec": null,
+  "summary": "Self-evolving skill-tree agent patterns (GenericAgent, GATED: skill crystallization of solved tasks into indexed replayable Skills; layered memory with on-demand loading; minimal atomic toolset with one named bounded escape hatch; Morphling absorption triage \u2014 goal + tests first, then call/rewrite/discard per component; Goal-mode time budgets with no early delivery) + RWA tokenization framework patterns (TokenF, GATED: one upgradeable Diamond core with pluggable compliance modules; compliance as declared check/hook configuration; subsystem scope card \u2014 is / is not / not yet) + affiliate attribution (ViralPayouts, ideas only: publish the rules that decide who earns; split money-deciding parts from money-moving parts; attribution order, two-tier overrides, rate rules, sub-IDs, coupons, postbacks as written rules). Patterns restated in our own words only; no code, no network/wallet/signing/payment/API-key code, no vendor figures, star counts, benchmark results, or deployment claims as fact."
+}
