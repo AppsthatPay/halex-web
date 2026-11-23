@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-23T08:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/selfimprove-loops-20261123.md",
+    "id": "selfimprove-loops-20261123",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-23T08:47:58.643578+00:00",
+  "gate_status": "done",
+  "id": "selfimprove-loops-20261123",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (YiShu5/claude-skills SHA a76c9dbd..., LeoStehlik/autoresearch-loop SHA 48fc6a03..., Git-on-my-level/self-improving-agent-ecosystem SHA c92e086f...); SKILL.md/README read in full (YiShu5 SKILL.md 4,676 chars; autoresearch-loop README 4,110 chars; ecosystem README 6,892 chars). NOT gated this run: EricTechPro/loop-maker (MIT claimed by secondary page only, LICENSE unread); self-learning-skills/solo/agent-md/ccglass (owners unidentified in the OSS Hunter excerpt); PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked this run); ContextOS repo 404. No benchmark/efficacy figures adopted for any of the three (none published in the files read). AVO-lite installer and ANX receipt publisher excluded outright (external code fetch / network).",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-23 ~03:42 EST",
+  "summary": "Low-noise learning-cache discipline (YiShu5 self-improving-agent, MIT), bounded modify-verify-decide loop (LeoStehlik autoresearch-loop, MIT), and evaluator-driven ecosystem discipline (Git-on-my-level self-improving-agent-ecosystem, MIT) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/selfimprove-loops-20261123.md; NOTICE.md entries added (2242 -> 2251 lines)."
+}
