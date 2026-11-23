@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9xtcax7O5H81Nh9qR2D4vnCeFKo8cKZkblcl7/jeZ3g='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-RNKsfKNppm7o31JKhehHpCwsGwm9//2xQ5Ri11Qc0Vc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -829,7 +829,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
   <div class="info-pane card" id="info-claim">
     <h3 style="margin:0">Claim a Token — build its Token Page</h3>
     <p class="sub" style="margin-top:6px">Token creators: prove the token is yours and build its Token Page — the dressed-up page with your description, links and info boxes that everyone sees when they tap your token. Unclaimed tokens keep the plain report.</p>
-    <p class="sub">How it works: the app generates one <b>random USDC amount</b>. You send exactly that amount, from the wallet that created the token, to the TrenchSwap fee wallet. That one payment is the whole fee — it is the proof and the payment in one. The app verifies the payment on-chain (exact amount, creator wallet, inside a 30-minute window), and only then does the page editor open. Wrong wallet or wrong amount: no page, and there is no automatic refund — contact support and it is decided case by case.</p>
+    <p class="sub">Token Page price: <b>$100 for 1 year</b> for a token claimed from elsewhere — <b>$25 for 1 year</b> when the token was minted on TrenchSwap (discounted option at mint). To claim, prove the token is yours: send a proof payment of exactly <b>100 USDC</b>, from the wallet that created the token, to the TrenchSwap fee wallet. The app verifies the payment on-chain (exact amount, creator wallet, inside a 30-minute window), and only then does the page editor open. The $100 payment is the whole claim-plus-page price. Wrong wallet or wrong amount: no page, and there is no automatic refund — contact support and it is decided case by case.</p>
     <label class="lbl">TOKEN MINT ADDRESS</label><input type="text" id="claimMintInput" style="margin-top:5px" placeholder="Solana mint address…" autocomplete="off">
     <button class="btn" id="claimStartBtn" type="button" style="margin-top:12px">Start a claim</button>
     <div id="claimStartStatus" class="fee" style="margin-top:8px">You can also open any token and tap “Claim this token” in its report.</div>
@@ -839,14 +839,13 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
     <h3 style="margin:0">Trench Information</h3>
     <p class="sub" style="margin-top:6px">Sample of the Home banner section — the Top Trench is the large square under the small top banner on Home:</p>
     <div class="top-trench" style="margin-top:8px"><div><span class="live">TOP TRENCH · 300 × 300</span><h3>Sample Top Trench banner</h3><p>Your graphic, edited by TrenchSwap to fit this theme and space. Text stays inside the square at phone width.</p></div><span class="chip grad" style="align-self:flex-start">SAMPLE</span></div>
-    <div class="kv" style="margin-top:10px"><span>300 × 300 space — one day</span><b>100 USDC</b></div>
-    <div class="kv"><span>Highlighted — one week</span><b>300 USDC</b></div>
+    <div class="kv" style="margin-top:10px"><span>300 × 300 space — one day</span><b>10 USDC</b></div>
     <p class="fee" style="margin-top:8px">Renters upload their graphics; TrenchSwap edits them to fit the theme before anything runs. This is the only place in the app where banner spaces are offered.</p>
     <h3 style="margin:16px 0 0">Top Trench 300 × 300 — rental application</h3>
-    <p class="sub" style="margin-top:6px">100 USDC for one day, or highlighted for one week for 300 USDC. Upload your graphic description / link below — TrenchSwap edits supplied graphics to fit the theme. Nothing runs until the application is reviewed and payment is confirmed.</p>
+    <p class="sub" style="margin-top:6px">10 USDC for one day. Upload your graphic description / link below — TrenchSwap edits supplied graphics to fit the theme. Nothing runs until the application is reviewed and payment is confirmed.</p>
     <label class="lbl">TOKEN / PROJECT NAME</label><input type="text" id="rentName" style="margin-top:5px" autocomplete="off">
     <label class="lbl" style="display:block;margin-top:10px">TOKEN MINT (OPTIONAL)</label><input type="text" id="rentMint" style="margin-top:5px" autocomplete="off">
-    <label class="lbl" style="display:block;margin-top:10px">RENTAL</label><select id="rentPlan" style="margin-top:5px"><option value="day">One day — 100 USDC</option><option value="week">Highlighted one week — 300 USDC</option></select>
+    <label class="lbl" style="display:block;margin-top:10px">RENTAL</label><select id="rentPlan" style="margin-top:5px"><option value="day">One day — 10 USDC</option></select>
     <label class="lbl" style="display:block;margin-top:10px">GRAPHIC — LINK OR DESCRIPTION</label><textarea id="rentGraphic" rows="3" style="margin-top:5px" placeholder="Link to your graphic, or describe it…"></textarea>
     <label class="lbl" style="display:block;margin-top:10px">CONTACT (X HANDLE)</label><input type="text" id="rentContact" style="margin-top:5px" placeholder="@handle" autocomplete="off">
     <label class="lbl" style="display:block;margin-top:10px">PAYER WALLET (PAID THE RENTAL)</label><input type="text" id="rentPayer" style="margin-top:5px" placeholder="Solana wallet address that paid" autocomplete="off">
@@ -898,6 +897,10 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
     <h3 style="margin:0">My Trenchouts: share tags that pay you back</h3>
     <p class="fee" style="margin-top:6px">Every share card, token link and call-out you send carries your personal Trenchout tag. When someone lands from your link and creates a wallet or swaps in TrenchSwap, that activity is credited to your tag. Your reward rate starts at 0.0975% of credited volume and steps up with every $1,000 of credited volume, through 0.9%, capped at 1%. Rewards build up as a claimable balance, funded two ways: half of the swap fees your tag actually generates comes back to you as a fee share, and the TRSW top-up lifts your total to the ladder rate from the 1,500,000 TRSW referrals and giveaways bucket, claimable in TRSW after $TRSW launches.</p>
     <div class="kv" style="margin-top:10px"><span>Your Trenchout tag</span><b class="mono" id="toTag">…</b></div>
+    <label class="lbl" style="display:block;margin-top:10px">YOUR X HANDLE (FOR SHARE CARDS — OPTIONAL)</label>
+    <input type="text" id="toHandle" style="margin-top:5px" placeholder="@handle" autocomplete="off">
+    <button class="btn secondary" id="toHandleSaveBtn" type="button" style="margin-top:8px">Save handle for share cards</button>
+    <div id="toHandleStatus" class="fee" style="margin-top:6px">Share cards outside the app are attributed to this handle plus your code — never your wallet address, never your wallet nickname. It is the same X handle as in your Profile (Wallet tab). Leave it blank and the card shows only your code.</div>
     <div class="sharelinkrow"><span>Your share link</span><span class="mono" id="toLink"></span><button class="btn small secondary" id="toCopyBtn" type="button">Copy</button></div>
     <div class="kv"><span>Shares sent from this device</span><b id="toShares">0</b></div>
     <div class="kv"><span>Wallets credited to your tag</span><b id="toAccounts">0</b></div>
@@ -1011,8 +1014,8 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <p class="sub" style="margin-top:8px">Prove this token is yours and build its Token Page — the dressed-up page everyone sees when they tap the token. Unclaimed tokens keep the plain report.</p>
 <div id="claimTokenHead" style="margin-top:8px"></div>
 <div id="claimStepStart">
-  <p class="sub" style="margin-top:10px">The proof is one payment: the app generates a <b>random USDC amount</b>. Send exactly that amount, from the wallet that created this token, to the TrenchSwap fee wallet. That payment is the whole fee — proof and payment in one, no separate page fee. Nothing unlocks until the payment verifies on-chain: exact amount, creator wallet, inside the expiry window. Wrong wallet or wrong amount means no page, and there is no automatic refund.</p>
-  <button class="btn" id="claimGenBtn" type="button" style="margin-top:10px">Generate my claim amount</button>
+  <p class="sub" style="margin-top:10px">Token Page price: <b>$100 for 1 year</b> for a token claimed from elsewhere — <b>$25 for 1 year</b> when the token was minted on TrenchSwap (discounted option at mint). To claim, prove this token is yours: send a proof payment of exactly <b>100 USDC</b>, from the wallet that created this token, to the TrenchSwap fee wallet. Nothing unlocks until the payment verifies on-chain: exact amount, creator wallet, inside the expiry window. The $100 payment is the whole claim-plus-page price. Wrong wallet or wrong amount means no page, and there is no automatic refund.</p>
+  <button class="btn" id="claimGenBtn" type="button" style="margin-top:10px">Start my claim</button>
   <div id="claimStartMsg" class="fee" style="margin-top:8px"></div>
 </div>
 <div id="claimStepPay" style="display:none">
@@ -1028,7 +1031,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
   <div id="claimPayStatus" class="fee" style="margin-top:8px">The app watches the chain for your payment — or tap the button to check now.</div>
 </div>
 <div id="claimStepEditor" style="display:none">
-  <div class="notice" style="margin-top:10px"><b>Payment verified.</b> Build the Token Page below. It goes to the review queue when you submit — it appears in the app only after review, approval and commit. Nothing auto-publishes.</div>
+  <div class="notice" id="claimEditorNotice" style="margin-top:10px"><b>Payment verified.</b> Build the Token Page below. It goes to the review queue when you submit — it appears in the app only after review, approval and commit. Nothing auto-publishes.</div>
   <label class="lbl" style="display:block;margin-top:12px">TOKEN NAME</label><input type="text" id="tpName" maxlength="60" style="margin-top:5px" autocomplete="off">
   <label class="lbl" style="display:block;margin-top:12px">SHORT DESCRIPTION — ONE OR TWO LINES</label><input type="text" id="tpShort" maxlength="160" style="margin-top:5px" autocomplete="off">
   <label class="lbl" style="display:block;margin-top:12px">ABOUT</label><textarea id="tpAbout" rows="4" maxlength="1200" style="margin-top:5px" placeholder="What the token is and what it does…"></textarea>
@@ -2349,7 +2352,7 @@ function fetchWalletHistory(force){
 /* ---------- multi-wallet: import / create / switch (all local, session memory only) ---------- */
 var BIP39_WORDS="abandon ability able about above absent absorb abstract absurd abuse access accident account accuse achieve acid acoustic acquire across act action actor actress actual adapt add addict address adjust admit adult advance advice aerobic affair afford afraid again age agent agree ahead aim air airport aisle alarm album alcohol alert alien all alley allow almost alone alpha already also alter always amateur amazing among amount amused analyst anchor ancient anger angle angry animal ankle announce annual another answer antenna antique anxiety any apart apology appear apple approve april arch arctic area arena argue arm armed armor army around arrange arrest arrive arrow art artefact artist artwork ask aspect assault asset assist assume asthma athlete atom attack attend attitude attract auction audit august aunt author auto autumn average avocado avoid awake aware away awesome awful awkward axis baby bachelor bacon badge bag balance balcony ball bamboo banana banner bar barely bargain barrel base basic basket battle beach bean beauty because become beef before begin behave behind believe below belt bench benefit best betray better between beyond bicycle bid bike bind biology bird birth bitter black blade blame blanket blast bleak bless blind blood blossom blouse blue blur blush board boat body boil bomb bone bonus book boost border boring borrow boss bottom bounce box boy bracket brain brand brass brave bread breeze brick bridge brief bright bring brisk broccoli broken bronze broom brother brown brush bubble buddy budget buffalo build bulb bulk bullet bundle bunker burden burger burst bus business busy butter buyer buzz cabbage cabin cable cactus cage cake call calm camera camp can canal cancel candy cannon canoe canvas canyon capable capital captain car carbon card cargo carpet carry cart case cash casino castle casual cat catalog catch category cattle caught cause caution cave ceiling celery cement census century cereal certain chair chalk champion change chaos chapter charge chase chat cheap check cheese chef cherry chest chicken chief child chimney choice choose chronic chuckle chunk churn cigar cinnamon circle citizen city civil claim clap clarify claw clay clean clerk clever click client cliff climb clinic clip clock clog close cloth cloud clown club clump cluster clutch coach coast coconut code coffee coil coin collect color column combine come comfort comic common company concert conduct confirm congress connect consider control convince cook cool copper copy coral core corn correct cost cotton couch country couple course cousin cover coyote crack cradle craft cram crane crash crater crawl crazy cream credit creek crew cricket crime crisp critic crop cross crouch crowd crucial cruel cruise crumble crunch crush cry crystal cube culture cup cupboard curious current curtain curve cushion custom cute cycle dad damage damp dance danger daring dash daughter dawn day deal debate debris decade december decide decline decorate decrease deer defense define defy degree delay deliver demand demise denial dentist deny depart depend deposit depth deputy derive describe desert design desk despair destroy detail detect develop device devote diagram dial diamond diary dice diesel diet differ digital dignity dilemma dinner dinosaur direct dirt disagree discover disease dish dismiss disorder display distance divert divide divorce dizzy doctor document dog doll dolphin domain donate donkey donor door dose double dove draft dragon drama drastic draw dream dress drift drill drink drip drive drop drum dry duck dumb dune during dust dutch duty dwarf dynamic eager eagle early earn earth easily east easy echo ecology economy edge edit educate effort egg eight either elbow elder electric elegant element elephant elevator elite else embark embody embrace emerge emotion employ empower empty enable enact end endless endorse enemy energy enforce engage engine enhance enjoy enlist enough enrich enroll ensure enter entire entry envelope episode equal equip era erase erode erosion error erupt escape essay essence estate eternal ethics evidence evil evoke evolve exact example excess exchange excite exclude excuse execute exercise exhaust exhibit exile exist exit exotic expand expect expire explain expose express extend extra eye eyebrow fabric face faculty fade faint faith fall false fame family famous fan fancy fantasy farm fashion fat fatal father fatigue fault favorite feature february federal fee feed feel female fence festival fetch fever few fiber fiction field figure file film filter final find fine finger finish fire firm first fiscal fish fit fitness fix flag flame flash flat flavor flee flight flip float flock floor flower fluid flush fly foam focus fog foil fold follow food foot force forest forget fork fortune forum forward fossil foster found fox fragile frame frequent fresh friend fringe frog front frost frown frozen fruit fuel fun funny furnace fury future gadget gain galaxy gallery game gap garage garbage garden garlic garment gas gasp gate gather gauge gaze general genius genre gentle genuine gesture ghost giant gift giggle ginger giraffe girl give glad glance glare glass glide glimpse globe gloom glory glove glow glue goat goddess gold good goose gorilla gospel gossip govern gown grab grace grain grant grape grass gravity great green grid grief grit grocery group grow grunt guard guess guide guilt guitar gun gym habit hair half hammer hamster hand happy harbor hard harsh harvest hat have hawk hazard head health heart heavy hedgehog height hello helmet help hen hero hidden high hill hint hip hire history hobby hockey hold hole holiday hollow home honey hood hope horn horror horse hospital host hotel hour hover hub huge human humble humor hundred hungry hunt hurdle hurry hurt husband hybrid ice icon idea identify idle ignore ill illegal illness image imitate immense immune impact impose improve impulse inch include income increase index indicate indoor industry infant inflict inform inhale inherit initial inject injury inmate inner innocent input inquiry insane insect inside inspire install intact interest into invest invite involve iron island isolate issue item ivory jacket jaguar jar jazz jealous jeans jelly jewel job join joke journey joy judge juice jump jungle junior junk just kangaroo keen keep ketchup key kick kid kidney kind kingdom kiss kit kitchen kite kitten kiwi knee knife knock know lab label labor ladder lady lake lamp language laptop large later latin laugh laundry lava law lawn lawsuit layer lazy leader leaf learn leave lecture left leg legal legend leisure lemon lend length lens leopard lesson letter level liar liberty library license life lift light like limb limit link lion liquid list little live lizard load loan lobster local lock logic lonely long loop lottery loud lounge love loyal lucky luggage lumber lunar lunch luxury lyrics machine mad magic magnet maid mail main major make mammal man manage mandate mango mansion manual maple marble march margin marine market marriage mask mass master match material math matrix matter maximum maze meadow mean measure meat mechanic medal media melody melt member memory mention menu mercy merge merit merry mesh message metal method middle midnight milk million mimic mind minimum minor minute miracle mirror misery miss mistake mix mixed mixture mobile model modify mom moment monitor monkey monster month moon moral more morning mosquito mother motion motor mountain mouse move movie much muffin mule multiply muscle museum mushroom music must mutual myself mystery myth naive name napkin narrow nasty nation nature near neck need negative neglect neither nephew nerve nest net network neutral never news next nice night noble noise nominee noodle normal north nose notable note nothing notice novel now nuclear number nurse nut oak obey object oblige obscure observe obtain obvious occur ocean october odor off offer office often oil okay old olive olympic omit once one onion online only open opera opinion oppose option orange orbit orchard order ordinary organ orient original orphan ostrich other outdoor outer output outside oval oven over own owner oxygen oyster ozone pact paddle page pair palace palm panda panel panic panther paper parade parent park parrot party pass patch path patient patrol pattern pause pave payment peace peanut pear peasant pelican pen penalty pencil people pepper perfect permit person pet phone photo phrase physical piano picnic picture piece pig pigeon pill pilot pink pioneer pipe pistol pitch pizza place planet plastic plate play please pledge pluck plug plunge poem poet point polar pole police pond pony pool popular portion position possible post potato pottery poverty powder power practice praise predict prefer prepare present pretty prevent price pride primary print priority prison private prize problem process produce profit program project promote proof property prosper protect proud provide public pudding pull pulp pulse pumpkin punch pupil puppy purchase purity purpose purse push put puzzle pyramid quality quantum quarter question quick quit quiz quote rabbit raccoon race rack radar radio rail rain raise rally ramp ranch random range rapid rare rate rather raven raw razor ready real reason rebel rebuild recall receive recipe record recycle reduce reflect reform refuse region regret regular reject relax release relief rely remain remember remind remove render renew rent reopen repair repeat replace report require rescue resemble resist resource response result retire retreat return reunion reveal review reward rhythm rib ribbon rice rich ride ridge rifle right rigid ring riot ripple risk ritual rival river road roast robot robust rocket romance roof rookie room rose rotate rough round route royal rubber rude rug rule run runway rural sad saddle sadness safe sail salad salmon salon salt salute same sample sand satisfy satoshi sauce sausage save say scale scan scare scatter scene scheme school science scissors scorpion scout scrap screen script scrub sea search season seat second secret section security seed seek segment select sell seminar senior sense sentence series service session settle setup seven shadow shaft shallow share shed shell sheriff shield shift shine ship shiver shock shoe shoot shop short shoulder shove shrimp shrug shuffle shy sibling sick side siege sight sign silent silk silly silver similar simple since sing siren sister situate six size skate sketch ski skill skin skirt skull slab slam sleep slender slice slide slight slim slogan slot slow slush small smart smile smoke smooth snack snake snap sniff snow soap soccer social sock soda soft solar soldier solid solution solve someone song soon sorry sort soul sound soup source south space spare spatial spawn speak special speed spell spend sphere spice spider spike spin spirit split spoil sponsor spoon sport spot spray spread spring spy square squeeze squirrel stable stadium staff stage stairs stamp stand start state stay steak steel stem step stereo stick still sting stock stomach stone stool story stove strategy street strike strong struggle student stuff stumble style subject submit subway success such sudden suffer sugar suggest suit summer sun sunny sunset super supply supreme sure surface surge surprise surround survey suspect sustain swallow swamp swap swarm swear sweet swift swim swing switch sword symbol symptom syrup system table tackle tag tail talent talk tank tape target task taste tattoo taxi teach team tell ten tenant tennis tent term test text thank that theme then theory there they thing this thought three thrive throw thumb thunder ticket tide tiger tilt timber time tiny tip tired tissue title toast tobacco today toddler toe together toilet token tomato tomorrow tone tongue tonight tool tooth top topic topple torch tornado tortoise toss total tourist toward tower town toy track trade traffic tragic train transfer trap trash travel tray treat tree trend trial tribe trick trigger trim trip trophy trouble truck true truly trumpet trust truth try tube tuition tumble tuna tunnel turkey turn turtle twelve twenty twice twin twist two type typical ugly umbrella unable unaware uncle uncover under undo unfair unfold unhappy uniform unique unit universe unknown unlock until unusual unveil update upgrade uphold upon upper upset urban urge usage use used useful useless usual utility vacant vacuum vague valid valley valve van vanish vapor various vast vault vehicle velvet vendor venture venue verb verify version very vessel veteran viable vibrant vicious victory video view village vintage violin virtual virus visa visit visual vital vivid vocal voice void volcano volume vote voyage wage wagon wait walk wall walnut want warfare warm warrior wash wasp waste water wave way wealth weapon wear weasel weather web wedding weekend weird welcome west wet whale what wheat wheel when where whip whisper wide width wife wild will win window wine wing wink winner winter wire wisdom wise wish witness wolf woman wonder wood wool word work world worry worth wrap wreck wrestle wrist write wrong yard year yellow you young youth zebra zero zone zoo".split(" ");
 var B58A="123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
-function b58encode(bytes){var zeros=0;while(zeros<bytes.length&&bytes[zeros]===0)zeros++;var digits=[0];for(var i=zeros;i<bytes.length;i++){var carry=bytes[i];for(var j=0;j<digits.length;j++){carry+=digits[j]<<8;digits[j]=carry%58;carry=(carry/58)|0}while(carry){digits.push(carry%58);carry=(carry/58)|0}}var out="";for(var z=0;z<zeros;z++)out+="1";for(var k=digits.length-1;k>=0;k--)out+=B58A[digits[k]];return out}
+function b58encode(bytes){var zeros=0;while(zeros<bytes.length&&bytes[zeros]===0)zeros++;if(zeros===bytes.length){var o="";for(var z=0;z<zeros;z++)o+="1";return o}var digits=[0];for(var i=zeros;i<bytes.length;i++){var carry=bytes[i];for(var j=0;j<digits.length;j++){carry+=digits[j]<<8;digits[j]=carry%58;carry=(carry/58)|0}while(carry){digits.push(carry%58);carry=(carry/58)|0}}var out="";for(var z=0;z<zeros;z++)out+="1";for(var k=digits.length-1;k>=0;k--)out+=B58A[digits[k]];return out}
 function b58decode(str){var zeros=0;while(zeros<str.length&&str[zeros]==="1")zeros++;var bytes=[0];for(var i=zeros;i<str.length;i++){var idx=B58A.indexOf(str[i]);if(idx<0)throw new Error("bad base58");var carry=idx;for(var j=0;j<bytes.length;j++){carry+=bytes[j]*58;bytes[j]=carry&255;carry>>=8}while(carry){bytes.push(carry&255);carry>>=8}}var out=new Uint8Array(zeros+bytes.length);for(var k=0;k<bytes.length;k++)out[zeros+k]=bytes[bytes.length-1-k];return out}
 function u8concat(a,b){var o=new Uint8Array(a.length+b.length);o.set(a);o.set(b,a.length);return o}
 function hmac512(key,data){return crypto.subtle.importKey("raw",key,{name:"HMAC",hash:"SHA-512"},false,["sign"]).then(function(k){return crypto.subtle.sign("HMAC",k,data)}).then(function(s){return new Uint8Array(s)})}
@@ -4122,14 +4125,37 @@ function openReport(mint,knownPair){
 var TS_SHARE_BASE="https://appsthatpay.github.io/halex-web/trenchswap/";
 var TS_MINT_RE=/^[1-9A-HJ-NP-Za-km-z]{32,44}$/;
 function tsTokenUrl(mint,replay,ref){var u=TS_SHARE_BASE+"?token="+encodeURIComponent(mint);if(replay==="1h")u+="&replay=1h";if(ref)u+="&ref="+encodeURIComponent(ref);return u}
-function tsShareText(tok){
+/* ---------- Token share verses (2026-11-22, Jeffrey) ----------
+   Three rotating verses for a token share. {TICKER} is "$"+symbol and
+   {link} is the sharer's ref-tagged token link. Round-robin through
+   localStorage, so the same verse is never used twice in a row, even
+   across sessions; a storage failure falls back to an in-memory index.
+   The verse carries the link inline, so the X intent passes text only
+   (a separate url param would print the link twice). Telegram keeps
+   its url param for the preview card. The canvas card still shows
+   live price / 24h change; the verse is the social text. */
+var TS_SHARE_VERSES=[
+ "{TICKER} is gaining popularity on TrenchSwap, check it out here: {link}",
+ "Are you in the trenches? {TICKER} is cooking on \uD83D\uDD25 TrenchSwap {link}",
+ "Sharing {TICKER} directly from the trenches {link}"];
+var TS_SHARE_VERSE_KEY="trenchswap.shareVerseIdx.v1";
+var tsShareVerseIdxMem=0;
+function tsNextShareVerseIdx(){
+ var idx=0;
+ try{
+  var raw=localStorage.getItem(TS_SHARE_VERSE_KEY);
+  idx=raw==null?0:(parseInt(raw,10)||0);
+  if(idx<0||idx>=TS_SHARE_VERSES.length)idx=0;
+ }catch(e){idx=tsShareVerseIdxMem}
+ var next=(idx+1)%TS_SHARE_VERSES.length;
+ try{localStorage.setItem(TS_SHARE_VERSE_KEY,String(next))}catch(e){tsShareVerseIdxMem=next}
+ return idx}
+function tsShareVerse(tok,url){
  var sym=tok.sym||tok.name||"";
- var price=(tok.price!=null&&isFinite(Number(tok.price)))?dispPrice(tok.price,tok.sym||""):null;
- var ch=(tok.ch24!=null&&isFinite(Number(tok.ch24)))?((Number(tok.ch24)>=0?"+":"")+Number(tok.ch24).toFixed(2)+"%"):"";
- var t="$"+sym;
- if(price)t+=" "+price;
- if(ch)t+=", "+ch;
- return t+" on TrenchSwap"}
+ var v=TS_SHARE_VERSES[tsNextShareVerseIdx()];
+ return v.split("{TICKER}").join("$"+sym).split("{link}").join(url||"")}
+function tsShareText(tok){
+ return tsShareVerse(tok,tsRefShareUrl(tok.mint,tok.replay?"1h":null))}
 function tsLatestCallText(mint){
  var calls=state.calls||[],i,best=null;
  for(i=0;i<calls.length;i++){if(calls[i]&&calls[i].mint===mint&&calls[i].text&&(!best||calls[i].ts>best.ts))best=calls[i]}
@@ -4195,7 +4221,9 @@ function tsFetch5mSeries(tok,cb){
   try{ohlcvFetch(tok.pair,"1m",12,null,{}).then(function(list){var s2=list?ts5mFromCandles(list,nowS):null;if(!wrap(s2,"1m candles · GeckoTerminal"))tryChart()}).catch(function(){tryChart()})}catch(e){tryChart()}
  }else tryChart()}
 function tsCardLoadAll(tok,cb){
- var out={icon:null,logo:null,emojis:[null,null,null],series:null,profImg:null,profName:"Wallet",profAddr:""},pending=5,fired=false;
+ /* v45: the card carries no profile. No account name, no wallet address
+    and no profile picture ever appear on a share card again. */
+ var out={icon:null,logo:null,emojis:[null,null,null],series:null},pending=4,fired=false;
  function fin(){if(fired)return;fired=true;cb(out)}
  function step(){if(--pending<=0)fin()}
  setTimeout(fin,9000);
@@ -4203,11 +4231,6 @@ function tsCardLoadAll(tok,cb){
  tsLoadIcon(TS_LOGO_SRC,function(im){out.logo=im;step()});
  var trio=[FIRE_PICS[1][0],FIRE_PICS[3][0],FIRE_PICS[2][0]],loaded=0,i;
  for(i=0;i<3;i++){(function(idx){tsLoadIcon(trio[idx],function(im){out.emojis[idx]=im;if(++loaded===3)step()})})(i)}
- try{
-  var w=state.wallets&&state.wallets[state.activeWallet];
-  if(w&&w.address){var prof=getProfile(w);out.profName=prof.name||w.name||"Wallet";out.profAddr=w.address;tsLoadIcon(profilePicSrc(prof.pic),function(im){out.profImg=im;step()})}
-  else step();
- }catch(e){step()}
  tsFetch5mSeries(tok,function(s){out.series=s;step()})}
 function tsBuildShareCard(tok,cb){
  var W=1080,H=1080;
@@ -4296,12 +4319,18 @@ function tsBuildShareCard(tok,cb){
     var lines=tsWrapText(cx,"“"+tok.callText+"”",900);
     var li;for(li=0;li<Math.min(lines.length,2);li++){cx.fillText(lines[li],56,ty+li*48)}
     ty+=Math.min(lines.length,2)*48+18}
-   if(L.profImg){cx.save();cx.beginPath();cx.arc(84,ty+6,28,0,Math.PI*2);cx.clip();cx.drawImage(L.profImg,56,ty-22,56,56);cx.restore()}
+   /* v45: no wallet address, no wallet nickname, no profile picture on the
+      card. Outside the app a card is attributed to the sharer's SOCIAL
+      handle plus the REF code (see tsRefSocialHandle); a blank handle
+      means the line shows only the code, since the post itself is
+      already under the poster's social account. The REF pill below
+      carries the code too. */
    cx.fillStyle="#C9BCE8";cx.font="600 28px system-ui, sans-serif";
-   cx.fillText("Shared by "+(L.profName||"Wallet")+(L.profAddr?" \u00b7 "+L.profAddr.slice(0,8)+"\u2026"+L.profAddr.slice(-6):""),L.profImg?128:56,ty+14);
+   var tag="";try{tag=tsRefTag()}catch(e){}
+   var sh="";try{sh=tsRefSocialHandle()}catch(e){}
+   cx.fillText(sh?("Shared by @"+sh+" · REF "+tag):("REF "+tag),56,ty+14);
    cx.fillStyle="#A89BBF";cx.font="700 33px system-ui, sans-serif";cx.fillText("TrenchSwap",56,1022);
    cx.fillStyle="#7C6A9B";cx.font="400 26px system-ui, sans-serif";cx.fillText("appsthatpay.github.io/halex-web/trenchswap",56,1056);
-   var tag="";try{tag=tsRefTag()}catch(e){}
    if(tag){cx.font="700 26px system-ui, sans-serif";var rtxt="REF "+tag;var rw2=cx.measureText(rtxt).width;
     tsRoundRect(cx,1024-rw2-36,996,rw2+36,44,22);cx.strokeStyle="rgba(192,132,252,0.6)";cx.lineWidth=2;cx.stroke();
     cx.fillStyle="#C084FC";cx.fillText(rtxt,1024-rw2-18,1027)}
@@ -4346,13 +4375,14 @@ function tsCopyFallback(txt,msg){
 function tsShareCardFile(){
  var tok=tsShareState.tok;if(!tok)return;
  var text=tsShareText(tok);
- var url=tsRefShareUrl(tok.mint,tok.replay?"1h":null);
  var blob=tsShareState.blob;
  if(blob&&navigator.share){
   var file=null;
   try{file=new File([blob],"trenchswap-"+(tok.sym||"token").replace(/[^A-Za-z0-9]+/g,"")+".png",{type:"image/png"})}catch(e){file=null}
   if(file&&(!navigator.canShare||navigator.canShare({files:[file]}))){
-   navigator.share({files:[file],title:"$"+(tok.sym||tok.name||"")+" on TrenchSwap",text:text,url:url}).catch(function(){});
+   /* The verse text already carries the ref-tagged link inline, so no
+      separate url field: passing one would print the link twice. */
+   navigator.share({files:[file],title:"$"+(tok.sym||tok.name||"")+" on TrenchSwap",text:text}).catch(function(){});
    return}}
  tsDownloadShareCard()}
 function tsDownloadShareCard(){
@@ -4376,10 +4406,80 @@ function tsSharePair(p){
  var dl=$("shareDownloadBtn");if(dl)dl.addEventListener("click",tsDownloadShareCard);
  var ct=$("shareCopyTokenBtn");if(ct)ct.addEventListener("click",function(){var t=tsShareState.tok;if(t)tsCopyText(tsRefShareUrl(t.mint,null),"Token link copied - it carries your Trenchout tag")});
  var cr=$("shareCopyReplayBtn");if(cr)cr.addEventListener("click",function(){var t=tsShareState.tok;if(t)tsCopyText(tsRefShareUrl(t.mint,"1h"),"Replay link copied - it carries your Trenchout tag")});
- var sx=$("shareXBtn");if(sx)sx.addEventListener("click",function(){var t=tsShareState.tok;if(!t)return;var u=tsRefShareUrl(t.mint,t.replay?"1h":null);window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(tsShareText(t))+"&url="+encodeURIComponent(u),"_blank","noopener")});
+ var sx=$("shareXBtn");if(sx)sx.addEventListener("click",function(){var t=tsShareState.tok;if(!t)return;window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(tsShareText(t)),"_blank","noopener")});
  var tg=$("shareTgBtn");if(tg)tg.addEventListener("click",function(){var t=tsShareState.tok;if(!t)return;var u=tsRefShareUrl(t.mint,t.replay?"1h":null);window.open("https://t.me/share/url?url="+encodeURIComponent(u)+"&text="+encodeURIComponent(tsShareText(t)),"_blank","noopener")});
  var cb=$("shareCallBtn");if(cb)cb.addEventListener("click",function(){var t=tsShareState.tok;$("shareOverlay").classList.remove("open");tsShareClosed();if(t)openTrenchComposer({mint:t.mint,symbol:t.sym||"",name:t.name||"",img:t.img||null})});
 })();
+/* ---------- Referral code: one opaque code per wallet (v45, 2026-11-22) ----------
+   The share card, the share links and the Referral tab used to show the
+   first 12 characters of the sharer's real wallet address, and the card
+   also printed the wallet's account name and a shortened address. One
+   opaque code per wallet replaces all of it: the code is the first 12
+   base58 characters of the base58 encoding of the first 12 bytes of
+   SHA-256 of "trenchswap-ref-v1:" + the wallet address. The same wallet
+   gives the same code on every device with no storage; the sharer's app
+   derives it to claim, and review verifies a code against a claimed
+   wallet by re-hashing it. The code is pseudonymous, not anonymous:
+   anyone who already knows the address can compute the code, but the
+   code cannot be reversed into the address by casual inspection, and
+   nothing on a card, a link or a post ever shows the address or the
+   account name again. Old ?ref=<wallet prefix> links still capture and
+   still credit (see tsCaptureRefTag). A random locally-stored code was
+   rejected as the alternative: it would differ per device for the same
+   wallet, vanish when storage is cleared, and review could not verify
+   it without the sharer reporting the binding.
+   Refinement (2026-11-22): outside the app a card is attributed to the
+   sharer's SOCIAL handle plus the code (see tsRefSocialHandle) — never
+   the wallet address, never the wallet nickname. The handle is the
+   active wallet's saved profile X; blank means the card shows only the
+   code. The wallet nickname stays in-app only. */
+var TS_REF_CODE_DOMAIN="trenchswap-ref-v1:";
+function tsSha256Bytes(str){
+ /* Pure-JS SHA-256 (sync; WebCrypto digest is async and tsRefTag must stay
+    sync). Standard FIPS 180-4, verified against Node crypto in the harness. */
+ var K=[0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
+ var H=[0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
+ function rr(x,n){return (x>>>n)|(x<<(32-n))}
+ var bytes=[],i;
+ var s=String(str);
+ for(i=0;i<s.length;i++){
+  var c=s.charCodeAt(i);
+  if(c<128)bytes.push(c);
+  else if(c<2048){bytes.push(192|(c>>6));bytes.push(128|(c&63))}
+  else if(c<55296||c>=57344){bytes.push(224|(c>>12));bytes.push(128|((c>>6)&63));bytes.push(128|(c&63))}
+  else{i++;var cp=65536+((c&1023)<<10)+(s.charCodeAt(i)&1023);bytes.push(240|(cp>>18));bytes.push(128|((cp>>12)&63));bytes.push(128|((cp>>6)&63));bytes.push(128|(cp&63))}}
+ var bitLen=bytes.length*8;
+ bytes.push(128);
+ while(bytes.length%64!==56)bytes.push(0);
+ bytes.push(0,0,0,0,(bitLen>>>24)&255,(bitLen>>>16)&255,(bitLen>>>8)&255,bitLen&255);
+ var W=new Array(64);
+ for(var b=0;b<bytes.length;b+=64){
+  for(i=0;i<16;i++)W[i]=((bytes[b+i*4]<<24)|(bytes[b+i*4+1]<<16)|(bytes[b+i*4+2]<<8)|bytes[b+i*4+3])>>>0;
+  for(i=16;i<64;i++){
+   var s0=rr(W[i-15],7)^rr(W[i-15],18)^(W[i-15]>>>3);
+   var s1=rr(W[i-2],17)^rr(W[i-2],19)^(W[i-2]>>>10);
+   W[i]=(W[i-16]+s0+W[i-7]+s1)>>>0}
+  var a=H[0],bb=H[1],cc=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+  for(i=0;i<64;i++){
+   var S1=rr(e,6)^rr(e,11)^rr(e,25);
+   var ch=(e&f)^((~e)&g);
+   var t1=(h+S1+ch+K[i]+W[i])>>>0;
+   var S0=rr(a,2)^rr(a,13)^rr(a,22);
+   var maj=(a&bb)^(a&cc)^(bb&cc);
+   var t2=(S0+maj)>>>0;
+   h=g;g=f;f=e;e=(d+t1)>>>0;d=cc;cc=bb;bb=a;a=(t1+t2)>>>0}
+  H[0]=(H[0]+a)>>>0;H[1]=(H[1]+bb)>>>0;H[2]=(H[2]+cc)>>>0;H[3]=(H[3]+d)>>>0;H[4]=(H[4]+e)>>>0;H[5]=(H[5]+f)>>>0;H[6]=(H[6]+g)>>>0;H[7]=(H[7]+h)>>>0}
+ var out=new Uint8Array(32);
+ for(i=0;i<8;i++){out[i*4]=(H[i]>>>24)&255;out[i*4+1]=(H[i]>>>16)&255;out[i*4+2]=(H[i]>>>8)&255;out[i*4+3]=H[i]&255}
+ return out}
+var TS_REF_CODE_CACHE={};
+function tsRefCodeFor(address){
+ if(!address||!TS_MINT_RE.test(address))return null;
+ if(TS_REF_CODE_CACHE[address])return TS_REF_CODE_CACHE[address];
+ var code=null;
+ try{var hash=tsSha256Bytes(TS_REF_CODE_DOMAIN+address);code=b58encode(hash.slice(0,12)).slice(0,12)}catch(e){code=null}
+ if(code&&TS_REF_TAG_RE.test(code)){TS_REF_CODE_CACHE[address]=code;return code}
+ return null}
 /* ---------- Trenchout referral tags (v41, 2026-11-20) ----------
    Every share (card, link, call-out) carries the sharer's Trenchout tag.
    A landing with ?ref=<tag> stores the tag on this device (first touch
@@ -4408,8 +4508,27 @@ function tsRefDeviceId(){
  for(var i=0;i<12;i++)s+=chars[ba[i]%58];
  localStorage.setItem(TS_DEVICE_KEY,s);return s}catch(e){return "deviceunknown"}}
 function tsRefTag(){
- try{var w=state.wallets&&state.wallets[state.activeWallet];if(w&&w.address&&TS_MINT_RE.test(w.address))return w.address.slice(0,12)}catch(e){}
+ /* v45: one opaque code per wallet (see tsRefCodeFor). The card, the links
+    and the Referral tab all read this one function, so they all show the
+    same code. No wallet address is ever shown as a tag again. */
+ try{var w=state.wallets&&state.wallets[state.activeWallet];if(w&&w.address&&TS_MINT_RE.test(w.address)){var c=tsRefCodeFor(w.address);if(c)return c}}catch(e){}
  return tsRefDeviceId()}
+/* v45 refinement (2026-11-22): the social handle for the share card.
+   The handle is the active wallet's saved profile X (Profile editor in
+   the Wallet tab, or the handle field in the Referral tab — same store,
+   trenchswap.profiles.v1). It is the user's PUBLIC social identity, the
+   account they post from; it is never the wallet address and never the
+   wallet nickname. Blank or unparseable means no handle: the card then
+   shows only the REF code. profileXUrl does the parsing (strips a
+   leading @, accepts an x.com/handle link, drops anything that is not
+   a 1–15 char X handle); a missing profile helper fails soft to "". */
+function tsRefSocialHandle(){
+ try{
+  var w=state.wallets&&state.wallets[state.activeWallet];if(!w||!w.address)return "";
+  var u=profileXUrl(getProfile(w).x||"");
+  var m=u&&u.match(/x\.com\/([A-Za-z0-9_]{1,15})(?:[?#\/]|$)/i);
+  return m?m[1]:"";
+ }catch(e){return ""}}
 /* Hack-a-thon Lane 5 F-01: a self-referral check that only looks at the ACTIVE
    wallet lets two wallets on one device credit each other (share A's link,
    swap with B active — A is credited). A tag is "own" if it is the device
@@ -4419,11 +4538,14 @@ function tsRefTag(){
 var TS_REF_OWN_KEY="trenchswap.refown.v1";
 function tsRefOwnTags(){try{var raw=localStorage.getItem(TS_REF_OWN_KEY);var a=raw?JSON.parse(raw):[];return Array.isArray(a)?a:[]}catch(e){return[]}}
 function tsRefRecordOwnTag(address){
- try{if(!address||!TS_MINT_RE.test(address))return;var tag=address.slice(0,12);var a=tsRefOwnTags();if(a.indexOf(tag)<0){a.unshift(tag);localStorage.setItem(TS_REF_OWN_KEY,JSON.stringify(a.slice(0,50)))}}catch(e){}}
+ /* v45: record both the wallet's code and its legacy prefix as own tags,
+    so a share of the wallet's own link is never credited to itself under
+    either identifier. */
+ try{if(!address||!TS_MINT_RE.test(address))return;var tags=[tsRefCodeFor(address),address.slice(0,12)];var a=tsRefOwnTags();var changed=false;tags.forEach(function(tag){if(tag&&a.indexOf(tag)<0){a.unshift(tag);changed=true}});if(changed)localStorage.setItem(TS_REF_OWN_KEY,JSON.stringify(a.slice(0,50)))}catch(e){}}
 function tsRefIsOwnTag(tag){
  if(!tag)return false;
  try{if(tag===tsRefDeviceId())return true}catch(e){}
- try{var ws=state.wallets||[];for(var i=0;i<ws.length;i++){var a=ws[i]&&ws[i].address;if(a&&a.slice(0,12)===tag)return true}}catch(e){}
+ try{var ws=state.wallets||[];for(var i=0;i<ws.length;i++){var a=ws[i]&&ws[i].address;if(a){if(a.slice(0,12)===tag)return true;var c=tsRefCodeFor(a);if(c&&c===tag)return true}}}catch(e){}
  return tsRefOwnTags().indexOf(tag)>=0}
 /* Hack-a-thon Lane 5 F-08: when a wallet is created while this device's
    attribution is its device tag (no wallet yet), bind the device tag to the
@@ -4454,12 +4576,39 @@ function tsRefSwapFees(usd,volumeBefore){
  var ladderReward=v*rate;
  var topUp=Math.max(0,ladderReward-feeShare);
  return{usd:v,pctUsd:pctUsd,flatUsd:flatUsd,flatSol:FEE_FLAT_SOL,feeUsd:feeUsd,feeShare:feeShare,rate:rate,ladderReward:ladderReward,topUp:topUp,reward:feeShare+topUp}}
+var TS_REF_MIGRATED=false;
+function tsRefMigrateLegacyTags(l){
+ /* v45: credit earned under a wallet's old address-prefix tag moves to its
+    code, so the headline numbers follow the one tag. Runs once per session
+    and only once at least one wallet with an address is loaded; device-id
+    entries are left alone. */
+ if(TS_REF_MIGRATED)return false;
+ var changed=false,seen=false;
+ try{
+  var ws=state.wallets||[];
+  for(var i=0;i<ws.length;i++){
+   var a=ws[i]&&ws[i].address;if(!a||!TS_MINT_RE.test(a))continue;
+   seen=true;
+   var prefix=a.slice(0,12),code=tsRefCodeFor(a);
+   if(!code||prefix===code)continue;
+   var old=l.byTag[prefix];
+   if(old){
+    var nw=l.byTag[code]||(l.byTag[code]={accounts:0,volume:0,reward:0,feeShare:0,topUp:0,events:[]});
+    nw.accounts+=old.accounts||0;nw.volume+=old.volume||0;nw.reward+=old.reward||0;nw.feeShare+=old.feeShare||0;nw.topUp+=old.topUp||0;
+    nw.events=(nw.events||[]).concat(old.events||[]).sort(function(x,y){return (y.ts||0)-(x.ts||0)}).slice(0,50);
+    delete l.byTag[prefix];changed=true}}
+  if(seen)TS_REF_MIGRATED=true;
+ }catch(e){}
+ return changed}
 function tsRefLedger(){
  try{var raw=localStorage.getItem(TS_REF_LEDGER_KEY);var o=raw?JSON.parse(raw):null;
  if(o&&typeof o==="object"){o.shares=o.shares||0;o.byTag=o.byTag||{};o.countedAccounts=o.countedAccounts||[];
  /* v42: ledgers written before the hybrid split carry reward only; the two
     balances default to zero so old credit still renders and accumulates. */
  var k;for(k in o.byTag){var s=o.byTag[k];if(s){if(s.feeShare==null)s.feeShare=0;if(s.topUp==null)s.topUp=0}}
+ /* v45: credit earned under a wallet's old address-prefix tag moves to its
+    code, so the headline numbers follow the one tag. */
+ if(tsRefMigrateLegacyTags(o))tsRefSaveLedger(o);
  return o}}catch(e){}
  return{shares:0,byTag:{},countedAccounts:[]}}
 function tsRefSaveLedger(l){try{localStorage.setItem(TS_REF_LEDGER_KEY,JSON.stringify(l))}catch(e){}}
@@ -4491,7 +4640,22 @@ function tsCaptureRef(){
  try{var q=window.location.search||"",h=window.location.hash||"";
  var m=q.match(/[?&]ref=([^&#]*)/)||h.match(/[?&#]ref=([^&#]*)/);
  if(m){if(tsCaptureRefTag(decodeURIComponent(m[1].replace(/\+/g," ")),"link"))toast("Referral link captured — swaps you make on this device will credit that tag.")}}catch(e){}}
-function tsRefCountShare(){var l=tsRefLedger();l.shares=(l.shares||0)+1;tsRefSaveLedger(l);renderTrenchouts()}
+/* v45: when a share goes out under a wallet's code, report the code-to-wallet
+   binding once per code to the same private review relay the credited
+   wallets and swaps use, so review can pay the code's owner. The binding
+   never appears on a card, a link or a post. */
+function tsRefReportCodebind(){
+ try{
+  var w=state.wallets&&state.wallets[state.activeWallet];
+  if(!w||!w.address||!TS_MINT_RE.test(w.address))return;
+  var code=tsRefCodeFor(w.address);if(!code)return;
+  var key="trenchswap.refcodebind.v1",raw=localStorage.getItem(key),sent=raw?JSON.parse(raw):[];
+  if(!Array.isArray(sent))sent=[];
+  if(sent.indexOf(code)>=0)return;
+  sent.unshift(code);localStorage.setItem(key,JSON.stringify(sent.slice(0,50)));
+  if(typeof tsTrackPost==="function")tsTrackPost("trenchout",{event:"codebind",code:code,wallet:w.address},null);
+ }catch(e){}}
+function tsRefCountShare(){var l=tsRefLedger();l.shares=(l.shares||0)+1;tsRefSaveLedger(l);tsRefReportCodebind();renderTrenchouts()}
 function tsRefOnAccount(address){
  var a=tsRefAttr();if(!a||!address)return;
  if(tsRefIsOwnTag(a.tag))return;
@@ -4535,6 +4699,8 @@ function renderTrenchouts(){
  var tagEl=$("toTag");if(!tagEl)return;
  var tag=tsRefTag(),st=tsRefTagStats(tag),l=tsRefLedger();
  tagEl.textContent=tag;
+ var th=$("toHandle");
+ if(th&&document.activeElement!==th){try{var w0=state.wallets&&state.wallets[state.activeWallet];th.value=(w0&&w0.address)?getProfile(w0).x||"":""}catch(e){}}
  var lk=$("toLink");if(lk)lk.textContent=TS_SHARE_BASE+"?ref="+tag;
  var sh=$("toShares");if(sh)sh.textContent=String(l.shares||0);
  var ac=$("toAccounts");if(ac)ac.textContent=String(st.accounts||0);
@@ -4546,12 +4712,35 @@ function renderTrenchouts(){
  var lad=$("toLadder");
  if(lad){lad.innerHTML=TS_REF_TIERS.map(function(t){var on=(st.volume||0)>=t.min;return '<div class="kv"><span>'+(t.min===0?"First $1,000 of credited volume":"$"+t.min.toLocaleString()+" credited")+'</span><b>'+tsRefTierPct(t.min).replace(" (PROPOSED ladder)","")+(on?" \u00b7 reached":"")+'</b></div>'}).join("")+Object.keys(l.byTag).map(function(tg){var sg=l.byTag[tg]||{};return '<div class="kv"><span>Tag '+escapeHtml(tg)+'</span><b>'+fmt$(sg.volume||0)+' \u00b7 $'+(sg.reward||0).toFixed(2)+'</b></div>'}).join("")}
  var note=$("toNote");
- if(note)note.textContent="Counted here: wallets created and swaps confirmed in this app on this device after it landed from a tagged link, plus shares sent from this device. A tracked copy of each credited wallet and swap also goes to TrenchSwap review (the same relay as call-outs), because taps on other phones cannot be seen by a static app; cross-device credit is assembled in review from those copies. "+TS_REF_FUNDING.note}
+ if(note)note.textContent="Counted here: wallets created and swaps confirmed in this app on this device after it landed from a tagged link, plus shares sent from this device. A tracked copy of each credited wallet and swap also goes to TrenchSwap review (the same relay as call-outs), because taps on other phones cannot be seen by a static app; cross-device credit is assembled in review from those copies. Your tag is a code derived from your wallet; it never shows your wallet address or your wallet nickname on a card, in share text, or in a link. Outside the app a share card is attributed to your X handle plus your code — set the handle above, or in your Profile. Leave it blank and the card shows only your code, since the post itself is already under your social account. "+TS_REF_FUNDING.note}
+/* v45 refinement: save the Referral-tab X handle into the active
+   wallet's profile (same store the Profile editor writes,
+   trenchswap.profiles.v1). The handle is public social identity only;
+   the wallet nickname stays in-app and is never written here. */
+function tsRefSaveSocialHandle(raw){
+ var w=state.wallets&&state.wallets[state.activeWallet];
+ if(!w||!w.address)return {ok:false,msg:"No wallet active — create or import a wallet first."};
+ var handle="";
+ if(raw){
+  var u="";
+  try{u=profileXUrl(raw)}catch(e){u=""}
+  var m=u&&u.match(/x\.com\/([A-Za-z0-9_]{1,15})(?:[?#\/]|$)/i);
+  if(!m)return {ok:false,msg:"That does not look like an X handle — use @handle or an x.com/handle link."};
+  handle=m[1]}
+ try{
+  var all=loadProfiles();var key=profileKeyFor(w);var rec=all[key]||{};
+  rec.x=handle?("@"+handle):"";
+  if(!rec.name)rec.name=w.name;
+  all[key]=rec;
+  if(!saveProfiles())return {ok:false,msg:"This browser refused local storage — the handle could NOT be saved."};
+ }catch(e){return {ok:false,msg:"The handle could not be saved on this device."}}
+ return {ok:true,handle:handle}}
 function tsShareClosed(){
  state.shareOpen=false;
  try{if(chartReportOpen()&&state.chart&&state.chart.candles){var box=$("chartBox");if(box)drawChart(box,state.chart.candles,state.chart.shownTf||state.chart.tf)}}catch(e){}}
 (function(){
  var cp=$("toCopyBtn");if(cp)cp.addEventListener("click",function(){tsCopyText(TS_SHARE_BASE+"?ref="+tsRefTag(),"Share link copied - it carries your Trenchout tag")});
+ var thb=$("toHandleSaveBtn");if(thb)thb.addEventListener("click",function(){var r=tsRefSaveSocialHandle($("toHandle").value.trim());var st=$("toHandleStatus");if(st)st.textContent=r.ok?(r.handle?("Saved — share cards will read “Shared by @"+r.handle+" · REF "+tsRefTag()+"”."):("Cleared — share cards will show only your REF code.")):r.msg;if(r.ok)renderTrenchouts()});
  var tb=$("shareTrenchoutsBtn");if(tb)tb.addEventListener("click",function(){$("shareOverlay").classList.remove("open");tsShareClosed();goTab("info");infoGo("referrals");renderTrenchouts()});
  var scb=document.querySelector('[data-close="shareOverlay"]');if(scb)scb.addEventListener("click",tsShareClosed);
 })();
@@ -6316,9 +6505,9 @@ function renderRentals(){var q=localQueue("trenchswap.rentals.v1");var c=$("rent
 $("rentApplyBtn").addEventListener("click",function(){var name=$("rentName").value.trim();if(!name){$("rentApplyStatus").textContent="Add the token / project name first.";return}
  /* Hack-a-thon Lane 5 F-11: the rental payment is verified on-chain before
     the application is saved — the same DexStream payment check, with the
-    plan's amount (100 or 300 USDC). */
- var plan=$("rentPlan").value==="week"?"Highlighted one week \u2014 300 USDC":"One day \u2014 100 USDC";
- var amount=$("rentPlan").value==="week"?300000000:100000000;
+    plan's amount (10 USDC, one day only — the highlighted-week option is unconfirmed and held out of v46). */
+ var plan="One day — 10 USDC";
+ var amount=10000000;
  var tx=$("rentPayTx").value.trim(),payer=$("rentPayer").value.trim();
  if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(payer)){$("rentApplyStatus").textContent="Add the payer wallet address \u2014 the wallet that paid the rental.";return}
  var txErr=dexTxError(tx);if(txErr){$("rentApplyStatus").textContent=txErr+" \u2014 add the payment transaction signature.";return}
@@ -6456,7 +6645,7 @@ var mcb=$("mintCreateBtn");if(mcb)mcb.addEventListener("click",function(){var st
  +extraLinks.map(function(l){return '<div class="kv"><span>'+escapeHtml(l.label)+'</span><b style="text-align:right;word-break:break-all">'+escapeHtml(l.url)+'</b></div>'}).join("")
  +'<p class="fee" style="margin-top:8px">Metadata that will be locked at creation:</p><textarea rows="7" readonly style="font-family:JetBrains Mono,monospace;font-size:11px">'+escapeHtml(JSON.stringify(mintPackage,null,2))+'</textarea>';
  st.textContent="";$("mintPrepareStatus").textContent="";$("mintOverlay").classList.add("open")});
-var mpb=$("mintPrepareBtn");if(mpb)mpb.addEventListener("click",function(){if(!mintPackage)return;var q=localQueue("trenchswap.mints.v1");var rec={name:mintPackage.name,ticker:mintPackage.symbol,ts:Date.now(),status:"Launch package prepared — awaiting TrenchSwap LaunchLab platform registration",package:mintPackage};
+var mpb=$("mintPrepareBtn");if(mpb)mpb.addEventListener("click",function(){if(!mintPackage)return;var q=localQueue("trenchswap.mints.v1");var rec={name:mintPackage.name,ticker:mintPackage.symbol,mint:null,ts:Date.now(),status:"Launch package prepared — awaiting TrenchSwap LaunchLab platform registration",package:mintPackage};
     q.unshift(rec);saveQueue("trenchswap.mints.v1",q);renderMints();
     tsTrackPost("mint",rec,function(ok){rec.trackStatus=ok?"sent":"failed";saveQueue("trenchswap.mints.v1",q);renderMints();tsTrackNote("mintPrepareStatus",ok)});var txt=JSON.stringify(mintPackage,null,2);function done(){$("mintPrepareStatus").innerHTML="<b>Launch package prepared and copied.</b> It is saved under “Tokens you minted” on the Mint tab. Nothing was minted and nothing was charged — the launch signs and goes on-chain the moment TrenchSwap's LaunchLab platform registration confirms.";toast("Launch package prepared — nothing minted yet")}if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(function(){$("mintPrepareStatus").textContent="Copy failed — your package is saved under “Tokens you minted” on the Mint tab."})}else{done()}});
 renderMints();mintUpdateInfo();
@@ -6710,6 +6899,26 @@ function tokenAcctAmount(dataField){
  var bytes;try{bytes=b64ToU8(b64)}catch(e){return null}
  if(bytes.length<72)return null;
  var v=0n;for(var i=7;i>=0;i--)v=(v<<8n)|BigInt(bytes[64+i]);return v}
+/* v45: a failed simulation is refused with the reason the chain gave, in
+   plain words, not the raw error JSON. The common case is a wallet that
+   cannot fund the swap's mid-flight SOL need: the input is wrapped, then a
+   new token account's rent is charged before the wrap rent is refunded, so
+   a wallet that covers the swap's NET cost can still fail here (live-proven
+   2026-11-21: 0.005 SOL into a brand-new token from a 0.00724 SOL wallet —
+   643,545 lamports left when the fee account needed 1,513,840). The
+   shortfall is read off the simulation logs ("insufficient lamports HAVE,
+   need NEED"); anything else falls back to the raw error JSON. This changes
+   only the refusal wording, never an accept/refuse decision. */
+function describeSimFailure(sim){
+ var errStr=JSON.stringify(sim.err);
+ if(/omputational|compute/i.test(errStr))return"the assembled transaction failed simulation — it exceeded its compute limit even after the limit was raised. Swap refused, nothing was signed.";
+ var logs=sim.logs||[];
+ for(var i=0;i<logs.length;i++){
+  var m=/insufficient lamports (\d+), need (\d+)/.exec(logs[i]);
+  if(m){
+   var have=Number(m[1]),need=Number(m[2]),short=need-have;
+   return"the assembled transaction failed simulation on-chain — your wallet is short "+(short/1e9).toFixed(5)+" SOL for this swap (it had "+(have/1e9).toFixed(5)+" SOL left when a new token account needed "+(need/1e9).toFixed(5)+" SOL rent). The swap's input plus the new account's rent cost more than the wallet holds at that point — top up the wallet or try a smaller amount. Swap refused, nothing was signed."}}
+ return"the assembled transaction failed simulation on-chain — swap refused, nothing was signed. ("+errStr+")"}
 function verifyFirefoxSwap(txB64,ctx){
  var q=state.quote;
  if(!q)return Promise.resolve({ok:false,reason:"there is no quote to verify against"});
@@ -6990,7 +7199,7 @@ function verifyFirefoxSwap(txB64,ctx){
    ]).then(function(rr){
     var sim=rr[1]&&rr[1].result&&rr[1].result.value;
     if(!sim)return{ok:false,reason:"the simulation did not answer — an unverifiable transaction is refused"};
-    if(sim.err){var simErrStr=JSON.stringify(sim.err);if(/omputational|compute/i.test(simErrStr))return{ok:false,reason:"the assembled transaction failed simulation — it exceeded its compute limit even after the limit was raised. Swap refused, nothing was signed."};return{ok:false,reason:"the assembled transaction failed simulation on-chain — swap refused, nothing was signed. ("+simErrStr+")"}}
+    if(sim.err){return{ok:false,reason:describeSimFailure(sim)}}
     function simAmt(idx){var a=sim.accounts&&sim.accounts[idx];if(!a)return null;return tokenAcctAmount(a.data)}
     function preAmt(idx){var vals=rr[0]&&rr[0].result&&rr[0].result.value;var a=vals&&vals[idx];if(!a)return null;return tokenAcctAmount(a.data)}
     function simData(idx){var a=sim.accounts&&sim.accounts[idx];return a?a.data:null}
@@ -7152,23 +7361,34 @@ function renderTokenPageInto(mint){
   +(links.length?'<div class="socials">'+links.map(function(l){return '<a href="'+escapeHtml(l[1])+'" target="_blank" rel="noopener">'+escapeHtml(l[0])+" ↗</a>"}).join("")+'</div>':"")
   +boxes
   +'<p class="fee" style="margin-top:8px">Claimed Token Page — built by the token creator, verified by a claim payment from the creator wallet, and published after review.</p></div>'}
-/* --- Claim a Token: random USDC amount = proof + whole fee in one. Sender
-   must be the wallet from the mint creation transaction; exact amount to 4
-   decimals; unique among open claims; 30-minute expiry; no auto-refund. --- */
+/* --- Claim a Token: Token Page $100 for 1 year (claimed from elsewhere);
+   $25 for 1 year at mint if minted on TrenchSwap (2026-11-22 decision,
+   replaces $20/free page pricing). The claim PROOF payment IS the page
+   price: exactly 100 USDC (CLAIM_PAGE_FEE_USDC) — decided 2026-11-22
+   ~22:48 EST, $100 covers claim AND page, one price; the $20 is gone.
+   Sender must be the wallet from the mint creation transaction; exact
+   amount to 4 decimals; 30-minute expiry; no auto-refund. v46: the fee
+   is fixed at 100 USDC, not random. The amount is no longer the claim's
+   identity — identity is (mint, creator, createdAt): the creator binding
+   plus the lower time bound do the work the random amount used to do (a
+   third party cannot pay from the creator's wallet, and a payment made
+   before the claim started never counts). --- */
 var CLAIM_OPEN_KEY="trenchswap.claims.v1";
+var CLAIM_PAGE_FEE_USDC=100; /* Decided 2026-11-22 ~22:48 EST: $100 covers claim AND page, one price. The proof payment IS the page price ($100 claimed / $25 minted on TrenchSwap, 1 year). The $20 is gone. */
 function loadOpenClaims(){try{var a=JSON.parse(localStorage.getItem(CLAIM_OPEN_KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveOpenClaims(a){try{localStorage.setItem(CLAIM_OPEN_KEY,JSON.stringify(a.slice(0,20)))}catch(e){}}
-function claimRandomAmount(openAmounts){
- /* Hack-a-thon Lane 5 F-13: claim amounts come from the platform CSPRNG, not the
-    predictable PRNG — the amount is the payment's identity, and a predictable
-    amount lets an attacker pre-pay a likely value. */
- for(var tries=0;tries<80;tries++){
-  var ba=new Uint32Array(2);crypto.getRandomValues(ba);
-  var high=(ba[0]/4294967296)<0.9;
-  var base=high?(10+(ba[1]/4294967296)*40):(5.20+(ba[1]/4294967296)*4.80);
-  var amt=Math.floor(base*10000)/10000;
-  if(amt>=5.20&&amt<=50&&openAmounts.indexOf(amt.toFixed(4))<0)return amt}
- return null}
+function mintedOnTrenchSwap(mint){
+ /* v46: no proof payment for a mint this device launched on TrenchSwap —
+    the editor opens directly. Token Page price is $25 for 1 year at mint
+    for TrenchSwap-minted tokens (2026-11-22 decision). PENDING: whether
+    this no-payment claim gate stays, or a $25 claim charge applies after
+    mint — do not change until Jeffrey decides.
+    The check is an exact mint-address match against the device's own minted
+    record (trenchswap.mints.v1), which carries the mint address once the
+    launch lands on-chain. Records made before that field exists never match
+    (fail-closed). Name/ticker matching is NOT used — it is spoofable, and
+    letting it waive the fee would let anyone claim any token's page free. */
+ try{var q=JSON.parse(localStorage.getItem("trenchswap.mints.v1")||"[]");if(!Array.isArray(q))return false;for(var i=0;i<q.length;i++){var m=q[i];if(m&&((m.mint&&m.mint===mint)||(m.package&&m.package.mint&&m.package.mint===mint)))return true}return false}catch(e){return false}}
 function findMintCreator(mint){
  /* Hack-a-thon Lane 5 F-13: paginate the signature history (before=) to the
     true first (creation) transaction — the first 1000 signatures are not
@@ -7220,28 +7440,45 @@ function showClaimPay(){
  function tick(){
   var left=c.expiresAt-Date.now();
   var el=$("claimCountdown");if(!el){clearInterval(state._claimTimer);return}
-  if(left<=0){el.textContent="EXPIRED";clearInterval(state._claimTimer);$("claimPayStatus").textContent="This claim expired. No page unlocks from it — close this and start again to get a new random amount. There is no automatic refund for a payment sent late.";return}
+  if(left<=0){el.textContent="EXPIRED";clearInterval(state._claimTimer);$("claimPayStatus").textContent="This claim expired. No page unlocks from it — close this and start again for a new claim. There is no automatic refund for a payment sent late.";return}
   var m=Math.floor(left/60000),s=Math.floor((left%60000)/1000);
   el.textContent=m+"m "+(s<10?"0":"")+s+"s";
   if(Math.floor(left/5000)!==state._claimTick){state._claimTick=Math.floor(left/5000);if(Math.floor(left/1000)%20<5)checkClaimPayment(true)}}
  state._claimTimer=setInterval(tick,1000);tick()}
+function claimFreeOpen(){
+ /* v46: token minted on TrenchSwap — no proof payment, no payment step. The
+    editor opens directly; the claim is recorded as free so the reviewer can
+    see why no payment exists. Token Page price is $25 for 1 year at mint
+    (2026-11-22 decision); PENDING whether the no-payment claim gate stays
+    or a $25 claim charge applies after mint. The free gate itself is the
+    exact mint match in mintedOnTrenchSwap, checked before this runs. */
+ var c=state.claim;if(!c)return;
+ c.verified=true;c.paySig=null;c.createdAt=Date.now();
+ $("claimStepStart").style.display="none";$("claimStepPay").style.display="none";$("claimStepEditor").style.display="block";
+ var n=$("claimEditorNotice");if(n)n.innerHTML="<b>Minted on TrenchSwap — Token Page $25 for 1 year at mint.</b> This claim opens the editor with no proof payment. Build the Token Page below. It goes to the review queue when you submit — it appears in the app only after review, approval and commit. Nothing auto-publishes.";
+ $("tpName").value=c.name||"";$("tpSubmitStatus").textContent="";
+ findMintCreator(c.mint).then(function(creator){c.creator=creator||null;tsTrackPost("claim",{mint:c.mint,symbol:c.symbol||"",name:c.name||"",amount:"0.0000",mintedOnTrenchSwap:true,creatorWallet:c.creator||null,paymentTx:null,submittedAt:new Date().toISOString()},function(){})}).catch(function(){});
+ toast("Minted on TrenchSwap — no proof payment for this claim")}
 function startClaimAmount(){
  var c=state.claim;if(!c)return;
  var open=loadOpenClaims().filter(function(o){return o.expiresAt>Date.now()});
  var existing=open.filter(function(o){return o.mint===c.mint})[0];
  /* Hack-a-thon Lane 5 F-05: createdAt is the claim's lower time bound — a
     payment made before the claim started must not count. */
- if(existing){c.amount=Number(existing.amount);c.expiresAt=existing.expiresAt;c.createdAt=existing.createdAt||existing.ts||Date.now();c.creator=existing.creator||null;showClaimPay();return}
- var amt=claimRandomAmount(open.map(function(o){return Number(o.amount).toFixed(4)}));
- if(amt==null){$("claimStartMsg").textContent="A unique claim amount could not be generated right now \u2014 try again in a moment.";return}
- c.amount=amt;c.expiresAt=Date.now()+30*60*1000;c.createdAt=Date.now();
- open.push({mint:c.mint,amount:amt,expiresAt:c.expiresAt,creator:null,ts:Date.now(),createdAt:c.createdAt});
+ if(existing){c.amount=Number(existing.amount);c.expiresAt=existing.expiresAt;c.createdAt=existing.createdAt||existing.ts||Date.now();c.creator=existing.creator||null;if(c.amount===0){claimFreeOpen();return}showClaimPay();return}
+ /* v46: claim proof payment is fixed 100 USDC for a token minted elsewhere
+    (decided 2026-11-22 ~22:48 EST: $100 covers claim AND page, one price);
+    no proof payment if this device minted it on TrenchSwap. Token Page:
+    $100 for 1 year claimed, $25 for 1 year at mint on TrenchSwap. */
+ if(mintedOnTrenchSwap(c.mint)){c.amount=0;c.free=true;claimFreeOpen();return}
+ c.amount=CLAIM_PAGE_FEE_USDC;c.expiresAt=Date.now()+30*60*1000;c.createdAt=Date.now();
+ open.push({mint:c.mint,amount:c.amount,expiresAt:c.expiresAt,creator:null,ts:Date.now(),createdAt:c.createdAt});
  saveOpenClaims(open);
  showClaimPay();
  findMintCreator(c.mint).then(function(creator){
   c.creator=creator;
   var el=$("claimCreatorAddr");if(el&&state.claim===c)el.textContent=creator||"NOT READ — the creator wallet could not be read from the mint creation transaction";
-  var list=loadOpenClaims();list.forEach(function(o){if(o.mint===c.mint&&Number(o.amount)===amt)o.creator=creator});saveOpenClaims(list)})}
+  var list=loadOpenClaims();list.forEach(function(o){if(o.mint===c.mint&&Number(o.amount)===c.amount)o.creator=creator});saveOpenClaims(list)})}
 function checkClaimPayment(silent){
  var c=state.claim;if(!c||c.verified)return;
  var st=$("claimPayStatus");
