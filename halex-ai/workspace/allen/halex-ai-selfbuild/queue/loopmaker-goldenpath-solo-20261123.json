@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-23T16:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/loopmaker-goldenpath-solo-20261123.md",
+    "id": "loopmaker-goldenpath-solo-20261123",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-23T16:46:38.560541+00:00",
+  "gate_status": "done",
+  "id": "loopmaker-goldenpath-solo-20261123",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (EricTechPro/loop-maker SHA 0315882e..., Kulaxyz/self-learning-skills SHA 00e1f9f5..., solo-agent/solo SHA 08f970c4...); READMEs read in full (loop-maker 4,128 chars; self-learning-skills 5,851 chars; solo 6,581 chars). Loop-maker lead from 2026-11-23 03:42 run now CLOSED (LICENSE file exists, MIT; secondary 0-star figure stale \u2014 live count 76). self-learning-skills/solo/agent-md/ccglass owners identified from OSS Hunter source table 2026-11-16: agent-md = iamfakeguru/agent-md, ccglass = jianshuo/ccglass, core-termux = DevCoreXOfficial/core-termux \u2014 LICENSEs unread, leads open for a later run. PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked this run); ContextOS repo 404. No benchmark/efficacy figures adopted for any of the three (none published in the files read). npx/plugin/curl install routes, Solo server/daemon/Postgres machinery, and video tutorials excluded outright.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-23 ~11:42 EST",
+  "summary": "Loop-scaffolding interview discipline (EricTechPro/loop-maker, MIT), golden-path harvest with a three-part promotion rule (Kulaxyz/self-learning-skills, MIT), and shared-workspace discipline (solo-agent/solo, MIT) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/loopmaker-goldenpath-solo-20261123.md; NOTICE.md entries added (2251 -> 2260 lines)."
+}
