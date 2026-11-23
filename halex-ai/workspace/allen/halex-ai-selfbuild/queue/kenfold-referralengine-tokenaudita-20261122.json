@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-23T00:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/kenfold-referralengine-tokenaudita-20261122.md",
+    "id": "kenfold-referralengine-tokenaudita-20261122",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-23T00:48:57.841701+00:00",
+  "gate_status": "done",
+  "id": "kenfold-referralengine-tokenaudita-20261122",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (Kenfold SHA 9e2279e4..., referral-engine SHA 40bb7ae9..., TokenAudita SHA 98197cfa...); READMEs read in full (Kenfold 41,351 chars, referral-engine 36,734 chars, TokenAudita 6,065 chars). NOT gated this run: adarshthakur/context-os (repo 404, PyPI MIT claim is metadata only, no LICENSE read); PromoterKit repo still unidentified; ViralPayouts repo still 404. Benchmark/evaluation figures NOT adopted for any of the three. Moonetix register link not used. Multi-level commissions in referral-engine are off by default with a pyramid-scheme warning \u2014 the warning, not the mechanism, is the adopted pattern.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-22 ~19:42 EST",
+  "summary": "Shared-memory server discipline (Kenfold, MIT), exact referral-ledger patterns (moonetix/referral-engine, MIT), and disclosure-to-code RWA audit patterns (TokenAudita, MIT) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/kenfold-referralengine-tokenaudita-20261122.md; NOTICE.md entries added (2233 -> 2242 lines)."
+}
