@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-24T00:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/agentmd-ccglass-alms-20261123.md",
+    "id": "agentmd-ccglass-alms-20261123",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-24T00:47:22.291172+00:00",
+  "gate_status": "done",
+  "id": "agentmd-ccglass-alms-20261123",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (iamfakeguru/agent-md SHA f6a4e315..., jianshuo/ccglass SHA 3335dadf..., ghassan-ai-projects/alms SHA 9398bd1f...); READMEs read in full (agent-md 8,049 chars; ccglass 19,742 chars; alms 4,254 chars). agent-md + ccglass leads from the 2026-11-23 11:42 run now CLOSED (LICENSE files exist, both MIT; owners identified from the OSS Hunter source table 2026-11-16). ALMS lead CLOSED (secondary MIT claim from the author's article confirmed by LICENSE read). New memory-layer leads surfaced this run (LICENSEs unread, secondary MIT claims only): AllMemoryMCP (mohui1999), shared-agent-memory (Infinite-Monkey-Lab), ALMA-memory (Agent Memory Atlas secondary). memory-os / agent-kernel leads still open (secondary MIT claims only). core-termux low relevance. PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked this run); ContextOS repo 404. No benchmark/efficacy figures adopted for any of the three (none published in the files read). curl|bash and npm/brew install routes, ccglass TLS MITM forward-proxy mode, ALMS Go server/Postgres machinery, and the author's ALMS test snapshot claim excluded outright.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-23 ~19:42 EST",
+  "summary": "Two-layer agent contract discipline (iamfakeguru/agent-md, MIT), local traffic observability discipline (jianshuo/ccglass, MIT), and shared operational memory discipline (ghassan-ai-projects/alms, MIT) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/agentmd-ccglass-alms-20261123.md; NOTICE.md entries added (2260 -> 2269 lines)."
+}
