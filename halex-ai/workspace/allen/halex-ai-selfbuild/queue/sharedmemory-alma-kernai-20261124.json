@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-24T16:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/sharedmemory-alma-kernai-20261124.md",
+    "id": "sharedmemory-alma-kernai-20261124",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-24T16:49:14.354988+00:00",
+  "gate_status": "done",
+  "id": "sharedmemory-alma-kernai-20261124",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (Infinite-Monkey-Lab/shared-agent-memory SHA b0dce3ac..., RBKunnela/ALMA-memory SHA 9158ec42...); READMEs read in full (shared-agent-memory 9,752 chars; ALMA-memory 23,900 chars; kern-ai 11,332 chars). shared-agent-memory + ALMA-memory leads from the 2026-11-23 19:42 run now CLOSED (LICENSE files exist, both MIT). kern-ai lead CLOSED as IDEAS ONLY: no LICENSE file exists in the repo (root listing of 17 entries, no LICENSE; LICENSE path 404s); the README 'MIT' + package.json 'license': 'MIT' claims are recorded, not adopted; no NOTICE entry for kern-ai. Same finding as its sibling agent-kernel (also no LICENSE file). ALMA R@5 = 0.964 recorded as the Atlas's recomputation from published per-question records (retrieval recall, not end-to-end QA); the '#1 open-source' claim and Mem0/Zep/Letta table NOT adopted; the README's PR #35 Atlas-gap closure claim NOT adopted as verified (Atlas finding as read: guard on one of six write paths). shared-agent-memory plugin install flow unverified by its own authors; Windows path undocumented. PyPI kern-ai is a different project sharing the name (small-model framework, Apache-2.0 per PyPI) \u2014 not deep-dived, not adopted. New leads: tigerless-labs/agent-memory, yamantaka520/Agent-Memory-OS, Thezenmonster/agentmem, oxgeneral/agentmem, ipiton/agent-memory-mcp, rohitg00/agentmemory (mixed Apache-2.0 + Elastic-2.0 \u2014 needs care). HJLebbink/A-mem is non-commercial academic-only \u2014 non-permissive, ideas-only at most. PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked this run); ContextOS repo 404. No benchmark/efficacy figures adopted for any of the three.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-24 ~11:42 EST",
+  "summary": "Single-file shared memory discipline across clients with revision-checked corrections and logical deletes (Infinite-Monkey-Lab/shared-agent-memory, MIT), purpose-split five-table learning memory with anti-patterns, persisted verification statuses, per-agent trust with decay, retrieval feedback, and session handoffs (RBKunnela/ALMA-memory, MIT), and one-brain-many-channels runtime discipline (oguzbilgic/kern-ai, IDEAS ONLY \u2014 no LICENSE file) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/sharedmemory-alma-kernai-20261124.md; NOTICE.md entries added (2275 -> 2281 lines)."
+}
