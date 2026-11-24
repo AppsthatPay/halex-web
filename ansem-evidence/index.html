@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANSEM Evidence — The 24 November 2026 Wallet Dump | HALEX-M Advanced Blockchain Intelligence</title>
+<meta name="description" content="Full on-chain investigation of the 24 November 2026 ANSEM wallet dump: the sale, the Relay bridge, the $2,566,426.53 collected in wallet 0xAC33, the first $200,000 outflow to Bitcoin, the $200,250 in bounties, the pre-dump funding, and the hack claim vs. the on-chain record.">
+<style>
+:root{--bg:#0b0e14;--panel:#11151f;--panel2:#161b28;--line:#232a3b;--text:#e8eaf0;--muted:#9aa3b5;--gold:#f5b942;--gold2:#d99a1f;--red:#e5484d;--green:#46a758;--amber:#f5a524;--blue:#3e9bff;--mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+code,.mono{font-family:var(--mono);font-size:.86em;word-break:break-all}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px 80px}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,14,20,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .inner{max-width:980px;margin:0 auto;padding:10px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.06em;font-size:14px;color:var(--gold)}
+.brand span{color:var(--muted);font-weight:600}
+.topbar nav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap}
+.topbar nav a{color:var(--muted);font-size:13px;padding:6px 9px;border-radius:6px}
+.topbar nav a:hover{color:var(--text);background:var(--panel2);text-decoration:none}
+.btn{display:inline-block;background:var(--gold);color:#14100a;font-weight:700;padding:11px 18px;border-radius:8px;font-size:15px;border:0;cursor:pointer}
+.btn:hover{background:var(--gold2);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.btn.ghost:hover{background:rgba(245,185,66,.12)}
+header.hero{padding:56px 0 8px;border-bottom:1px solid var(--line)}
+.eyebrow{color:var(--gold);font-weight:700;letter-spacing:.14em;font-size:12px;text-transform:uppercase}
+h1{font-size:clamp(30px,5.4vw,52px);line-height:1.08;margin:14px 0 10px;letter-spacing:-.01em}
+.lede{font-size:19px;color:var(--muted);max-width:760px}
+.lede b{color:var(--text)}
+.meta{display:flex;gap:18px;flex-wrap:wrap;margin:22px 0 0;color:var(--muted);font-size:13.5px}
+.meta b{color:var(--text)}
+section{padding:38px 0 6px;border-bottom:1px solid var(--line)}
+h2{font-size:26px;margin:0 0 6px;letter-spacing:-.01em}
+h2 .num{color:var(--gold);font-family:var(--mono);font-size:19px;margin-right:8px}
+h3{font-size:19px;margin:26px 0 8px}
+p{margin:10px 0}
+ul,ol{margin:10px 0;padding-left:22px}
+li{margin:6px 0}
+.kicker{color:var(--muted);font-size:15px;margin:0 0 18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+.card h3{margin-top:0}
+.callout{border-left:4px solid var(--gold);background:var(--panel);padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+.callout.red{border-color:var(--red)}
+.callout.green{border-color:var(--green)}
+.callout p{margin:6px 0}
+.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.08em;padding:3px 8px;border-radius:5px;vertical-align:middle}
+.tag.v{background:#12351c;color:#7ee2a0}
+.tag.a{background:#3a2a07;color:#f5c542}
+.tag.n{background:#2a2f3d;color:#aab3c5}
+.tag.r{background:#3d1418;color:#ff9a9e}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.hl td{background:rgba(245,185,66,.07)}
+blockquote{margin:16px 0;padding:14px 20px;background:var(--panel2);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;font-size:18px;line-height:1.55}
+blockquote footer{font-size:13.5px;color:var(--muted);margin-top:8px}
+.addr{font-family:var(--mono);font-size:.85em;background:var(--panel2);padding:2px 6px;border-radius:5px;word-break:break-all}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid2{grid-template-columns:1fr}}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+@media(max-width:720px){.statrow{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stat .v{font-size:24px;font-weight:800;color:var(--gold);line-height:1.15}
+.stat .l{font-size:12.5px;color:var(--muted);margin-top:4px}
+.audiobox{background:linear-gradient(135deg,#1a1408,#11151f);border:1px solid #4a3a14;border-radius:12px;padding:18px 20px;margin:18px 0}
+.audiobox audio{width:100%;margin-top:10px}
+.flowbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;overflow-x:auto;margin:18px 0}
+.flowbox svg{display:block;min-width:760px;width:100%;height:auto}
+.flowlabel{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+.flowval{font-family:var(--mono);font-size:12.5px;font-weight:700;fill:var(--text)}
+.flowamt{font-family:var(--mono);font-size:12px;font-weight:700;fill:var(--gold)}
+.flowpath{stroke:#3e9bff;stroke-width:2.5;fill:none;stroke-dasharray:7 7;animation:dashmove 1.6s linear infinite}
+.flowpath.pre{stroke:var(--red)}
+.flowpath.fwd{stroke:var(--amber)}
+@keyframes dashmove{to{stroke-dashoffset:-28}}
+.flowdot{fill:var(--gold);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.node{fill:#1a2030;stroke:#3a4358;stroke-width:1.5}
+.node.hot{stroke:var(--gold)}
+.node.red{stroke:var(--red)}
+.timeline{position:relative;margin:24px 0 8px;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--gold),#3a4358)}
+.tl{position:relative;padding:0 0 20px 14px}
+.tl:before{content:"";position:absolute;left:-26px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--gold);border:2px solid var(--bg);box-shadow:0 0 0 2px var(--gold);animation:pulse 2s ease-in-out infinite}
+.tl.red:before{background:var(--red);box-shadow:0 0 0 2px var(--red)}
+.tl.blue:before{background:var(--blue);box-shadow:0 0 0 2px var(--blue)}
+.tl time{font-family:var(--mono);font-size:12.5px;color:var(--gold);font-weight:700}
+.tl p{margin:4px 0 0}
+.tl .who{font-weight:700}
+footer.pagefoot{padding:40px 0 10px;color:var(--muted);font-size:14px}
+footer.pagefoot .addrs{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:16px 0}
+footer.pagefoot .addrs .row{margin:8px 0}
+.toc{columns:2;gap:30px;font-size:14.5px}
+.toc a{display:block;padding:3px 0;color:var(--muted)}
+.toc a:hover{color:var(--text)}
+@media(max-width:720px){.toc{columns:1}}
+.small{font-size:13.5px;color:var(--muted)}
+@media print{
+  body{background:#fff;color:#111}
+  .topbar{position:static;background:#fff}
+  .topbar nav,.btn{display:none!important}
+  .card,.callout,.stat,.audiobox,.flowbox,footer.pagefoot .addrs{background:#fff;border-color:#ccc}
+  .flowpath{animation:none}
+  .flowdot,.tl:before{animation:none}
+  section{break-inside:avoid-page-break}
+  a{color:#0645ad}
+  h1{font-size:34px}
+}
+</style>
+</head>
+<body>
+<div class="topbar"><div class="inner">
+  <div class="brand">HALEX-M <span>Advanced Blockchain Intelligence · APEX³</span></div>
+  <nav>
+    <a href="#summary">Summary</a><a href="#flow">Money flow</a><a href="#timeline">Timeline</a><a href="#narratives">Two narratives</a><a href="#identity">Identity</a><a href="#leads">Leads</a><a href="#sources">Sources</a>
+    <a href="ansem-evidence-report-v2.pdf" download style="color:var(--gold);font-weight:700">⬇ PDF</a>
+  </nav>
+</div></div>
+
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">ANSEM Evidence · Investigation Dossier · 24 November 2026</div>
+  <h1>The ANSEM Wallet Dump: Hack Claim vs. the On-Chain Record</h1>
+  <p class="lede">On the morning of 24 November 2026, a Solana wallet publicly tagged as Ansem's sold <b>~87.5M ANSEM</b> and holdings in ~123 other tokens in <b>877 sales</b>. The proceeds were bridged to Arbitrum and collected as <b>$2,566,426.53 USDC</b> — but at <b>17:49:52 UTC, $200,000 left for the first time</b>, routed through Rango toward Bitcoin. Balance now: <b>$2,366,426.53</b>. Circle has NOT frozen the funds. Ansem says he was hacked through Bullpen. The chain tells a more complicated story — including <b>$543,808.79 funded into the receiving wallet about 40 minutes before the selling began</b>, now traced as the selling wallet's own money.</p>
+  <div class="meta">
+    <span>Event: <b>24 Nov 2026, ~08:34 UTC</b></span>
+    <span>Compiled: <b>24 Nov 2026, ~17:10 UTC · v2 update ~18:15 UTC</b></span>
+    <span>Status: <b>STAGED — not published</b></span>
+    <span>Verdict on guilt: <b>NOT established</b></span>
+  </div>
+  <div class="card" style="margin-top:22px">
+    <h3 style="margin-top:0">Compiling party — attribution, tips &amp; reward claims</h3>
+    <p>This investigation was compiled by <b>Jeffrey Allen Kaufman / HALEX-M Advanced Blockchain Intelligence</b>. Tips, corrections, and any reward claims relating to this event should be directed to the compiling party at:</p>
+    <p>Solana: <span class="addr">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</span><br>
+    EVM: <span class="addr">0xE2CF47E4974484A021A72D50e0A2FC7188E2aA38</span></p>
+    <p style="margin-bottom:0"><a class="btn" href="ansem-evidence-report-v2.pdf" download>⬇ Download the full report (PDF, v2)</a>
+    <a class="btn ghost" href="#audio" style="margin-left:8px">▶ Listen to the executive summary</a></p>
+  </div>
+  <div class="statrow">
+    <div class="stat"><div class="v">$2,366,426.53</div><div class="l">USDC in 0xAC33 now — in: $2,566,426.53 · out: $200,000</div></div>
+    <div class="stat"><div class="v">877 sales</div><div class="l">across 124 tokens, from ~08:34 UTC</div></div>
+    <div class="stat"><div class="v">$543,808.79</div><div class="l">funded into 0xAC33 ~40 min BEFORE the dump</div></div>
+    <div class="stat"><div class="v">85.43 ANSEM</div><div class="l">left in the selling wallet (was ~87.5M)</div></div>
+  </div>
+  <div class="callout"><p><b>Evidence discipline.</b> <span class="tag v">VERIFIED</span> primary source: on-chain transaction, API response, or post text quoted with URL. &nbsp;<span class="tag a">ALLEGED</span> someone's claim, source named, not proven. &nbsp;<span class="tag n">NOT READ</span> not found in the sources searched — not disproved, simply not established. <b>No address, transaction, or amount in this report is invented. Where sources disagree, the disagreement is shown, not smoothed over.</b></p></div>
+  <div class="callout red"><p><b>What's new in v2 (24 Nov 2026, ~18:15 UTC).</b> <b>The money moved:</b> $200,000 USDC left 0xAC33 at 17:49:52 UTC — Rango/Bridgers toward Bitcoin; balance now $2,366,426.53, and Circle has NOT frozen it. <b>The bounty is real:</b> MikeZillionaire $100,000 + James Wynn $100,000 + Zion Protocol $250 = <b>$200,250</b> — v1 wrongly said none had been found, and the Mike post is now captured verbatim. <b>The pre-dump funding is traced:</b> the $543,808.79 was the selling wallet's own money, moved out at 06:46 UTC and bridged back in. <b>Correction:</b> the selling wallet did NOT sign the Tensor MakeOffer (16:53:37 UTC, not 17:33) and has not signed any transaction since the dump ended. <b>New:</b> the MASTR multi-victim Bullpen drain (24+ wallets, 9 Bullpen users) and Ansem's 8:41 AM reply. Version 1 is preserved in the work directory.</p></div>
+  <nav class="toc" aria-label="Contents">
+    <a href="#summary">1 · Executive summary</a>
+    <a href="#flow">Money-flow diagram (animated)</a>
+    <a href="#token">2 · The token — ANSEM / The Black Bull</a>
+    <a href="#wallet">3 · The selling wallet</a>
+    <a href="#dump">4 · The dump &amp; the conflicting tallies</a>
+    <a href="#bridge">5 · The bridge — Relay</a>
+    <a href="#receiving">6 · The receiving wallets — full reconciliation</a>
+    <a href="#timeline">7 · Timeline — who said what, when</a>
+    <a href="#narratives">8 · The two narratives</a>
+    <a href="#identity">9 · Identity &amp; background — Zion Thomas</a>
+    <a href="#location">10 · Location — public evidence only</a>
+    <a href="#social">11 · Social sweep — posts today</a>
+    <a href="#leads">12 · Leads &amp; points of interest</a>
+    <a href="#gaps">13 · Gaps — what this report does NOT establish</a>
+    <a href="#methods">14 · Methods &amp; tools</a>
+    <a href="#sources">15 · Sources</a>
+    <a href="#appendix">Appendix — key addresses</a>
+  </nav>
+</header>
+
+<section id="audio">
+  <h2><span class="num">▶</span>Listen — executive summary (audible reading)</h2>
+  <p class="kicker">A spoken reading of the v2 executive summary, 3 min 04 s — the money moved, the bounty is real, the pre-dump funding is traced. The full text follows below.</p>
+  <div class="audiobox">
+    <b>🎙 Executive summary — narrated (v2)</b><br>
+    <span class="small">Voice: Helio · 3 min 04 s · File: ansem-evidence-executive-summary-v2.mp3 · Transcript: <a href="ansem-evidence-executive-summary-v2-script.txt">executive-summary-v2-script.txt</a> · v1 audio preserved alongside</span>
+    <audio controls preload="metadata" src="ansem-evidence-executive-summary-v2.mp3"></audio>
+  </div>
+</section>
+
+<section id="summary">
+  <h2><span class="num">01</span>Executive summary</h2>
+  <p>On the morning of 24 November 2026, a Solana wallet publicly tagged as belonging to crypto influencer Ansem (<b>Zion Thomas, @blknoiz06</b>) sold roughly <b>87.5 million ANSEM</b> — his namesake token, The Black Bull — plus holdings in ~123 other tokens, in <b>877 sales</b> beginning ~08:34 UTC. The ANSEM price fell ~60% within an hour and as much as ~75% at the day's low. The proceeds were bridged to Arbitrum, mostly through <b>Relay</b>, and collected as <b>$2,566,426.53 USDC</b> in wallet <span class="addr">0xAC33748aAd09CEA8E50484Cc0Fa168dc23531B4d</span>. <b>That figure is now stale: at 17:49:52 UTC, $200,000 USDC left the wallet for the first time</b> — routed through Rango (Bridgers) toward a Bitcoin address — leaving <b>$2,366,426.53 USDC</b> as of ~18:10 UTC, 24 November 2026. Circle has <b>not</b> frozen the remaining funds.</p>
+  <p>Ansem says the wallet was hacked through unauthorised access to his <b>Bullpen</b> trading-terminal profile, which held his imported Solana private key. Several on-chain analysts dispute the hack: the proceeds flowed to a wallet the selling address had previously funded, and the receiving wallet was itself funded with <b>$543,808.79 about 40 minutes before the selling began</b> — a fact this investigation verified on-chain from Etherscan's Arbitrum token-transfer record.</p>
+  <h3>What this report establishes <span class="tag v">VERIFIED</span></h3>
+  <ol>
+    <li><b>The sale, the bridge, and the destination are real and fully traced.</b> The $2.57M figure reconciles exactly: $1,832,902.12 via Relay direct + $189,028.53 forwarded through a second wallet + $515,111.13 + $28,697.66 in pre-dump funding + $687.10 of small transfers = $2,566,426.53 in. <b>$200,000 has now left</b> (17:49:52 UTC, Rango/Bridgers → Bitcoin); balance <b>$2,366,426.53</b> as of ~18:10 UTC.</li>
+    <li><b>The receiving wallet 0xAC33 was funded BEFORE the dump began:</b> $515,110.15 from <span class="addr">0x06ee679b907a654a9126caf511922f632f6e4b03</span> at 07:54:15 UTC and $28,694.22 from <span class="addr">0xb8009d1da10b8fe53330cfb2cbc77f2de241f3ec</span> at 07:55:13 UTC — roughly 40 minutes before selling started at ~08:34 UTC.</li>
+    <li><b>A second receiving wallet, <span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span>, was created the morning of the dump</b> (first transaction 08:11 UTC), received Relay proceeds, and forwarded them to 0xAC33. It now holds ~$0.</li>
+    <li><b>The selling wallet is now nearly empty of ANSEM (85.43 tokens left)</b> and held 5.448 SOL at last check. <b>CORRECTION:</b> v1 said it was "still active" because its latest transaction (17:33 UTC) was a Tensor MakeOffer. That was wrong on both counts: the MakeOffer was at <b>16:53:37 UTC</b>, and it was <b>signed by two other wallets, not by the selling wallet</b>. No self-signed transaction by the selling wallet has been established after the dump ended (~10:16 UTC).</li>
+    <li><b>The ~490M ANSEM (~49% of supply) held by a separate wallet (GdrKtm8e…) since 1 August is unchanged.</b></li>
+    <li><b>The pre-dump funding was the selling wallet's own money.</b> <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span> are pass-throughs with zero native ETH transactions, fed by the Relay solver <span class="addr">0xf70da97812…</span>. The $515,110.15 left the selling wallet at 06:46 UTC (with 404.669 SOL) and was bridged back into 0xAC33 at 07:54–07:55 UTC. Who operates the Relay flow is <span class="tag n">NOT READ</span>.</li>
+    <li><b>The first outflow happened at 17:49:52 UTC: $200,000 USDC</b> from 0xAC33 to Rango router <span class="addr">0xc1d13492285eb664951e201bf7c80c7c6318a1b5</span>, calldata naming Bitcoin destination <span class="addr">bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</span> via route provider "Bridgers". The BTC leg has NOT landed in that address as of ~18:15 UTC — in flight or routed elsewhere, <span class="tag n">NOT READ</span>.</li>
+    <li><b>Circle has NOT frozen the remaining USDC.</b> <span class="mono">isBlacklisted(0xAC33)</span> on the Arbitrum USDC contract returned false at ~18:10 UTC (direct public-RPC call). Note: Etherscan's <span class="mono">tokenbalance</span> endpoint is stale/cached and still shows $2,566,426.53 — do not trust it; the direct RPC <span class="mono">balanceOf</span> read is authoritative.</li>
+    <li><b>The bounties are real and total $200,250:</b> MikeZillionaire $100,000 (captured verbatim, status 2125192753650811346), James Wynn matching $100,000 (status 2125255491005866348, says investigators are giving evidence to the Police), Zion Protocol $250.</li>
+    <li><b>The drain hit more than Ansem.</b> The same operator/group emptied at least 24 more wallets the same day, 9 of them Bullpen users — 18 Solana wallets and 6 Hyperliquid accounts, 13:24–14:51 UTC — with proceeds landing on 0xAC33 and on BNB Chain, and SOL cashed out through SideShift. Corroborated by a Bitquery forensic report.</li>
+  </ol>
+  <h3>What is NOT established</h3>
+  <ul>
+    <li>Whether the sale was a hack, a self-sale, or an insider act. Both narratives are <span class="tag a">ALLEGED</span>; the chain proves the flows, not the intent.</li>
+    <li>The identity of the pre-dump funders <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span>.</li>
+    <li>Any statement from <b>Bullpen</b> — none found as of ~18:00 UTC (re-checked).</li>
+    <li>Whether the $200,000 Rango/Bridgers → Bitcoin swap completed, and where the BTC ends up.</li>
+    <li>Who controls <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span> — the pass-throughs are traced, their controller is <span class="tag n">NOT READ</span>.</li>
+    <li>The full post-09:31 UTC disposition of the selling wallet; signer checks show the wallet did not sign its recent transactions, but the full signature sweep is still open.</li>
+    <li>Whether any law-enforcement report has been filed (Circle has NOT frozen the funds as of ~18:10 UTC).</li>
+  </ul>
+  <div class="callout red"><p><b>Strongest leads:</b> (1) <b>Watch the $200,000 Rango/Bridgers → Bitcoin move</b> — does the swap settle into <span class="addr">bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</span>, and do further outflows follow? The remaining $2,366,426.53 is unfrozen and demonstrably movable. (2) <b>Identify who operates the Relay flow behind <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span></b> — now traced as pass-throughs for the selling wallet's own 06:46 UTC money, so this is the same question as who held the selling wallet's key. (3) <b>The multi-victim Bullpen drain</b> — 18–19 Bullpen users per Bitquery, 9 per MASTR; Bullpen's login/key-use records are, per Unchained, "the clearest evidence either way"; Bullpen is still silent.</p></div>
+</section>
+
+<section id="flow">
+  <h2><span class="num">↗</span>Money-flow diagram — how $2.57M moved</h2>
+  <p class="kicker">Animated: red = pre-dump funding (before 08:34 UTC) · blue = the dump and bridge · amber = the forwarder hop · green = the first outflow, 17:49:52 UTC. All amounts VERIFIED from Relay API + Etherscan Arbitrum token transfers + direct public-RPC reads, re-read ~18:10 UTC, 24 Nov 2026.</p>
+  <div class="flowbox">
+  <svg viewBox="0 0 900 560" role="img" aria-label="Money flow diagram: selling wallet dumps ANSEM, bridges via Relay to Arbitrum wallets; pre-dump funders funded the receiver 40 minutes before the dump; $200,000 left for Bitcoin at 17:49:52 UTC.">
+    <!-- nodes -->
+    <rect class="node red" x="20" y="30" width="210" height="64" rx="10"/>
+    <text class="flowval" x="34" y="56">PRE-DUMP FUNDER #1</text>
+    <text class="flowlabel" x="34" y="76">0x06ee…e4b03 · Arbitrum</text>
+    <rect class="node red" x="20" y="120" width="210" height="64" rx="10"/>
+    <text class="flowval" x="34" y="146">PRE-DUMP FUNDER #2</text>
+    <text class="flowlabel" x="34" y="166">0xb800…f3ec · Arbitrum</text>
+    <rect class="node" x="20" y="240" width="210" height="74" rx="10"/>
+    <text class="flowval" x="34" y="266">SELLING WALLET</text>
+    <text class="flowlabel" x="34" y="286">GV6UUm…VdC52 · Solana</text>
+    <text class="flowlabel" x="34" y="303">877 sales · 124 tokens</text>
+    <rect class="node" x="330" y="240" width="180" height="74" rx="10"/>
+    <text class="flowval" x="344" y="266">RELAY BRIDGE</text>
+    <text class="flowlabel" x="344" y="286">29 requests · 08:11–10:16 UTC</text>
+    <text class="flowlabel" x="344" y="303">all status: success</text>
+    <rect class="node" x="330" y="120" width="180" height="64" rx="10"/>
+    <text class="flowval" x="344" y="146">FORWARDER 0x0a0A…</text>
+    <text class="flowlabel" x="344" y="166">created 24 Nov 08:11 UTC</text>
+    <rect class="node hot" x="620" y="150" width="260" height="110" rx="10"/>
+    <text class="flowval" x="634" y="176">MAIN RECIPIENT 0xAC33…</text>
+    <text class="flowlabel" x="634" y="196">0xAC33748a…31B4d · Arbitrum</text>
+    <text class="flowamt" x="634" y="222">$2,566,426.53 USDC IN</text>
+    <text class="flowamt" x="634" y="242" style="fill:#ff9a9e">$200,000 OUT · $2,366,426.53 NOW</text>
+    <rect class="node" x="330" y="380" width="260" height="64" rx="10"/>
+    <text class="flowval" x="344" y="406">LONG-STANDING RECIPIENT</text>
+    <text class="flowlabel" x="344" y="426">0xB2b7…01a8c · Aug–Oct · now $0</text>
+    <rect class="node" x="620" y="380" width="260" height="64" rx="10" style="stroke:#46a758"/>
+    <text class="flowval" x="634" y="406">RANGO ROUTER → BITCOIN</text>
+    <text class="flowlabel" x="634" y="426">0xc1d1…a1b5 · Bridgers · 17:49:52 UTC</text>
+    <text class="flowamt" x="634" y="446" style="fill:#7ee2a0">$200,000 USDC → bc1qhvz…vv0</text>
+    <!-- paths: pre-dump funding -->
+    <path class="flowpath pre" d="M230 62 C 420 62, 480 170, 620 190"/>
+    <path class="flowpath pre" d="M230 152 C 420 152, 480 185, 620 205"/>
+    <text class="flowamt" x="330" y="52" style="fill:#ff9a9e">$515,110.15 · 07:54 UTC</text>
+    <text class="flowamt" x="330" y="120" style="fill:#ff9a9e">$28,694.22 · 07:55 UTC</text>
+    <!-- paths: dump -> relay -> ac33 -->
+    <path class="flowpath" d="M230 277 C 270 277, 290 277, 330 277"/>
+    <text class="flowamt" x="238" y="262" style="fill:#3e9bff">~$1.9M in SOL</text>
+    <path class="flowpath" d="M510 260 C 560 240, 580 220, 620 215"/>
+    <text class="flowamt" x="516" y="232" style="fill:#3e9bff">17 × $1,832,902</text>
+    <!-- forwarder -->
+    <path class="flowpath fwd" d="M510 150 C 470 150, 420 152, 380 152"/>
+    <path class="flowpath fwd" d="M420 184 C 500 200, 560 205, 620 212"/>
+    <text class="flowamt" x="352" y="105">$56,273 Relay in</text>
+    <text class="flowamt" x="430" y="222" style="fill:#f5a524">$189,029 fwd →</text>
+    <!-- long-standing -->
+    <path class="flowpath" d="M230 300 C 280 330, 300 360, 330 396" stroke-dasharray="3 6" style="opacity:.55"/>
+    <text class="flowlabel" x="250" y="372">Aug–Oct 2026 · many requests · $0 on 24 Nov</text>
+    <!-- first outflow: 0xAC33 -> Rango -> BTC -->
+    <path class="flowpath" d="M750 260 L750 380" style="stroke:#46a758"/>
+    <text class="flowamt" x="742" y="320" style="fill:#7ee2a0">$200,000 · 17:49:52</text>
+    <!-- pulsing dots -->
+    <circle class="flowdot" cx="620" cy="205" r="5"/>
+    <circle class="flowdot" cx="510" cy="277" r="5"/>
+    <circle class="flowdot" cx="230" cy="62" r="5"/>
+    <!-- legend -->
+    <text class="flowlabel" x="20" y="472">— — — pre-dump funding (before selling began)</text>
+    <text class="flowlabel" x="20" y="492">— — — dump proceeds via Relay bridge</text>
+    <text class="flowlabel" x="20" y="512">— — — forwarder hop (same-day wallet, now empty)</text>
+    <text class="flowlabel" x="20" y="532">— — — first outflow (Rango / Bridgers → Bitcoin, 17:49:52 UTC)</text>
+    <text class="flowlabel" x="20" y="554">All figures VERIFIED from Relay API + Etherscan Arbitrum tokentx + direct public-RPC reads, re-read ~18:10 UTC 24 Nov 2026.</text>
+  </svg>
+  </div>
+  <div class="card">
+    <h3>Reconciliation — the $2.57M figure, resolved</h3>
+    <table>
+      <tr><th>Source of funds into 0xAC33</th><th class="num">USDC</th></tr>
+      <tr><td>Relay direct from the selling wallet (17 transfers, solver 0xf70da97812…)</td><td class="num">$1,832,902.12</td></tr>
+      <tr><td>Forwarded via 0x0a0A (5 transfers)</td><td class="num">$189,028.53</td></tr>
+      <tr><td>Pre-dump funding from 0x06ee… (07:53–07:54 UTC)</td><td class="num">$515,111.13</td></tr>
+      <tr><td>Pre-dump funding from 0xb800… (07:55–07:58 UTC)</td><td class="num">$28,697.66</td></tr>
+      <tr><td>Small / dust inflows (5 transfers)</td><td class="num">$687.10</td></tr>
+      <tr class="hl"><td><b>TOTAL IN</b></td><td class="num"><b>$2,566,426.53</b></td></tr>
+      <tr><td>First outflow — Rango/Bridgers → Bitcoin (17:49:52 UTC)</td><td class="num">−$200,000.00</td></tr>
+      <tr class="hl"><td><b>CURRENT BALANCE (~18:10 UTC)</b></td><td class="num"><b>$2,366,426.53</b></td></tr>
+    </table>
+    <p class="small">The conflicting same-day figures ($1.39M Relay per Arkham/CoinDesk; $1.55M via 15 Relay transfers per The Defiant; $2.15M then $2.57M per Lookonchain) are different windows of the same total: Lookonchain's $2.15M was a mid-morning running total; the $1.39M/$1.55M figures counted only a subset of Relay transfers; the full Etherscan record is $2,566,426.53 in. The $2,566,426.53 was the total IN; $200,000 has since left (17:49:52 UTC), leaving $2,366,426.53.</p>
+  </div>
+</section>
+
+<section id="token">
+  <h2><span class="num">02</span>The token — ANSEM / The Black Bull</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th><th>Status</th></tr>
+    <tr><td>Name / ticker</td><td>ANSEM — "The Black Bull"</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Mint (Solana)</td><td><span class="addr">9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump</span></td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Launched</td><td>Mid-June 2026, on Pump.fun</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Peak market cap</td><td>Above $120M, late June 2026</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Supply to Ansem's wallet pre-trading</td><td>~65% of total supply</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Ansem-linked share</td><td>~58% (Ansem disclosed ~58% in July)</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Mint / freeze authority</td><td>None / None</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Creator</td><td><span class="addr">9ENSWnedBEAvVB7jJKZrLRZ9vuVuJdBE7uJt2oAsG1jr</span>, balance 0</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Main market LP locked</td><td>99.39%, $752,120</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>RugCheck score / risks</td><td>5997 · Single holder ownership; High holder concentration</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Holders</td><td>388,832 (RugCheck) vs 155,305 (GoPlus) — <b>discrepancy, unresolved</b></td><td><span class="tag a">ALLEGED</span> as a discrepancy</td></tr>
+    <tr><td>Top holder</td><td><span class="addr">GdrKtm8e…</span> — 49.23% (~490M ANSEM, received from the selling address 1 Aug, still holding ~491M, ~$9.7M) — <b>unchanged through the dump</b></td><td><span class="tag v">VERIFIED</span></td></tr>
+  </table>
+  <p><b>Market snapshot at investigation check (24 Nov, ~18:10 UTC):</b> price $0.02082; market cap $20.77M; liquidity $784,231.86; 24h change −47.21%; 24h volume $12.3M (DexScreener). Earlier in the afternoon (PumpSwap): price $0.01955; liquidity $756,535.69; FDV $19,517,139; 24h volume $11,716,720.91; 24h change −52.22%.</p>
+  <p><b>Ansem did NOT create the token.</b> It was launched on Pump.fun in mid-June 2026 and ~65% of supply went to his wallet before trading opened. In late June 2026 a creator-fee airdrop sent 67.38M ANSEM (~$7–9.43M) to 704 wallets (Lookonchain via outlets).</p>
+  <div class="callout"><p><b>Copycat tokens — NOT this event.</b> RugPullRadar lists many small, unrelated <span class="mono">$ANSEM</span> mints launched 8–12 November 2026 on PumpSwap/Meteora DBC, with $698–$15k insider profits each. These are separate scams and must not be conflated with the 24 November event.</p></div>
+</section>
+
+<section id="wallet">
+  <h2><span class="num">03</span>The selling wallet</h2>
+  <table>
+    <tr><th>Field</th><th>Value</th><th>Status</th></tr>
+    <tr><td>Address (Solana)</td><td><span class="addr">GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52</span></td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Tagged as Ansem-associated by</td><td>Lookonchain, Arkham Intelligence, Bitquery</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Helius access check</td><td>getSlot proved access (slot 473418584)</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>SOL balance (last check)</td><td>5.448 SOL (was 5.43748781 SOL at v1 check)</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>ANSEM balance now</td><td><b>85.427391 ANSEM</b> in Token-2022 account <span class="addr">2U9XFtekYTstzMYXmuyDCNdFxRYB91dMtSKxtUB5rVct</span></td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>ANSEM before selling</td><td>~87.5M</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>ANSEM by 09:31 UTC</td><td>~16.7M (~81% cut)</td><td><span class="tag v">VERIFIED</span></td></tr>
+    <tr><td>Latest transactions involving the wallet</td><td>Four recent transactions checked by Helius signer analysis — <b>the selling wallet signed NONE of them</b>. See the signer table below.</td><td><span class="tag v">VERIFIED</span></td></tr>
+  </table>
+  <p>The gap between the 16.7M reported at 09:31 UTC and the 85.43 tokens now means sales continued after 09:31 UTC, or further transfers occurred. The exact post-09:31 disposition is <span class="tag n">NOT READ</span> in full — a follow-up Helius signature sweep of the wallet is an open item (Lead #5).</p>
+  <div class="callout red"><p><b>CORRECTION — v1 was wrong here.</b> v1 said the wallet's latest transaction was a Tensor "MakeOffer" at ~17:33 UTC and that "the wallet is still active after the dump." Both parts were wrong. The MakeOffer (sig <span class="addr">58zzS2fEHBt8bE6xv4Q1x6jF9SA2G2U4KwiVrW47FgQeGBCsXPuP5Mo2mBEFoq3fTyr1y9d5UB65gkWKBAhNybDu</span>) has blockTime <b>16:53:37 UTC</b> (not 17:33), and its signers were <span class="addr">6M9zNnZ2qAWjBqE2DAXkuQk7DQ2T7KiHhSDp1M3QKNFA</span> and <span class="addr">cc3novbXuNSe292qKH2gGhxToaWjuBvJbA7zQf8NVxi</span> — the selling wallet GV6UUm did NOT sign it; it appears as a non-signing account.</p></div>
+  <table>
+    <tr><th>Time (UTC)</th><th>Signature</th><th>Signed by</th><th>Selling wallet signed?</th></tr>
+    <tr><td>18:05:32</td><td><span class="addr">5NcD3dLcLx3wLSScC5R3zcHKmjFhKCywyY3xyG4isHWwWZodutVtntc2SKF5Rk3ftPM5q9uPyUMG4J6iaDjyNhyr</span></td><td><span class="addr">HckQ93Xqjjo8mwt5pNPWvyCTZXQZ858rvzmm7ZRrZg9t</span> (Pump.fun programs)</td><td><b>No</b></td></tr>
+    <tr><td>18:04:12</td><td><span class="addr">3TxZSZ8XekvNNnULXrVmpFA2374J9dFJuwnUC7W7wnMMGUdGdojzUdBCjodR1Xjzi3u8bbq32pMfZ9xJiDqbCHii</span></td><td><span class="addr">B8CzvYkUKeyY</span></td><td><b>No</b></td></tr>
+    <tr><td>17:59:29</td><td><span class="addr">bKeeNBxgwurZaDvPwWUi3oZJYdu45eJftifbnYoee1tvEFYw9hAMq33rNX54jj3XZYtsRCjufLUNFHWVscr8KNw</span></td><td><span class="addr">Gjtpvzdi8518</span></td><td><b>No</b></td></tr>
+    <tr><td>16:53:37</td><td><span class="addr">58zzS2fEHBt8bE6xv4Q1x6jF9SA2G2U4KwiVrW47FgQeGBCsXPuP5Mo2mBEFoq3fTyr1y9d5UB65gkWKBAhNybDu</span></td><td><span class="addr">6M9zNnZ2qAWjBqE2DAXkuQk7DQ2T7KiHhSDp1M3QKNFA</span> + <span class="addr">cc3novbXuNSe292qKH2gGhxToaWjuBvJbA7zQf8NVxi</span> (Tensor MakeOffer)</td><td><b>No</b></td></tr>
+  </table>
+  <p><b>No self-signed transaction by the selling wallet has been established after the dump ended (~10:16 UTC).</b> The last transactions it is known to have signed are the dump sales and bridges themselves. This is consistent with either reading (a thief who stopped using the key, or an owner who stopped using it) — it proves nothing about intent. Two further signatures (17:54:39 and 17:53:22 UTC) were never captured in full and remain unchecked.</p>
+</section>
+
+<section id="dump">
+  <h2><span class="num">04</span>The dump — what happened, and the conflicting tallies</h2>
+  <p>Selling began <b>~08:34 UTC, 24 November 2026</b> (FinScans/Arkham; Lookonchain first alert ~09:39 UTC reported a ~09:30 UTC start). <b>877 sales across 124 tokens</b> (CoinDesk citing Arkham/Solscan).</p>
+  <p><b>Three tallies circulate. They describe the same wallet at different cut-off times and scopes — not typos:</b></p>
+  <table>
+    <tr><th>Tally</th><th>ANSEM sold</th><th>Proceeds</th><th>Source</th></tr>
+    <tr><td>First wave (two PumpSwap batches: 28.27M in 8 txs in ~27s, then 20.64M in 7 txs)</td><td>48.91M</td><td>~13,000 SOL (~$922,000)</td><td>Coincamps via KuCoin flash 09:55:34 UTC; Spendnode; CryptoBriefing</td></tr>
+    <tr><td>Three rounds</td><td>70.78M</td><td>~17,600 SOL (~$1.25M); plus ~12.66M MIHAO for ~970 SOL (~$68,800)</td><td>Lookonchain monitoring via KuCoin flash 10:13:56 UTC; CoinEdition</td></tr>
+    <tr><td>All-token total</td><td>~87.5M ANSEM (~$1.5M of ANSEM) within ~$2M total across 124 tokens</td><td>~17,300 SOL (~$1.23M) swapped incl. ~$933,900 of ANSEM</td><td>Arkham/Solscan via CoinDesk 12:47 UTC; Onchain Lens via KuCoin 13:14:15 UTC</td></tr>
+  </table>
+  <p><b>Price impact:</b> market cap $36.7M → $9.4M within hours; price −55% to −60% in an hour, −39% to $0.024 over 24h (CoinDesk), −48% daily to $0.02046 (CoinCodex), up to −75% at the day's low (CoinEdition / CryptoBriefing).</p>
+  <p><b>Transaction-count discrepancy (flagged, not merged):</b> Fabiano cites <b>789 transactions</b> selling tokens one by one; CoinDesk/Arkham cite <b>877 sales</b>. Different tallies/time windows. Do not merge.</p>
+  <p><b>Rarma's on-chain timeline (VERIFIED via his thread, 6:17 AM Nov 24):</b> 06:46 UTC — all USDC ($515k) and all SOL (404) leave the wallet in two transfers 7 seconds apart; 08:09–08:31 — five small Relay bridge transfers; 08:33 — token selling starts on Jupiter, one swap every 3–4 seconds; ~130 tokens sold; ~4,800 dust tokens burned; 08:57 — ANSEM, 87.5M tokens in 25 market sells across four bursts; the first eight took the wallet's own fill price down 68% in 27 seconds; position marked ~$3.2M brought in 21,522 SOL (~$1.5M). Rarma's conclusion: "The chain can't settle it: a stolen key and an owner moving everything himself leave the same trail."</p>
+</section>
+
+<section id="bridge">
+  <h2><span class="num">05</span>The bridge — Relay</h2>
+  <p><span class="tag v">VERIFIED</span> from the Relay API, read directly by this investigation (24 Nov 2026). 29 Relay requests from the selling wallet on 24 Nov, 08:11–10:16 UTC, all status success. Grand total USD in: <b>$1,897,575.67</b>.</p>
+  <table>
+    <tr><th>Recipient</th><th>Chain</th><th>Requests</th><th class="num">USD in</th><th class="num">USDC out</th></tr>
+    <tr><td><span class="addr">0xAC33748aAd09CEA8E50484Cc0Fa168dc23531B4d</span></td><td>Arbitrum</td><td>17</td><td class="num">$1,841,212.28</td><td class="num">$1,832,902.12</td></tr>
+    <tr><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Arbitrum (+1 Ethereum)</td><td>7</td><td class="num">$56,272.56</td><td class="num">$56,064.10</td></tr>
+    <tr><td><span class="addr">0x34D0DF892323fEf6889C6Cb0c43823F7b22723c5</span></td><td>BSC</td><td>4</td><td class="num">$86.60</td><td class="num">—</td></tr>
+    <tr><td><span class="addr">0x9eDB4223db879fCBD0d9A3580C0e5c0251e495C1</span></td><td>BSC</td><td>1</td><td class="num">$4.23</td><td class="num">—</td></tr>
+    <tr class="hl"><td><b>Total</b></td><td></td><td><b>29</b></td><td class="num"><b>$1,897,575.67</b></td><td></td></tr>
+  </table>
+  <p><b>Pattern to 0xAC33:</b> repeated <b>2,000 SOL chunks</b> (~$141k each, ~140,9xx USDC out each), 09:01–10:10 UTC, plus smaller tail amounts (1,247.37 SOL, 158.04 SOL, 156.87 SOL, 155.31 SOL). The 2,000-SOL chunking is mechanical and consistent — a scripted bridge-out, not manual clicking.</p>
+  <p><b>The small BSC amounts ($86.60 + $4.23)</b> look like probes/tests, not the main flow — <span class="tag a">ALLEGED</span> as tests, not proven.</p>
+  <p><b>Long-standing pattern (Relay history):</b> the selling wallet bridged repeatedly to <span class="addr">0xB2b7E6563c2EBa9113979AA04aD1b77313701a8c</span> in Aug–Oct 2026 (many requests), and received inbound Relay transfers on 19 Nov (from <span class="addr">0x9eeb34f2dc86f8001cf6df861de2b5a728b2cb5f</span>) and 18 Nov (from <span class="addr">0x50cfe7c1938db66a1a6d2e86d36f39fbef3d5c4a</span>). The selling wallet was a regular Relay user for months — the 24 Nov bridge was not its first.</p>
+  <p><b>The Relay solver also delivered the pre-dump funding.</b> The $543,808.79 that landed in 0xAC33 at 07:54–07:55 UTC came from <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span>, and both of those wallets were themselves fed by the Relay solver <span class="addr">0xf70da97812…</span> minutes earlier (see §6a). The pre-dump funding and the dump proceeds travelled through the same Relay machinery.</p>
+  <div class="callout"><p><b>Why Relay matters to the dispute:</b> Relay shares user information with police when asked, and USDC is freezable by Circle (CoinEdition). A thief choosing Relay and then leaving the funds as freezable USDC is, in the sceptics' reading, odd behaviour for a hacker — and, in the hack reading, consistent with a rushed or unsophisticated actor.</p></div>
+</section>
+
+<section id="receiving">
+  <h2><span class="num">06</span>The receiving wallets — full reconciliation</h2>
+  <h3>6a. Main recipient: 0xAC33748aAd09CEA8E50484Cc0Fa168dc23531B4d (Arbitrum)</h3>
+  <p>Etherscan Arbitrum token-transfer record for native USDC (<span class="addr">0xaf88d065e77c8cC2239327C5EDb3A432268e5831</span>), re-read by this investigation at <b>17:08 UTC, 24 Nov 2026</b>, and the balance re-verified by direct public-RPC <span class="mono">eth_call</span> (<span class="mono">balanceOf</span>) at <b>~18:10 UTC</b>:</p>
+  <div class="callout green"><p><b>TOTAL IN: $2,566,426.53 — TOTAL OUT: $200,000.00 — current balance $2,366,426.53 USDC.</b> (v1 said $0 out; that was true at 17:08 UTC and is now stale — see §6e for the first outflow at 17:49:52 UTC.) Native ETH balance: 3.729 ETH. A zero-value native ETH transfer INTO 0xAC33 arrived at 18:03:52 UTC from <span class="addr">0x7c0b22d3642f335ab0f08c5fd0a38ff6262d03d7</span> (tx <span class="addr">0xdf87020066bd732e6aa62122b07f01e4d3b7cb21435c9c68e47c86e69f03863f</span>, nonce 0x15d) — purpose <span class="tag n">NOT READ</span>. <b>Circle has NOT frozen the remaining USDC</b> — <span class="mono">isBlacklisted(0xAC33)</span> returned false at ~18:10 UTC (direct public-RPC call). <b>Warning on re-checking:</b> Etherscan's <span class="mono">tokenbalance</span> endpoint is stale/cached and still reads $2,566,426.53 — verify by direct RPC <span class="mono">balanceOf</span> instead.</p></div>
+  <p><b>Every inflow, in time order (33 transfers, all 24 Nov 2026, UTC):</b></p>
+  <table>
+    <tr><th>Time (UTC)</th><th class="num">USDC in</th><th>From</th><th>What it is</th></tr>
+    <tr><td>06:57:39</td><td class="num">27.19</td><td><span class="addr">0x7c612de1ed39e75400f2b659c668084761e05e20</span></td><td>Small / dust</td></tr>
+    <tr><td>07:12:46</td><td class="num">0.70</td><td><span class="addr">0x48411900612f3fad92b133d0bfa95225085f753e</span></td><td>Dust</td></tr>
+    <tr><td>07:53:27</td><td class="num">0.98</td><td><span class="addr">0x06ee679b907a654a9126caf511922f632f6e4b03</span></td><td>Probe before the big send</td></tr>
+    <tr class="hl"><td><b>07:54:15</b></td><td class="num"><b>515,110.15</b></td><td><span class="addr">0x06ee679b907a654a9126caf511922f632f6e4b03</span></td><td><b>PRE-DUMP FUNDING — 40 min before selling began</b></td></tr>
+    <tr class="hl"><td><b>07:55:13</b></td><td class="num"><b>28,694.22</b></td><td><span class="addr">0xb8009d1da10b8fe53330cfb2cbc77f2de241f3ec</span></td><td><b>PRE-DUMP FUNDING</b></td></tr>
+    <tr><td>07:58:32</td><td class="num">3.44</td><td><span class="addr">0xb8009d1da10b8fe53330cfb2cbc77f2de241f3ec</span></td><td>Tail of the same sender</td></tr>
+    <tr><td>08:40:29</td><td class="num">32,644.97</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Forwarded Relay proceeds</td></tr>
+    <tr><td>08:40:36</td><td class="num">14,885.38</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Forwarded Relay proceeds</td></tr>
+    <tr><td>08:52:08</td><td class="num">8,533.53</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Forwarded Relay proceeds</td></tr>
+    <tr><td>09:01:39 → 10:12:55</td><td class="num">1,832,902.12 (17 transfers)</td><td><span class="addr">0xf70da97812cb96acdf810712aa562db8dfa3dbef</span> (Relay solver)</td><td>Relay bridge-out from the selling wallet</td></tr>
+    <tr><td>10:28:58</td><td class="num">122,469.99</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Forwarded Relay proceeds</td></tr>
+    <tr><td>10:32:46</td><td class="num">10,494.66</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Forwarded Relay proceeds</td></tr>
+    <tr><td>10:42:41</td><td class="num">0.00</td><td><span class="addr">0x0a0a3a9cbc8dd228d058ea5d7e0b179e2fb86072</span></td><td>Zero-value (approval / dust)</td></tr>
+    <tr><td>13:26:52</td><td class="num">279.21</td><td><span class="addr">0x2df1c51e09aecf9cacb7bc98cb1742757f163df7</span></td><td>Small</td></tr>
+    <tr><td>14:16:49</td><td class="num">371.45</td><td><span class="addr">0x222bc2f25b8278c5ed592cd9f42b8336bbcb87f6</span></td><td>Small</td></tr>
+    <tr><td>14:17:51</td><td class="num">0.00</td><td><span class="addr">0x22241c6d9bfaf99c507b6d2c999129c851cb87f6</span></td><td>Zero-value</td></tr>
+    <tr><td>14:24:19</td><td class="num">8.55</td><td><span class="addr">0x222bc2f25b8278c5ed592cd9f42b8336bbcb87f6</span></td><td>Small</td></tr>
+  </table>
+  <div class="callout red"><p><b>The pre-dump funding is the single most important fact in this report.</b> At 07:54–07:55 UTC — about 40 minutes before selling began — two wallets sent $543,808.79 into the wallet that would collect the dump proceeds. This is the on-chain anchor for MLM's claim that "a dormant wallet he had tagged as Ansem's a year earlier sent funds to the wallet that went on to collect the proceeds about an hour before the sales began."</p></div>
+  <p><b>TRACED FURTHER in v2 — the funders are pass-throughs for the selling wallet's own money (VERIFIED, Etherscan Arbitrum tokentx, 24 Nov ~18:15 UTC).</b> <span class="addr">0x06ee679b907a654a9126caf511922f632f6e4b03</span> and <span class="addr">0xb8009d1da10b8fe53330cfb2cbc77f2de241f3ec</span> are EOAs (<span class="mono">eth_getCode</span> = <span class="mono">0x</span>) with <b>zero native ETH transactions and 0 ETH balance</b>. Their full USDC history shows they were fed by the Relay solver <span class="addr">0xf70da97812cb96acdf810712aa562db8dfa3dbef</span> and forwarded to 0xAC33 within seconds/minutes:</p>
+  <table>
+    <tr><th>Wallet</th><th>Received from Relay solver</th><th>Forwarded to 0xAC33</th></tr>
+    <tr><td><span class="addr">0x06ee…</span></td><td>0.976134 USDC at 07:53:02</td><td>0.976134 USDC at 07:53:27 (the probe)</td></tr>
+    <tr><td><span class="addr">0x06ee…</span></td><td>515,110.150601 USDC at 07:54:01</td><td>515,110.150601 USDC at 07:54:15</td></tr>
+    <tr><td><span class="addr">0xb800…</span></td><td>28,694.223302 USDC at 07:54:59</td><td>28,694.223302 USDC at 07:55:13</td></tr>
+    <tr><td><span class="addr">0xb800…</span></td><td>3.436285 USDC at 07:58:19</td><td>3.436285 USDC at 07:58:32</td></tr>
+  </table>
+  <p>And the source of the $515,110.15: MASTR traced the <b>06:46 UTC move from the selling wallet</b> — 515,278.64 USDC + 404.669 SOL to fresh wallet <span class="addr">G1hBwB7KJ8CPG2XxujzM9WHS2zgrFQ94f3UUy8uyw96k</span> (txs <span class="addr">ghxzcDR5nkt1kcPH7WvwJGPCzUK7gHkP94qo7ZkKbQF2d8DUQRBApwaV213eyB3KtbRh2dgTB9iaQdFejo8pW2x</span> and <span class="addr">5y6KTGvUohg832WroYNLhN6Azr4VUiPoL8Cs55qcX6Q9qszDWXHdsTirtmkU8cHJ4JuncV3fts5wa54yEzEKBGiG</span>). After bridge fees, 404.669 SOL ≈ $28,694 at the morning's ~$70.9/SOL. <b>So the $543,808.79 "pre-funding" was the selling wallet's own money, moved out at 06:46 UTC and bridged back into 0xAC33 at 07:54–07:55 UTC, ~40 minutes before selling began.</b> <span class="addr">G1hBwB7K</span> now holds 0 SOL (emptied). Who controls <span class="addr">0x06ee…</span>/<span class="addr">0xb800…</span> remains <span class="tag n">NOT READ</span>; their zero native-tx footprint is consistent with the solver moving the funds via <span class="mono">transferFrom</span>/allowance, but that mechanism is <span class="tag n">NOT READ</span>. The open question is now who operates the Relay flow — which is the same question as who held the selling wallet's key.</p>
+  <h3>6b. Second recipient / forwarder: 0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072 (Arbitrum)</h3>
+  <ul>
+    <li><b>First transaction ever: 2026-11-24 08:11 UTC</b> — a brand-new wallet created the morning of the dump.</li>
+    <li>Received Relay proceeds (7 Relay requests, $56,272.56) plus two direct Relay-solver deliveries of $61,234.99 each at 10:28 UTC.</li>
+    <li>Forwarded <b>$189,028.53</b> to 0xAC33 in 5 transfers (08:40, 08:52, 10:28, 10:32 UTC).</li>
+    <li><b>Current balances: ETH 0.00074, USDC $0.000338 — effectively empty.</b> Everything that arrived was forwarded onward to 0xAC33.</li>
+    <li>A fresh wallet, used once, as a consolidation hop, then emptied: consistent with a single operator controlling both 0x0a0A and 0xAC33 — <span class="tag a">ALLEGED</span> as single-operator, not proven; the forwarding pattern is <span class="tag v">VERIFIED</span>.</li>
+  </ul>
+  <h3>6c. The long-standing recipient: 0xB2b7E6563c2EBa9113979AA04aD1b77313701a8c (Arbitrum)</h3>
+  <ul>
+    <li>Received many Relay transfers from the selling wallet in <b>Aug–Oct 2026</b> — the selling wallet's regular bridge destination for months.</li>
+    <li><b>Current balances: ETH 0, USDC $0 — empty now.</b> It received nothing on 24 Nov.</li>
+    <li>Its emptiness today, against months of use, is a point of interest: where did its prior funds go? <span class="tag n">NOT READ</span> — a follow-up trace is owed.</li>
+  </ul>
+  <h3>6d. The tiny BSC recipients</h3>
+  <p><span class="addr">0x34D0DF892323fEf6889C6Cb0c43823F7b22723c5</span> — 4 Relay requests, $86.60 total. <span class="addr">0x9eDB4223db879fCBD0d9A3580C0e5c0251e495C1</span> — 1 Relay request, $4.23. Balances on BSC: <span class="tag n">NOT READ</span> (Etherscan free tier does not cover BSC). Amounts are immaterial to the total.</p>
+  <h3>6e. THE FIRST OUTFLOW — $200,000 USDC leaves 0xAC33 at 17:49:52 UTC <span class="tag v">VERIFIED</span> (new in v2)</h3>
+  <p>At <b>17:49:52 UTC</b> — the first outflow ever from the wallet — <b>$200,000 USDC left 0xAC33</b>. Transaction <span class="addr">0x3e089e01d8edbcddf1e02bf305525d80fc1208441cc23211a554c70ee9bcc696</span> (block <span class="mono">0x1f6c4676</span>, nonce 1, status success; only the wallet's second-ever transaction — the first was the USDC approve 3 seconds earlier) called router <span class="addr">0xc1d13492285eb664951e201bf7c80c7c6318a1b5</span>. The receipt logs show the USDC Transfer event 0xAC33 → router, amount <span class="mono">0x2e90edd000</span> = 200,000 USDC.</p>
+  <ul>
+    <li><b>The router is Rango's.</b> Contract <span class="addr">0xc1d13492285eb664951e201bf7c80c7c6318a1b5</span>; Arbiscan shows the related contract as RangoSatelliteMiddleware; "Bridgers" is a route provider inside Rango Exchange (per a Medium aggregator comparison, 23 Oct 2026).</li>
+    <li><b>Calldata (decoded from the full 324-byte input) reads: "BTC|fhqq6m|0.02|bridgers|0"</b> — destination chain BTC, fee 0.02, route provider Bridgers, destination Bitcoin address <b><span class="addr">bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</span></b>.</li>
+    <li><b>The router is a busy aggregator</b> holding $31,875,324.66 USDC (checked ~18:05 UTC) with multiple large outflows after 17:49 UTC — the exact onward path of that specific $200,000 inside the router is <span class="tag n">NOT READ</span> from these calls.</li>
+    <li><b>The named BTC destination (mempool.space, checked ~18:10 UTC):</b> 43 transactions, 1.6308 BTC funded total, 0 spent; most recent transactions are dust (334–1,890 sats) at 14:38:55 UTC — <b>before</b> the 17:49 USDC send. <b>The $200,000 bridge leg has NOT landed in that BTC address as of ~18:15 UTC</b> (no ~2.3 BTC arrival); the swap is in flight or routes elsewhere — <span class="tag n">NOT READ</span> whether it completed.</li>
+    <li><b>Preceding approve:</b> a USDC <span class="mono">approve</span> call from 0xAC33 to the USDC contract at 17:49:49 UTC (tx <span class="addr">0xf67cadac9b682e851fb5bc2ba7f668823f78bdb9a92801711f78d30ff2a636cd</span>, nonce 0) preceded the send by 3 seconds.</li>
+    <li><b>What this means:</b> the funds are now demonstrably movable. The "still sitting" framing of v1 is dead. Watch whether the swap settles into the named BTC address and whether further outflows follow — Lead #1.</li>
+  </ul>
+</section>
+
+<section id="timeline">
+  <h2><span class="num">07</span>Timeline — who said what, when (UTC, 24 Nov 2026)</h2>
+  <p class="kicker">† = publication time of the article/flash reporting the item, not necessarily the X post time. ET = UTC−5. X itself is not directly fetchable from this investigation's tooling; X quotes are as quoted in a named secondary source — EXCEPT the MikeZillionaire, James Wynn, MASTR, Rarma, and Ansem 13:41 posts, which were captured verbatim from saved X page PDFs in this investigation's capture files.</p>
+  <div class="timeline">
+    <div class="tl blue"><time>06:17 UTC</time><p><span class="who">Rarma (@Rarma_)</span> — Thread: 06:46 cash goes first ($515k USDC + 404 SOL, 7s apart); 08:33 selling starts; 08:57 ANSEM, 87.5M in 25 market sells; "The chain can't settle it". <span class="tag v">VERIFIED</span> (thread text captured)</p></div>
+    <div class="tl blue"><time>06:40 UTC</time><p><span class="who">MikeZillionaire</span> — <b>$100,000 bounty post</b> (status 2125192753650811346): "credible, verifiable evidence… bring @blknoiz06 to justice". <span class="tag v">VERIFIED</span> (verbatim, captured)</p></div>
+    <div class="tl red"><time>06:57 – 07:58 UTC</time><p><span class="who">On-chain</span> — 0xAC33 receives small transfers, then the pre-dump funding: $515,110.15 from 0x06ee… at 07:54:15 and $28,694.22 from 0xb800… at 07:55:13. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl red"><time>~08:34 UTC</time><p><span class="who">On-chain (Solscan, via CoinDesk)</span> — Selling begins: 877 sales across 124 tokens from the Arkham-labelled Ansem wallet; ~$2M total, ~$1.5M from 87.5M ANSEM; ~$1.39M USDC reaches Arbitrum via Relay.link. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>09:01 – 09:44 UTC</time><p><span class="who">On-chain (Relay, via The Defiant / AltcoinBuzz)</span> — 15 Relay transfers move ~$1.55M USDC to Arbitrum (04:01–04:44 ET). A subset of the full Relay total — see §6. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl blue"><time>08:55 UTC</time><p><span class="who">MASTR (@MastrXYZ)</span> — "The drain started at 06:46 UTC. His post came at 10:59. 4 hours 13 minutes later. And 2,565,767 USDC is still sitting in one wallet. Not moved. Not frozen." + receipts thread (66 addresses/txs). <span class="tag v">VERIFIED</span> (captured)</p></div>
+    <div class="tl"><time>~09:30 – 09:31 UTC</time><p><span class="who">On-chain (Pump.fun profile ansemconzimp)</span> — ANSEM balance falls ~87.5M → ~16.7M in about a minute. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl blue"><time>~09:39 UTC</time><p><span class="who">Lookonchain</span> — First alert: wallet keeps dumping ANSEM; price −60% within an hour; asks whether hacked. <span class="tag v">VERIFIED</span> (substance; full text NOT READ)</p></div>
+    <div class="tl blue"><time>~09:40 UTC</time><p><span class="who">MLM (@mlmabc)</span> — Reply, ~1 min after Lookonchain: "Pretty sure Ansem didn't get hacked lol." <span class="tag v">VERIFIED</span> (via CryptoTimes)</p></div>
+    <div class="tl blue"><time>~09:55 UTC</time><p><span class="who">Lookonchain</span> — "It looks like Ansem(@blknoiz06) was indeed hacked! … So far, the hacker has transferred 2.15M $USDC" to 0xAC33. <span class="tag v">VERIFIED</span> (verbatim; feed 83906)</p></div>
+    <div class="tl"><time>09:55:34 UTC†</time><p><span class="who">Coincamps, via KuCoin flash</span> — 48.91M ANSEM in two batches for ~13,000 SOL (~$922k); mkt cap $36.7M → $9.4M. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>10:05 UTC†</time><p><span class="who">Lookonchain "Perspective" (MLM's analysis)</span> — Funds "flowing to his previously funded wallet"; activity "unlikely to be a hack" per MLM. <span class="tag v">VERIFIED</span> (feed 83908)</p></div>
+    <div class="tl"><time>10:06 UTC†</time><p><span class="who">Cointelegraph alert (via Spendnode)</span> — ANSEM −60% in an hour. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>10:13:56 UTC†</time><p><span class="who">GMGN / BlockBeats, via KuCoin</span> — 70.78M ANSEM in three rounds for ~17,600 SOL (~$1.25M); ~16.7M left; 12.66M MIHAO for ~970 SOL. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl blue"><time>10:49 UTC</time><p><span class="who">James Wynn (@JamesWynnReal)</span> — <b>Matches the $100,000 bounty</b> (status 2125255491005866348): "I have already spoken to multiple online investigators and some are working together to give evidence to the Police." <span class="tag v">VERIFIED</span> (captured)</p></div>
+    <div class="tl blue"><time>10:49 UTC</time><p><span class="who">MASTR (@MastrXYZ)</span> — 1/3 thread: multi-victim drain — 18 Solana wallets + 6 Hyperliquid accounts emptied 13:24–14:51 UTC; receipts 3/3 (120 addresses/txs). <span class="tag v">VERIFIED</span> (captured)</p></div>
+    <div class="tl blue"><time>10:59 UTC (05:59 ET)</time><p><span class="who">Ansem (@blknoiz06)</span> — "pump wallet is hacked, trying to figure out how, believe its unauthorized access to my bullpen profile somehow which had the sol priv key imported" <span class="tag v">VERIFIED</span> (verbatim)</p></div>
+    <div class="tl blue"><time>~11:00 – 12:00 UTC</time><p><span class="who">Ansem (reply)</span> — Attacker could reach "only the solana one"; Bullpen profile was the only place the SOL key was imported. <span class="tag v">VERIFIED</span> (via Unchained)</p></div>
+    <div class="tl"><time>12:47:49 UTC†</time><p><span class="who">CoinDesk article</span> — Ansem hack claim; 877 sales / $2M; Bullpen "hadn't commented". <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>13:14:15 UTC†</time><p><span class="who">Onchain Lens, via KuCoin/ChainCatcher</span> — ~17,300 SOL (~$1.23M) swapped incl. ~$933.9k ANSEM; $2.56M USDC bridged; no further laundering seen. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl blue"><time>13:41 UTC</time><p><span class="who">Ansem (@blknoiz06)</span> — Reply to @mlmabc: "i dont know what the attack vector was… it is not me, would appreciate you not spreading misinformation currently doing security audit". <span class="tag v">VERIFIED</span> (captured)</p></div>
+    <div class="tl blue"><time>~14:08 UTC</time><p><span class="who">Lookonchain</span> — "The 'hacker' has stolen $2.57M from Ansem(@blknoiz06)'s wallet so far. Interestingly, the 2.57M $USDC hasn't been swapped for $ETH and laundered yet — it's still sitting in wallet 0xAC33." <span class="tag v">VERIFIED</span> (verbatim; time via CryptoPanic)</p></div>
+    <div class="tl"><time>14:34:38 UTC†</time><p><span class="who">KuCoin flash (ChainCatcher)</span> — 2.57M USDC still unmoved/unswapped in 0xAC33. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>15:00 UTC†</time><p><span class="who">Unchained article (10:00 ET)</span> — Fullest single account: Ansem post, Lookonchain times, MLM, user "3", Specter. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl"><time>15:55:23 UTC†</time><p><span class="who">Protos (via NCTA repost)</span> — Specter ("physical attack or… insider involvement"), Fabiano ("stolen browser session or a sim-swap"; 789 txs), ZachXBT ("likely be more discrete… side wallets or single-sided LPs"). <span class="tag v">VERIFIED</span> (via repost; Protos page itself NOT READ)</p></div>
+    <div class="tl red"><time>17:08 UTC</time><p><span class="who">This investigation (Etherscan re-read)</span> — 0xAC33 balance $2,566,426.53 USDC, TOTAL OUT $0. Funds still sitting. <span class="tag v">VERIFIED</span></p></div>
+    <div class="tl red"><time>17:49:52 UTC</time><p><span class="who">On-chain (Arbitrum)</span> — <b>FIRST OUTFLOW from 0xAC33: $200,000 USDC</b> → Rango router → BTC (Bridgers). Balance now $2,366,426.53. <span class="tag v">VERIFIED</span> (direct RPC)</p></div>
+    <div class="tl red"><time>~18:10 UTC</time><p><span class="who">This investigation</span> — Circle has NOT frozen 0xAC33 (<span class="mono">isBlacklisted</span> false); BTC destination shows no ~2.3 BTC arrival yet. <span class="tag v">VERIFIED</span> (direct RPC / mempool.space)</p></div>
+    <div class="tl red"><time>All day</time><p><span class="who">Bullpen</span> — No comment / statement found at any point checked. <span class="tag v">VERIFIED</span> absence (as of ~18:00 UTC)</p></div>
+  </div>
+</section>
+
+<section id="narratives">
+  <h2><span class="num">08</span>The two narratives</h2>
+  <p class="kicker">Nothing in this section is proven. Both sides are <span class="tag a">ALLEGED</span>. The chain proves flows; it does not prove intent.</p>
+  <div class="grid2">
+    <div class="card">
+      <h3>7a. The hack claim — Ansem (@blknoiz06)</h3>
+      <blockquote>"pump wallet is hacked, trying to figure out how, believe its unauthorized access to my bullpen profile somehow which had the sol priv key imported"<footer>— @blknoiz06, 05:59 ET / 10:59 UTC, 24 Nov 2026 · VERIFIED verbatim via Unchained, CoinDesk, CryptoTimes, AltcoinBuzz</footer></blockquote>
+      <p>Follow-up reply the same morning (via Unchained): he did not think the attacker could reach his Ethereum-compatible wallets — <b>"only the solana one"</b> — adding that his Bullpen profile was the only place he had imported the Solana key.</p>
+      <p><b>Ansem's follow-up reply, 13:41 UTC (08:41 ET) — VERIFIED from the captured post (159 replies, 86 reposts, 332 likes, 36.8K views):</b> replying to @mlmabc: "i dont know what the attack vector was, if it was through bullpen then would make sense they have access to other wallets on that account as well, i dont think they have access to the evm pump wallets because those positions are still open and nothing has been moved there / it is not me, would appreciate you not spreading misinformation currently doing security audit".</p>
+      <p><b>What he did NOT say</b> (VERIFIED by omission across all four outlets): no wallet address named, no amount lost stated, no confirmation of how the breach happened.</p>
+      <p><b>Points FOR the hack reading:</b></p>
+      <ul>
+        <li><b>ZachXBT</b> doubts Ansem personally sold: if he were selling he would "likely be more discrete and cash out via side wallets or single-sided LPs if it was an exit scam" (Protos via NCTA; CoinCodex). Direction matters: ZachXBT doubts the self-dump, not the hack.</li>
+        <li><b>Fabiano:</b> suggested a "stolen browser session or a sim-swap on the email"; noted the seller made 789 transactions selling tokens one by one, whereas someone who stole keys would only need a few (Protos via NCTA).</li>
+        <li><b>Lookonchain</b> (~09:55 UTC): "It looks like Ansem(@blknoiz06) was indeed hacked! The hacker has moved all the funds from selling memecoins to wallet 0xAC33 on Arbitrum. So far, the hacker has transferred 2.15M $USDC." (Feed 83906.)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>7b. The not-a-hack case — MLM, Specter &amp; others</h3>
+      <ul>
+        <li><b>MLM (@mlmabc), ~09:40 UTC:</b> "Pretty sure Ansem didn't get hacked lol." Longer form: "the onchain activity looks nothing like a hack" — about an hour before the sales began, a dormant wallet he had tagged as Ansem's a year earlier sent funds to the wallet that went on to collect the proceeds; and the sale proceeds went to a wallet the selling address had previously funded.</li>
+        <li><b>Specter:</b> attackers normally move funds out before selling, instead of dumping and bridging directly from the victim's address. "The only plausible scenarios I can think of are a physical attack or some form of insider involvement shit." (Protos via NCTA.) Specter also rebutted a "second signer" theory: if the second-signing address is Bullpen's, only an older Ansem address carried it as a second signer, and Ansem's main wallet signed the swaps on its own (Unchained — "None of these readings has been confirmed").</li>
+        <li><b>Lookonchain's own "Perspective" item</b> (feed 83908, 10:05 UTC) carried MLM's analysis: "Funds raised from Ansem's meme coin sales are flowing to his previously funded wallet, making the wallet less vulnerable to attacks." This is Lookonchain publishing MLM's contrary analysis, not reversing its own hack call.</li>
+        <li><b>CryptoBriefing (editorial line):</b> "The hack story did not hold up well under scrutiny. On-chain analysis indicated that the seller was Ansem… and that the funds moved to wallets he had previously funded."</li>
+        <li><b>Community points</b> (CoinEdition / GlobalEye24, ALLEGED): scepticism over why the funds were left as freezable USDC; why the "hacker's" wallet was funded from an old Ansem wallet; the use of Relay, which shares user information with police when asked.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>7c. The multi-victim Bullpen drain — the same operator hit other wallets <span class="tag v">VERIFIED</span></h3>
+  <p><b>MASTR (@MastrXYZ) traced the same operator/group emptying at least 24 more wallets/accounts the same day; 9 of those users are Bullpen users.</b> MASTR's framing is "Pattern, not a verdict." The drain, 13:24–14:51 UTC:</p>
+  <ul>
+    <li><b>18 Solana wallets and 6 Hyperliquid accounts emptied</b> (gas first, then everything out). At 14:06 UTC, <b>5 Hyperliquid withdrawals from 5 different accounts, signed within 25 seconds</b> — a script.</li>
+    <li><b>Hyperliquid accounts emptied, each labelled a Bullpen user by Arkham:</b> <span class="addr">0x0b79fda0bd204cca5c7bfd37578e0d7c544e4d91</span> (279.21 USDC straight to 0xAC33 at 13:26), <span class="addr">0x2cef4dede8592725896d138f4116ee1d66418303</span>, <span class="addr">0xa1a6ce93a2edeb46a8067cfc7188d8e8ec3a2fc3</span>, <span class="addr">0xbaf0e92c2b0203aa75188569b5d90d134e96e7e9</span>, <span class="addr">0xab9831d2811f8c884ad07ddc6d13fd427dafd229</span>, <span class="addr">0xf032a367a72a3dbb7b008d82661c8769f22e996d</span>.</li>
+    <li><b>Solana wallets emptied into collector <span class="addr">CMXPbCybdaQhyEvC73XhFhk7aVjTEGfHuyhSiKkCx23U</span></b> (first used 13:27 UTC; 18 wallets, 13:27–14:51 UTC, 20.12 SOL total; biggest <span class="addr">12tzADjXgatjHJTPY8sDK7Mi9ofYmbynJ1DMvukiQgTF</span>, 11.40 SOL). Collector now holds 0.005995 SOL.</li>
+    <li><b>EVM forwarder <span class="addr">0x222bc2F25B8278C5ED592CD9F42B8336bbcb87f6</span></b> (now holds $0.000085 USDC).</li>
+    <li><b>SideShift deposit wallet <span class="addr">ABNL41SwMLVRaCq6okEWsWyvLwm56nazUNwMrTHgmuyf</span></b> — SOL is cashed out through SideShift (per MASTR); that deposit wallet currently holds <b>1,179.02 SOL</b> (checked ~18:10 UTC via Helius). <b>Caveat:</b> SideShift deposit addresses can serve many users, so do NOT claim the 1,179 SOL belongs to the operator.</li>
+    <li><b>Link transaction, 14:51:34 UTC:</b> burner <span class="addr">D2sEm99AQDSLQFFvQ54kGhXD2NAr2qeKSTi7yFEG84Y</span>, funded from Ansem's older wallet at 06:46, pays the collector — tx <span class="addr">4EfdX5NDxFXd1YQWmcGkD2vKCrrYshbUM9rKtySPQKPp1Aex4scfhM5npzVAvLD7DJRDPMxoyz1k5jEt9pe2JRK3</span> (burner now holds 0 SOL).</li>
+    <li><b>MASTR's conclusion:</b> "'Ansem faked a hack to dump his coin' is now the weaker explanation. It would mean robbing other Bullpen users too. Outsider or insider: the chain can't tell who held the keys." MASTR also warns: bots send fake USDC from lookalikes <span class="addr">0xac3350c1…1b4d</span> and <span class="addr">0xac33f121…1b4d</span>; the real one is <span class="addr">0xAC33748a…1B4d</span>.</li>
+    <li><b>Corroboration:</b> Bitquery forensic report (via BasisDesk, 24 Nov 2026) says the drain began with the wallet transferring $515,000 USDC, final total $2.57M across 28 payments to 0xAC33, and "Ansem, holders of the ANSEM token, and 18 to 19 Bullpen platform users who were breached." The exact victim count (24+ wallets per MASTR vs 18–19 Bullpen users per Bitquery) is a discrepancy to show, not merge.</li>
+    <li><b>Why this matters:</b> a faked hack to dump one coin would not need to rob other Bullpen users. The multi-victim drain is the strongest evidence yet that <i>someone</i> had access to multiple Bullpen-linked wallets — consistent with Ansem's "unauthorised access to my bullpen profile" claim in mechanism, while still not proving who held the keys.</li>
+  </ul>
+  <h3>7d. What would settle it <span class="tag n">NOT READ</span></h3>
+  <ul>
+    <li>The full Relay request log with sender/recipient linkage for the pre-sale funding MLM cites.</li>
+    <li><b>Bullpen's statement</b> — none as of ~18:00 UTC (re-checked). Unchained: Bullpen's own login/key-use records "would be the clearest evidence either way."</li>
+    <li>Any law-enforcement or exchange freeze action. <b>Circle has NOT frozen the 0xAC33 USDC as of ~18:10 UTC</b> (<span class="mono">isBlacklisted</span> false) — a freeze, or continued non-freeze, is itself evidence about whether a formal report was filed.</li>
+    <li><b>Whether the $200,000 Rango/Bridgers → Bitcoin swap completes</b>, and whether further outflows follow from 0xAC33.</li>
+    <li>The identity of the operator behind the multi-victim drain (§7c) — and whether the SideShift deposit wallet <span class="addr">ABNL41…</span> and the Hyperliquid victims connect to a single controller.</li>
+    <li>The identity of <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span> (Lead #1).</li>
+    <li>Whether the 0x0a0A wallet's creation and funding link to any known Ansem-controlled address.</li>
+  </ul>
+</section>
+
+<section id="identity">
+  <h2><span class="num">09</span>Identity &amp; background — Ansem / Zion Thomas</h2>
+  <p class="kicker">Public sources only. No home address, phone number, date of birth, or non-public personal data was found or is published here.</p>
+  <h3>9a. Who he is <span class="tag v">VERIFIED</span> — CoinDesk, 10 Dec 2024, "The Memecoin King," Most Influential 2024 Top 10</h3>
+  <ul>
+    <li>Real name <b>Zion Thomas</b>. X: <b>@blknoiz06</b>. Pump.fun profile: <b>ansemconzimp</b> (confirmed as his in a June post).</li>
+    <li>Began tweeting every coin he bought in <b>2020</b> as public trade journaling, from ~100 followers.</li>
+    <li>Early on Solana and Avalanche; most closely associated with <b>Dogwifhat (WIF)</b>, which he began promoting at a <b>$100,000 market cap</b> (later ran past $3B; other reports put the peak at $4.8B, March 2024).</li>
+    <li>28 years old in Dec 2024; "lanky," "terminally online," posting from two iPhones he seemingly never puts down.</li>
+    <li>Followers: 507,000+ (Oct 2024) → 600,000 (Dec 2024) → "past one million" (2026) → <b>1.4M+</b> (Solana.com, Nov 2026 awards page).</li>
+    <li>Sources: <a href="https://www.coindesk.com/tech/2024/12/10/ansem-the-memecoin-king">coindesk.com — Ansem, The Memecoin King</a> · <a href="https://www.coindesk.com/coindesk-news/2024/12/05/most-influential-2024">Most Influential 2024</a></li>
+    <li><b>X profile today (VERIFIED from the captured profile page, 24 Nov 2026):</b> @blknoiz06, 266.6K posts, 1.4M followers, 9,427 following, 12 subscriptions; bio "coldest nigga breathing | @BullpenFi @MarketBubble"; location field <b>"solangeles"</b>; link bullpen.fi/@blknoiz06; born February 15 (no year shown); joined Nov 2012; pinned Jul 16 article "The ANSEM Thesis" (2,730 replies, 3,139 reposts, 10,818 likes, 6,289,288 views). No newer post than the 5:59 AM hack post appeared in the Posts tab at 11:57 AM EST.</li>
+    <li><b>Photo analysis (VERIFIED — public photos he posted, examined from the captured profile PDF; NO facial-recognition identification attempted):</b> his current profile picture is <b>NOT a face photo</b> — it is Black Bull artwork (a black bull with glowing teal eyes looming over a figure in a straw hat). His current banner (1,249×417) is a photograph of a man seen from behind in a gallery/museum, wearing a green/olive hooded jacket, looking at Banksy's "Laugh Now" monkey artwork ("Laugh now, but one day we'll be in charge"). <b>No location is identifiable from the banner</b> (indoor gallery, no signage visible). <b>His current X profile carries no face photograph at all.</b> His face is known from public photos (boxing events, the CoinDesk Dec 2024 profile day in Brooklyn, Crypto Fight Night photos; Instagram listed as @blknoiz06_official), but nothing further is asserted here. General description only: a young adult man, lanky build, frequently photographed with two phones / in boxing gear.</li>
+  </ul>
+  <h3>9b. Background <span class="tag a">ALLEGED</span> — secondary profiles (Datawallet, Coinpedia, origin.wiki); not independently verified</h3>
+  <ul>
+    <li>Born 1995 (origin.wiki — conflicts with "28 in Dec 2024," which implies late 1995/1996; <b>do not publish a DOB</b>).</li>
+    <li>Georgia Tech computer science, discovered Bitcoin in an emerging-technology course, graduated 2017; software engineer at <b>Capital One</b>; full-time trading by 2021.</li>
+    <li><b>Head of Research at TCG Crypto</b> (crypto arm of The Chernin Group). His own Substack post is titled "Joining TCG Crypto," 18 Oct 2022. <b>Discrepancy flagged:</b> Coinpedia says he worked at TCG "until October 2022," which conflicts with joining in October 2022. <span class="tag n">NOT READ</span> — employment dates unresolved.</li>
+    <li>Net-worth estimates of $20–30M circulate (Traders Union / Datawallet) — <b>unverified estimates, not audited figures</b>.</li>
+    <li>Venture positions reported in Monad, Solayer, Ethena (Datawallet) — ALLEGED.</li>
+    <li>Co-host of <b>Market Bubble</b> with Banks (launched April 2026, presented by Polymarket) — VERIFIED via Datawallet.</li>
+    <li><b>ansem.io</b> — site where teams buy his attention with airdrops, launched ~Aug 2026; a pseudonymous developer flagged unpatched vulnerabilities within 48h; ANSEM fell from ~$0.44 ATH to ~$0.22 around that time — ALLEGED/secondary (CryptoNews; BitNewsBot).</li>
+  </ul>
+  <h3>9c. The ZachXBT clash — 5 Oct 2024 <span class="tag v">VERIFIED</span> via CoinTelegraph, 7 Oct 2024</h3>
+  <ul>
+    <li>ZachXBT accused Ansem of facilitating a string of memecoin "pump and dumps," saying promoting new low-cap memecoins every few days to a large following means "you have no edge and have to use your followers instead."</li>
+    <li>Tokens named: <b>BODEN, HOBBES, ZEUS, WYNN</b>, plus celebrity memecoins from <b>Jason Derulo</b> and <b>Davido</b>. BODEN down ~99% from its April 2024 all-time high (~$1.04B market cap); HOBBES, ZEUS, WYNN down ~98% from peaks.</li>
+    <li>Ansem's reply: talking about low-caps was not "grifting"; WIF ($100k → $4.8B peak) was "much better" than promoting a utility token like Chainlink (LINK), down 90% vs BTC year-to-date; "the people I have helped on this platform far outweigh the people I have hurt."</li>
+    <li>Independent analysis of 40,000+ of his tweets, 45 tokens (@dethective, via Followin/BlockBeats, Oct 2024 — ALLEGED): average return if bought at first mention +150%, but <b>median return −55%</b>; 33 of 45 tokens had negative returns.</li>
+    <li>Sources: <a href="https://cointelegraph.com/news/zachxbt-slams-crypto-influencer-over-memecoin-promotions">CoinTelegraph</a> · <a href="https://followin.io/en/feed/13486078">Followin</a></li>
+  </ul>
+  <h3>9d. November 2026 — Sahil Arora paid-promotion allegations <span class="tag a">ALLEGED</span>, days before the dump</h3>
+  <ul>
+    <li><b>6–7 Nov 2026:</b> Dubai-based promoter <b>Sahil Arora</b> released alleged leaked DMs and wallet receipts claiming Ansem received ~<b>$100,000 to promote the MOTHER token</b>, and was paid to shill celebrity tokens for <b>Iggy Azalea, Caitlyn Jenner, and Jason Derulo</b> during the 2024 memecoin boom.</li>
+    <li><b>Ansem denied it:</b> said he has never worked with Arora and disputed the authenticity of the messages, challenging the writing style/capitalisation as not matching his own.</li>
+    <li>Context: this followed a <b>Bubblemaps warning</b> that a major crypto influencer was secretly extracting millions from their audience via side wallets/bundled tokens — Bubblemaps did <b>not</b> officially name the individual.</li>
+    <li>DM authenticity is <b>unverified</b>. Do not treat as fact.</li>
+    <li>Sources: <a href="https://clstr.news/cluster/ansem-denies-allegations-of-paid-token-promotion-by-sahil-arora">CLSTR</a> · <a href="https://globaleye24.com/news/ansem-paid-shill-allegations-and-crypto-callout-drama-1927">GlobalEye24</a></li>
+  </ul>
+  <h3>9e. Bullpen — what it is, Ansem's connection <span class="tag v">VERIFIED</span></h3>
+  <ul>
+    <li><b>Bullpen is a non-custodial trading terminal co-founded by Ansem.</b> It unifies three markets in one interface: <b>Solana spot</b> (via Jupiter Ultra), <b>Hyperliquid perpetuals</b>, and <b>Polymarket prediction markets</b>. Whale tracking, smart-money signals, a "Runners" feed, a CLI with AI-agent support, and a <b>$BULL points program</b> (Season 1 ended 2025-07-18; Season 2 ended 2025-10-07; Season 3 began 2025-10-08).</li>
+    <li><b>Self-custodial model:</b> traders keep their own keys; Bullpen does not hold deposits. No Bullpen token exists.</li>
+    <li>Backers (per Datawallet/DropsTab): seed round led by <b>6th Man Ventures</b> (same fund that led Pump.fun's seed round); also <b>Delphi Digital, Manifold Trading, Spartan Group</b>; angels include Solana co-founders <b>Anatoly Yakovenko</b> and <b>Raj Gokal</b>, <b>Balaji Srinivasan</b>, and Ethena's <b>Guy Young</b>. One secondary source claims Bullpen raised "over $6M" — ALLEGED, amount not verified.</li>
+    <li>Ansem himself has described Bullpen as his own trading app/platform (per Coinotag/KuCoin reporting of his 24 Nov posts).</li>
+    <li><b>Bullpen has NOT commented</b> on the incident as of ~18:00 UTC, 24 Nov 2026 (re-checked; CoinDesk, Unchained, AltcoinBuzz, CoinOTAG, The Block all note this). Bullpen team page lists 3 cofounders: <b>Sal Qadir (CEO), Ansem, Luca Spinazzola</b>.</li>
+    <li>Sources: <a href="https://dropstab.com/coins/bullpen">DropsTab</a> · <a href="https://www.datawallet.com/crypto/who-is-ansem">Datawallet</a> · <a href="https://solana.com/news/solana-community-awards-2026-meet-the-finalists">Solana.com</a> · <a href="https://bullpen.fi">bullpen.fi</a></li>
+  </ul>
+</section>
+
+<section id="location">
+  <h2><span class="num">10</span>Location — public evidence only</h2>
+  <ul>
+    <li><b>Brooklyn / New York City, New York</b> <span class="tag v">VERIFIED</span> via his own words and CoinDesk's in-person profile: CoinDesk's Dec 2024 profile places him training in a Brooklyn gym, travelling by car service around Brooklyn, and at his apartment (borough implied Brooklyn; no address given and none is sought). In May 2026 he posted that he was in New York, "on the Q Train," after being wrongly blamed for a "Punch the monkey" stunt at a Tokyo zoo: <i>"Ive caught a lot of strays on this app but getting accused of abusing a monkey in a Tokyo zoo while I'm on the Q Train is definitely a new one."</i> (Protos.)</li>
+    <li><b>Atlanta, Georgia</b> <span class="tag a">ALLEGED</span> — education: Georgia Tech, class of 2017 — implies time in Atlanta as a student; not a current residence claim.</li>
+    <li><b>Dubai, UAE</b> <span class="tag v">VERIFIED</span> — public events: Crypto Fight Night IV (19 Apr 2024, La Perle, Dubai; lost by TKO to Louis "Barney" Smith) and CFN5 (6 Dec 2024, Dubai World Trade Centre; draw vs BitBoy Ben Armstrong for the WBC Crypto Title Belt / Crown of Solana).</li>
+    <li><b>Los Angeles, California</b> <span class="tag v">VERIFIED</span> — public evidence: his X profile location field reads <b>"solangeles"</b>; Market Bubble's HQ is in LA ("Banks christens the new Market Bubble HQ in LA while Ansem calls in from Tokyo at 4AM" — Listen Notes episode description; "First LA episode with Banks and Z").</li>
+    <li><b>Tokyo, Japan</b> <span class="tag v">VERIFIED</span> as a show description: Ansem called into Market Bubble from Tokyo at 4AM in one episode (episode undated in the source). This is a remote call-in, not a residence claim.</li>
+    <li><b>Photos he posted</b> <span class="tag v">VERIFIED</span> — see §9: his current X banner shows a man from behind in a gallery looking at Banksy's "Laugh Now" — no identifiable location. His current profile picture is Black Bull artwork, not a face photo. <b>No facial-recognition identification was attempted, and no private individual was identified.</b></li>
+    <li><span class="tag n">NOT READ</span> current home address, phone, or any precise residence. A Facebook search for public posts by "Zion Thomas / Ansem" returned no relevant public Facebook posts. His public presence is X/Instagram/Substack only, as far as public sources show.</li>
+  </ul>
+</section>
+
+<section id="social">
+  <h2><span class="num">11</span>Social sweep — posts today, 24 Nov 2026</h2>
+  <div class="callout green"><p><b>The MikeZillionaire post — CAPTURED (v2 correction: v1 wrongly said NOT READ).</b> <a href="https://x.com/MikeZillionaire/status/2125192753650811346">x.com/MikeZillionaire/status/2125192753650811346</a> — <b>6:40 AM, 24 Nov 2026</b>; 46 replies, 22 reposts, 190 likes, 7 bookmarks, 9,519 views. Verbatim: "I'm putting $100,000 on the table for credible, verifiable evidence that can help bring @blknoiz06 to justice and hold him accountable for his alleged actions. Enough is enough. Too many people have reportedly lost money, and the latest drama looks like yet another attempt to deceive the community. I have serious doubts about the alleged hack and believe the entire story deserves a thorough independent investigation. If these allegations are true, there must be consequences. The crypto community is not a playground for scammers. We need accountability, transparency, and justice. Everyone with credible evidence should come forward and report it to the appropriate authorities. No more excuses. No more victims. It's time for accountability." In the replies (all 46 read) Mike said "i can't confirm that" when asked "And is he involved in fraud?", and repeatedly said "only verified evidence counts", "the receipts have to be real", "the bounty is for evidence, not promotion". No wallet address or transaction hash was posted in the direct replies. <b>No denial or response from Ansem in the direct replies.</b></p></div>
+  <h3>Strongest posts (for the record)</h3>
+  <ol>
+    <li><b>Ansem, 10:59 UTC</b> — the hack claim itself, verbatim. The single most load-bearing post; everything else is commentary on it.</li>
+    <li><b>Lookonchain, ~09:55 UTC</b> — "It looks like Ansem(@blknoiz06) was indeed hacked! … the hacker has transferred 2.15M $USDC." The post that converted a sale alert into a hack narrative.</li>
+    <li><b>MLM, ~09:40 UTC</b> — "Pretty sure Ansem didn't get hacked lol." + "the onchain activity looks nothing like a hack," with the dormant-wallet-funding point. The earliest and sharpest rebuttal, posted before Ansem had commented.</li>
+    <li><b>Lookonchain, ~14:08 UTC</b> — the $2.57M update, with "hacker" in scare quotes and the funds still sitting unswapped in 0xAC33. The fact the funds were <i>not</i> laundered is itself a key datum for both sides.</li>
+    <li><b>Specter (via Protos)</b> — "The only plausible scenarios I can think of are a physical attack or some form of insider involvement shit." The strongest form of the sceptical case.</li>
+    <li><b>ZachXBT (via Protos/CoinCodex)</b> — if Ansem were selling he would "likely be more discrete and cash out via side wallets or single-sided LPs." The strongest statement <i>against</i> the self-dump theory, from Ansem's most prominent critic — which is why it matters.</li>
+    <li><b>Fabiano (via Protos)</b> — "stolen browser session or a sim-swap on the email" + the 789-transactions point. The only named alternative mechanism offered today.</li>
+    <li><b>MikeZillionaire, 06:40 UTC</b> — the $100,000 bounty post (verbatim above). The post that turned the dump into a bounty-backed investigation.</li>
+    <li><b>James Wynn, 10:49 UTC</b> — matching $100,000, saying investigators are giving evidence to the Police (status 2125255491005866348).</li>
+    <li><b>MASTR, 08:55 + 10:49 UTC</b> — the multi-victim drain threads (66 + 120 addresses/transactions in the receipts lists). The finding that changes the shape of the case: this was not only Ansem's wallet.</li>
+    <li><b>Rarma, 06:17 UTC</b> — the tightest on-chain timeline of the morning (06:46 cash out, 08:33 selling starts, 08:57 ANSEM in 25 market sells) and the honest line: "The chain can't settle it."</li>
+  </ol>
+  <h3>Community reaction <span class="tag a">ALLEGED</span> / reported, not independently verified</h3>
+  <ul>
+    <li>CoinEdition: "the crypto community is accusing Ansem of scamming his followers and pulling a rug."</li>
+    <li>TechFlow: Frank DeGods asked <b>"What if this happened to Satoshi?"</b>, prompting wider discussion.</li>
+    <li>GlobalEye24 live wire (unattributed): "Ansem hack fallout hits $ANSEM and $MIHAO"; "Ansem hack triggers selloff in unrelated tokens — a trader says three of his holdings dumped when Ansem's wallet was reported hacked, even though Ansem holds none of them."</li>
+    <li>StalkHQ (via KuCoin trends): "BREAKING: $ANSEM NUKED AS MUCH AS 53% AS WALLET LINKED TO TRADER @blknoiz06 DUMPS $1.25M IN 3 WAVES @StalkHQ ASKS 'IS ANSEM HACKED?' @mlmabc SAYS IT 'LOOKS NOTHING LIKE A HACK'." StalkHQ's own post text/time: NOT READ beyond this citation.</li>
+    <li>Arkham: <b>no standalone Arkham X post today was found.</b> Arkham appears only as attribution in other reporting.</li>
+    <li><b>berlin @mrjberlin (Nov 6, quoted in Mike's replies — ALLEGED, not verified):</b> claims Ansem directly paid @_fox09 and @PoorGoat_ each over $25k to dump their OG Ansem tokens when it was pumping at $1.5M mc; claims Ansem told OG Ansem holders they would receive an airdrop and did not airdrop them — <a href="https://x.com/mrjberlin/status/2118865845200076819">2118865845200076819</a> (7:39 PM Nov 6, 36,336 views, with chart and DM screenshots) and <a href="https://x.com/mrjberlin/status/2118813391095738482">2118813391095738482</a>. berlin's claims, NOT verified here.</li>
+    <li><b>sahil @villainmonkey:</b> "nobody else was hacked on bullpen, pumpfun, solana, rainbet or anywhere… our guy was doing his first ever hack so he forgot to use a fresh wallet" — opinion, not evidence.</li>
+    <li><b>netvyxe @netvyxe:</b> "madness, @blknoiz06 got hacked, most likely hackers got access to his private key through bullpen…" — opinion, not evidence.</li>
+    <li><b>$TBB is a different token/community</b> (Jason Ai Williams @GoingParabolic; X cashtag also maps to AT&T) — NOT Ansem's token; do not conflate. The Space "ANSEM 'HACKED'? | $TEB $BAYLA $TBB" was live and not transcribed.</li>
+  </ul>
+  <h3>Rewards / bounties — $200,250 ON THE TABLE (v2 correction: v1 wrongly said NONE FOUND)</h3>
+  <ul>
+    <li><b>MikeZillionaire @MikeZillionaire — $100,000</b> for credible, verifiable evidence. Post <a href="https://x.com/MikeZillionaire/status/2125192753650811346">2125192753650811346</a>, 6:40 AM Nov 24, 2026 (verbatim above). 46 replies, 22 reposts, 190 likes, 7 bookmarks, 9,519 views.</li>
+    <li><b>James Wynn @JamesWynnReal — matching $100,000</b> (quote post 10:49 AM Nov 24): "I will match it. $100,000. I have already spoken to multiple online investigators and some are working together to give evidence to the Police. Let's create more awareness and justice for our community, and even his followers who got burned so badly. $RANSEM." <a href="https://x.com/JamesWynnReal/status/2125255491005866348">2125255491005866348</a> — 4 replies, 1 repost, 7 likes, ~10.2K views.</li>
+    <li><b>Zion Protocol @ZIONPROTOCOLCOM — $250</b>: "I also throw 250 usd in" — Mike replied "only verified evidence counts".</li>
+    <li><b>Total: $200,250.</b></li>
+    <li>Background, not today: The White Whale @WhiteWhaleLabs, Nov 6, offered to personally cover Ansem's legal expenses if he turned whistleblower (941K views).</li>
+  </ul>
+  <p class="small">(Context only: ZachXBT has offered bounties in <i>other</i> cases — e.g. a reported $10,000 bounty in May 2026 for information on LAB founder Vova Sadkov — unrelated to this event.)</p>
+  <p class="small">Narrative arc: Lookonchain spotted the dump first (~09:39 UTC) and within ~16 minutes called it a hack with $2.15M USDC on its way to Arbitrum; MLM pushed back within a minute of the first alert, arguing the destination wallet was Ansem-linked; Ansem himself confirmed the hack framing at 10:59 UTC, blaming unauthorised Bullpen-profile access, without naming an amount or address; trackers then revised the total upward ($2.56M Onchain Lens, $2.57M Lookonchain) while noting the funds sat unswapped in 0xAC33; by the afternoon the debate had split three ways — Lookonchain/Ansem (hack via Bullpen), MLM/Specter (not a hack; proceeds to a previously funded wallet; insider/physical-attack the only plausible hack scenarios), and ZachXBT/Fabiano (hack plausible, but by session/SIM compromise; a self-sale would have looked different) — with Bullpen silent throughout; the MikeZillionaire bounty post was captured verbatim in v2, and the $200,000 first outflow at 17:49:52 UTC ended the "funds still sitting" framing.</p>
+</section>
+
+<section id="leads">
+  <h2><span class="num">12</span>Leads &amp; points of investigative interest</h2>
+  <ol>
+    <li><b>The $200,000 Rango/Bridgers → Bitcoin move (NEW #1 lead)</b> — did the swap settle into <span class="addr">bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</span>, and do further outflows follow from 0xAC33? The remaining $2,366,426.53 is unfrozen and demonstrably movable. Watch the BTC address and 0xAC33 continuously.</li>
+    <li><b>Identify who operates the Relay flow behind <span class="addr">0x06ee…</span> and <span class="addr">0xb800…</span></b> — both are now traced as pass-throughs fed by the Relay solver <span class="addr">0xf70da97812…</span>, carrying the selling wallet's own 06:46 UTC money back into 0xAC33. The question is now who controls that Relay flow — the same question as who held the selling wallet's key. (The wallets themselves have zero native ETH transactions and 0 ETH balance; no further on-chain history to mine there.)</li>
+    <li><b>Trace <span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></b> — created 08:11 UTC on the day; who funded its gas? (First tx was an inbound 0.0008 ETH from the Relay solver — check its funding trail and any earlier activity on other chains.)</li>
+    <li><b>Trace <span class="addr">0xB2b7E6563c2EBa9113979AA04aD1b77313701a8c</span></b> — months of Relay receipts from the selling wallet, now empty. Where did its prior funds go? Any link to 0xAC33 or the pre-dump funders?</li>
+    <li><b>Post-09:31 UTC disposition of the selling wallet</b> — ANSEM went from 16.7M at 09:31 to 85.43 now. Signer checks on the four most recent transactions involving the wallet show the selling wallet signed NONE of them (see §3). Still open: full Helius signature sweep after 09:31 UTC, plus the two signatures from 17:54:39 and 17:53:22 UTC that were never captured in full.</li>
+    <li><b>The 490M-ANSEM wallet <span class="addr">GdrKtm8e…</span></b> — received ~490M from the selling address on 1 Aug; still holding ~491M. Who controls it? Any movement since?</li>
+    <li><b>Bullpen statement and records</b> — re-checked ~18:00 UTC, still silent. Bullpen's login/key-use records are, per Unchained, "the clearest evidence either way." Also: which Bullpen users were hit (§7c) — do their accounts share a common access pattern?</li>
+    <li><b>The multi-victim drain (§7c)</b> — identify the operator behind the 24-wallet drain; trace the SideShift deposit wallet <span class="addr">ABNL41SwMLVRaCq6okEWsWyvLwm56nazUNwMrTHgmuyf</span> (1,179.02 SOL sitting — shared deposit address, caveat applies) and the Hyperliquid victims; check whether the BNB Chain USDC ($4,402.31, per MASTR receipts) moved.</li>
+    <li><b>Direct X URLs/times</b> for MLM's longer post, Specter's posts, Fabiano's post, ZachXBT's post, Onchain Lens's post, StalkHQ's post, and any Arkham post — all quoted only via secondary sources so far.</li>
+    <li><b>Circle freeze watch — UPDATE: NOT frozen as of ~18:10 UTC</b> (<span class="mono">isBlacklisted</span> false, direct RPC check). Keep watching; a freeze, or continued non-freeze, is itself evidence about whether a formal report was filed.</li>
+    <li><b>Relay request-log completeness</b> — this investigation's Relay sample was capped at 50 requests; the two $61,234.99 solver deliveries to 0x0a0A at 10:28 UTC do not appear in that sample. Pull the full Nov 24 Relay history for the selling wallet.</li>
+    <li><b>MIHAO and the other 123 tokens</b> — full sell list for the 877 sales; any token whose proceeds went somewhere other than 0xAC33/0x0a0A.</li>
+    <li><b>Sahil Arora DM authenticity</b> (6–7 Nov) — unresolved; relevant only as background to motive/credibility, not to the 24 Nov flows.</li>
+    <li><b>TCG Crypto tenure dates</b> — joined Oct 2022 vs "until Oct 2022" conflict; needs his Substack/LinkedIn primary check.</li>
+  </ol>
+</section>
+
+<section id="gaps">
+  <h2><span class="num">13</span>Gaps — what this report does NOT establish</h2>
+  <ul>
+    <li>Guilt or innocence of any person. The chain proves flows, not intent.</li>
+    <li>Who controls <span class="addr">0x06ee…</span> / <span class="addr">0xb800…</span> — traced as pass-throughs; their controller is <span class="tag n">NOT READ</span>.</li>
+    <li>Whether the $200,000 Rango/Bridgers → Bitcoin swap completed, and where the BTC ends up.</li>
+    <li>Any Bullpen statement (none found as of ~18:00 UTC).</li>
+    <li>The full post-09:31 UTC activity of the selling wallet (signer checks done for the four most recent transactions; full sweep still open).</li>
+    <li>The identity of <span class="addr">0x0a0A…</span>, <span class="addr">0xB2b7…</span>, the collector <span class="addr">CMXPbCyb…</span>, and the ~490M-ANSEM wallet <span class="addr">GdrKtm8e…</span> beyond their on-chain behaviour.</li>
+    <li>The operator behind the multi-victim drain (§7c).</li>
+    <li>Holder-count discrepancy: RugCheck 388,832 vs GoPlus 155,305.</li>
+    <li>The 789-vs-877 transaction-count discrepancy.</li>
+    <li>Victim-count discrepancy: 24+ wallets per MASTR vs 18–19 Bullpen users per Bitquery.</li>
+    <li>Ansem's date of birth, home address, phone, or any non-public personal data — not found, not sought, not published.</li>
+    <li>Whether any law-enforcement report has been filed. (Circle has NOT frozen the 0xAC33 USDC as of ~18:10 UTC.)</li>
+    <li>Ansem's posts after ~12:00 PM EST, 24 Nov 2026 (social cutoff — a re-check is owed).</li>
+    <li>Direct X URLs/times for MLM's longer post, Specter's posts, Fabiano's post, ZachXBT's post, Onchain Lens's post, StalkHQ's post, and any Arkham post — all quoted only via secondary sources so far.</li>
+  </ul>
+</section>
+
+<section id="methods">
+  <h2><span class="num">14</span>Methods &amp; tools</h2>
+  <ul>
+    <li><b>Helius RPC</b> (Solana): selling-wallet SOL balance, ANSEM Token-2022 balance, latest signature, getSlot proof of access.</li>
+    <li><b>Relay API</b> (relay.link): 29 requests from the selling wallet, 24 Nov 2026, 08:11–10:16 UTC — recipient, amount, status, read directly.</li>
+    <li><b>Etherscan V2 API</b> (Arbitrum, chain 42161): native ETH balances, USDC token balances, full USDC <span class="mono">tokentx</span> for 0xAC33 (33 transfers) and 0x0a0A (44 transfers), oldest-<span class="mono">txlist</span> for 0x0a0A. Re-read 17:08 UTC, 24 Nov 2026.</li>
+    <li><b>DexScreener</b> (<span class="mono">api.dexscreener.com/latest/dex/tokens/{mint}</span>): ANSEM price, liquidity, FDV, volume, 24h change.</li>
+    <li><b>RugCheck</b> (<span class="mono">api.rugcheck.xyz/v1/tokens/{mint}/report</span>): score 5997, creator, holders, top holder, LP lock, authorities.</li>
+    <li><b>GoPlus</b> (<span class="mono">api.gopluslabs.io/api/v1/solana/token_security</span>): holder_count 155,305 (discrepancy noted).</li>
+    <li><b>APEX²/APEX³ screening</b>: token screening, pair verification, social evidence, SolHaG discovery patterns applied to the ANSEM pair and the copycat set.</li>
+    <li><b>Social sweep</b>: browser.search + browser.open over public articles/aggregators (Unchained, CoinDesk, CryptoTimes, AltcoinBuzz, CryptoBriefing, CoinEdition, CoinCodex, Lookonchain feeds, KuCoin flashes, Protos via NCTA, Spendnode, Bitbase, CoinOTAG, TechFlow, GlobalEye24). X itself is not directly fetchable from this tooling; no X post was opened directly.</li>
+    <li><b>v2 additions:</b> public Arbitrum RPC (<span class="mono">https://arb1.arbitrum.io/rpc</span>) for <span class="mono">eth_getTransactionByHash</span>, <span class="mono">eth_getTransactionReceipt</span>, and <span class="mono">eth_call</span> (<span class="mono">balanceOf</span> selector <span class="mono">0x70a08231</span>, <span class="mono">isBlacklisted</span> selector <span class="mono">0xfe575a87</span>) — used for the $200,000 outflow, the approve, and the Circle freeze check; <b>mempool.space API</b> for the Bitcoin destination address; <b>Helius <span class="mono">getTransaction</span> signer analysis</b> (with <span class="mono">maxSupportedTransactionVersion: 1</span>) for the selling wallet's recent transactions; <b>pdfimages</b> extraction from the saved X profile PDF for the photo/banner analysis. Note: Etherscan's <span class="mono">tokenbalance</span> endpoint is stale/cached on Arbitrum (still showed $2,566,426.53 after the $200,000 outflow) and Etherscan's proxy <span class="mono">eth_getTransactionByHash</span> returned null for two confirmed recent transactions while returning full results for older ones — the proxy node lags; use the public RPC for recent transactions.</li>
+  </ul>
+</section>
+
+<section id="sources">
+  <h2><span class="num">15</span>Sources</h2>
+  <p><b>On-chain / API (primary):</b> Helius Solana RPC · Relay API (relay.link) · Etherscan V2 (Arbitrum) · DexScreener API · RugCheck API · GoPlus API.</p>
+  <h3>Reporting (24 Nov 2026 unless noted)</h3>
+  <ul>
+    <li>Unchained — <a href="https://unchainedcrypto.com/ansem-says-his-solana-wallet-was-hacked-through-his-bullpen-profile-some-analysts-doubt-it/">Ansem Says His Solana Wallet Was Hacked…</a></li>
+    <li>CoinDesk — <a href="https://www.coindesk.com/markets/2026/11/24/a-wallet-linked-to-popular-crypto-trader-ansem-sold-usd2-million-in-memecoins-as-his-namesake-token-cratered">A Wallet Linked to Ansem Sold $2M in Memecoins…</a></li>
+    <li>CryptoTimes — <a href="https://www.cryptotimes.io/2026/11/24/ansem-wallet-dumps-70m-ansem-tokens-as-price-crashes-60-hack-or-not/">Ansem Wallet Dumps 70M ANSEM…</a></li>
+    <li>AltcoinBuzz — <a href="https://www.altcoinbuzz.io/was-ansem-hacked-why-ansem-fell-60-in-an-hour">Was Ansem Hacked? Why ANSEM Fell 60%…</a></li>
+    <li>CryptoBriefing — <a href="https://cryptobriefing.com/ansem-memecoin-plunges-wallet-hack-claims/">ANSEM Memecoin Plunges…</a></li>
+    <li>CoinEdition — <a href="https://coinedition.com/ansem-meme-coin-plunges-60-amid-alleged-2-15-million-wallet-hack/">ANSEM Plunges 60% Amid Alleged $2.15M Hack</a></li>
+    <li>CoinCodex — <a href="https://coincodex.com/article/95873/ansem-crypto-crashes-50-as-influencers-wallet-dumps-tokens/">ANSEM Crashes 50%…</a></li>
+    <li>Lookonchain feeds — <a href="https://lookonchain.com/feeds/83906">83906</a> · <a href="https://lookonchain.com/feeds/83908">83908</a></li>
+    <li>CryptoPanic (Lookonchain 2.57M post) — <a href="https://cryptopanic.com/news/33754361/The-hacker-has-stolen-257M-from-Ansemblknoiz06s-wallet-so-far-Interestingly-the-257M-USDC-hasnt-been-swapped-for-ETH-and-laundered-yet-its-still-sitting-in-wallet-0xAC33">cryptopanic.com</a></li>
+    <li>NCTA blog republishing Protos (Specter / Fabiano / ZachXBT) — <a href="https://blog.nationalcybersecuritytrainingacademy.com/ansem-says-multimillion-dollar-token-dump-was-caused-by-hack-hacking-cybersecurity-infosec-comptia-pentest-hacker/">nationalcybersecuritytrainingacademy.com</a></li>
+    <li>Bitbase — <a href="https://www.bitbase.com/news/ansem-suspected-wallet-hack-memecoin-crash-arbitrum">bitbase.com</a></li>
+    <li>CoinOTAG — <a href="https://en.coinotag.com/ansem-wallet-2-million-ansem-sale-hack-unverified">coinotag.com</a></li>
+    <li>Spendnode — <a href="https://www.spendnode.io/blog/solana-s-ansem-falls-60-as-suspected-wallet-hack-divides-analysts/">spendnode.io</a></li>
+    <li>KuCoin flashes: <a href="https://www.kucoin.com/news/flash/kol-ansem-linked-wallet-sells-48-91m-ansem-tokens-token-dips-over-55-in-24-hours">48.91M</a> · <a href="https://www.kucoin.com/news/flash/ansem-pump-wallet-hacked-over-70-78m-ansem-tokens-sold">70.78M</a> · <a href="https://www.kucoin.com/news/flash/ansem-hacked-funds-rise-to-2-56m-hacker-sells-1-23m-in-tokens">2.56M / Onchain Lens</a> · <a href="https://www.kucoin.com/news/flash/data-attacker-has-not-moved-2-57m-stolen-usdc-from-ansem-s-wallet">2.57M unmoved</a> · <a href="https://www.kucoin.com/news/flash/ansem-wallet-suspected-of-being-hacked-2-15m-usdc-transferred">2.15M suspected</a> · <a href="https://www.kucoin.com/news/trends/ANSEM/6b058dd4e284a300073fcb7c">trends / StalkHQ</a></li>
+    <li>Blockchain.news (Onchain Lens framing) — <a href="https://blockchain.news/flashnews/ansem-attacker-drains-2-56m-suspected-internal-hack">blockchain.news</a></li>
+    <li>TechFlow (Frank DeGods / Satoshi question) — <a href="https://www.techflowpost.com/en-US/article/35661/ansem-and-satoshi-nakamoto-under-stolen-roof">techflowpost.com</a></li>
+    <li>GlobalEye24 — <a href="https://globaleye24.com/news/ansem-controversy-and-crypto-influencer-scrutiny-1915">Ansem controversy</a> · <a href="https://globaleye24.com/live?s=crypto">live wire</a></li>
+    <li>The Block (24 Nov 2026) — Bullpen still silent; Ansem denied being behind the transactions; working through a security audit</li>
+    <li>BasisDesk / Bitquery forensic report (24 Nov 2026) — drain began with the wallet transferring $515,000 USDC; final total $2.57M across 28 payments to 0xAC33; "Ansem, holders of the ANSEM token, and 18 to 19 Bullpen platform users who were breached"</li>
+    <li>MASTR threads — <a href="https://x.com/MastrXYZ/status/2125226872245997803">2125226872245997803</a> · <a href="https://x.com/MastrXYZ/status/2125226875265884198">2125226875265884198</a> · <a href="https://x.com/MastrXYZ/status/2125255514753745008">2125255514753745008</a> · <a href="https://x.com/MastrXYZ/status/2125255525218533842">2125255525218533842</a></li>
+    <li>Rarma thread — <a href="https://x.com/Rarma_/status/2125187130679046264">2125187130679046264</a></li>
+    <li>MikeZillionaire bounty post — <a href="https://x.com/MikeZillionaire/status/2125192753650811346">2125192753650811346</a> (captured verbatim; saved page PDF <span class="mono">mikezillionaire-post-20261124.pdf</span>)</li>
+    <li>James Wynn match — <a href="https://x.com/JamesWynnReal/status/2125255491005866348">2125255491005866348</a></li>
+    <li>Rango / Bridgers — route provider "Bridgers" inside Rango Exchange (Medium aggregator comparison, 23 Oct 2026); Arbiscan RangoSatelliteMiddleware contract</li>
+    <li>Listen Notes (Market Bubble LA HQ / Tokyo call-in) — episode descriptions</li>
+    <li>mempool.space — <a href="https://mempool.space/api/address/bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0">mempool.space/api/address/bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</a></li>
+  </ul>
+  <h3>Identity / background</h3>
+  <ul>
+    <li>CoinDesk (10 Dec 2024) — <a href="https://www.coindesk.com/tech/2024/12/10/ansem-the-memecoin-king">The Memecoin King</a> · <a href="https://www.coindesk.com/coindesk-news/2024/12/05/most-influential-2024">Most Influential 2024</a></li>
+    <li>CoinTelegraph (7 Oct 2024) — <a href="https://cointelegraph.com/news/zachxbt-slams-crypto-influencer-over-memecoin-promotions">ZachXBT Slams Ansem</a></li>
+    <li>Datawallet — <a href="https://www.datawallet.com/crypto/who-is-ansem">Who Is Ansem</a></li>
+    <li>DropsTab (Bullpen) — <a href="https://dropstab.com/coins/bullpen">dropstab.com</a></li>
+    <li>Solana.com — <a href="https://solana.com/news/solana-community-awards-2026-meet-the-finalists">Solana Community Awards 2026</a></li>
+    <li>Ansem's Substack — <a href="https://blknoiz06.substack.com/p/joining-tcg-crypto">Joining TCG Crypto</a></li>
+    <li>CLSTR (Sahil Arora) — <a href="https://clstr.news/cluster/ansem-denies-allegations-of-paid-token-promotion-by-sahil-arora">clstr.news</a></li>
+    <li>Protos (Q Train) — <a href="https://protos.com/crypto-clout-chasers-arrested-after-punch-the-monkey-stunt/">protos.com</a></li>
+    <li>Followin (@dethective analysis) — <a href="https://followin.io/en/feed/13486078">followin.io</a></li>
+  </ul>
+</section>
+
+<section id="appendix">
+  <h2><span class="num">A</span>Appendix — key addresses</h2>
+  <table>
+    <tr><th>Role</th><th>Address</th><th>Chain</th></tr>
+    <tr><td>Selling wallet (Ansem-tagged)</td><td><span class="addr">GV6UUmNxz2RpKxmNAPadYKb7uQpszwqQAu3qLJxVdC52</span></td><td>Solana</td></tr>
+    <tr><td>ANSEM token mint</td><td><span class="addr">9cRCn9rGT8V2imeM2BaKs13yhMEais3ruM3rPvTGpump</span></td><td>Solana</td></tr>
+    <tr><td>ANSEM Token-2022 account (selling wallet)</td><td><span class="addr">2U9XFtekYTstzMYXmuyDCNdFxRYB91dMtSKxtUB5rVct</span></td><td>Solana</td></tr>
+    <tr><td>Top holder (~490M ANSEM)</td><td><span class="addr">GdrKtm8e…</span> (full address in RugCheck report)</td><td>Solana</td></tr>
+    <tr><td>ANSEM creator</td><td><span class="addr">9ENSWnedBEAvVB7jJKZrLRZ9vuVuJdBE7uJt2oAsG1jr</span></td><td>Solana</td></tr>
+    <tr><td>Main recipient</td><td><span class="addr">0xAC33748aAd09CEA8E50484Cc0Fa168dc23531B4d</span></td><td>Arbitrum</td></tr>
+    <tr><td>Forwarder (created 24 Nov 08:11 UTC)</td><td><span class="addr">0x0a0A6Bd1C26BEcc4b3d94D2a695c3484D9e26072</span></td><td>Arbitrum</td></tr>
+    <tr><td>Long-standing recipient (Aug–Oct)</td><td><span class="addr">0xB2b7E6563c2EBa9113979AA04aD1b77313701a8c</span></td><td>Arbitrum</td></tr>
+    <tr><td>Pre-dump funder #1 ($515,110.15)</td><td><span class="addr">0x06ee679b907a654a9126caf511922f632f6e4b03</span></td><td>Arbitrum</td></tr>
+    <tr><td>Pre-dump funder #2 ($28,694.22)</td><td><span class="addr">0xb8009d1da10b8fe53330cfb2cbc77f2de241f3ec</span></td><td>Arbitrum</td></tr>
+    <tr><td>Relay solver</td><td><span class="addr">0xf70da97812cb96acdf810712aa562db8dfa3dbef</span></td><td>Arbitrum</td></tr>
+    <tr><td>BSC probe recipient</td><td><span class="addr">0x34D0DF892323fEf6889C6Cb0c43823F7b22723c5</span></td><td>BSC</td></tr>
+    <tr><td>BSC probe recipient</td><td><span class="addr">0x9eDB4223db879fCBD0d9A3580C0e5c0251e495C1</span></td><td>BSC</td></tr>
+    <tr><td>USDC (Arbitrum, native)</td><td><span class="addr">0xaf88d065e77c8cC2239327C5EDb3A432268e5831</span></td><td>Arbitrum</td></tr>
+    <tr><td>Rango router (first outflow, $200,000)</td><td><span class="addr">0xc1d13492285eb664951e201bf7c80c7c6318a1b5</span></td><td>Arbitrum</td></tr>
+    <tr><td>BTC destination (Rango/Bridgers)</td><td><span class="addr">bc1qhvzh8ywv7h0ca5jqta959sa0dd3fj7c9jghvv0</span></td><td>Bitcoin</td></tr>
+    <tr><td>Multi-victim collector (Solana)</td><td><span class="addr">CMXPbCybdaQhyEvC73XhFhk7aVjTEGfHuyhSiKkCx23U</span></td><td>Solana</td></tr>
+    <tr><td>SideShift deposit wallet</td><td><span class="addr">ABNL41SwMLVRaCq6okEWsWyvLwm56nazUNwMrTHgmuyf</span></td><td>Solana</td></tr>
+    <tr><td>Burner (paid collector 14:51:34 UTC)</td><td><span class="addr">D2sEm99AQDSLQFFvQ54kGhXD2NAr2qeKSTi7yFEG84Y</span></td><td>Solana</td></tr>
+    <tr><td>Fresh wallet (received 06:46 USDC+SOL)</td><td><span class="addr">G1hBwB7KJ8CPG2XxujzM9WHS2zgrFQ94f3UUy8uyw96k</span></td><td>Solana</td></tr>
+    <tr><td>EVM forwarder (multi-victim drain)</td><td><span class="addr">0x222bc2F25B8278C5ED592CD9F42B8336bbcb87f6</span></td><td>Arbitrum</td></tr>
+    <tr><td>Hyperliquid victim (279.21 USDC → 0xAC33)</td><td><span class="addr">0x0b79fda0bd204cca5c7bfd37578e0d7c544e4d91</span></td><td>Arbitrum</td></tr>
+  </table>
+  <p style="margin-top:24px"><a class="btn" href="ansem-evidence-report-v2.pdf" download>⬇ Download the full report (PDF, v2)</a></p>
+</section>
+
+<footer class="pagefoot">
+  <div class="addrs">
+    <b>Compiling party — attribution, tips &amp; reward claims</b>
+    <div class="row">Compiled by <b>Jeffrey Allen Kaufman / HALEX-M Advanced Blockchain Intelligence</b>, 24 November 2026.</div>
+    <div class="row">Solana: <span class="addr">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</span></div>
+    <div class="row">EVM: <span class="addr">0xE2CF47E4974484A021A72D50e0A2FC7188E2aA38</span></div>
+    <div class="row small">Tips, corrections, and any reward claims relating to this event should be directed to the compiling party at the addresses above.</div>
+  </div>
+  <p>ANSEM Evidence v2 — staged under <span class="mono">~/workspace/work/ansem-evidence/</span> for halex-web/ansem-evidence/. Not published. This page IS the report, laid out for reading; the PDF is the downloadable copy of the same content. Nothing in this report is a finding of guilt. Every claim is labelled VERIFIED, ALLEGED, or NOT READ.</p>
+  <p class="small">Dossier: ansem-evidence-dossier.md (v2; v1 preserved as ansem-evidence-dossier-v1.md) · Evidence page: index.html (this file) · PDF: ansem-evidence-report-v2.pdf · Audio: ansem-evidence-executive-summary-v2.mp3 · Lanes: identity-background.md · social-sweep-20261124.md · Captures: capture-mikezillionaire-20261124.md · mikezillionaire-post-20261124.pdf · ansem-profile-20261124.pdf · mastr-receipts-20261124.pdf</p>
+</footer>
+</div>
+</body>
+</html>
