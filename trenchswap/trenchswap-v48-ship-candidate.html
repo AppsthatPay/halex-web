@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-8Dgdt3HoOqkgwFAMlYxe7w3Lvbxqm6Bqp39KG7TknJo='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-Lw+CNf+A0jmxksFbe7tKf2BiswTJNI4BC0u+FQPVVOc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -110,6 +110,7 @@ input:focus,textarea:focus{border-color:var(--cta)}
 .v48-tb-note{color:var(--muted);font-size:12px;margin-top:3px}
 .v48-tb-chev{color:var(--gloss);font-size:20px;font-weight:900;flex:none;padding-left:2px}
 .v48-tb-notebox{background:var(--panel);border:1px dashed rgba(192,132,252,.4);border-radius:14px;padding:12px;color:var(--muted);font-size:13px;line-height:1.55;margin-top:10px}
+.claim-tier.on{border-color:var(--gloss)!important;background:rgba(168,85,247,.20)!important}
 #v48ReportHolding{margin-top:2px}
 #v48ReportHolding .v48-tb{cursor:default}
 .mono{font-family:"JetBrains Mono",monospace;font-size:12px;word-break:break-all}
@@ -905,7 +906,9 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
   <div class="info-pane card" id="info-claim">
     <h3 style="margin:0">Claim a Token — build its Token Page</h3>
     <p class="sub" style="margin-top:6px">Token creators: prove the token is yours and build its Token Page — the dressed-up page with your description, links and info boxes that everyone sees when they tap your token. Unclaimed tokens keep the plain report.</p>
-    <p class="sub">Token Page price: <b>$100 for 1 year</b> for a token claimed from elsewhere — <b>$25 for 1 year</b> when the token was minted on TrenchSwap (discounted option at mint). To claim, prove the token is yours: send a proof payment of exactly <b>100 USDC</b>, from the wallet that created the token, to the TrenchSwap fee wallet. The app verifies the payment on-chain (exact amount, creator wallet, inside a 30-minute window), and only then does the page editor open. The $100 payment is the whole claim-plus-page price. Wrong wallet or wrong amount: no page, and there is no automatic refund — contact support and it is decided case by case.</p>
+    <p class="sub">Token Page price, pick a term: <b>100 USDC for 1 year</b>, <b>289.67 USDC for 3 years</b>, or <b>1000.00 USDC for the life of the TrenchSwap project (FTLTTP)</b>. Tokens minted on TrenchSwap keep the $25 for 1 year at mint option. To claim, prove the token is yours: send a proof payment of exactly the chosen term amount, from the wallet that created the token, to this payment address:</p>
+    <div class="mono" style="background:#0A0614;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:6px;word-break:break-all">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</div>
+    <p class="sub" style="margin-top:6px">The app verifies the payment on-chain (exact amount, creator wallet, inside a 30-minute window), and only then does the page editor open. The payment is the whole claim-plus-page price. USDC is preferred; USDT or another widely accepted stable token is also accepted, and SOL is accepted at the equivalent sum at the SOL price at the time of sending. Wrong wallet or wrong amount: no page, and there is no automatic refund — contact support and it is decided case by case.</p>
     <label class="lbl">TOKEN MINT ADDRESS</label><input type="text" id="claimMintInput" style="margin-top:5px" placeholder="Solana mint address…" autocomplete="off">
     <button class="btn" id="claimStartBtn" type="button" style="margin-top:12px">Start a claim</button>
     <div id="claimStartStatus" class="fee" style="margin-top:8px">You can also open any token and tap “Claim this token” in its report.</div>
@@ -1141,15 +1144,30 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <p class="sub" style="margin-top:8px">Prove this token is yours and build its Token Page — the dressed-up page everyone sees when they tap the token. Unclaimed tokens keep the plain report.</p>
 <div id="claimTokenHead" style="margin-top:8px"></div>
 <div id="claimStepStart">
-  <p class="sub" style="margin-top:10px">Token Page price: <b>$100 for 1 year</b> for a token claimed from elsewhere — <b>$25 for 1 year</b> when the token was minted on TrenchSwap (discounted option at mint). To claim, prove this token is yours: send a proof payment of exactly <b>100 USDC</b>, from the wallet that created this token, to the TrenchSwap fee wallet. Nothing unlocks until the payment verifies on-chain: exact amount, creator wallet, inside the expiry window. The $100 payment is the whole claim-plus-page price. Wrong wallet or wrong amount means no page, and there is no automatic refund.</p>
+  <p class="sub" style="margin-top:10px">Pick a term. The payment is the whole claim-plus-page price. The term is locked once you start the claim.</p>
+  <div class="row" style="margin-top:8px;gap:8px" id="claimTierRow">
+    <button class="btn secondary grow claim-tier on" data-tier="1y" type="button">1 year<br><b>100 USDC</b></button>
+    <button class="btn secondary grow claim-tier" data-tier="3y" type="button">3 years<br><b>289.67 USDC</b></button>
+    <button class="btn secondary grow claim-tier" data-tier="ftlttp" type="button">FTLTTP<br><b>1000.00 USDC</b></button>
+  </div>
+  <p class="fee" id="claimTierNote" style="margin-top:8px">1 year: the space expires after 1 year. The term is locked once you start the claim.</p>
+  <p class="sub" style="margin-top:10px">What you get: once the payment is seen and accounted for by our system, you gain access to the token page creation suite and can submit a page for review. Once approved it is added as a full Token Page for your token: socials, X post and feed embed, website snippet and link, bio, a single 500-word post, title blog section, token video links and YouTube video embedding, media image uploads, team linking, LinkedIn profile linking, full white paper section and project PDF download. Blog posts may take 2 hours to post, and the deployer wallet can add another blog post every 2 weeks, up to 12 posts. Token pages are reviewed for safety and all updates take up to 2 hours to process.</p>
+  <p class="sub" style="margin-top:8px">To claim, prove this token is yours: send a proof payment of exactly the chosen term amount, from the wallet that created this token, to the payment address below. Nothing unlocks until the payment verifies on-chain: exact amount, creator wallet, inside the expiry window. USDC is preferred; USDT or another widely accepted stable token is also accepted, and SOL is accepted at the equivalent sum at the SOL price at the time of sending. Wrong wallet or wrong amount means no page, and there is no automatic refund.</p>
+  <div class="mono" style="background:#0A0614;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:6px;word-break:break-all">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</div>
   <button class="btn" id="claimGenBtn" type="button" style="margin-top:10px">Start my claim</button>
   <div id="claimStartMsg" class="fee" style="margin-top:8px"></div>
 </div>
 <div id="claimStepPay" style="display:none">
   <div class="kv" style="margin-top:10px"><span>Send exactly</span><b style="font-size:19px" id="claimAmountBig">—</b></div>
+  <div class="kv"><span>Term</span><b id="claimTermBig">1 year</b></div>
   <div class="kv"><span>Token</span><b>USDC (Solana)</b></div>
-  <div class="kv"><span>To</span><b style="text-align:right" id="claimDestAddr">TrenchSwap</b></div>
-  <div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="claimDestCopy" type="button">Copy destination address</button></div>
+  <p class="sub" style="margin-top:10px"><b id="claimPayLine">Pay this address 100 USDC from the creator wallet</b></p>
+  <div class="mono" id="claimDestAddr" style="background:#0A0614;border:1px solid var(--line);border-radius:12px;padding:11px;margin-top:6px;word-break:break-all">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</div>
+  <div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="claimDestCopy" type="button">Copy payment address</button></div>
+  <div class="kv" style="margin-top:8px"><span>Token contract address (not the payment address)</span><b class="mono" style="font-size:11px;text-align:right" id="claimMintAddr">—</b></div>
+  <div class="row" style="margin-top:6px"><button class="btn small secondary grow" id="claimMintCopy" type="button">Copy token contract address</button></div>
+  <div class="kv" style="margin-top:8px"><span>Or pay in SOL (same value, at send time)</span><b id="claimSolEquiv">NOT READ</b></div>
+  <p class="fee" style="margin-top:6px">USDC is preferred. USDT or another widely accepted stable token is also accepted. SOL is accepted at the equivalent sum at the SOL price at the time of sending, so the amount must match the SOL price when you send it.</p>
   <div class="kv" style="margin-top:8px"><span>From — the wallet that created this token</span><b class="mono" style="font-size:11px;text-align:right" id="claimCreatorAddr">Reading the mint's creation transaction…</b></div>
   <div class="kv"><span>Expires</span><b id="claimExpiry">—</b></div>
   <div class="kv"><span>Time left</span><b id="claimCountdown">—</b></div>
@@ -1798,6 +1816,12 @@ function relTime(ts){if(!ts)return"Time NOT READ";var s=Math.max(0,Math.floor((D
 function copyMint(mint,btn){function done(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent="Copy"},1600);toast("Mint address copied")}
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(mint).then(done).catch(function(){fallback()})}else fallback();
  function fallback(){var ta=document.createElement("textarea");ta.value=mint;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){toast("Copy failed — address: "+mint)}document.body.removeChild(ta)}}
+/* v48.1: copy helper that restores the button's own label (claim buttons
+   read "Copy payment address" / "Copy token contract address", not
+   "Copy") and toasts what was actually copied. */
+function copyText(value,btn,label){var orig=btn.textContent;function done(){btn.textContent="Copied ✓";setTimeout(function(){btn.textContent=orig},1600);toast(label||"Copied")}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(value).then(done).catch(function(){fallback()})}else fallback();
+ function fallback(){var ta=document.createElement("textarea");ta.value=value;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done()}catch(e){toast("Copy failed — "+value)}document.body.removeChild(ta)}}
 function snipeRow(item){
  var el=document.createElement("div");el.className="token-card";el.setAttribute("role","button");el.setAttribute("tabindex","0");el.setAttribute("data-fire-mint",item.mint);
  var addr=item.mint.length>16?item.mint.slice(0,8)+"…"+item.mint.slice(-6):item.mint;
@@ -9311,8 +9335,9 @@ function renderTokenPageInto(mint){
 /* --- Claim a Token: Token Page $100 for 1 year (claimed from elsewhere);
    $25 for 1 year at mint if minted on TrenchSwap (2026-11-22 decision,
    replaces $20/free page pricing). The claim PROOF payment IS the page
-   price: exactly 100 USDC (CLAIM_PAGE_FEE_USDC) — decided 2026-11-22
-   ~22:48 EST, $100 covers claim AND page, one price; the $20 is gone.
+   price: exactly the chosen tier amount — v48.1 (2026-11-24, Jeffrey):
+   1 year = 100 USDC, 3 years = 289.67 USDC, FTLTTP = 1000.00 USDC.
+   $100 covers claim AND page for 1 year, one price; the $20 is gone.
    Sender must be the wallet from the mint creation transaction; exact
    amount to 4 decimals; 30-minute expiry; no auto-refund. v46: the fee
    is fixed at 100 USDC, not random. The amount is no longer the claim's
@@ -9322,6 +9347,23 @@ function renderTokenPageInto(mint){
    before the claim started never counts). --- */
 var CLAIM_OPEN_KEY="trenchswap.claims.v1";
 var CLAIM_PAGE_FEE_USDC=100; /* Decided 2026-11-22 ~22:48 EST: $100 covers claim AND page, one price. The proof payment IS the page price ($100 claimed / $25 minted on TrenchSwap, 1 year). The $20 is gone. */
+/* v48.1 (2026-11-24 ~13:15 EST, Jeffrey: "IMMEDIATELY FIX"): Claim a Token
+   has three terms. 1 year = 100 USDC, 3 years = 289.67 USDC, FTLTTP (For
+   The Life Of The Trenchswap Project) = 1000.00 USDC. The claim window
+   shows the full payment address (FEE_WALLET) with the line "Pay this
+   address <amount> USDC from the creator wallet" and a copy button that
+   copies the PAYMENT address. The token contract address is shown
+   separately, labeled as the contract address, never as the payment
+   address. USDC preferred; USDT or another widely accepted stable token
+   also accepted; SOL accepted at the equivalent sum at the SOL price at
+   send time (live SOL equivalent shown, NOT READ if the price cannot be
+   read). Verification is unchanged: exactly the tier amount, from the
+   creator wallet, inside the 30-minute window. */
+var CLAIM_TIERS=[
+ {id:"1y",label:"1 year",amount:100,pay:"100",expiry:"1 year: the space expires after 1 year."},
+ {id:"3y",label:"3 years",amount:289.67,pay:"289.67",expiry:"3 years for 289.67 USDC."},
+ {id:"ftlttp",label:"FTLTTP",amount:1000,pay:"1000.00",expiry:"FTLTTP: For The Life Of The Trenchswap Project, 1000.00 USDC."}];
+function claimTierById(id){for(var i=0;i<CLAIM_TIERS.length;i++)if(CLAIM_TIERS[i].id===id)return CLAIM_TIERS[i];return CLAIM_TIERS[0]}
 function loadOpenClaims(){try{var a=JSON.parse(localStorage.getItem(CLAIM_OPEN_KEY)||"[]");return Array.isArray(a)?a:[]}catch(e){return[]}}
 function saveOpenClaims(a){try{localStorage.setItem(CLAIM_OPEN_KEY,JSON.stringify(a.slice(0,20)))}catch(e){}}
 function mintedOnTrenchSwap(mint){
@@ -9369,17 +9411,30 @@ function findMintCreator(mint){
 function openClaim(preset){
  if(!preset||!preset.mint){toast("Open a token first, or paste a mint under Info > Claim a Token");return}
  if(tokenPageFor(preset.mint)){toast("This token is already claimed — its Token Page is live");return}
- state.claim={mint:preset.mint,symbol:preset.symbol||"",name:preset.name||"",img:preset.img||null,amount:null,expiresAt:0,creator:null,verified:false,paySig:null};
+ state.claim={mint:preset.mint,symbol:preset.symbol||"",name:preset.name||"",img:preset.img||null,amount:null,tier:"1y",expiresAt:0,creator:null,verified:false,paySig:null};
  state.claimLogoData=null;state.tpSubmission=null;
  $("claimTokenHead").innerHTML='<div class="row" style="background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px">'+imgTag(preset.img,preset.symbol||"?",'style="width:38px;height:38px;border-radius:50%"',preset.mint)+'<div class="grow"><b>'+escapeHtml(preset.name||"Token")+'</b> <span style="color:var(--gloss);font-weight:700">$'+escapeHtml(preset.symbol||"")+'</span><div class="fee mono" style="font-size:11px">'+escapeHtml(preset.mint)+'</div></div></div>';
  $("claimStepStart").style.display="block";$("claimStepPay").style.display="none";$("claimStepEditor").style.display="none";
  $("claimStartMsg").textContent="";
+ document.querySelectorAll(".claim-tier").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-tier")==="1y")});
+ var tn=$("claimTierNote");if(tn)tn.textContent=CLAIM_TIERS[0].expiry+" The term is locked once you start the claim.";
  $("claimOverlay").classList.add("open")}
+function renderClaimSolEquiv(){
+ var el=$("claimSolEquiv");if(!el)return;
+ var c=state.claim;if(!c){el.textContent="NOT READ";return}
+ var px=state.prices&&Number(state.prices.SOL);
+ if(!px||!isFinite(px)||px<=0){el.textContent="SOL price NOT READ — pay in USDC, or check the SOL price when you send";return}
+ el.textContent="About "+(Number(c.amount)/px).toFixed(4)+" SOL at $"+px.toFixed(2)+" per SOL — the amount must match the SOL price when you send it";}
 function showClaimPay(){
  var c=state.claim;if(!c)return;
  $("claimStepStart").style.display="none";$("claimStepEditor").style.display="none";$("claimStepPay").style.display="block";
+ var t=claimTierById(c.tier||"1y");
  $("claimAmountBig").textContent=Number(c.amount).toFixed(4)+" USDC";
- $("claimDestAddr").textContent="TrenchSwap";
+ $("claimTermBig").textContent=t.label+", "+Number(t.amount).toFixed(2)+" USDC";
+ $("claimPayLine").textContent="Pay this address "+t.pay+" USDC from the creator wallet";
+ $("claimDestAddr").textContent=FEE_WALLET;
+ $("claimMintAddr").textContent=c.mint||"—";
+ renderClaimSolEquiv();
  $("claimCreatorAddr").textContent=c.creator||"Reading the mint creation transaction…";
  $("claimExpiry").textContent=new Date(c.expiresAt).toLocaleTimeString()+" (30 minutes)";
  $("claimPayStatus").textContent="The app watches the chain for your payment — or tap the button to check now.";
@@ -9412,14 +9467,16 @@ function startClaimAmount(){
  var existing=open.filter(function(o){return o.mint===c.mint})[0];
  /* Hack-a-thon Lane 5 F-05: createdAt is the claim's lower time bound — a
     payment made before the claim started must not count. */
- if(existing){c.amount=Number(existing.amount);c.expiresAt=existing.expiresAt;c.createdAt=existing.createdAt||existing.ts||Date.now();c.creator=existing.creator||null;if(c.amount===0){claimFreeOpen();return}showClaimPay();return}
- /* v46: claim proof payment is fixed 100 USDC for a token minted elsewhere
-    (decided 2026-11-22 ~22:48 EST: $100 covers claim AND page, one price);
-    no proof payment if this device minted it on TrenchSwap. Token Page:
-    $100 for 1 year claimed, $25 for 1 year at mint on TrenchSwap. */
+ if(existing){c.amount=Number(existing.amount);c.tier=existing.tier||"1y";c.expiresAt=existing.expiresAt;c.createdAt=existing.createdAt||existing.ts||Date.now();c.creator=existing.creator||null;if(c.amount===0){claimFreeOpen();return}showClaimPay();return}
+ /* v48.1: claim proof payment is the chosen tier amount for a token
+    minted elsewhere (1 year = 100 USDC, 3 years = 289.67 USDC, FTLTTP =
+    1000.00 USDC); no proof payment if this device minted it on
+    TrenchSwap. Token Page: $100 for 1 year claimed, $25 for 1 year at
+    mint on TrenchSwap. */
  if(mintedOnTrenchSwap(c.mint)){c.amount=0;c.free=true;claimFreeOpen();return}
- c.amount=CLAIM_PAGE_FEE_USDC;c.expiresAt=Date.now()+30*60*1000;c.createdAt=Date.now();
- open.push({mint:c.mint,amount:c.amount,expiresAt:c.expiresAt,creator:null,ts:Date.now(),createdAt:c.createdAt});
+ var _tier=claimTierById(c.tier||"1y");
+ c.amount=_tier.amount;c.expiresAt=Date.now()+30*60*1000;c.createdAt=Date.now();
+ open.push({mint:c.mint,amount:c.amount,tier:_tier.id,expiresAt:c.expiresAt,creator:null,ts:Date.now(),createdAt:c.createdAt});
  saveOpenClaims(open);
  showClaimPay();
  findMintCreator(c.mint).then(function(creator){
@@ -9429,6 +9486,7 @@ function startClaimAmount(){
 function checkClaimPayment(silent){
  var c=state.claim;if(!c||c.verified)return;
  var st=$("claimPayStatus");
+ renderClaimSolEquiv();
  if(Date.now()>c.expiresAt){if(st)st.textContent="This claim expired — start again for a new amount.";return}
  if(!silent&&st)st.textContent="Checking the chain for your payment…";
  rpcCall("getSignaturesForAddress",[FEE_WALLET,{limit:40}]).then(function(d){
@@ -9462,13 +9520,21 @@ function claimVerified(sig){
  var c=state.claim;if(!c)return;
  c.verified=true;c.paySig=sig;clearInterval(state._claimTimer);
  var list=loadOpenClaims().filter(function(o){return !(o.mint===c.mint&&Number(o.amount)===Number(c.amount))});saveOpenClaims(list);
-    tsTrackPost("claim",{mint:c.mint,symbol:c.symbol||"",name:c.name||"",amount:Number(c.amount).toFixed(4),creatorWallet:c.creator||null,paymentTx:sig,submittedAt:new Date().toISOString()},function(){});
+    tsTrackPost("claim",{mint:c.mint,symbol:c.symbol||"",name:c.name||"",amount:Number(c.amount).toFixed(4),tier:c.tier||"1y",creatorWallet:c.creator||null,paymentTx:sig,submittedAt:new Date().toISOString()},function(){});
+ var en=$("claimEditorNotice");if(en)en.innerHTML="<b>Payment verified — "+Number(c.amount).toFixed(2)+" USDC, "+claimTierById(c.tier||"1y").label+".</b> Build the Token Page below. It goes to the review queue when you submit — it appears in the app only after review, approval and commit. Nothing auto-publishes.";
  $("claimStepPay").style.display="none";$("claimStepEditor").style.display="block";
  $("tpName").value=c.name||"";$("tpSubmitStatus").textContent="";
  toast("Claim payment verified — build your Token Page")}
 $("claimGenBtn").addEventListener("click",startClaimAmount);
 $("claimCheckBtn").addEventListener("click",function(){checkClaimPayment(false)});
-$("claimDestCopy").addEventListener("click",function(){copyMint(FEE_WALLET,this)});
+$("claimDestCopy").addEventListener("click",function(){copyText(FEE_WALLET,this,"Payment address copied")});
+var _mc=$("claimMintCopy");if(_mc)_mc.addEventListener("click",function(){var c=state.claim;if(c&&c.mint)copyText(c.mint,this,"Token contract address copied")});
+document.querySelectorAll(".claim-tier").forEach(function(b){b.addEventListener("click",function(){
+ var c=state.claim;if(!c)return;
+ c.tier=b.getAttribute("data-tier");
+ document.querySelectorAll(".claim-tier").forEach(function(x){x.classList.toggle("on",x===b)});
+ var t=claimTierById(c.tier);var n=$("claimTierNote");if(n)n.textContent=t.expiry+" The term is locked once you start the claim.";
+})});
 $("tpLogoFile").addEventListener("change",function(){
  var f=this.files&&this.files[0];var msg=$("tpLogoMsg");state.claimLogoData=null;
  if(!f)return;
@@ -9495,7 +9561,7 @@ $("tpSubmitBtn").addEventListener("click",function(){
  var boxes=[];
  function box(label,id){var v=$(id).value.trim();if(v)boxes.push({label:label,value:v})}
  box("Supply","tpBoxSupply");box("Launch date","tpBoxLaunch");box("Used for","tpBoxUse");
- var payload={type:"Token Page submission",mint:c.mint,creatorWallet:c.creator||null,paymentTx:c.paySig,paymentAmount:Number(c.amount).toFixed(4)+" USDC",paymentDestination:FEE_WALLET,submittedAt:new Date().toISOString(),
+ var payload={type:"Token Page submission",mint:c.mint,creatorWallet:c.creator||null,paymentTx:c.paySig,paymentAmount:Number(c.amount).toFixed(4)+" USDC",tier:c.tier||"1y",paymentDestination:FEE_WALLET,submittedAt:new Date().toISOString(),
   page:{mint:c.mint,name:$("tpName").value.trim(),symbol:c.symbol||"",short:$("tpShort").value.trim(),about:$("tpAbout").value.trim(),website:urlVal("tpWeb"),x:urlVal("tpX"),telegram:urlVal("tpTg"),discord:urlVal("tpDc"),logo:state.claimLogoData||"",boxes:boxes}};
  if(!payload.page.name){st.textContent="Add the token name first.";return}
  if(!validateTokenPage(payload.page)){st.textContent="The page did not pass validation — check the fields and links.";return}
@@ -9527,10 +9593,12 @@ if(csb)csb.addEventListener("click",function(){
 $("solImg").src=letterAvatar("SOL");$("usdcImg").src=letterAvatar("USDC");
 fetchMarket();fetchWalletPrices();fetchPump();fetchSnipewire();renderNews();renderWallet();refreshSwapUI();fetchQuote();fetchMarketPage();fetchFireWire();loadDexstream();restoreOnLaunch();updateSwapModeUI();refreshFeesFromChain();renderUserWatchlist();
 /* Fee labels name the recipient only — "TrenchSwap" — and never print the
-   fee wallet address. The FEE_WALLET constant stays in the code as the real
-   transfer destination (fee transfers, claim verification, the claim sheet's
-   copy button); it is just never displayed. */
-["feesGoToVal","infoFeeAddr","claimDestAddr","mintFeeAddr"].forEach(function(id){var el=$(id);if(el)el.textContent="TrenchSwap"});
+   fee wallet address. EXCEPTION (v48.1, Jeffrey 2026-11-24): the Claim a
+   Token sheet shows the full payment address, because a claim cannot be
+   paid without it. The FEE_WALLET constant stays in the code as the real
+   transfer destination (fee transfers, claim verification, the claim
+   sheet's copy button). */
+["feesGoToVal","infoFeeAddr","mintFeeAddr"].forEach(function(id){var el=$(id);if(el)el.textContent="TrenchSwap"});
 /* Snapshot on app load: if a real wallet is already active and unlocked, its
    balances and holdings are read from chain now (with no wallet set up the
    Wallet tab simply shows the no-wallet state). Locked vaults snapshot right
