@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-24T08:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/memoryos-allmemory-agentkernel-20261124.md",
+    "id": "memoryos-allmemory-agentkernel-20261124",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-24T08:48:06.004725+00:00",
+  "gate_status": "done",
+  "id": "memoryos-allmemory-agentkernel-20261124",
+  "kind": "knowledge",
+  "license": "MIT",
+  "notes": "LICENSEs read verbatim via the GitHub connector (ClaudioDrews/memory-os SHA 627098d8..., mohui1999/AllMemoryMCP SHA c376d8b0...); READMEs read in full (memory-os 10,223 chars; AllMemoryMCP 46,706 chars; agent-kernel 2,295 chars). memory-os + AllMemoryMCP leads from the 2026-11-23 19:42 run now CLOSED (LICENSE files exist, both MIT). agent-kernel lead CLOSED as IDEAS ONLY: no LICENSE file exists in the repo (root listing shows only AGENTS.md, IDENTITY.md, KNOWLEDGE.md, README.md; LICENSE and LICENSE.md both 404); the README 'MIT' claim is recorded, not adopted; no NOTICE entry for agent-kernel. AllMemoryMCP repo states there is no committed test suite \u2014 its 'verified by execution' table is their local scripts, not a HALEX result. memory-os curl|bash installer, AllMemoryMCP server/token machinery, and kern-ai runtime excluded outright. Shared-agent-memory / ALMA-memory leads still open (secondary MIT claims only). PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked this run); ContextOS repo 404. No benchmark/efficacy figures adopted for any of the three (none published in the files read).",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-24 ~03:42 EST",
+  "summary": "Seven-layer memory discipline with a Ground Truth authority layer (ClaudioDrews/memory-os, MIT), tenant-isolated shared memory with provenance/ownership and a three-layer contract with progressive disclosure (mohui1999/AllMemoryMCP, MIT), and a three-file state/narrative stateful kernel split (oguzbilgic/agent-kernel, IDEAS ONLY \u2014 no LICENSE file) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/memoryos-allmemory-agentkernel-20261124.md; NOTICE.md entries added (2269 -> 2275 lines)."
+}
