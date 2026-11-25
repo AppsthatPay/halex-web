@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-25T00:42:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/tigerless-amos-ipiton-20261124.md",
+    "id": "tigerless-amos-ipiton-20261124",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-25T00:48:30.081993+00:00",
+  "gate_status": "done",
+  "id": "tigerless-amos-ipiton-20261124",
+  "kind": "knowledge",
+  "license": "MIT/Apache-2.0",
+  "notes": "LICENSEs read verbatim via the GitHub connector (tigerless-labs/agent-memory MIT SHA 36314997..., yamantaka520/Agent-Memory-OS Apache-2.0 SHA 465cd473..., ipiton/agent-memory-mcp MIT SHA f769ef7b...); READMEs read in full (tigerless 35,007 chars; AMOS 23,311 chars; ipiton 2,833 chars \u2014 short README, docs/ NOT read this run). tigerless + AMOS + ipiton leads from the 2026-11-24 11:42 run now CLOSED. AMOS LICENSE appendix reads 'Copyright 2026 Bastet Agent Team' (sibling Bastet-Agent-OS) \u2014 recorded as read, attribution carries the repo name. tigerless updated 2026-11-24 (today, very active); AMOS 9 stars, quiet since 2026-11-06; ipiton 45 stars, registry v0.19.0 active. NOT adopted: any code; LongMemEval numbers, vector Recall@5/latency, CJK check, 9-pair interop claim (tigerless); 10k-memory performance figures, '300+ tests', Mem0/Zep table (AMOS); docs/ stewardship internals beyond README bullets (ipiton). HALEX gate stricter: no host-CLI reasoner borrowing, no endpoint/provider/API-key code, no unattended sleep/consolidation, no vector/embedding index, no federation/network/sync, no MCP server, no Web UI/API/token handling, no cron installer, no pproxy/credential bridging \u2014 patterns only. Leads still open: Thezenmonster/agentmem, oxgeneral/agentmem, rohitg00/agentmemory (mixed Apache-2.0 + Elastic-2.0 \u2014 needs care). PromoterKit repo still unidentified; ViralPayouts repo still 404 (not re-checked); ContextOS repo 404; dualmint-addendum stays pending; zinium5-web-fallback-lane stays pending (invalid, null spec).",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-24 ~19:42 EST",
+  "summary": "Markdown-truth memory discipline with progressive recall, validity intervals, and a human-confirmed-only delete Manage layer (tigerless-labs/agent-memory, MIT); team ACL memory with hard gates before ranking, shrink-only federation scopes, propagating revocation, auditable context packs, and Hebbian reinforcement (yamantaka520/Agent-Memory-OS, Apache-2.0); steward-reviewed memory with per-hit trust fields, drift scans, and promote-to-canonical only (ipiton/agent-memory-mcp, MIT) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/tigerless-amos-ipiton-20261124.md; NOTICE.md entries added (2281 -> 2290 lines)."
+}
