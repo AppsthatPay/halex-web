@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-78MXF0tsmsWtyO+hCbHMLC2kqawxp0dYiWEM2Kwz5+g=' 'sha256-qHFVe9lBV7dpLWhAW+4WNVn/hR7xDSfRhi0a7aJBJyg=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-Ktqp7w94fWWkOoqM+MuiyzwHoy0IJGP67IWs5NzvUE4=' 'sha256-qHFVe9lBV7dpLWhAW+4WNVn/hR7xDSfRhi0a7aJBJyg=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -458,6 +458,27 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 .house-dots{display:flex;gap:6px;justify-content:center;margin-top:9px}
 .house-dots button{width:8px;height:8px;border-radius:50%;border:0;background:var(--deep);padding:0;cursor:pointer}
 .house-dots button.on{background:var(--cta)}
+/* ===== v54: StonkPark featured promo (7-day run) ===== */
+.park-slide{padding:0!important}
+.park-slide img{width:100%;height:100%;object-fit:cover;display:block}
+#parkOverlay .park-hero{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+#parkOverlay .park-hero img{width:100%;display:block}
+#parkOverlay .park-title{display:flex;gap:12px;align-items:center;margin:16px 0 4px}
+#parkOverlay .park-title img{width:64px;height:64px;border-radius:50%;border:2px solid #a855f7;object-fit:cover;flex:none}
+#parkOverlay .park-title h2{margin:0;font-size:26px;line-height:1.1}
+#parkOverlay .park-tick{color:#f5c13c;font-size:20px}
+.park-badge{display:inline-block;background:#a855f7;color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;margin-top:4px}
+.park-pos{color:#4ade80}.park-neg{color:#f87171}
+#parkOverlay .park-chart{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+#parkOverlay .park-chart img{width:100%;display:block}
+#parkOverlay .park-video{margin:12px 0;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#parkOverlay .park-video video{width:100%;display:block;background:#000}
+#parkOverlay .park-video .vc{padding:10px 12px;font-size:14px;line-height:1.5}
+#parkOverlay .park-video .vc b{color:#f5c13c}
+#parkOverlay .park-links{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+#parkOverlay .park-links a{background:var(--raised);border:1px solid #a855f7;color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:9px 14px;border-radius:20px}
+#parkOverlay .park-note{background:var(--panel);border:1px solid #a855f7;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.55;margin-top:20px}
+#parkOverlay .park-note b{color:#f5c13c}
 .walk-text{font-size:21px;line-height:1.45;font-family:Montserrat,system-ui,sans-serif;font-weight:800;margin:16px 0 6px}
 .walk-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
 .walk-dots span{width:8px;height:8px;border-radius:50%;background:var(--deep)}
@@ -1186,6 +1207,40 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 <div id="mintPrepareStatus" class="fee" style="margin-top:8px"></div>
 </div></div>
 <!-- Token report -->
+<div class="overlay" id="parkOverlay"><div class="sheet fullsheet"><button class="close" data-close="parkOverlay" type="button" aria-label="Close featured token page">✕</button>
+<button class="btn ghost" data-close="parkOverlay" type="button" style="margin-bottom:12px">← Back</button>
+<div class="park-hero"><img src="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/park-header.jpg" alt="Stonks Park header art"></div>
+<div class="park-title"><img src="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/park-logo.jpg" alt="Stonks Park logo"><div><h2>STONKS PARK <span class="park-tick">$PARK</span></h2><span class="park-badge">FEATURED ON TRENCHSWAP</span></div></div>
+<p class="sub">The South Park-style cartoon about the crypto trenches. Watch the show, trade the token.</p>
+<button class="btn" id="parkTradeBtn" type="button" style="width:100%;margin-top:12px">Trade $PARK</button>
+<div class="statgrid">
+<div class="stat"><small>PRICE</small><b id="parkStatPrice">NOT READ</b></div>
+<div class="stat"><small>MARKET CAP</small><b id="parkStatMcap">NOT READ</b></div>
+<div class="stat"><small>24H CHANGE</small><b id="parkStatChg24">NOT READ</b></div>
+<div class="stat"><small>LIQUIDITY</small><b id="parkStatLiq">NOT READ</b></div>
+<div class="stat"><small>VOLUME 24H</small><b id="parkStatVol">NOT READ</b></div>
+<div class="stat"><small>TXNS 24H</small><b id="parkStatTxns">NOT READ</b></div>
+<div class="stat"><small>1H / 6H</small><b><span id="parkStatChg1">NOT READ</span> / <span id="parkStatChg6">NOT READ</span></b></div>
+<div class="stat"><small>AGE</small><b id="parkStatAge">NOT READ</b></div>
+</div>
+<p class="fee">Stats load live from DexScreener when this page opens. Anything that cannot be read shows NOT READ.</p>
+<h3 style="margin:22px 0 8px">The lifespan so far</h3>
+<div class="park-chart"><img src="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/chart-lifespan.svg" alt="Daily closing price chart, Sep 16 to Nov 26 2026"></div>
+<p class="sub" style="margin-top:8px">Daily closes from GeckoTerminal, Sep 16 to Nov 26, 2026. Launched at $0.0000523, ran to an all-time high close of $0.000605 on Sep 29, and sits at $0.0002094 now, about 4x launch and about 65% below the high. Low close $0.0000285 on Sep 19. Total pair volume across the period about $3.75M.</p>
+<h3 style="margin:22px 0 8px">The show</h3>
+<div class="park-video"><video controls preload="metadata" src="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/stonkpark-video-1-safu.mp4"></video><div class="vc"><b>"FUNDS ARE SAFU"</b> — 5.5s. The couple at the counter, the cashier named Ansem, and the Filet-O-Rug. By Stonks Park.</div></div>
+<div class="park-video"><video controls preload="metadata" src="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/stonkpark-video-2-pumpfun.mp4"></video><div class="vc"><b>The pump.fun living room</b> — 13.2s. The rollers, the remote, the chart on the TV. By Stonks Park.</div></div>
+<h3 style="margin:22px 0 8px">Follow Stonks Park</h3>
+<div class="park-links">
+<a href="https://x.com/stonkspark" target="_blank" rel="noopener">X — @stonkspark</a>
+<a href="https://t.me/park_portal" target="_blank" rel="noopener">Telegram — park_portal</a>
+<a href="https://stonkspark.fun/" target="_blank" rel="noopener">stonkspark.fun</a>
+<a href="https://dexscreener.com/solana/2rf43wd7uk6ojid9cawhv1e1hfsufbmfe2tgqsigfkw1" target="_blank" rel="noopener">DexScreener</a>
+</div>
+<div class="mono" style="background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px">CA: 7gKKy2p1SaMkRFPX7caF96YpfuMMpDj82ZpjaffuvaU5 (Solana, PumpSwap)</div>
+<div class="park-note"><b>Featured promo:</b> this page is the trade-off for Stonks Park's videos. Their cartoons run as TrenchSwap call-outs and share content, and in return $PARK gets this featured token page for the 7-day paid run. It is a promo example of a token ownership page, not a claim of the token and not a TrenchSwap endorsement of the price.</div>
+<p class="fee" style="margin-top:14px">Price, market cap, liquidity, volume and transactions load live from DexScreener (PumpSwap pair 2rF43Wd7uk6ojiD9CAWHv1E1hfsuFBmFe2tgQsiGFkW1). Daily closes from GeckoTerminal. Artwork and videos are Stonks Park's own media, used with their permission for this promo. Nothing here is financial advice.</p>
+</div></div>
 <div class="overlay" id="reportOverlay"><div class="sheet"><button class="close" data-close="reportOverlay">✕</button><div id="reportBody"><p class="sub">Loading report…</p></div></div></div>
 <div class="overlay" id="shareOverlay"><div class="sheet"><button class="close" data-close="shareOverlay">✕</button>
 <h2 id="v48ShareTitle" style="margin:0 0 4px">Share this token</h2>
@@ -10657,9 +10712,73 @@ setInterval(function(){var s=callsSignature();if(s!==state._callsSig){state._cal
 document.addEventListener("click",function(e){if(e.target&&e.target.id==="trenchPostBtn")setTimeout(function(){state._callsSig=callsSignature();refreshTrenchingLists()},400)});
 refreshTrenchingLists();
 
+/* ===== v54: StonkPark featured promo — 7-day paid run =====
+   Top long slot: one inserted carousel slide; banner A and banner B
+   alternate every 15 seconds, A first. 300x300: square A early and
+   square B midway in the house rotation (parkInsertSquares, called
+   from the house rotation block below). Every creative opens the
+   featured view. Run window ends 2026-12-03T23:30:00Z; outside the
+   window nothing is inserted and both slots behave exactly as v53. */
+var PARK_BASE="https://appsthatpay.github.io/halex-web/trenchswap/promo/stonkpark/";
+var PARK_MINT="7gKKy2p1SaMkRFPX7caF96YpfuMMpDj82ZpjaffuvaU5";
+var PARK_PAIR="2rF43Wd7uk6ojiD9CAWHv1E1hfsuFBmFe2tgQsiGFkW1";
+var PARK_RUN_END=Date.parse("2026-12-03T23:30:00Z");
+function parkRunActive(){return Date.now()<PARK_RUN_END}
+function parkSetStat(id,val,cls){var el=$(id);if(!el)return;el.textContent=(val==null||val==="")?"NOT READ":val;if(cls)el.className=cls}
+function parkFmtUsd(v){if(v==null||isNaN(v))return null;v=Number(v);if(v>=1e6)return "$"+(v/1e6).toFixed(2)+"M";if(v>=1e3)return "$"+(v/1e3).toFixed(1)+"K";return "$"+v.toFixed(2)}
+function parkFmtChg(v){if(v==null||isNaN(v))return null;v=Number(v);return (v>0?"+":"")+v.toFixed(2)+"%"}
+function parkLoadStats(){
+ fetch("https://api.dexscreener.com/latest/dex/pairs/solana/"+PARK_PAIR).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json()}).then(function(d){
+  var p=d&&(d.pair||(d.pairs&&d.pairs[0]));if(!p)return;
+  parkSetStat("parkStatPrice",(p.priceUsd!=null&&!isNaN(Number(p.priceUsd)))?fmtPrice(Number(p.priceUsd)):null);
+  parkSetStat("parkStatMcap",parkFmtUsd(p.marketCap!=null?p.marketCap:p.fdv));
+  parkSetStat("parkStatChg24",parkFmtChg(p.priceChange?p.priceChange.h24:null),(p.priceChange&&Number(p.priceChange.h24)<0)?"park-neg":"park-pos");
+  parkSetStat("parkStatLiq",parkFmtUsd(p.liquidity?p.liquidity.usd:null));
+  parkSetStat("parkStatVol",parkFmtUsd(p.volume?p.volume.h24:null));
+  parkSetStat("parkStatTxns",(p.txns&&p.txns.h24)?(p.txns.h24.buys+" buys / "+p.txns.h24.sells+" sells"):null);
+  parkSetStat("parkStatChg1",parkFmtChg(p.priceChange?p.priceChange.h1:null),(p.priceChange&&Number(p.priceChange.h1)<0)?"park-neg":"park-pos");
+  parkSetStat("parkStatChg6",parkFmtChg(p.priceChange?p.priceChange.h6:null),(p.priceChange&&Number(p.priceChange.h6)<0)?"park-neg":"park-pos");
+  parkSetStat("parkStatAge",p.pairCreatedAt?Math.max(0,Math.floor((Date.now()-Number(p.pairCreatedAt))/86400000))+" days":null);
+ }).catch(function(){})}
+function openParkView(){var ov=$("parkOverlay");if(!ov)return;ov.classList.add("open");parkLoadStats()}
+function closeParkView(){var ov=$("parkOverlay");if(ov)ov.classList.remove("open")}
+(function(){
+ var tb=$("parkTradeBtn");if(tb)tb.addEventListener("click",function(){closeParkView();openReport(PARK_MINT)});
+ if(!parkRunActive())return;
+ var tr=$("dexTrack");if(!tr)return;
+ var slide=document.createElement("div");slide.className="slide";
+ slide.innerHTML='<div class="dexslot" id="parkBannerSlot" role="button" tabindex="0" aria-label="Stonks Park featured token banner" style="padding:0">'
+  +'<img class="giveimg" id="parkBannerA" src="'+PARK_BASE+'banner-a-1200x200.png" alt="Stonks Park banner">'
+  +'<img class="giveimg" id="parkBannerB" src="'+PARK_BASE+'banner-b-1200x200.png" alt="Stonks Park banner" style="display:none">'
+  +'</div>';
+ tr.insertBefore(slide,tr.firstChild);
+ slide.addEventListener("click",function(){openParkView()});
+ slide.addEventListener("keydown",function(e){if(e.key==="Enter")openParkView()});
+ var showB=false;
+ var iv=setInterval(function(){
+  if(!parkRunActive()){clearInterval(iv);if(slide.parentNode)slide.parentNode.removeChild(slide);dexDotsUpdate(dexCurrent());return}
+  showB=!showB;
+  var a=$("parkBannerA"),b=$("parkBannerB");
+  if(a)a.style.display=showB?"none":"block";
+  if(b)b.style.display=showB?"block":"none";
+ },15000);
+ dexDotsUpdate(0);
+})();
+function parkInsertSquares(box){
+ if(!box||!parkRunActive())return;
+ function mk(src,alt){
+  var d=document.createElement("div");d.className="house-slide park-slide";
+  var im=document.createElement("img");im.src=src;im.alt=alt;d.appendChild(im);
+  d.addEventListener("click",function(e){e.stopPropagation();openParkView()});
+  return d}
+ box.insertBefore(mk(PARK_BASE+"square-a-300x300.png","Stonks Park square"),box.children[1]||null);
+ box.insertBefore(mk(PARK_BASE+"square-b-300x300.png","Stonks Park square"),box.children[4]||null);
+}
+
 /* --- 300x300 house banners: rotation + tap to Markets > Trenching Now --- */
 (function(){
  var box=$("house300");if(!box)return;
+ parkInsertSquares(box);
  var slides=Array.prototype.slice.call(box.querySelectorAll(".house-slide"));
  var dots=$("houseDots");var idx=0,timer=null;
  if(dots){slides.forEach(function(_,i){var b=document.createElement("button");b.type="button";b.setAttribute("aria-label","House message "+(i+1));if(i===0)b.className="on";b.addEventListener("click",function(e){e.stopPropagation();show(i)});dots.appendChild(b)})}
