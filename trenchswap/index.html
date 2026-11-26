@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-5GSQpl7tljspH2hxUFxkfk67jkoCPahgqGuxPRHAspA=' 'sha256-qHFVe9lBV7dpLWhAW+4WNVn/hR7xDSfRhi0a7aJBJyg=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-78MXF0tsmsWtyO+hCbHMLC2kqawxp0dYiWEM2Kwz5+g=' 'sha256-qHFVe9lBV7dpLWhAW+4WNVn/hR7xDSfRhi0a7aJBJyg=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -1210,7 +1210,7 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 </div>
 <div class="v48-choice" data-v48-choice="video">
 <div class="v48-choice-text"><b>Share a short video</b><span>A 10 second video of the card, made on this phone.</span><span class="v48-see">They see: a 10 second video of the card. It plays in most chats and apps.</span></div>
-<div class="v48-choice-actions"><button class="btn secondary" id="v48ChoiceVideoBtn" type="button">Make the video</button><button class="btn ghost v48-minilink" id="v48ChoiceVideoSaveBtn" type="button">Save video</button></div>
+<div class="v48-choice-actions"><button class="btn secondary" id="v48ChoiceVideoBtn" type="button">Make the video</button><button class="btn ghost v48-minilink" id="v48ChoiceVideoSaveBtn" type="button">Save video</button><button class="btn ghost v48-minilink" id="v48ChoiceVideoMp4Btn" type="button">MP4 (posts everywhere)</button></div>
 <div class="v48-duration" role="group" aria-label="Video length" style="margin-top:8px;display:flex;gap:8px;align-items:center">
   <span class="fee" style="margin:0">Video length:</span>
   <button class="btn ghost v48-duration-btn" type="button" data-v48-duration="6">6 seconds</button>
@@ -6494,7 +6494,47 @@ var V48Share=V48Share||{};
    setTimeout(function(){if(a.parentNode)a.parentNode.removeChild(a)},400);
    setStatus("downloaded");toastSafe("Fire video downloaded. Share it from your gallery");
   }catch(e){setStatus("downloadFailed")}};
- V48Share.shareOnX=function(){
+  /* ---- v53: the MP4 route (see trenchswap-video-host/INTEGRATE.md).
+    The recorder's WebM cannot be turned into MP4 in this browser, so
+    the blob is stashed in IndexedDB (same origin) and the static
+    converter page picks it up, converts it on this phone and hands
+    back a real MP4. Contract, fixed: database "trenchswap-video",
+    store "inbox", key "pending", value {blob, filename, stashedAt}.
+    If the stash fails (no IndexedDB), fall back to sharing or saving
+    the WebM exactly as today, with the v51 warning copy shown. ---- */
+ function stashVideoForConverter(blob, filename) {
+  return new Promise(function (resolve, reject) {
+    var req = indexedDB.open("trenchswap-video", 1);
+    req.onupgradeneeded = function () {
+      if (!req.result.objectStoreNames.contains("inbox")) {
+        req.result.createObjectStore("inbox");
+      }
+    };
+    req.onsuccess = function () {
+      var tx = req.result.transaction("inbox", "readwrite");
+      tx.objectStore("inbox").put(
+        { blob: blob, filename: filename, stashedAt: Date.now() },
+        "pending"
+      );
+      tx.oncomplete = function () { resolve(); };
+      tx.onerror = function () { reject(tx.error); };
+    };
+    req.onerror = function () { reject(req.error); };
+  });
+ }
+ V48Share.shareVideoMp4=function(){
+  var tok=RT.tok;if(!tok)return;
+  if(!RT.videoBlob){V48Share.makeVideo();return}
+  var fileName="trenchswap-"+(tok.sym||"token").replace(/[^A-Za-z0-9]+/g,"")+"-fire.webm";
+  setStatusText("Saving your video for the converter. It opens in a new tab.");
+  stashVideoForConverter(RT.videoBlob,fileName).then(function(){
+   window.open("https://appsthatpay.github.io/halex-web/trenchswap-video/","_blank");
+   setStatusText("The converter is open in a new tab. Your MP4 is made there, ready to post anywhere.");
+  }).catch(function(){
+   V48Share.shareVideo();
+   setStatusText("This video is a WebM file. It does not upload to X, Facebook or Instagram. Pick the GIF or the MP4 version instead.");
+  })};
+V48Share.shareOnX=function(){
   var tok=RT.tok;if(!tok)return;
   setStatus("openingX");
   window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(verseText()),"_blank","noopener")};
@@ -6520,6 +6560,7 @@ var V48Share=V48Share||{};
   on("v48ChoiceVideoBtn",function(){
    if(RT.videoState==="ready")V48Share.shareVideo();else V48Share.makeVideo()});
   on("v48ChoiceVideoSaveBtn",function(){V48Share.downloadVideo()});
+  on("v48ChoiceVideoMp4Btn",function(){V48Share.shareVideoMp4()});
   var durBtns=document.querySelectorAll("[data-v48-duration]");
   for(var d=0;d<durBtns.length;d++)durBtns[d].addEventListener("click",function(ev){
    var sv=Number(ev.currentTarget.getAttribute("data-v48-duration"));
