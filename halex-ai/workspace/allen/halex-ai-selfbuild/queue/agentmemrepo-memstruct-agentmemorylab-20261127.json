@@ -1,0 +1,17 @@
+{
+  "created": "2026-11-27T08:50:00+00:00",
+  "drain_result": {
+    "draft_path": "work/queue-lessons/agentmemrepo-memstruct-agentmemorylab-20261127.md",
+    "id": "agentmemrepo-memstruct-agentmemorylab-20261127",
+    "kind": "knowledge"
+  },
+  "drained_at": "2026-11-27T10:28:26.931801+00:00",
+  "gate_status": "done",
+  "id": "agentmemrepo-memstruct-agentmemorylab-20261127",
+  "kind": "knowledge",
+  "license": "MIT/Apache-2.0",
+  "notes": "LICENSEs read verbatim via the GitHub connector (AgentMemoryRepo MIT SHA fda0f248..., ederevx MIT SHA 0282576c..., agent-memory-lab Apache-2.0 SHA 5ba0d6c1...); READMEs read in full (agentmemoryrepo 12,284 chars; agent-mem-struct 6,558 chars; agent-memory 30,198 chars). All three leads from the 2026-11-26 19:42 run now CLOSED. One web search result this run was flagged by execution-risk checks; no install/download/run action was taken from any search result \u2014 research was read-only via the GitHub connector, proposal restates patterns in our own words with no commands or code reproduced. Mem-Forever NOT deep-dived (secondary MIT claim only, stays an open lead). NOT adopted: any code; AgentMemoryRepo worked-example numbers and skill-install flows; agent-mem-struct host wiring and XERJ listing; agent-memory-lab '3,931 passed' figure, v7.x validation records, local-model smoke results, production/quality acceptance (open per README); any star/fork count as quality. agent-memory-lab activity metadata not retrieved (name search too noisy); README self-labels Alpha v0.1.2, recorded not smoothed over. HALEX gate stricter: no plugin/skill install, no hooks/installers/bridges, no MCP/HTTP server, no PostgreSQL/vector store, no model/API-key code, no container, no unattended dreaming/sleep/consolidation pass, no auto-push without a gate \u2014 patterns only. Leads still open: ilang-ai/Mem-Forever (MIT per secondary), TeamAgentMemory (MIT\u2192BSL 1.1\u2192Apache-2.0 history, needs care), Agents Remember (MIT repo, Paseo host license unknown). PromoterKit (repo unidentified); ViralPayouts (repo 404); ContextOS (repo 404); dualmint-addendum stays pending; zinium5-web-fallback-lane stays pending. X STOP status CONFLICTS in memory \u2014 no X work done this run.",
+  "priority": 80,
+  "source": "HALEX-AI intel intake run 2026-11-27 ~03:42 EST",
+  "summary": "Git-repo memory with a clone-grep-update-push session loop, a short MEMORY.md index, wikilinks, Dreaming consolidation, and multi-repo composability (AgentMemoryRepo/agentmemoryrepo, MIT); a shared-structure memory tree with governing documents, a literal declared shared root with no fallback, and a mechanical write gate that separates assertion from enforcement (ederevx/agent-mem-struct, MIT); bitemporal evidence memory with L0/L1/derived layers, admission states, bounded cited bundles, and erasure that survives restore (agent-memory-lab/agent-memory, Apache-2.0) \u2014 patterns restated in our own words only; no code adopted. Proposal: agent_patterns/proposals/agentmemrepo-memstruct-agentmemorylab-20261127.md; NOTICE.md entries added (2299 -> 2308 lines)."
+}
