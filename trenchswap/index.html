@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-+JnbKmbKcB+QMUKWr0SvgU6miuYPkPLHHgES+fmg5TY=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-DkYIBO7VaTtQ43VNUYSFrUhl/6EhBWKl1mMUNtQ7hFk=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://api.coingecko.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -498,6 +498,43 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 #reportOverlay .tsc-ca .mono{font-size:12px;word-break:break-all;color:var(--gloss2)}
 #reportOverlay .tsc-ca .btn{flex:none;margin-left:auto}
 #reportOverlay .tsc-share-slot{flex:none;align-self:flex-start}
+/* ===== v58: TrenchWire DexStreamer - Curated Top 20 cards + TrenchWire Scored ===== */
+.tw58-subhead{font-size:15px;font-weight:800;color:#F3E8FF;margin-top:6px;letter-spacing:.02em}
+#twList .tw58-card{align-items:flex-start;margin-top:10px;padding:12px 10px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.tw58-top{display:flex;align-items:center;gap:10px}
+#twList .tw58-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--deep);flex:none}
+#twList .tw58-tile{width:44px;height:44px;border-radius:50%;background:var(--deep);color:#D8B4FE;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;flex:none}
+.tw58-nameline{min-width:0}
+.tw58-name{font-size:16px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tw58-sym{color:#C084FC;font-size:13px;font-weight:700}
+.tw58-scorebox{flex:none;text-align:right}
+.tw58-score-lbl{display:block;font-size:9.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.tw58-score{font-size:21px;font-weight:800;color:#F3E8FF}
+.tw58-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px 10px;margin-top:10px}
+.tw58-cell{background:var(--deep);border:1px solid var(--line);border-radius:10px;padding:6px 8px;min-width:0}
+.tw58-cell small{display:block;font-size:9.5px;letter-spacing:.07em;color:var(--muted);text-transform:uppercase}
+.tw58-cell b{font-size:13.5px;color:var(--text);white-space:nowrap}
+.tw58-cell b.tw58-up{color:#4ADE80}
+.tw58-cell b.tw58-down{color:#F87171}
+.tw58-sparkwrap{margin-top:10px}
+.tw58-spark{display:block;width:100%;height:40px}
+.tw58-spark-lbl{font-size:11px;color:var(--muted);margin-top:2px}
+.tw58-bs-lbl{font-size:12px;color:var(--muted);margin-top:10px}
+.tw58-mintrow{display:flex;align-items:center;gap:8px;margin-top:8px}
+.tw58-mintrow .mono{font-size:12px;color:var(--muted)}
+.tw58-scored{margin-top:12px;background:linear-gradient(160deg,#2A1350,#170B2B 78%);border:1px solid rgba(192,132,252,.55);border-radius:14px;padding:10px 12px}
+.tw58-scored-head{display:flex;align-items:center;gap:10px}
+.tw58-badge{flex:none}
+.tw58-scored-title{font-size:14.5px;font-weight:800;color:#F3E8FF;letter-spacing:.02em}
+.tw58-verdict{font-size:12.5px;color:#D8B4FE;line-height:1.35}
+.tw58-bigscore{flex:none;font-size:26px;font-weight:800;color:#fff}
+.tw58-comps{margin-top:8px}
+.tw58-comp{display:flex;align-items:center;gap:8px;margin-top:5px}
+.tw58-comp-lbl{flex:0 0 86px;font-size:11.5px;color:var(--muted)}
+.tw58-comp-bar{flex:1;height:7px;border-radius:99px;background:rgba(255,255,255,.10);overflow:hidden}
+.tw58-comp-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#C084FC)}
+.tw58-comp-val{flex:0 0 26px;text-align:right;font-size:12px;font-weight:700;color:var(--text)}
+.tw58-comp-nr{flex:0 0 auto;font-size:11px;color:var(--muted)}
 
 .walk-text{font-size:21px;line-height:1.45;font-family:Montserrat,system-ui,sans-serif;font-weight:800;margin:16px 0 6px}
 .walk-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
@@ -966,12 +1003,13 @@ nav button:active{transform:translateY(1px)}
   </div>
 <div class="section card" id="trenchwireSection">
   <div class="row" style="justify-content:space-between"><h2 style="margin:0;font-size:18px">TrenchWire 🔥 DexStreamer</h2><span class="live" id="twLive">● LIVE</span></div>
-  <p class="sub" style="margin-top:6px">Hottest Solana launches, ranked by research  - survival past 2 hours, volume, liquidity, momentum, trading activity, dex breadth, and profile signals. Ranked once every 2 hours, on this device. Tap a row for the full report.</p>
+  <div class="tw58-subhead">Curated Top 20 Solana Tokens</div>
+  <p class="sub" style="margin-top:4px">Ranked by 2-hour survival, volume, liquidity, momentum, trading activity and DEX breadth, from DexScreener, GeckoTerminal and CoinGecko. Ranked once every 2 hours, on this device. Tap a card for the full report.</p>
   <div class="segtabs tw-tabs" id="twTabs"><button data-tw="day" class="on" type="button">Day</button><button data-tw="week" type="button">Week</button><button data-tw="month" type="button">Month</button></div>
   <div class="row" style="justify-content:space-between;margin-top:8px"><span class="stamp" id="twStamp">Ranking…</span><button class="btn small" id="twRefreshBtn" type="button" style="width:auto">Refresh ranking</button></div>
   <div id="twList" style="margin-top:8px"><p class="sub">Ranking the newest Solana launches…</p></div>
-  <p class="fee" id="twStatus" style="margin-top:8px">Sources: DexScreener + GeckoTerminal (live, keyless). CoinGecko: ping only. CoinMarketCap: NOT READ (no API key). Holders: NOT READ.</p>
-  <p class="fee">Day = launched in the last 24h · Week = last 7 days · Month = last 30 days. A token under 2 hours old never ranks  - it is listed as too young. Windows rank on current 24h activity: neither source publishes 7d/30d volume, so Week/Month are launch-age windows, not 7d/30d volume claims. Full method: see the ranking doc.</p>
+  <p class="fee" id="twStatus" style="margin-top:8px">Sources: DexScreener + GeckoTerminal + CoinGecko (live, keyless). CoinMarketCap: NOT READ (no API key). Holders: NOT READ.</p>
+  <p class="fee">Day = fresh launches from the last 24h. Week and Month widen to the top Solana tokens overall, ranked on current 24h volume and liquidity, with CoinGecko 7d / 30d price performance where a match is read. A token under 2 hours old never ranks - it is listed as too young. 7d / 30d volume is not published by these sources and is never claimed.</p>
 </div>
 
   <div class="section">
@@ -11863,19 +11901,41 @@ tsOriginCheck();tsCaptureRef();renderTrenchouts();
    ========================================================================== */
 var TrenchWire = (function () {
   "use strict";
+  /* v58 (2026-11-27, Jeffrey): "Curated Top 20 Solana Tokens" - wider
+     candidate pool (DexScreener + GeckoTerminal trending/top pools +
+     CoinGecko enrichment), per-window ranking, logo + sparkline cards,
+     and the TrenchWire Scored review block. Method notes live in
+     audits/v58-trenchwire/BUILD-RECORD.md. */
 
   /* ---------------- constants ---------------- */
   var TW_TTL_MS = 2 * 60 * 60 * 1000;            /* 2 hours, client-side */
-  var TW_CACHE_KEY = "trenchwire.v48";           /* localStorage key */
+  var TW_CACHE_KEY = "trenchwire.v58";           /* localStorage key */
   var TW_SURVIVAL_MS = 2 * 60 * 60 * 1000;       /* must last 2h to rank */
   var TW_TOP_N = 20;
-  var TW_MAX_MINTS = 30;                         /* DexScreener batch cap */
+  var TW_MAX_MINTS = 60;                         /* DexScreener batch cap */
   var TW_GT_POOL_LOOKUPS = 10;                   /* GT free-tier courtesy cap */
 
+  /* v58 windows: Day keeps the fresh-launch frame (24h cap). Week and
+     Month widen beyond fresh launches to the top Solana tokens: the
+     age cap relaxes (30d, then none) and momentum reads CoinGecko's
+     7d / 30d price change when a match was read, else the 24h change.
+     Volume, liquidity and activity are current-24h reads in every
+     window and are labeled that way on the card. */
   var TW_WINDOWS = {
-    day:   { label: "Day",   maxAgeMs: 24 * 60 * 60 * 1000 },
-    week:  { label: "Week",  maxAgeMs: 7 * 24 * 60 * 60 * 1000 },
-    month: { label: "Month", maxAgeMs: 30 * 24 * 60 * 60 * 1000 }
+    day:   { label: "Day",   maxAgeMs: 24 * 60 * 60 * 1000,      chgField: "priceChangeH24", chgLabel: "24h" },
+    week:  { label: "Week",  maxAgeMs: 30 * 24 * 60 * 60 * 1000, chgField: "priceChange7d",  chgLabel: "7d" },
+    month: { label: "Month", maxAgeMs: 0,                        chgField: "priceChange30d", chgLabel: "30d" }
+  };
+
+  var GT_TRENDING_URL = "https://api.geckoterminal.com/api/v2/networks/solana/trending_pools?page=1";
+  var GT_TOP_POOLS_URL = "https://api.geckoterminal.com/api/v2/networks/solana/pools?page=1&sort=h24_volume_usd_desc";
+  var GT_OHLCV_BASE = "https://api.geckoterminal.com/api/v2/networks/solana/pools/";
+  var CG_MARKETS_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&category=solana-ecosystem&order=volume_desc&per_page=100&page=1&price_change_percentage=24h,7d,30d";
+  var TW_SPARK_MAX = 20;   /* OHLCV fetches per rank check: top 20s only */
+  var TW_SPARK_SPEC = {
+    day:   { tf: "hour", agg: 1, limit: 24, label: "24h" },
+    week:  { tf: "hour", agg: 4, limit: 42, label: "7d" },
+    month: { tf: "day",  agg: 1, limit: 30, label: "30d" }
   };
 
   /* Component weights  - must sum to 1. See ranking doc §2. */
@@ -11888,7 +11948,7 @@ var TrenchWire = (function () {
   var TW_SOURCES = {
     dexscreener:   { name: "DexScreener",    status: "live-keyless" },
     geckoterminal: { name: "GeckoTerminal",  status: "live-keyless" },
-    coingecko:     { name: "CoinGecko",      status: "ping-only  - token fields NOT READ" },
+    coingecko:     { name: "CoinGecko",      status: "live-keyless - Solana-ecosystem markets: 7d/30d change + image, matched by symbol and name" },
     coinmarketcap: { name: "CoinMarketCap",  status: "NOT READ  - API key missing (401 verified 2026-11-24)" },
     pumpfun:       { name: "Pump.fun direct", status: "NOT READ  - not wired in v48" },
     holders:       { name: "Holder counts",  status: "NOT READ  - no keyless holder endpoint verified" }
@@ -11950,7 +12010,7 @@ var TrenchWire = (function () {
       var raw = localStorage.getItem(TW_CACHE_KEY);
       if (!raw) return null;
       var c = JSON.parse(raw);
-      return (c && c.v === 48) ? c : null;
+      return (c && c.v === 58) ? c : null;
     } catch (e) { return null; }
   }
   function twCacheWrite(cache) {
@@ -11986,6 +12046,10 @@ var TrenchWire = (function () {
       hasProfile: !!profile,
       profileLinks: profile && Array.isArray(profile.links) ? profile.links.length : 0,
       boostAmount: boost ? twNum(boost.totalAmount) : null,
+      imageUrl: (p.info && p.info.imageUrl) ? String(p.info.imageUrl) : null,
+      priceChange7d: null,
+      priceChange30d: null,
+      sources: ["DexScreener"],
       source: "DexScreener",
       missing: []
     };
@@ -12025,7 +12089,7 @@ var TrenchWire = (function () {
      excluded, reasons[]}. A token with NO volume AND NO liquidity is
      excluded (nothing was read); a token missing one field still ranks
      on what was read, with that component at 0. */
-  function twScoreToken(t, now) {
+  function twScoreToken(t, now, windowKey) {
     var reasons = [];
     var ageMs = (t.pairCreatedAt != null) ? (now - t.pairCreatedAt) : null;
     var tooYoung = (ageMs != null && ageMs < TW_SURVIVAL_MS);
@@ -12037,9 +12101,11 @@ var TrenchWire = (function () {
     c.liquidity = twLogNorm(t.liquidityUsd, TW_CAPS.liquidity);
     /* Momentum: h24 % change clamped to [-100, +1000], mapped 0..1.
        -100% or worse -> 0; 0% -> 0.5; +1000% or more -> 1. */
-    if (t.priceChangeH24 == null) { c.momentum = 0; }
+    var momRaw = t.priceChangeH24;
+    if (windowKey && TW_WINDOWS[windowKey] && TW_WINDOWS[windowKey].chgField && t[TW_WINDOWS[windowKey].chgField] != null) momRaw = t[TW_WINDOWS[windowKey].chgField];
+    if (momRaw == null) { c.momentum = 0; }
     else {
-      var pc = Math.max(-100, Math.min(1000, t.priceChangeH24));
+      var pc = Math.max(-100, Math.min(1000, momRaw));
       c.momentum = twClamp01((pc + 100) / 1100);
     }
     /* Activity: txn count (log) blended with buy share. */
@@ -12074,18 +12140,23 @@ var TrenchWire = (function () {
     if (!win) throw new Error("TrenchWire: unknown window " + windowKey);
     var ranked = [], tooYoung = [], excluded = [];
     tokens.forEach(function (t) {
-      var s = twScoreToken(t, now);
+      var s = twScoreToken(t, now, windowKey);
+      var wchg = (win.chgField && t[win.chgField] != null) ? t[win.chgField] : t.priceChangeH24;
       var rec = { mint: t.mint, symbol: t.symbol, name: t.name, pairAddress: t.pairAddress,
                   dexId: t.dexId, dexes: t.dexes, liquidityUsd: t.liquidityUsd,
                   volumeH24: t.volumeH24, priceChangeH24: t.priceChangeH24,
                   txnsH24: t.txnsH24, pairCreatedAt: t.pairCreatedAt,
                   marketCapUsd: t.marketCapUsd, hasProfile: t.hasProfile,
                   boostAmount: t.boostAmount, missing: t.missing,
+                  imageUrl: t.imageUrl || null, fdvUsd: t.fdvUsd, sources: t.sources || null,
+                  priceChange7d: t.priceChange7d, priceChange30d: t.priceChange30d,
+                  windowChange: wchg, windowChangeLabel: win.chgLabel,
+                  spark: t.spark || null, sparkLabel: t.sparkLabel || null,
                   disagreements: t.disagreements || [], source: t.source || "DexScreener",
                   twScore: s.score, twComponents: s.components, twReasons: s.reasons, twAgeMs: s.ageMs };
       if (s.excluded) { excluded.push(rec); return; }
       if (s.ageMs == null) { excluded.push(rec); return; } /* age unread = cannot verify survival */
-      if (s.ageMs > win.maxAgeMs) return;                  /* launched before this window */
+      if (win.maxAgeMs && s.ageMs > win.maxAgeMs) return;   /* launched before this window (month: no cap) */
       if (s.tooYoung) { tooYoung.push(rec); return; }
       ranked.push(rec);
     });
@@ -12103,6 +12174,336 @@ var TrenchWire = (function () {
     return out;
   }
 
+  /* ---------------- v58: wider sources, sparklines, TrenchWire Scored ----------------
+     Pure helpers (no DOM writes): GT pool normalisation, candidate
+     merge/dedupe by mint, CoinGecko enrichment matched by symbol and
+     name, sparkline SVG from OHLCV closes, the one-line verdict, the
+     TrenchWire Scored block and the v58 card renderer. Every number
+     rendered comes from the record itself; a field that was not read
+     prints NOT READ, never a guess. */
+
+  function twEsc(s) {
+    if (typeof escapeHtml === "function") return escapeHtml(s);
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  /* One GeckoTerminal pool object -> flat token record (same shape as
+     twNormalizePair). GT pool names read "Token / SOL": the base token
+     name is the part before " / ". The mint rides in relationships. */
+  function twNormalizeGtPool(pool) {
+    var a = (pool && pool.attributes) || {};
+    var rel = (pool && pool.relationships) || {};
+    var baseId = (rel.base_token && rel.base_token.data && rel.base_token.data.id) || "";
+    var mint = baseId.indexOf("solana_") === 0 ? baseId.slice(7) : (baseId || null);
+    var fullName = a.name || "NOT READ";
+    var baseName = fullName.split(" / ")[0] || fullName;
+    var tx = a.transactions && a.transactions.h24;
+    var pc = a.price_change_percentage || {};
+    var created = a.pool_created_at ? Date.parse(a.pool_created_at) : null;
+    if (created != null && !isFinite(created)) created = null;
+    var t = {
+      mint: mint,
+      symbol: baseName,
+      name: baseName,
+      pairAddress: a.address || null,
+      dexId: (rel.dex && rel.dex.data && rel.dex.data.id) || "NOT READ",
+      liquidityUsd: twNum(a.reserve_in_usd),
+      volumeH24: twNum(a.volume_usd && a.volume_usd.h24),
+      volumeH6: twNum(a.volume_usd && a.volume_usd.h6),
+      volumeH1: twNum(a.volume_usd && a.volume_usd.h1),
+      priceChangeH24: (pc.h24 != null && isFinite(Number(pc.h24))) ? Number(pc.h24) : null,
+      priceChange7d: null,
+      priceChange30d: null,
+      txnsH24: tx ? { buys: twNum(tx.buys) || 0, sells: twNum(tx.sells) || 0 } : null,
+      txnsH6: null,
+      pairCreatedAt: created,
+      marketCapUsd: twNum(a.market_cap_usd),
+      fdvUsd: twNum(a.fdv_usd),
+      dexes: 1,
+      hasProfile: false,
+      profileLinks: 0,
+      boostAmount: null,
+      imageUrl: null,
+      sources: ["GeckoTerminal"],
+      source: "GeckoTerminal",
+      missing: []
+    };
+    if (t.liquidityUsd == null) t.missing.push("liquidity");
+    if (t.volumeH24 == null) t.missing.push("volume24h");
+    if (t.priceChangeH24 == null) t.missing.push("priceChange24h");
+    if (!t.txnsH24) t.missing.push("txns24h");
+    if (t.pairCreatedAt == null) t.missing.push("pairAge");
+    return t;
+  }
+
+  var TW_SOURCE_ORDER = ["DexScreener", "GeckoTerminal", "CoinGecko"];
+  function twOrderSources(list) {
+    var out = [];
+    TW_SOURCE_ORDER.forEach(function (s) { if (list.indexOf(s) >= 0) out.push(s); });
+    list.forEach(function (s) { if (out.indexOf(s) < 0) out.push(s); });
+    return out;
+  }
+  function twRebuildMissing(t) {
+    var m = [];
+    if (t.liquidityUsd == null) m.push("liquidity");
+    if (t.volumeH24 == null) m.push("volume24h");
+    if (t.priceChangeH24 == null) m.push("priceChange24h");
+    if (!t.txnsH24) m.push("txns24h");
+    if (t.pairCreatedAt == null) m.push("pairAge");
+    t.missing = m;
+    return t;
+  }
+
+  /* Dedupe by mint across sources. Market fields come from the record
+     with the higher liquidity (the primary pair read); any field the
+     primary did not read is filled from the other record. Sources are
+     unioned in a fixed order, DEX breadth counts distinct DEX ids (and
+     never drops below a count a source already established), and a
+     >10% disagreement between two sources on volume or liquidity is
+     flagged, never silently averaged. */
+  function twMergeTwo(b, r) {
+    var primary = ((r.liquidityUsd || 0) > (b.liquidityUsd || 0)) ? r : b;
+    var other = (primary === r) ? b : r;
+    var m = {};
+    var fields = ["mint", "symbol", "name", "pairAddress", "dexId", "liquidityUsd",
+                  "volumeH24", "volumeH6", "volumeH1", "priceChangeH24", "priceChange7d",
+                  "priceChange30d", "txnsH24", "txnsH6", "pairCreatedAt", "marketCapUsd",
+                  "fdvUsd", "imageUrl", "boostAmount"];
+    fields.forEach(function (f) { m[f] = (primary[f] != null) ? primary[f] : (other[f] != null ? other[f] : null); });
+    /* Identity fields prefer the DexScreener record (real ticker). */
+    var dsRec = (b.source === "DexScreener") ? b : ((r.source === "DexScreener") ? r : null);
+    if (dsRec) { m.symbol = dsRec.symbol; m.name = dsRec.name; }
+    m.hasProfile = !!(b.hasProfile || r.hasProfile);
+    m.profileLinks = Math.max(b.profileLinks || 0, r.profileLinks || 0);
+    var dexIds = {};
+    [b, r].forEach(function (x) { if (x.dexId && x.dexId !== "NOT READ") dexIds[x.dexId] = 1; });
+    m.dexes = Math.max(b.dexes || 1, r.dexes || 1, Object.keys(dexIds).length);
+    m.sources = twOrderSources((b.sources || [b.source]).concat(r.sources || [r.source]));
+    m.source = m.sources[0];
+    m.disagreements = (b.disagreements || []).concat(r.disagreements || []);
+    function disagree(label, x, y, xs, ys) {
+      if (x == null || y == null || x <= 0 || y <= 0 || xs === ys) return;
+      var d = Math.abs(x - y) / Math.max(x, y);
+      if (d > 0.10) m.disagreements.push(label + ": " + xs + " " + twFmtUsd(x) + " vs " + ys + " " + twFmtUsd(y));
+    }
+    disagree("volume24h", b.volumeH24, r.volumeH24, b.source, r.source);
+    disagree("liquidity", b.liquidityUsd, r.liquidityUsd, b.source, r.source);
+    return twRebuildMissing(m);
+  }
+  function twMergeCandidates(records) {
+    var byMint = {}, order = [];
+    (records || []).forEach(function (r) {
+      if (!r || !r.mint) return;
+      if (!byMint[r.mint]) { byMint[r.mint] = r; order.push(r.mint); return; }
+      byMint[r.mint] = twMergeTwo(byMint[r.mint], r);
+    });
+    return order.map(function (mint) { return byMint[mint]; });
+  }
+
+  /* CoinGecko enrichment: matched by symbol AND name (exact, or one
+     containing the other). An unmatched record is left untouched - no
+     CoinGecko attribution without a confident match. Matched records
+     gain 7d / 30d price change, an image fallback, and the source. */
+  function twApplyCg(t, e) {
+    if (!t || !e) return t;
+    var c7 = (e.price_change_percentage_7d_in_currency != null && isFinite(Number(e.price_change_percentage_7d_in_currency))) ? Number(e.price_change_percentage_7d_in_currency) : null;
+    var c30 = (e.price_change_percentage_30d_in_currency != null && isFinite(Number(e.price_change_percentage_30d_in_currency))) ? Number(e.price_change_percentage_30d_in_currency) : null;
+    if (c7 != null) t.priceChange7d = c7;
+    if (c30 != null) t.priceChange30d = c30;
+    if (!t.imageUrl && e.image) t.imageUrl = String(e.image);
+    var srcs = (t.sources || [t.source || "DexScreener"]).slice();
+    if (srcs.indexOf("CoinGecko") < 0) srcs.push("CoinGecko");
+    t.sources = twOrderSources(srcs);
+    return t;
+  }
+  function twMatchCg(records, cgList) {
+    if (!Array.isArray(cgList)) return records;
+    var bySym = {};
+    cgList.forEach(function (e) {
+      if (e && e.symbol) {
+        var k = String(e.symbol).toLowerCase();
+        if (!bySym[k]) bySym[k] = [];
+        bySym[k].push(e);
+      }
+    });
+    (records || []).forEach(function (t) {
+      var cands = bySym[String(t.symbol || "").toLowerCase()] || [];
+      var tn = String(t.name || "").toLowerCase();
+      for (var i = 0; i < cands.length; i++) {
+        var en = String(cands[i].name || "").toLowerCase();
+        if (en && tn && (en === tn || en.indexOf(tn) >= 0 || tn.indexOf(en) >= 0)) { twApplyCg(t, cands[i]); break; }
+      }
+    });
+    return records;
+  }
+
+  /* OHLCV list (newest first, [ts,o,h,l,c,v]) -> closes oldest first,
+     downsampled to at most `limit` points. Fewer than 2 usable closes
+     returns null: the card then omits the chart cleanly. */
+  function twSparkCloses(ohlcvList, limit) {
+    if (!Array.isArray(ohlcvList)) return null;
+    var closes = [];
+    for (var i = ohlcvList.length - 1; i >= 0; i--) {
+      var c = Number(ohlcvList[i] && ohlcvList[i][4]);
+      if (isFinite(c) && c > 0) closes.push(c);
+    }
+    if (closes.length < 2) return null;
+    if (closes.length > limit) {
+      var step = closes.length / limit, out = [];
+      for (var j = 0; j < limit; j++) out.push(closes[Math.floor(j * step)]);
+      out.push(closes[closes.length - 1]);
+      return out;
+    }
+    return closes;
+  }
+  function twSparkSvg(closes, up) {
+    if (!Array.isArray(closes) || closes.length < 2) return "";
+    var w = 260, h = 40, min = Math.min.apply(null, closes), max = Math.max.apply(null, closes);
+    var span = (max - min) || 1;
+    var pts = closes.map(function (v, i) {
+      var x = (i / (closes.length - 1)) * (w - 4) + 2;
+      var y = h - 4 - ((v - min) / span) * (h - 8);
+      return x.toFixed(1) + "," + y.toFixed(1);
+    }).join(" ");
+    var col = up ? "#4ADE80" : "#F87171";
+    return '<svg class="tw58-spark" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none" aria-hidden="true">' +
+      '<polyline points="' + pts + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  }
+
+  /* One-line verdict in plain words, from the scored components that
+     were actually read. */
+  var TW_VERDICT_WORDS = { volume: "volume", liquidity: "liquidity", momentum: "momentum", activity: "trading activity" };
+  function twVerdict(rec) {
+    var c = (rec && rec.twComponents) || {};
+    var miss = (rec && rec.missing) || [];
+    var missKey = { volume: "volume24h", liquidity: "liquidity", momentum: "priceChange24h", activity: "txns24h" };
+    var avail = [];
+    ["volume", "liquidity", "momentum", "activity"].forEach(function (k) {
+      if (k === "momentum" && rec && rec.windowChange != null) { avail.push(k); return; }
+      if (miss.indexOf(missKey[k]) < 0 && typeof c[k] === "number") avail.push(k);
+    });
+    if (!avail.length) return "Not enough read data to call it yet.";
+    var hi = avail[0], lo = avail[0];
+    avail.forEach(function (k) { if (c[k] > c[hi]) hi = k; if (c[k] < c[lo]) lo = k; });
+    if (hi === lo || (c[hi] - c[lo]) < 0.15) return "Even across the board - no single edge stands out.";
+    var strong = (c[hi] >= 0.75 ? "Strong " : "Solid ") + TW_VERDICT_WORDS[hi];
+    var weak = (lo === "liquidity")
+      ? (c[lo] <= 0.25 ? "thin liquidity" : "soft liquidity")
+      : ((c[lo] <= 0.25 ? "weak " : "soft ") + TW_VERDICT_WORDS[lo]);
+    return strong + ", " + weak + ".";
+  }
+
+  /* TrenchWire badge: round purple badge, TW letters, purple flame
+     behind the letters. A UI badge drawn in SVG - it is not the
+     TrenchSwap logo and never uses the canonical logo file. */
+  var TW_BADGE_SVG = '<svg class="tw58-badge" viewBox="0 0 48 48" width="42" height="42" aria-hidden="true">' +
+    '<defs><linearGradient id="tw58fg" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#D8B4FE"/><stop offset="0.55" stop-color="#A855F7"/><stop offset="1" stop-color="#7C3AED"/></linearGradient></defs>' +
+    '<circle cx="24" cy="24" r="22" fill="#241040" stroke="url(#tw58fg)" stroke-width="2"/>' +
+    '<path d="M24 3.5c.9 5.6-4.2 7.8-4.2 12.6a4.2 4.2 0 0 0 8.4 0c0-1.9-.9-3.3-1.9-4.7 2.9 1.4 4.9 4.3 4.9 7.7a7.2 7.2 0 1 1-14.4 0C16.8 11.4 22.6 8.6 24 3.5z" fill="url(#tw58fg)" opacity="0.95"/>' +
+    '<text x="24" y="39.5" text-anchor="middle" font-size="12.5" font-weight="800" fill="#F3E8FF">TW</text></svg>';
+
+  function tw58CompRow(label, val, notRead) {
+    if (notRead || val == null || !isFinite(Number(val))) {
+      return '<div class="tw58-comp"><span class="tw58-comp-lbl">' + label + '</span>' +
+        '<span class="tw58-comp-bar"><i style="width:0%"></i></span><span class="tw58-comp-nr">NOT READ</span></div>';
+    }
+    var pct = Math.round(twClamp01(Number(val)) * 100);
+    return '<div class="tw58-comp"><span class="tw58-comp-lbl">' + label + '</span>' +
+      '<span class="tw58-comp-bar"><i style="width:' + pct + '%"></i></span><span class="tw58-comp-val">' + pct + '</span></div>';
+  }
+
+  /* The APEX-style review block, themed as TrenchWire Scored. All
+     values come from the record's own scored components. */
+  function twScoredHtml(rec) {
+    var c = (rec && rec.twComponents) || {};
+    var miss = (rec && rec.missing) || [];
+    var surv = (rec && rec.twAgeMs != null) ? twClamp01(rec.twAgeMs / (24 * 60 * 60 * 1000)) : null;
+    var rows =
+      tw58CompRow("Survival", surv, surv == null || miss.indexOf("pairAge") >= 0) +
+      tw58CompRow("Volume", c.volume, miss.indexOf("volume24h") >= 0) +
+      tw58CompRow("Liquidity", c.liquidity, miss.indexOf("liquidity") >= 0) +
+      tw58CompRow("Momentum", c.momentum, (rec && rec.windowChange == null) && miss.indexOf("priceChange24h") >= 0) +
+      tw58CompRow("Activity", c.activity, miss.indexOf("txns24h") >= 0) +
+      tw58CompRow("DEX breadth", c.breadth, false) +
+      tw58CompRow("Profile", c.social, false);
+    return '<div class="tw58-scored"><div class="tw58-scored-head">' + TW_BADGE_SVG +
+      '<div class="grow"><div class="tw58-scored-title">TrenchWire Scored</div>' +
+      '<div class="tw58-verdict">' + twEsc(twVerdict(rec)) + '</div></div>' +
+      '<div class="tw58-bigscore">' + (rec ? rec.twScore : "NOT READ") + '</div></div>' +
+      '<div class="tw58-comps">' + rows + '</div></div>';
+  }
+
+  function twShortMint(mint) {
+    if (!mint) return "NOT READ";
+    var s = String(mint);
+    return s.length > 14 ? s.slice(0, 6) + "…" + s.slice(-4) : s;
+  }
+  function tw58Cell(label, val, cls) {
+    return '<div class="tw58-cell"><small>' + label + '</small><b' + (cls ? ' class="' + cls + '"' : '') + '>' + val + '</b></div>';
+  }
+
+  /* The v58 TrenchWire card: logo, name and score on top; a labeled
+     stats grid; a mini sparkline; the buys vs sells bar; the mint with
+     its copy button; sources; then the TrenchWire Scored block. */
+  function twCardHtml58(rec, rank, windowKey) {
+    var r = rec || {};
+    var esc = twEsc;
+    var sym = r.symbol || "NOT READ";
+    var img;
+    if (typeof imgTag === "function") {
+      img = imgTag(r.imageUrl || null, sym, 'class="tw58-logo"', r.mint);
+    } else if (r.imageUrl) {
+      img = '<img class="tw58-logo" data-sym="' + esc(sym) + '" data-mint="' + esc(r.mint || "") + '" referrerpolicy="no-referrer" alt="' + esc(sym + " token icon") + '" src="' + esc(r.imageUrl) + '">';
+    } else {
+      img = '<span class="tw58-tile" aria-hidden="true">' + esc(String(sym).charAt(0).toUpperCase() || "?") + '</span>';
+    }
+    var chg = (r.windowChange == null) ? "NOT READ" : ((r.windowChange >= 0 ? "+" : "") + Number(r.windowChange).toFixed(1) + "%");
+    var chgCls = (r.windowChange == null) ? "" : (r.windowChange >= 0 ? "tw58-up" : "tw58-down");
+    var mc = (r.marketCapUsd != null) ? twFmtUsd(r.marketCapUsd) : twFmtUsd(r.fdvUsd);
+    var dex = esc(r.dexId || "NOT READ") + (r.dexes > 1 ? " (+" + (r.dexes - 1) + " more)" : "");
+    var spark = twSparkSvg(r.spark, (r.windowChange == null ? true : r.windowChange >= 0));
+    var sparkHtml = spark
+      ? '<div class="tw58-sparkwrap">' + spark + '<div class="tw58-spark-lbl">Price - last ' + esc(r.sparkLabel || r.windowChangeLabel || "24h") + '</div></div>'
+      : '<div class="fee">Chart unavailable for this pair</div>';
+    var bsHtml;
+    if (r.txnsH24 && (r.txnsH24.buys + r.txnsH24.sells) > 0) {
+      var b = r.txnsH24.buys, sl = r.txnsH24.sells, tot = b + sl, bp = Math.round(b / tot * 100);
+      bsHtml = '<div class="tw58-bs-lbl">Buys vs sells - ' + tot + ' txns (' + b + ' buys / ' + sl + ' sells) - ' + bp + '% buys</div>' +
+        '<div class="tw-bar" role="img" aria-label="Buys vs sells, ' + bp + '% buys"><i class="tw-bar-buys" style="width:' + bp + '%"></i><i class="tw-bar-sells" style="width:' + (100 - bp) + '%"></i></div>';
+    } else if (r.txnsH24) {
+      bsHtml = '<div class="fee">Buys vs sells - 0 txns in 24h</div>';
+    } else {
+      bsHtml = '<div class="fee">Buys vs sells: NOT READ</div>';
+    }
+    var srcs = (r.sources && r.sources.length) ? r.sources.join(" · ") : (r.source || "DexScreener");
+    var miss = (r.missing && r.missing.length) ? '<div class="fee">NOT READ: ' + esc(r.missing.join(", ")) + '</div>' : "";
+    var dis = (r.disagreements && r.disagreements.length) ? '<div class="fee">Sources disagree - ' + esc(r.disagreements.join("; ")) + '</div>' : "";
+    return '<div class="mktrow tw-row tw58-card" role="button" tabindex="0" data-twmint="' + esc(r.mint || "") + '">' +
+      '<div class="tw-rank">#' + rank + '</div>' +
+      '<div class="grow tw-main">' +
+      '<div class="tw58-top">' + img +
+      '<div class="grow tw58-nameline"><div class="tw58-name">' + esc(r.name || sym) + '</div><div class="tw58-sym">$' + esc(sym) + '</div></div>' +
+      '<div class="tw58-scorebox"><span class="tw58-score-lbl">TrenchWire Score</span><span class="tw58-score">' + r.twScore + '</span></div></div>' +
+      '<div class="tw58-grid">' +
+      tw58Cell("Liquidity", twFmtUsd(r.liquidityUsd)) +
+      tw58Cell("Vol 24h", twFmtUsd(r.volumeH24)) +
+      tw58Cell("MCap", mc) +
+      tw58Cell((r.windowChangeLabel || "24h") + " change", chg, chgCls) +
+      tw58Cell("Age", twAgeLabel(r.twAgeMs)) +
+      tw58Cell("DEX", dex) +
+      '</div>' +
+      sparkHtml + bsHtml +
+      '<div class="tw58-mintrow"><span class="mono">' + esc(twShortMint(r.mint)) + '</span>' +
+      '<button class="copybtn" type="button" data-twcopy="' + esc(r.mint || "") + '">Copy</button></div>' +
+      '<div class="fee">Sources: ' + esc(srcs) + ' · Pair ' + esc(twShortMint(r.pairAddress)) + '</div>' +
+      miss + dis +
+      twScoredHtml(r) +
+      '</div></div>';
+  }
+
   /* ---------------- live fetch (browser) ---------------- */
   function twFetchJson(url, timeoutMs) {
     return new Promise(function (resolve, reject) {
@@ -12116,9 +12517,15 @@ var TrenchWire = (function () {
     });
   }
 
-  /* Full rank-check cycle. Returns a cache-shaped object. Never throws:
-     per-source failures are recorded in sourceStatus and the list renders
-     from whatever was read (or from the stale cache with a stale label). */
+  /* Full rank-check cycle (v58). Returns a cache-shaped object. Never
+     throws to the caller: per-source failures are recorded in
+     sourceStatus and the list renders from whatever was read (or from
+     the stale cache with a stale label). Candidate pool: DexScreener
+     profiles + boosts, GeckoTerminal new + trending + top pools, all
+     deduped by mint; CoinGecko Solana-ecosystem markets enrich matched
+     records with 7d / 30d change and an image fallback. Sparklines are
+     fetched only for the final ranked top 20s (union across windows,
+     capped), never for the whole pool. */
   function twRankCheck(force) {
     var now = Date.now();
     var cached = twCacheRead();
@@ -12127,48 +12534,53 @@ var TrenchWire = (function () {
       return Promise.resolve(cached);
     }
     var sourceStatus = {};
-    var profiles = [], boosts = [], gtPools = [];
-    return twFetchJson(DS_PROFILES_URL).then(function (d) {
-      profiles = Array.isArray(d) ? d : [];
-      sourceStatus.dexscreenerProfiles = "ok (" + profiles.length + " profiles)";
-      return twFetchJson(DS_BOOSTS_URL);
-    }).catch(function (e) {
-      sourceStatus.dexscreenerProfiles = "NOT READ  - " + e.message;
-      return twFetchJson(DS_BOOSTS_URL);
-    }).then(function (d) {
-      boosts = Array.isArray(d) ? d : [];
-      sourceStatus.dexscreenerBoosts = "ok (" + boosts.length + " boosts)";
-      return twFetchJson(GT_NEW_POOLS_URL);
-    }).catch(function (e) {
-      sourceStatus.dexscreenerBoosts = "NOT READ  - " + e.message;
-      return twFetchJson(GT_NEW_POOLS_URL);
-    }).then(function (d) {
-      gtPools = (d && Array.isArray(d.data)) ? d.data : [];
-      sourceStatus.geckoterminalNewPools = "ok (" + gtPools.length + " pools)";
-      /* Discovery: Solana mints from profiles + boosts + GT new pools. */
-      var mintSet = {}, profByMint = {}, boostByMint = {};
+    function grab(url, key) {
+      return twFetchJson(url).then(function (d) { sourceStatus[key] = "ok"; return d; })
+        .catch(function (e) { sourceStatus[key] = "NOT READ - " + e.message; return null; });
+    }
+    return Promise.all([
+      grab(DS_PROFILES_URL, "dexscreenerProfiles"),
+      grab(DS_BOOSTS_URL, "dexscreenerBoosts"),
+      grab(GT_NEW_POOLS_URL, "geckoterminalNewPools"),
+      grab(GT_TRENDING_URL, "geckoterminalTrending"),
+      grab(GT_TOP_POOLS_URL, "geckoterminalTopPools"),
+      grab(CG_MARKETS_URL, "coingecko")
+    ]).then(function (res) {
+      var profiles = Array.isArray(res[0]) ? res[0] : [];
+      var boosts = Array.isArray(res[1]) ? res[1] : [];
+      var gtLists = [res[2], res[3], res[4]].map(function (d) { return (d && Array.isArray(d.data)) ? d.data : []; });
+      var cgMarkets = Array.isArray(res[5]) ? res[5] : [];
+      if (profiles.length) sourceStatus.dexscreenerProfiles = "ok (" + profiles.length + " profiles)";
+      if (boosts.length) sourceStatus.dexscreenerBoosts = "ok (" + boosts.length + " boosts)";
+      sourceStatus.geckoterminalNewPools = gtLists[0].length ? "ok (" + gtLists[0].length + " pools)" : sourceStatus.geckoterminalNewPools;
+      sourceStatus.geckoterminalTrending = gtLists[1].length ? "ok (" + gtLists[1].length + " pools)" : sourceStatus.geckoterminalTrending;
+      sourceStatus.geckoterminalTopPools = gtLists[2].length ? "ok (" + gtLists[2].length + " pools)" : sourceStatus.geckoterminalTopPools;
+      /* Discovery: Solana mints from profiles + boosts + GT pools. */
+      var mintSet = {}, profByMint = {}, boostByMint = {}, gtRecords = [];
       profiles.forEach(function (p) { if (p.chainId === "solana" && p.tokenAddress) { mintSet[p.tokenAddress] = 1; profByMint[p.tokenAddress] = p; } });
       boosts.forEach(function (b) { if (b.chainId === "solana" && b.tokenAddress) { mintSet[b.tokenAddress] = 1; boostByMint[b.tokenAddress] = b; } });
-      gtPools.forEach(function (p) {
-        var rel = p.relationships && p.relationships.base_token && p.relationships.base_token.data;
-        if (rel && rel.id) mintSet[rel.id] = 1;
+      gtLists.forEach(function (list) {
+        list.forEach(function (p) {
+          var rec = twNormalizeGtPool(p);
+          if (rec.mint) { mintSet[rec.mint] = 1; gtRecords.push(rec); }
+        });
       });
       var mints = Object.keys(mintSet).slice(0, TW_MAX_MINTS);
       if (!mints.length) {
-        sourceStatus.discovery = "NOT READ  - no Solana mints discovered";
+        sourceStatus.discovery = "NOT READ - no Solana mints discovered";
         throw new Error("no mints discovered");
       }
       sourceStatus.discovery = "ok (" + mints.length + " mints)";
       return twFetchJson(DS_TOKENS_URL + mints.map(encodeURIComponent).join(",")).then(function (d) {
-        return { pairs: (d && Array.isArray(d.pairs)) ? d.pairs : [], profByMint: profByMint, boostByMint: boostByMint, mints: mints };
+        sourceStatus.dexscreenerPairs = "ok (" + ((d && d.pairs) ? d.pairs.length : 0) + " pairs)";
+        return { pairs: (d && Array.isArray(d.pairs)) ? d.pairs : [], profByMint: profByMint, boostByMint: boostByMint, gtRecords: gtRecords, cgMarkets: cgMarkets };
+      }).catch(function (e) {
+        sourceStatus.dexscreenerPairs = "NOT READ - " + e.message;
+        return { pairs: [], profByMint: profByMint, boostByMint: boostByMint, gtRecords: gtRecords, cgMarkets: cgMarkets };
       });
-    }).catch(function (e) {
-      sourceStatus.dexscreenerPairs = "NOT READ  - " + e.message;
-      throw e;
     }).then(function (res) {
-      sourceStatus.dexscreenerPairs = "ok (" + res.pairs.length + " pairs)";
-      /* One record per mint: keep the highest-liquidity pair as the
-         primary, count distinct dexes for breadth. */
+      /* One DexScreener record per mint: highest-liquidity pair is the
+         primary, distinct dexes counted for breadth (as v48). */
       var byMint = {};
       res.pairs.forEach(function (p) {
         var mint = p.baseToken && p.baseToken.address;
@@ -12182,35 +12594,51 @@ var TrenchWire = (function () {
           }
         }
       });
-      var tokens = Object.keys(byMint).map(function (m) {
+      var dsRecords = Object.keys(byMint).map(function (m) {
         var t = byMint[m];
         t.dexes = Object.keys(t._dexSet || {}).length || 1;
         delete t._dexSet;
         return t;
       });
-      /* GeckoTerminal cross-check on the top candidates only (rate-limit). */
-      var cands = tokens.slice().sort(function (a, b) { return (b.volumeH24 || 0) - (a.volumeH24 || 0); }).slice(0, TW_GT_POOL_LOOKUPS);
-      var seq = Promise.resolve();
-      cands.forEach(function (t) {
-        seq = seq.then(function () {
-          if (!t.pairAddress) return;
-          return twFetchJson(GT_POOL_URL + encodeURIComponent(t.pairAddress), 12000)
-            .then(function (d) { if (d && d.data) twMergeGt(t, d.data); })
-            .catch(function () { /* GT cross-check is best-effort; DS stands alone */ });
+      var tokens = twMergeCandidates(dsRecords.concat(res.gtRecords));
+      twMatchCg(tokens, res.cgMarkets);
+      sourceStatus.coingecko = res.cgMarkets.length
+        ? "ok (" + res.cgMarkets.length + " Solana-ecosystem markets; matched by symbol and name)"
+        : (sourceStatus.coingecko || "NOT READ");
+      if (!tokens.length) throw new Error("no token data read from any source");
+      var ranked = twRankAll(tokens, Date.now());
+      /* Sparklines: union of the ranked top 20s, first window a pair
+         appears in sets its timeframe; capped, sequential, best-effort. */
+      var jobs = [], seenPair = {};
+      ["day", "week", "month"].forEach(function (wk) {
+        ranked[wk].ranked.forEach(function (rec) {
+          if (!rec.pairAddress || seenPair[rec.pairAddress]) return;
+          seenPair[rec.pairAddress] = 1;
+          jobs.push({ pair: rec.pairAddress, wk: wk });
         });
       });
-      return seq.then(function () { return tokens; });
-    }).then(function (tokens) {
-      /* CoinGecko liveness probe (non-blocking, status only). */
-      var cg = twFetchJson(CG_PING_URL, 8000).then(function () {
-        sourceStatus.coingecko = "ping ok  - token fields NOT READ in v48";
-      }).catch(function () { sourceStatus.coingecko = "NOT READ  - ping failed"; });
-      return cg.then(function () {
-        sourceStatus.coinmarketcap = TW_SOURCES.coinmarketcap.status;
-        sourceStatus.pumpfun = TW_SOURCES.pumpfun.status;
-        sourceStatus.holders = TW_SOURCES.holders.status;
-        var ranked = twRankAll(tokens, Date.now());
-        var cache = { v: 48, fetchedAt: Date.now(), byWindow: ranked,
+      jobs = jobs.slice(0, TW_SPARK_MAX);
+      var sparkByPair = {};
+      var seq = Promise.resolve();
+      jobs.forEach(function (job) {
+        seq = seq.then(function () {
+          var spec = TW_SPARK_SPEC[job.wk];
+          var url = GT_OHLCV_BASE + encodeURIComponent(job.pair) + "/ohlcv/" + spec.tf + "?aggregate=" + spec.agg + "&limit=" + spec.limit + "&currency=usd";
+          return twFetchJson(url, 12000).then(function (d) {
+            var list = d && d.data && d.data.attributes && d.data.attributes.ohlcv_list;
+            var closes = twSparkCloses(list, 48);
+            if (closes) sparkByPair[job.pair] = { closes: closes, label: spec.label };
+          }).catch(function () { /* sparkline is best-effort; the card omits it cleanly */ });
+        });
+      });
+      return seq.then(function () {
+        ["day", "week", "month"].forEach(function (wk) {
+          ranked[wk].ranked.forEach(function (rec) {
+            var sp = sparkByPair[rec.pairAddress];
+            if (sp) { rec.spark = sp.closes; rec.sparkLabel = sp.label; }
+          });
+        });
+        var cache = { v: 58, fetchedAt: Date.now(), byWindow: ranked,
                       tokenCount: tokens.length, sourceStatus: sourceStatus, fetchedFrom: "live" };
         twCacheWrite(cache);
         return cache;
@@ -12218,7 +12646,7 @@ var TrenchWire = (function () {
     }).catch(function (e) {
       sourceStatus.fatal = e.message;
       if (cached) { cached.fetchedFrom = "stale-cache"; cached.sourceStatus = sourceStatus; return cached; }
-      return { v: 48, fetchedAt: 0, byWindow: { day: { ranked: [], tooYoung: [], excluded: [] }, week: { ranked: [], tooYoung: [], excluded: [] }, month: { ranked: [], tooYoung: [], excluded: [] } },
+      return { v: 58, fetchedAt: 0, byWindow: { day: { ranked: [], tooYoung: [], excluded: [] }, week: { ranked: [], tooYoung: [], excluded: [] }, month: { ranked: [], tooYoung: [], excluded: [] } },
                tokenCount: 0, sourceStatus: sourceStatus, fetchedFrom: "failed", error: String(e && e.message || e) };
     });
   }
@@ -12255,7 +12683,7 @@ var TrenchWire = (function () {
       html = '<p class="sub">No tokens qualify in this window yet  - every candidate is either under the 2h survival gate or unread. ' +
              'Check the other windows, or tap Refresh after the next check.</p>';
     } else {
-      html = win.ranked.map(function (r, i) { return (typeof V51Cards !== "undefined" && V51Cards.twCardHtml) ? V51Cards.twCardHtml(r, i + 1) : twRowHtml(r, i + 1, now); }).join("");
+      html = win.ranked.map(function (r, i) { return twCardHtml58(r, i + 1, windowKey); }).join("");
     }
     if (win.tooYoung && win.tooYoung.length) {
       html += '<p class="fee" style="margin-top:8px">Too young to rank (under 2h old): ' +
@@ -12271,8 +12699,8 @@ var TrenchWire = (function () {
     if (stat) {
       var s = cache.sourceStatus || {};
       stat.textContent = "Sources  - DexScreener: " + (s.dexscreenerPairs || s.discovery || "NOT READ") +
-        " · GeckoTerminal: " + (s.geckoterminalNewPools || "NOT READ") +
-        " · CoinGecko: " + (s.coingecko || "ping-only") +
+        " · GeckoTerminal: " + (s.geckoterminalTrending || s.geckoterminalNewPools || "NOT READ") +
+        " · CoinGecko: " + (s.coingecko || "NOT READ") +
         " · CoinMarketCap: NOT READ (no API key) · Holders: NOT READ";
     }
     var tabs = document.querySelectorAll("#twTabs button");
@@ -12299,6 +12727,23 @@ var TrenchWire = (function () {
         if (twLastCache) twRender(twLastCache, twCurrentWindow);
       });
     }
+    /* v58: card taps open the full report (the same openReport call
+       every other list uses); the Copy chip copies the mint and does
+       not open the report. */
+    var list58 = $("twList");
+    if (list58) {
+      list58.addEventListener("click", function (e) {
+        var cp = e.target && e.target.closest ? e.target.closest("[data-twcopy]") : null;
+        if (cp) { e.stopPropagation(); if (typeof copyMint === "function") copyMint(cp.getAttribute("data-twcopy"), cp); return; }
+        var card = e.target && e.target.closest ? e.target.closest("[data-twmint]") : null;
+        if (card && typeof openReport === "function") openReport(card.getAttribute("data-twmint"), null);
+      });
+      list58.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter") return;
+        var card = e.target && e.target.closest ? e.target.closest("[data-twmint]") : null;
+        if (card && typeof openReport === "function") openReport(card.getAttribute("data-twmint"), null);
+      });
+    }
     /* First paint: cached list instantly if fresh, then a live check only
        when the cache is stale. Never blocks the Markets tab. */
     var cached = twCacheRead();
@@ -12319,7 +12764,11 @@ var TrenchWire = (function () {
     normalizePair: twNormalizePair, mergeGt: twMergeGt,
     scoreToken: twScoreToken, rank: twRank, rankAll: twRankAll,
     logNorm: twLogNorm, fmtUsd: twFmtUsd, ageLabel: twAgeLabel,
-    rankCheck: twRankCheck, render: twRender, init: twInit
+    rankCheck: twRankCheck, render: twRender, init: twInit,
+    normalizeGtPool: twNormalizeGtPool, mergeCandidates: twMergeCandidates,
+    matchCg: twMatchCg, applyCg: twApplyCg, sparkCloses: twSparkCloses,
+    sparkSvg: twSparkSvg, verdict: twVerdict, scoredHtml: twScoredHtml,
+    cardHtml: twCardHtml58, shortMint: twShortMint, badgeSvg: TW_BADGE_SVG
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   if (typeof window !== "undefined") window.TrenchWire = api;
