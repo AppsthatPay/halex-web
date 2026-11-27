@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-68lHTKbiLYGBPTeISrknA657Gw9zLrw8z5GmCkfgon4=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-xd6hZphmclfEd1TlmvxwJMa4/nSo/osjk1F1/d5jiqI=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -563,6 +563,27 @@ nav button.on{color:#fff;background:var(--deep);border-color:#c084fc;box-shadow:
 .stake-confirm p{margin:4px 0}
 .stake-tickets{margin-top:10px}
 .stake-ticket{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--raised);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:13px}
+/* ===== v56: tab menu polish — slightly larger buttons, fine borders, subtle 3D ===== */
+nav{gap:7px;padding:8px 10px calc(8px + env(safe-area-inset-bottom))}
+nav button{min-width:74px;padding:11px 8px 10px;font-size:12.5px;border-radius:14px;border:1px solid rgba(192,132,252,.45);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 52%,rgba(10,4,24,.18));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),inset 0 -2px 4px rgba(0,0,0,.28),0 2px 5px rgba(0,0,0,.35);transition:box-shadow .15s ease,background .15s ease,transform .1s ease}
+nav button .ic{font-size:22px;margin-bottom:3px}
+nav button.on{color:#fff;background:linear-gradient(180deg,#3A2360,#2A1B42 60%,#1E1032);border-color:#c084fc;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 -2px 4px rgba(0,0,0,.3),0 0 0 1px #c084fc,0 3px 12px rgba(168,85,247,.45)}
+nav button:active{transform:translateY(1px)}
+/* ===== v56: stake disclaimer gate + explainer + team & rewards ===== */
+.stake-ack{background:rgba(168,85,247,.08);border:1px solid rgba(192,132,252,.45);border-radius:14px;padding:12px 14px;margin:0 0 14px}
+.stake-ack-lab{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;color:#F3E8FF;cursor:pointer}
+.stake-ack-lab input{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:#a855f7;cursor:pointer}
+.stake-ack-hint{font-size:12.5px;color:#fbbf24;margin:8px 0 0;line-height:1.5}
+.stake-ack-flash{animation:stakeAckFlash 1.5s ease}
+@keyframes stakeAckFlash{0%,100%{box-shadow:none}25%,75%{box-shadow:0 0 0 2px #f59e0b,0 0 18px rgba(245,158,11,.5)}}
+.stake-wrap.ack-pending .stake-card .stake-btn{opacity:.5}
+.team-block{border-top:1px solid var(--line);padding:10px 0 4px;margin-top:10px}
+.team-wname{font-weight:800;font-size:14px;color:#F3E8FF;margin-bottom:2px}
+.team-addr{font-size:11.5px;color:var(--muted);word-break:break-all;margin-bottom:6px}
+.team-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:5px 0;border-bottom:1px dashed rgba(192,132,252,.15);color:#E9E2F7}
+.team-row b{color:#fff;white-space:nowrap}
+.team-row.team-total{border-bottom:0;font-weight:800}
+
 
 </style>
 </head>
@@ -979,10 +1000,16 @@ nav button.on{color:#fff;background:var(--deep);border-color:#c084fc;box-shadow:
     <h2 class="stake-h">Stake &amp; Rewards</h2>
     <p class="stake-sub">Stake from your own wallet, with protocols you can check on-chain. You sign every transaction on this device — TrenchSwap never holds your keys or your funds. A 0.1% TrenchSwap fee is deducted from the amount on SOL, USDC and USDT stake and unstake transactions and moves inside the same transaction you sign; every confirm sheet shows it before you sign.</p>
 
-    <div class="stake-card" id="stakeSolCard">
+        <div class="stake-ack" id="stakeAck">
+      <label class="stake-ack-lab" for="stakeAckBox"><input type="checkbox" id="stakeAckBox"> <span>I understand: TrenchSwap does not hold my staked amounts. TrenchSwap provides a service that routes my stake to the platform shown on each card. My funds move directly between my wallet and that platform, and I sign every transaction myself.</span></label>
+      <p class="stake-ack-hint" id="stakeAckHint" hidden>Tick the box above to switch on the stake and unstake buttons. It confirms you understand TrenchSwap never holds your stake.</p>
+    </div>
+
+<div class="stake-card" id="stakeSolCard">
       <div class="stake-card-h"><span class="stake-name">SOL — Marinade liquid staking (mSOL)</span><span class="stake-apy" id="stakeSolApy">APY: NOT READ</span></div>
       <p class="stake-note" id="stakeSolRate">Marinade rate: NOT READ</p>
       <p class="stake-note">Stake SOL directly with the Marinade protocol and receive mSOL. Unstake instantly any time (Marinade charges its own liquidity fee on instant unstakes), or order a delayed unstake ticket and claim the SOL from here when it is due.</p>
+      <p class="stake-note"><b>Reward basis:</b> Solana staking yield from Marinade’s validators. It arrives as mSOL growing in SOL value, not as separate payouts.</p>
       <div class="stake-bal" id="stakeSolBal">Balance: NOT READ</div>
       <div class="stake-bal" id="stakeMsolBal">Staked (mSOL): NOT READ</div>
       <label class="stake-lab">Amount to stake (SOL)<span class="stake-inrow"><input id="stakeSolAmt" type="number" min="0" step="0.01" placeholder="0.00"><button class="stake-btn alt" type="button" id="stakeSolMax">MAX</button></span></label>
@@ -997,6 +1024,7 @@ nav button.on{color:#fff;background:var(--deep);border-color:#c084fc;box-shadow:
     <div class="stake-card" id="stakeUsdcCard">
       <div class="stake-card-h"><span class="stake-name">USDC — Kamino Lend (lending)</span><span class="stake-apy" id="stakeUsdcApy">Supply APY: NOT READ</span></div>
       <p class="stake-note">This is lending, not staking: supply USDC to the Kamino Lend Main Market and withdraw it back here. Kamino builds each transaction; this app verifies it against a fixed allowlist and simulates it before your wallet signs.</p>
+      <p class="stake-note"><b>Reward basis:</b> interest paid by borrowers on Kamino. Your supplied USDC earns that interest while it sits in the market; withdrawing returns your USDC.</p>
       <div class="stake-bal" id="stakeUsdcBal">Wallet: NOT READ</div>
       <div class="stake-bal" id="stakeUsdcPos">Supplied: NOT READ</div>
       <label class="stake-lab">Amount (USDC)<span class="stake-inrow"><input id="stakeUsdcAmt" type="number" min="0" step="0.01" placeholder="0.00"><button class="stake-btn alt" type="button" id="stakeUsdcMax">MAX</button></span></label>
@@ -1008,6 +1036,7 @@ nav button.on{color:#fff;background:var(--deep);border-color:#c084fc;box-shadow:
     <div class="stake-card" id="stakeUsdtCard">
       <div class="stake-card-h"><span class="stake-name">USDT — Kamino Lend (lending)</span><span class="stake-apy" id="stakeUsdtApy">Supply APY: NOT READ</span></div>
       <p class="stake-note">This is lending, not staking: supply USDT to the Kamino Lend Main Market and withdraw it back here. Kamino builds each transaction; this app verifies it against a fixed allowlist and simulates it before your wallet signs.</p>
+      <p class="stake-note"><b>Reward basis:</b> interest paid by borrowers on Kamino. Your supplied USDT earns that interest while it sits in the market; withdrawing returns your USDT.</p>
       <div class="stake-bal" id="stakeUsdtBal">Wallet: NOT READ</div>
       <div class="stake-bal" id="stakeUsdtPos">Supplied: NOT READ</div>
       <label class="stake-lab">Amount (USDT)<span class="stake-inrow"><input id="stakeUsdtAmt" type="number" min="0" step="0.01" placeholder="0.00"><button class="stake-btn alt" type="button" id="stakeUsdtMax">MAX</button></span></label>
@@ -1028,7 +1057,44 @@ nav button.on{color:#fff;background:var(--deep);border-color:#c084fc;box-shadow:
     </div>
 
     <p class="stake-note">APY figures are read live from the named source each time this tab opens; anything that cannot be read shows NOT READ. Rates move and are never a promise. Marinade and Kamino are separate protocols — read their own terms before staking or lending.</p>
-    <!-- v55: a Rewards section (distribution wallet + team allocations display) joins this tab later, inside .stake-wrap, after the cards above. -->
+        <div class="stake-card" id="stakeHowCard">
+      <div class="stake-card-h"><span class="stake-name">How staking works here</span></div>
+      <p class="stake-note"><b>Where your stake goes.</b> SOL goes to <b>Marinade</b>, a liquid staking protocol: your SOL is spread across Solana validators and you receive mSOL back in your own wallet. USDC and USDT go to <b>Kamino Lend</b>: you supply them to Kamino's lending market and withdraw them back from the same place.</p>
+      <p class="stake-note"><b>What the rewards are.</b> On Marinade, rewards are Solana staking yield earned by its validators; they arrive as mSOL growing in SOL value, not as separate payouts. On Kamino, rewards are interest paid by the borrowers who borrow from the market you supplied to. Rates move with the market and are never a promise.</p>
+      <p class="stake-note"><b>How to stake.</b> 1. Tick the understanding box at the top of this tab. 2. Pick a card, type an amount, and tap Stake or Supply. 3. Read the confirm sheet: it shows the amount, the platform, and the 0.1% TrenchSwap service fee. 4. Sign with your wallet. Your stake then sits with the platform, under your own keys.</p>
+      <p class="stake-note"><b>How to unstake.</b> SOL: unstake instantly by swapping your mSOL back (Marinade charges its own liquidity fee on instant unstakes), or order a delayed unstake ticket (about one epoch; Marinade's published fee on delayed unstakes is 0.2%) and claim the SOL here when the ticket is due. USDC and USDT: tap Withdraw on the Kamino card and sign; the stablecoin returns to your wallet.</p>
+      <p class="stake-note"><b>Works with any wallet.</b> TrenchSwap is a routing service, not a custodian. Stake and unstake transactions are built for whichever wallet you use here, you sign them on this device, and the funds move directly between your wallet and Marinade or Kamino. TrenchSwap never takes possession of your stake at any point. The only TrenchSwap part of the transaction is the 0.1% service fee on SOL, USDC and USDT, deducted inside the same transaction you sign and shown on the confirm sheet before you sign.</p>
+    </div>
+
+    <div class="stake-card" id="teamRewardsCard">
+      <div class="stake-card-h"><span class="stake-name">Team &amp; Rewards wallets</span><span class="stake-apy">Live on-chain read</span></div>
+      <p class="stake-note">These are TrenchSwap's own public wallets. Balances are read live from the Solana blockchain each time this tab opens; anything that cannot be read shows NOT READ.</p>
+      <div class="team-block">
+        <div class="team-wname">Team wallet</div>
+        <div class="team-addr">utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</div>
+        <div class="stake-bal">SOL: <span id="teamSolBal">NOT READ</span></div>
+        <div class="stake-bal">TRSW: <span id="teamTrswBal">NOT READ</span></div>
+      </div>
+      <div class="team-block">
+        <div class="team-wname">Locked allocations</div>
+        <p class="stake-note">The TrenchSwap-side allocation is fixed in the tokenomics and held for dispersal:</p>
+        <div class="team-row"><span>Rewards — first 100 users</span><b>1,000,000 TRSW</b></div>
+        <div class="team-row"><span>Rewards — referrals &amp; giveaways</span><b>1,500,000 TRSW</b></div>
+        <div class="team-row"><span>Rewards total</span><b>2,500,000 TRSW</b></div>
+        <div class="team-row"><span>Team</span><b>2,000,000 TRSW</b></div>
+        <div class="team-row"><span>Platform fund</span><b>1,000,000 TRSW</b></div>
+        <div class="team-row"><span>Staking + founder</span><b>1,000,000 TRSW</b></div>
+        <div class="team-row team-total"><span>Total locked allocation</span><b>6,500,000 TRSW</b></div>
+      </div>
+      <div class="team-block">
+        <div class="team-wname">Distribution wallet — platform rewards</div>
+        <div class="team-addr">GY1znQ7KwBZCdt6rXUYGXY7ZjmtdNWHxZajQZtxYxe1Q</div>
+        <div class="stake-bal">SOL: <span id="distSolBal">NOT READ</span></div>
+        <div class="stake-bal">TRSW: <span id="distTrswBal">NOT READ</span></div>
+        <div class="stake-bal">Rewards dispersed so far: <span id="distDispersed">NOT READ</span></div>
+        <p class="stake-note"><b>How dispersal works.</b> Rewards are paid out of the distribution wallet to winners, referrals and stakers, following the allocations above. Every dispersal is an ordinary on-chain transfer from this wallet, so anyone can check each payment on a Solana explorer. The rewards dispersed figure above is added up from this wallet's own transaction history on-chain.</p>
+      </div>
+    </div>
   </div>
 </section>
 <section class="tab" id="tab-mint">
@@ -13831,6 +13897,255 @@ function stakeRefresh() {
   });
 })();
 
+
+/* ===== v56: Stake & Rewards — disclaimer gate + Team & Rewards display =====
+   Disclaimer gate: until the user ticks the understanding box (this
+   page session only; nothing is stored), a capture-phase click guard
+   on the stake section stops every stake / unstake / supply / withdraw
+   / ticket-claim action before it reaches the v55 handlers, flashes
+   the disclaimer box and shows the hint. The v55 flows are untouched.
+   Team & Rewards: public-wallet balances read live over the app's own
+   rpcCall (SOL via getBalance, TRSW via the v55 stakeTokenBalance).
+   Rewards dispersed = TRSW that left the distribution wallet, summed
+   from its own transaction history (getSignaturesForAddress +
+   getTransaction pre/post token balances). Any read that fails shows
+   NOT READ; no figure is ever invented. */
+var TEAM_WALLET = "utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww";
+var DIST_WALLET = "GY1znQ7KwBZCdt6rXUYGXY7ZjmtdNWHxZajQZtxYxe1Q";
+var stakeAcked = false;
+var STAKE_GATED_IDS = ["stakeSolGo", "stakeMsolInstant", "stakeMsolDelayed",
+  "stakeUsdcSupply", "stakeUsdcWithdraw", "stakeUsdtSupply", "stakeUsdtWithdraw"];
+function stakeAckGate(e) {
+  if (stakeAcked) return;
+  var t = e.target;
+  var btn = (t && t.closest) ? t.closest("button") : null;
+  if (!btn) return;
+  var gated = STAKE_GATED_IDS.indexOf(btn.id || "") >= 0 || btn.hasAttribute("data-ticket");
+  if (!gated) return;
+  e.preventDefault();
+  e.stopPropagation();
+  var hint = document.getElementById("stakeAckHint");
+  if (hint) hint.hidden = false;
+  var box = document.getElementById("stakeAck");
+  if (box) {
+    box.classList.remove("stake-ack-flash");
+    void box.offsetWidth;
+    box.classList.add("stake-ack-flash");
+    if (box.scrollIntoView) box.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+}
+function teamSolLine(id, addr) {
+  rpcCall("getBalance", [addr]).then(function (d) {
+    var v = d && d.result && d.result.value;
+    stakeSetText(id, typeof v === "number" ? (v / 1e9) + " SOL" : "NOT READ");
+  }).catch(function () { stakeSetText(id, "NOT READ"); });
+}
+function teamTrswLine(id, addr) {
+  stakeTokenBalance(addr, TRSW_MINT).then(function (bal) {
+    stakeSetText(id, bal ? stakeFmtRaw(bal.raw, 6) + " TRSW" : "NOT READ");
+  });
+}
+function distDispersed() {
+  rpcCall("getSignaturesForAddress", [DIST_WALLET, { limit: 200 }]).then(function (d) {
+    var sigs = d && d.result;
+    if (!Array.isArray(sigs)) { stakeSetText("distDispersed", "NOT READ"); return; }
+    if (!sigs.length) { stakeSetText("distDispersed", "0 TRSW"); return; }
+    var total = 0n, idx = 0, failed = false;
+    function finish() {
+      stakeSetText("distDispersed", stakeFmtRaw(total, 6) + " TRSW" + (sigs.length >= 200 ? " (first 200 transfers read)" : ""));
+    }
+    function next() {
+      if (failed) return;
+      if (idx >= sigs.length) { finish(); return; }
+      var entry = sigs[idx++];
+      var sig = entry && entry.signature;
+      if (!sig) { next(); return; }
+      rpcCall("getTransaction", [sig, { encoding: "jsonParsed", maxSupportedTransactionVersion: 0 }]).then(function (td) {
+        var tx = td && td.result;
+        if (!tx || !tx.meta) { failed = true; stakeSetText("distDispersed", "NOT READ"); return; }
+        if (!tx.meta.err) {
+          var preMap = {};
+          (tx.meta.preTokenBalances || []).forEach(function (b) {
+            if (b.mint === TRSW_MINT && b.owner === DIST_WALLET) preMap[b.accountIndex] = BigInt(b.uiTokenAmount.amount);
+          });
+          (tx.meta.postTokenBalances || []).forEach(function (b) {
+            if (b.mint === TRSW_MINT && b.owner === DIST_WALLET && preMap[b.accountIndex] !== undefined) {
+              var delta = preMap[b.accountIndex] - BigInt(b.uiTokenAmount.amount);
+              if (delta > 0n) total += delta;
+              delete preMap[b.accountIndex];
+            }
+          });
+          Object.keys(preMap).forEach(function (k) { total += preMap[k]; });
+        }
+        next();
+      }).catch(function () { failed = true; stakeSetText("distDispersed", "NOT READ"); });
+    }
+    next();
+  }).catch(function () { stakeSetText("distDispersed", "NOT READ"); });
+}
+function teamRewardsRefresh() {
+  teamSolLine("teamSolBal", TEAM_WALLET);
+  teamTrswLine("teamTrswBal", TEAM_WALLET);
+  teamSolLine("distSolBal", DIST_WALLET);
+  teamTrswLine("distTrswBal", DIST_WALLET);
+  distDispersed();
+}
+(function () {
+  var sec = document.getElementById("tab-stake");
+  if (sec) sec.addEventListener("click", stakeAckGate, true);
+  var wrap = document.querySelector(".stake-wrap");
+  if (wrap) wrap.classList.add("ack-pending");
+  var box = document.getElementById("stakeAckBox");
+  if (box) box.addEventListener("change", function () {
+    stakeAcked = !!box.checked;
+    if (wrap) wrap.classList.toggle("ack-pending", !stakeAcked);
+    var hint = document.getElementById("stakeAckHint");
+    if (hint && stakeAcked) hint.hidden = true;
+  });
+  var navBtns = document.querySelectorAll("nav button");
+  Array.prototype.forEach.call(navBtns, function (b) {
+    if (b.dataset && b.dataset.tab === "stake") b.addEventListener("click", function () { setTimeout(teamRewardsRefresh, 90); });
+  });
+})();
+
+/* ===== v56b: StonkPark share-video — the two hosted promo clips =====
+   Jeffrey's ask: a share-video option that uses Stonks Park's own two
+   hosted clips. The clips live in the featured view (#parkOverlay) and,
+   for the $PARK token only, in the token share sheet. Behaviour follows
+   the app's existing share idioms (V48Share.shareVideo / shareCard /
+   downloadVideo): fetch the MP4 as a blob, hand it to the Web Share
+   API as a file where the phone supports file sharing, and otherwise
+   save the MP4 to the phone and copy the share text, with a toast
+   saying so. The share text names $PARK / Stonks Park and carries the
+   TrenchSwap trade link built by tsRefShareUrl, so the sharer's opaque
+   REF tag rides along exactly as on every other share in the app; no
+   wallet address ever appears. Everything here exists only while the
+   StonkPark run window is open (parkRunActive, ends 2026-12-03T23:30Z):
+   outside the window no buttons are injected and shareClip refuses.
+   The clips are same-origin with the app (appsthatpay.github.io), so
+   the fetch rides the CSP's existing connect-src 'self'; nothing new
+   is allowlisted. ParkShare.last records the latest attempt so the
+   probe can verify each path. */
+var PARK_CLIPS = [
+  { n: 1, file: "stonkpark-video-1-safu.mp4", name: "stonkpark-funds-are-safu.mp4" },
+  { n: 2, file: "stonkpark-video-2-pumpfun.mp4", name: "stonkpark-pumpfun-living-room.mp4" }
+];
+var ParkShare = { last: null };
+function parkShareText() {
+  var url = "";
+  try { url = tsRefShareUrl(PARK_MINT, null); } catch (e) {}
+  var t = "$PARK - Stonks Park, featured on TrenchSwap. Watch the show, trade the token.";
+  return url ? (t + " " + url) : t;
+}
+function parkShareToast(msg) { try { if (typeof toast === "function") toast(msg); } catch (e) {} }
+function parkShareDownload(blob, clip, text) {
+  try {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = clip.name;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { if (a.parentNode) a.parentNode.removeChild(a); try { URL.revokeObjectURL(url); } catch (e) {} }, 400);
+  } catch (e) {}
+  ParkShare.last.mode = "download";
+  ParkShare.last.name = clip.name;
+  try { if (typeof V48Share !== "undefined" && V48Share.copyText) V48Share.copyText(text, "copied"); } catch (e) {}
+  parkShareToast("Video saved to your phone. The share text is copied, paste it with the video.");
+}
+ParkShare.shareClip = function (n) {
+  var clip = null;
+  for (var i = 0; i < PARK_CLIPS.length; i++) if (PARK_CLIPS[i].n === n) clip = PARK_CLIPS[i];
+  if (!clip) { ParkShare.last = { clip: n, mode: "unknown-clip" }; return Promise.resolve(false); }
+  if (typeof parkRunActive !== "function" || !parkRunActive()) {
+    ParkShare.last = { clip: n, mode: "inactive" };
+    parkShareToast("The Stonks Park promo run has ended.");
+    return Promise.resolve(false);
+  }
+  var url = PARK_BASE + clip.file;
+  var text = parkShareText();
+  ParkShare.last = { clip: n, mode: "fetching", url: url, text: text };
+  return fetch(url).then(function (r) {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.blob();
+  }).then(function (blob) {
+    var file = null;
+    try { file = new File([blob], clip.name, { type: "video/mp4" }); } catch (e) { file = null; }
+    if (file && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+      ParkShare.last.mode = "share";
+      return navigator.share({ files: [file], title: "$PARK on TrenchSwap", text: text }).then(function () {
+        ParkShare.last.mode = "shared";
+        return true;
+      }).catch(function (err) {
+        if (err && err.name === "AbortError") { ParkShare.last.mode = "share-closed"; return false; }
+        parkShareDownload(blob, clip, text);
+        return true;
+      });
+    }
+    parkShareDownload(blob, clip, text);
+    return true;
+  }).catch(function () {
+    ParkShare.last.mode = "error";
+    parkShareToast("The video could not be loaded. Check your connection and try again.");
+    return false;
+  });
+};
+(function () {
+  if (typeof parkRunActive !== "function" || !parkRunActive()) return;
+  /* Featured view: one Share video button under each clip's caption,
+     matched to the clip by the video's own src. */
+  var ov = document.getElementById("parkOverlay");
+  if (ov) {
+    PARK_CLIPS.forEach(function (clip) {
+      var vids = ov.querySelectorAll(".park-video video");
+      for (var i = 0; i < vids.length; i++) {
+        if ((vids[i].getAttribute("src") || "").indexOf(clip.file) >= 0) {
+          var holder = vids[i].parentNode.querySelector(".vc") || vids[i].parentNode;
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "btn ghost";
+          b.setAttribute("data-park-clip", String(clip.n));
+          b.textContent = "Share video";
+          b.style.width = "100%";
+          b.style.marginTop = "8px";
+          b.addEventListener("click", function () { ParkShare.shareClip(clip.n); });
+          holder.appendChild(b);
+        }
+      }
+    });
+  }
+  /* Token share sheet: a $PARK-only choice row with both clips. The
+     row is injected hidden and V48Share.open (wrapped below) shows it
+     only when the sheet is opened for the PARK mint inside the run
+     window; every other token's sheet is exactly as before. */
+  var list = document.getElementById("v48ChoiceList");
+  if (list) {
+    var row = document.createElement("div");
+    row.className = "v48-choice";
+    row.id = "parkShareChoice";
+    row.setAttribute("data-v48-choice", "parkclips");
+    row.style.display = "none";
+    row.innerHTML = '<div class="v48-choice-text"><b>Share a Stonks Park video</b><span>The Stonks Park show clips, ready to post anywhere.</span><span class="v48-see">They see: the Stonks Park clip, with your tag on the TrenchSwap link.</span></div>'
+      + '<div class="v48-choice-actions"><button class="btn secondary" type="button" data-park-clip="1">Clip 1 - Funds Are SAFU</button><button class="btn secondary" type="button" data-park-clip="2">Clip 2 - pump.fun living room</button></div>';
+    list.appendChild(row);
+    var btns = row.querySelectorAll("[data-park-clip]");
+    for (var j = 0; j < btns.length; j++) (function (btn) {
+      btn.addEventListener("click", function () { ParkShare.shareClip(Number(btn.getAttribute("data-park-clip"))); });
+    })(btns[j]);
+  }
+  if (typeof V48Share !== "undefined" && V48Share.open) {
+    var origOpen = V48Share.open;
+    V48Share.open = function (tok) {
+      origOpen.apply(this, arguments);
+      var r = document.getElementById("parkShareChoice");
+      if (r) r.style.display = (tok && tok.mint === PARK_MINT && parkRunActive()) ? "" : "none";
+    };
+    var origClose = V48Share.close;
+    if (origClose) V48Share.close = function () {
+      origClose.apply(this, arguments);
+      var r = document.getElementById("parkShareChoice");
+      if (r) r.style.display = "none";
+    };
+  }
+})();
 
 if(typeof TrenchWire!=="undefined")TrenchWire.init();
 </script>
