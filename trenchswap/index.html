@@ -640,6 +640,27 @@ nav button:active{transform:translateY(1px)}
 .team-row{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:5px 0;border-bottom:1px dashed rgba(192,132,252,.15);color:#E9E2F7}
 .team-row b{color:#fff;white-space:nowrap}
 .team-row.team-total{border-bottom:0;font-weight:800}
+/* v59: Gear tab (Settings & Info) polish + Fire Button promo.
+   Every rule is scoped to #tab-info or the promo card, additive only:
+   no existing rule is edited and no script changes, so all five CSP
+   script hashes stay byte-identical to v58. */
+#tab-info .card{border-color:rgba(192,132,252,.30);background:linear-gradient(180deg,rgba(192,132,252,.08),rgba(192,132,252,0) 120px),var(--panel);box-shadow:0 10px 26px rgba(5,3,10,.35),inset 0 1px 0 rgba(243,232,255,.05)}
+#tab-info .info-pane{margin-top:12px}
+#tab-info .card h3{font-size:15.5px;letter-spacing:.01em}
+#tab-info .info-subtabs button{border-radius:12px;padding:11px 6px;transition:border-color .15s ease,background .15s ease}
+#tab-info .info-subtabs button.on{background:linear-gradient(180deg,#8B5CF6,#662D91);border-color:#C084FC;color:#fff;box-shadow:0 4px 14px rgba(168,85,247,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+#tab-info select:focus,#tab-info input:focus,#tab-info textarea:focus{border-color:var(--cta)}
+#tab-info #infoFireBtnCard{position:relative;overflow:hidden;background:linear-gradient(155deg,#2A1350,#150B26 72%);border:1px solid rgba(192,132,252,.55);border-radius:20px;padding:18px 16px;box-shadow:0 12px 30px rgba(124,58,237,.28),inset 0 1px 0 rgba(243,232,255,.08)}
+.fb59-head{display:flex;align-items:center;gap:12px}
+.fb59-badge{flex:none;filter:drop-shadow(0 4px 12px rgba(168,85,247,.5))}
+.fb59-name{font-family:Montserrat,system-ui,sans-serif;font-size:19px;font-weight:900;letter-spacing:.04em;color:#fff;line-height:1.1}
+.fb59-tag{font-size:12.5px;font-weight:700;color:var(--gloss);letter-spacing:.02em;margin-top:3px}
+.fb59-body{font-size:13.5px;line-height:1.55;color:#E9E2F7;margin:12px 0 0}
+.fb59-feats{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin-top:12px}
+.fb59-feat{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;color:#F3E8FF}
+.fb59-feat i{flex:none;width:7px;height:7px;border-radius:2px;background:linear-gradient(135deg,#C084FC,#7C3AED);transform:rotate(45deg)}
+.fb59-dl{display:block;text-align:center;text-decoration:none;margin-top:14px}
+.fb59-note{font-size:11.5px;color:var(--muted);text-align:center;margin:8px 0 0}
 
 
 </style>
@@ -1261,6 +1282,25 @@ nav button:active{transform:translateY(1px)}
     <button data-info="referrals" type="button">Referrals</button>
     <button data-info="support" type="button">Support</button>
     <button data-info="blog" type="button">Blog</button>
+  </div>
+  <div class="card" id="infoFireBtnCard">
+    <div class="fb59-head">
+      <svg class="fb59-badge" viewBox="0 0 48 48" width="52" height="52" role="img" aria-label="Fire Button badge: purple flame with a gear in the center"><defs><linearGradient id="fb59Flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C084FC"/><stop offset=".55" stop-color="#7C3AED"/><stop offset="1" stop-color="#662D91"/></linearGradient></defs><path d="M24 2.5C27.2 10.2 38 17.8 38 29a14 14 0 1 1-28 0C10 17.8 20.8 10.2 24 2.5Z" fill="url(#fb59Flame)" stroke="rgba(192,132,252,.85)" stroke-width="1.4"/><g fill="#F3E8FF"><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(45 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(90 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(135 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(180 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(225 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(270 24 30)"/><rect x="22.95" y="21.2" width="2.1" height="4.2" rx="0.9" transform="rotate(315 24 30)"/><circle cx="24" cy="30" r="6.9"/></g><circle cx="24" cy="30" r="3.1" fill="#2A1350"/></svg>
+      <div>
+        <div class="fb59-name">FIRE BUTTON</div>
+        <div class="fb59-tag">Fast Pump.fun Trigger</div>
+      </div>
+      <span class="chip grad" style="margin-left:auto;align-self:flex-start">NEW</span>
+    </div>
+    <p class="fb59-body">When Pump lags, use the Fire Button. Copy and paste any CA as it floats over your apps. It reads nothing, sees nothing, and can trade anything. Nothing is faster than the Fire Button.</p>
+    <div class="fb59-feats">
+      <div class="fb59-feat"><i></i>Floats over your other apps</div>
+      <div class="fb59-feat"><i></i>Paste any Solana CA</div>
+      <div class="fb59-feat"><i></i>Preset buy and sell buttons</div>
+      <div class="fb59-feat"><i></i>Same fees as TrenchSwap</div>
+    </div>
+    <a class="btn fb59-dl" href="https://appsthatpay.github.io/halex-web/fire-button/fire-button.apk" download>Get the Fire Button</a>
+    <p class="fb59-note">Standalone Android app from the TrenchSwap team.</p>
   </div>
   <div class="card" style="margin-top:12px" id="infoFeesCard">
     <h3 style="margin:0">TrenchSwap Firefox — fees</h3>
