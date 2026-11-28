@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 <meta name="color-scheme" content="dark"/>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-DkYIBO7VaTtQ43VNUYSFrUhl/6EhBWKl1mMUNtQ7hFk=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://api.coingecko.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' data: 'sha256-yFLAB0UNuxOuS10fZ2xuzKjI+3FcelSK+pSS+lTVYyA=' 'sha256-9edl+Qp6+AxsShdOnTkMF87XY83XGebJ33me/K4wKHo=' 'sha256-+6pIUA0uvN/1TTCavJd4nZtngOnsFOLAFcNvPIBw0aw=' 'sha256-dk8+eKBGRRSa4ecfGArDEwWLXAK0hgJxJwKAuzm0xp0=' 'sha256-sEIR7IEnucfA98Zj4uSbStpL/xz1aNJkFNpO4Y0nRSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' https: data: blob:; connect-src 'self' https://api.dexscreener.com https://quote-api.jup.ag https://api.jup.ag https://lite-api.jup.ag https://api.mainnet-beta.solana.com https://solana-rpc.publicnode.com https://solana.api.onfinality.io https://api.geckoterminal.com https://api.coingecko.com https://frontend-api-v3.pump.fun https://www.forbes.com https://www.cnbc.com https://www.ms.now https://www.coindesk.com https://cointelegraph.com https://www.marketwatch.com https://raw.githubusercontent.com https://open.er-api.com https://formsubmit.co https://www.tiktok.com https://vimeo.com https://api.kamino.finance https://yields.llama.fi; frame-src https://www.youtube-nocookie.com https://www.tiktok.com https://player.vimeo.com https://platform.twitter.com; object-src 'none'; base-uri 'self'"/>
 <link rel="icon" href="data:,"/>
 <title>TrenchSwap</title>
 <meta property="og:type" content="website"/>
@@ -34,6 +34,10 @@
 <style>
 :root{--bg:#0A0614;--panel:#150B26;--raised:#1E1032;--deep:#2A1B42;--purple:#662D91;--violet:#7C3AED;--cta:#A855F7;--gloss:#C084FC;--gloss2:#F3E8FF;--text:#F2EDFA;--muted:#A89BBF;--green:#22C55E;--red:#EF4444;--amber:#F59E0B;--line:rgba(192,132,252,.18)}
 *{box-sizing:border-box}html,body{margin:0;background:#05030a;color:var(--text);font-family:"IBM Plex Sans",system-ui,sans-serif}
+/* v60v61b: document-level horizontal containment — no element can widen
+   the layout viewport on the phone again. Inner scroll containers
+   (.swipe news carousel, nav rail) keep their own overflow. */
+html,body{overflow-x:clip}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:radial-gradient(900px 500px at 50% -10%,rgba(124,58,237,.28),transparent 60%),#05030a}
 h1,h2,h3,.head{font-family:Montserrat,system-ui,sans-serif}
@@ -535,6 +539,63 @@ button,.token-card,.watch-card,.mktrow,.pickrow{transition:transform .15s ease,b
 .tw58-comp-bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#7C3AED,#C084FC)}
 .tw58-comp-val{flex:0 0 26px;text-align:right;font-size:12px;font-weight:700;color:var(--text)}
 .tw58-comp-nr{flex:0 0 auto;font-size:11px;color:var(--muted)}
+/* ===== v60v61b: TrenchWire compact cards — Jeffrey 2026-11-27: halve the
+   special-block size, cap rendered cards at 10. Ranking, windows, scoring
+   and copy are untouched; this only shrinks the rendered card. No content
+   is removed — paddings, margins, fonts and the sparkline shrink, the
+   7 scored-component rows flow into a 2-column grid, and the grid cell
+   value is blocked so the body line-height strut cannot inflate it. */
+#twList .tw58-card{margin-top:6px;padding:6px 8px;border-radius:10px}
+.tw58-top{gap:8px}
+#twList .tw58-logo,#twList .tw58-tile{width:24px;height:24px}
+#twList .tw58-tile{font-size:12px}
+.tw58-name{font-size:13px}
+.tw58-sym{font-size:11px}
+.tw58-score-lbl{font-size:8.5px}
+.tw58-score{font-size:16px}
+.tw58-grid{gap:4px 6px;margin-top:5px}
+.tw58-cell{padding:2px 5px;border-radius:8px}
+.tw58-cell small{font-size:8.5px}
+.tw58-cell b{font-size:11.5px}
+.tw58-sparkwrap{margin-top:4px}
+.tw58-spark{height:18px}
+.tw58-spark-lbl{font-size:10px;margin-top:1px}
+.tw58-bs-lbl{font-size:11px;margin-top:5px}
+.tw-bar{height:6px;margin:5px 0 3px}
+.tw58-mintrow{margin-top:4px;gap:6px}
+.tw58-mintrow .mono{font-size:11px}
+.tw58-scored{margin-top:6px;padding:6px 8px;border-radius:10px}
+.tw58-scored-head{gap:8px}
+.tw58-badge{width:24px;height:24px}
+.tw58-scored-title{font-size:12.5px}
+.tw58-verdict{font-size:11px;line-height:1.25}
+.tw58-bigscore{font-size:18px}
+.tw58-comps{margin-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px}
+.tw58-comp{margin-top:0;gap:6px}
+.tw58-comp-lbl{flex-basis:64px;font-size:10.5px}
+.tw58-comp-bar{height:5px}
+.tw58-comp-val{flex-basis:22px;font-size:11px}
+.tw58-comp-nr{font-size:10px}
+/* v60v61b pass 2: line-height is the remaining height driver (body 1.55
+   inflates every stacked label/value). Tighten it on the card's stacked
+   text so the card approaches half its old height with content intact. */
+.tw58-nameline{line-height:1.15}
+.tw58-scorebox{line-height:1.15}
+.tw58-cell small{line-height:1.15}
+.tw58-cell b{line-height:1.15}
+.tw58-bs-lbl{line-height:1.2}
+.tw58-verdict{line-height:1.2}
+.tw58-scored-title{line-height:1.2}
+.tw58-comp{line-height:1.2}
+/* v60v61b pass 3: the cell value <b> is inline, so its line box inherits
+   the body's 1.55 strut and each grid cell is 38px instead of ~28px.
+   Block it. The card's Sources line wraps to 2 lines at 12px/1.6 — scope
+   it to 11px/1.25 inside the card only (never touch the global .fee).
+   Logo 28->24, spark label line-height 1.2. */
+.tw58-cell b{display:block}
+#twList .tw58-card .fee{font-size:11px;line-height:1.25}
+.tw58-spark-lbl{line-height:1.2}
+
 
 .walk-text{font-size:21px;line-height:1.45;font-family:Montserrat,system-ui,sans-serif;font-weight:800;margin:16px 0 6px}
 .walk-dots{display:flex;gap:6px;justify-content:center;margin:14px 0 4px}
@@ -664,6 +725,8 @@ nav button:active{transform:translateY(1px)}
 
 
 </style>
+<!-- TRENCH HOUSE v61: House styles (external, CSP style-src self) -->
+<link rel="stylesheet" href="trench-house/trench-house.css">
 </head>
 <body>
 <div id="bootBanner"><div><div class="bb-name">TrenchSwap</div><div class="bb-line">TrenchSwap is starting...</div><p class="bb-note">If this screen stays for more than a few seconds, the app view on this device is stuck. Close and reopen the app. If it keeps happening, update Android System WebView and Chrome in the Play Store, then try again. Nothing was created and no keys were touched.</p></div></div>
@@ -1059,6 +1122,141 @@ nav button:active{transform:translateY(1px)}
   </div>
 
 </section>
+<!-- ============ TRENCH HOUSE v61: tab section (one insertion point) ============ -->
+<!-- TRENCH HOUSE v61 - section tab-house. Place AFTER the Market tab section
+     (after the </section> that closes #tab-market). The matching rail button
+     lives in the nav rail (V61 nav-button insertion). Styles: trench-house/trench-house.css.
+     Behaviour: trench-house/trench-house.js (external module, no inline script). -->
+<section class="tab" id="tab-house">
+  <div class="th-wrap">
+    <div class="th-samplebar" id="th-samplebar">SAMPLE DATA: sample posts, sample news and sample ads. Nothing here is a real member post yet.</div>
+    <div class="th-head">
+      <div class="th-flame">&#128293;</div>
+      <div><h2>TRENCH HOUSE</h2><p>The social side of TrenchSwap. Post, call out tokens, read the news, and meet the trenchers. Wallet-signature profiles, no keys, no custody.</p></div>
+    </div>
+    <div class="th-subnav">
+      <button type="button" id="th-tab-feed" class="on">House Feed</button>
+      <button type="button" id="th-tab-callouts">Call-Outs</button>
+      <button type="button" id="th-tab-join">Join the House</button>
+      <button type="button" id="th-tab-post">Write a Post</button>
+      <button type="button" id="th-tab-advertise">Place an Ad</button>
+    </div>
+    <div id="th-view-feed" style="margin-top:14px"></div>
+    <div id="th-view-callouts" class="th-hidden" style="margin-top:14px"></div>
+    <div id="th-view-profile" class="th-hidden" style="margin-top:14px"></div>
+    <div id="th-view-join" class="th-hidden" style="margin-top:14px">
+      <div class="th-card">
+        <h2 class="th-sec">Join the House</h2>
+        <p class="th-note">A profile is a wallet and a handle. You never hand over keys or a seed phrase. Your handle is tied to the wallet that signs the claim message below, and the review lane checks that signature before anything is published.</p>
+        <label for="th-j-wallet">Wallet address</label>
+        <input type="text" id="th-j-wallet" placeholder="Your Solana wallet address">
+        <label for="th-j-handle">Handle (3 to 20 letters, numbers or underscore)</label>
+        <input type="text" id="th-j-handle" placeholder="e.g. TrenchBoss">
+        <label>Pick a character</label>
+        <div class="th-avatars" id="th-j-avatars"></div>
+        <label for="th-j-bio">Bio (optional, 280 characters max)</label>
+        <textarea id="th-j-bio" rows="3" maxlength="280" placeholder="Who you are in the trenches."></textarea>
+        <label>Your 2 website links (optional)</label>
+        <input type="text" id="th-j-link1" placeholder="https://your-site.com">
+        <input type="text" id="th-j-link2" placeholder="https://another-site.com" style="margin-top:6px">
+        <p class="th-note">Links must be https and pass a safety check, or they are dropped at review.</p>
+        <label for="th-j-x">X profile link (optional)</label>
+        <input type="text" id="th-j-x" placeholder="https://x.com/yourhandle">
+        <label for="th-j-fb">Facebook profile link (optional)</label>
+        <input type="text" id="th-j-fb" placeholder="https://facebook.com/yourhandle">
+        <p class="th-note">To prove the X or Facebook link is yours, post the code below from that account, then include the post link in your submission file.</p>
+        <div style="margin-top:8px">
+          <button class="th-mini" type="button" id="th-j-gen">Generate verification code</button>
+          <span class="th-note" id="th-j-code"></span>
+        </div>
+        <label>What the House may show about you (off by default)</label>
+        <label class="th-tog"><input type="checkbox" id="th-j-fin-h"><span>Show my holdings<small>Your token balances, read live when your page opens.</small></span></label>
+        <label class="th-tog"><input type="checkbox" id="th-j-fin-t"><span>Show my recent trades<small>Your latest trades, read live when your page opens.</small></span></label>
+        <label class="th-tog"><input type="checkbox" id="th-j-fin-m"><span>Show tokens I minted<small>Verified on TrenchSwap, or through a claimed token.</small></span></label>
+        <label for="th-j-sig">Wallet signature of the claim message (required)</label>
+        <pre id="th-j-message">Sign the claim message with your wallet, then paste the signature here.</pre>
+        <input type="text" id="th-j-sig" placeholder="Paste the signature (base58)">
+        <button class="th-bigbtn" type="button" id="th-j-submit">Build my profile submission</button>
+        <div id="th-j-out" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div id="th-view-post" class="th-hidden" style="margin-top:14px">
+      <div class="th-card">
+        <h2 class="th-sec">Write a Post</h2>
+        <label for="th-p-wallet">Post as (your sample profile, until your real profile is published)</label>
+        <select id="th-p-wallet" class="th-author-select"></select>
+        <label for="th-p-text">Your post</label>
+        <textarea id="th-p-text" rows="4" maxlength="280" placeholder="Say it like you mean it."></textarea>
+        <div class="th-count" id="th-p-count">0 / 280</div>
+        <label for="th-p-link">Link to share (optional, becomes a rich preview card)</label>
+        <input type="text" id="th-p-link" placeholder="https://example.com/article">
+        <label>Pictures (optional, up to 4, max 5 MB each) OR video (max 10 seconds, max 6 MB)</label>
+        <input type="file" id="th-p-img" accept="image/*" multiple>
+        <input type="file" id="th-p-vid" accept="video/*" style="margin-top:6px">
+        <div class="th-note" id="th-p-media-info"></div>
+        <button class="th-bigbtn" type="button" id="th-p-submit">Build my post submission</button>
+        <div id="th-p-out" style="margin-top:10px"></div>
+      </div>
+      <div class="th-card">
+        <h2 class="th-sec">Post a Trencher Call-Out</h2>
+        <p class="th-note">A call-out is your own posted words about a token. It mirrors into the Call-Out feed after review. It is not a holdings display and shows no balances.</p>
+        <label for="th-c-mint">Token mint</label>
+        <input type="text" id="th-c-mint" placeholder="Token mint address">
+        <label for="th-c-reason">Why you are calling it out (280 characters max)</label>
+        <textarea id="th-c-reason" rows="3" maxlength="280" placeholder="What you see in it."></textarea>
+        <div class="th-count" id="th-c-count">0 / 280</div>
+        <button class="th-bigbtn" type="button" id="th-c-submit">Build my call-out submission</button>
+        <div id="th-c-out" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div id="th-view-advertise" class="th-hidden" style="margin-top:14px">
+      <div class="th-card">
+        <h2 class="th-sec">Place an Ad in the Feed</h2>
+        <p class="th-note">Ads sit in the House feed, clearly labelled, at most one per eight feed slots. View counts are approximate until the server stage makes them exact.</p>
+        <p class="th-price">0.25 USDC per 100 views</p>
+        <p class="th-note">Buy in blocks of 100 views. Pay the exact USDC to the TrenchSwap fee wallet, then paste the payment signature below. The reviewer verifies the payment on-chain before publishing.</p>
+        <p class="th-mintline">Pay to: <b>utJ3CPNT6zHiaQvr356vURiQVQ3GhobWUDbRMUybHww</b></p>
+        <label for="th-a-wallet">Ad account (your profile)</label>
+        <select id="th-a-wallet" class="th-author-select"></select>
+        <label for="th-a-text">Ad text (280 characters max)</label>
+        <textarea id="th-a-text" rows="3" maxlength="280" placeholder="What the feed should see."></textarea>
+        <div class="th-count" id="th-a-count">0 / 280</div>
+        <label for="th-a-link">Link the ad goes to</label>
+        <input type="text" id="th-a-link" placeholder="https://your-link.com">
+        <label>Ad picture (optional, max 5 MB)</label>
+        <input type="file" id="th-a-img" accept="image/*">
+        <div class="th-note" id="th-a-img-info"></div>
+        <label for="th-a-views">Views to buy (100 views = 0.25 USDC)</label>
+        <input type="number" id="th-a-views" value="100" step="100" min="100">
+        <p class="th-note">Total: <b id="th-a-price">0.25 USDC</b> <span id="th-a-blocks">(1 block x 0.25 USDC)</span></p>
+        <label for="th-a-sig">USDC payment signature (required)</label>
+        <input type="text" id="th-a-sig" placeholder="Paste the Solana transaction signature of your payment">
+        <button class="th-bigbtn" type="button" id="th-a-submit">Build my ad submission</button>
+        <div id="th-a-out" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div id="th-view-quote" class="th-hidden" style="margin-top:14px">
+      <div class="th-card">
+        <h2 class="th-sec">Quote This Post</h2>
+        <div id="th-q-embed"></div>
+        <label for="th-q-wallet">Quote as (your sample profile, until your real profile is published)</label>
+        <select id="th-q-wallet" class="th-author-select"></select>
+        <label for="th-q-text">Your words (280 characters max)</label>
+        <textarea id="th-q-text" rows="4" maxlength="280" placeholder="Add your own take."></textarea>
+        <div class="th-count" id="th-q-count">0 / 280</div>
+        <button class="th-bigbtn" type="button" id="th-q-submit">Build my quote submission</button>
+        <div id="th-q-out" style="margin-top:10px"></div>
+      </div>
+    </div>
+    <div id="th-view-payload" class="th-hidden" style="margin-top:14px">
+      <div class="th-card">
+        <h2 class="th-sec">Your Submission File</h2>
+        <p class="th-note">Nothing is sent from here. Download the file and send it to the review lane (a pull request or a file drop, per the review instructions). A reviewer checks the signature, the links, the media caps and the payment, then publishes it in the next bundle.</p>
+        <div id="th-payload-out"></div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ============ SEARCH — SOLANA TOKENS ============ -->
 <section class="tab" id="tab-search">
@@ -1297,7 +1495,7 @@ nav button:active{transform:translateY(1px)}
       <div class="fb59-feat"><i></i>Floats over your other apps</div>
       <div class="fb59-feat"><i></i>Paste any Solana CA</div>
       <div class="fb59-feat"><i></i>Preset buy and sell buttons</div>
-      <div class="fb59-feat"><i></i>Same fees as TrenchSwap</div>
+      <div class="fb59-feat"><i></i>Fees shown before you sign</div>
     </div>
     <a class="btn fb59-dl" href="https://appsthatpay.github.io/halex-web/fire-button/fire-button.apk" download>Get the Fire Button</a>
     <p class="fb59-note">Standalone Android app from the TrenchSwap team.</p>
@@ -1441,6 +1639,8 @@ nav button:active{transform:translateY(1px)}
   <button data-tab="home" class="on"><span class="ic">⌂</span><span data-i18n="home">Home</span></button>
   <button data-tab="wallet"><span class="ic">▣</span><span data-i18n="wallet">Wallet</span></button>
   <button data-tab="market"><span class="ic">▥</span><span data-i18n="market">Market</span></button>
+  <!-- TRENCH HOUSE v61: rail button, after Market (Trenching lives in Market) -->
+  <button data-tab="house"><span class="ic">🏠</span><span>Trench House</span></button>
   <button data-tab="search"><span class="ic">🔍</span><span>Search</span></button>
   <button data-tab="swap"><span class="ic">⇅</span><span data-i18n="swap">Swap</span></button>
   <button data-tab="stake"><span class="ic">🌱</span><span>Stake &amp; Rewards</span></button>
@@ -5342,6 +5542,12 @@ function tsBackToTokenRow(mint){
   row.classList.remove("ts-rowflash");void row.offsetWidth;row.classList.add("ts-rowflash");
   setTimeout(function(){row.classList.remove("ts-rowflash")},2100);
  },90)}
+/* v60: report retry — when the DexScreener details fetch fails or stalls,
+   the token page must say so plainly AND offer a one-tap retry, instead of
+   sitting on "still loading" forever. Retry re-opens the same mint with a
+   fresh seq and a fresh 15s budget. */
+function tsReportRetryArm(mint){var b=document.getElementById("tsReportRetryBtn");if(b)b.addEventListener("click",function(){openReport(mint,null)})}
+function tsReportRetryBtnHtml(){return '<button class="btn" id="tsReportRetryBtn" type="button" style="margin-top:10px">Retry the report</button>'}
 function openReport(mint,knownPair){
  /* Hack-a-thon Lane 1: the mint is interpolated into the report body, so
     only a base58 Solana mint (32-44 chars) may enter. A malformed mint
@@ -5375,8 +5581,8 @@ function openReport(mint,knownPair){
     fetchChart()}}
   renderChartShell(mint,first,seq)}).catch(function(){});
  /* If neither source answers at all, say so instead of spinning forever. */
- setTimeout(function(){if(seq!==state.reportSeq)return;var rb=$("reportBody");if(!rb||rb.querySelector("#chartStamp")||rb.dataset.noSane)return;rb.innerHTML='<p class="sub">Report: NOT READ — DexScreener and GeckoTerminal did not answer. Try again, or pick another token.</p>'},30000);
- fetch(dexTokensUrl(mint)).then(function(r){return r.json()}).then(function(d){
+ setTimeout(function(){if(seq!==state.reportSeq)return;var rb=$("reportBody");if(!rb||rb.dataset.noSane)return;if(rb.querySelector("#reportSwapBtn"))return;if(rb.querySelector("#chartStamp")){var n=$("reportDexNote");if(n)n.textContent="Token details: DexScreener did not answer after 30s — chart only. Tap Retry to try again.";if(!document.getElementById("tsReportRetryBtn")&&rb){var dv=document.createElement("div");dv.innerHTML=tsReportRetryBtnHtml();if(n)n.parentNode.insertBefore(dv.firstChild,n.nextSibling);else rb.appendChild(dv.firstChild);tsReportRetryArm(mint)}return}rb.innerHTML='<p class="sub" style="font-size:14px;color:#F2EDFA">Report: NOT READ — DexScreener and GeckoTerminal did not answer. Try again, or pick another token.</p>'+tsReportRetryBtnHtml();tsReportRetryArm(mint)},30000);
+ var dsCtl=(typeof AbortController!=="undefined")?new AbortController():null;var dsTo=dsCtl?setTimeout(function(){dsCtl.abort()},15000):null;fetch(dexTokensUrl(mint),dsCtl?{signal:dsCtl.signal}:undefined).then(function(r){if(dsTo)clearTimeout(dsTo);return r.json()}).then(function(d){
   /* JUP header fix: the report header AND the chart pair come from the
      sanity-filtered pair only. bestPair is liquidity-sorted with no sanity
      check, so one mispriced pool (e.g. the Meteora DLMM MET/JUP pool
@@ -5467,7 +5673,7 @@ function openReport(mint,knownPair){
    parts.push("First-seen (pair creation): this token "+fd(firstMine)+" \u00b7 earliest $"+sym+" pair "+fd(firstAny)+(firstDex?" ("+firstDex+")":""));
    el.textContent=parts.join(" \u00b7 ");
   }).catch(function(){var el=document.getElementById("copycat-"+mint.slice(0,6));if(el)el.textContent="NOT READ \u2014 DexScreener search did not answer"});
- }).catch(function(){var n=$("reportDexNote");if(n){n.textContent="Token details: DexScreener did not answer — chart only.";return}var rb=$("reportBody");if(rb&&!rb.querySelector("#chartStamp"))rb.innerHTML='<p class="sub">Report unavailable, retrying… DexScreener did not answer.</p>'})}
+ }).catch(function(){if(dsTo)clearTimeout(dsTo);var n=$("reportDexNote");if(n){n.textContent="Token details: DexScreener did not answer — chart only. Tap Retry to try again.";if(!document.getElementById("tsReportRetryBtn")){var dv=document.createElement("div");dv.innerHTML=tsReportRetryBtnHtml();n.parentNode.insertBefore(dv.firstChild,n.nextSibling);tsReportRetryArm(mint)}return}var rb=$("reportBody");if(rb&&!rb.querySelector("#chartStamp")){rb.innerHTML='<p class="sub" style="font-size:14px;color:#F2EDFA">Report unavailable — DexScreener did not answer.</p>'+tsReportRetryBtnHtml();tsReportRetryArm(mint)}})}
 /* ---------- Token share (v39): deep links, share card, replay links ----------
    Every token view is shareable. The token page header and each Markets
    row carry a Share button. Sharing builds a deep link
@@ -11952,6 +12158,9 @@ var TrenchWire = (function () {
   var TW_CACHE_KEY = "trenchwire.v58";           /* localStorage key */
   var TW_SURVIVAL_MS = 2 * 60 * 60 * 1000;       /* must last 2h to rank */
   var TW_TOP_N = 20;
+  /* v60v61b: rendered TrenchWire cards are capped at 10 (Jeffrey 2026-11-27).
+     Ranking, cache and sparkline fetch stay Top 20 — only the render caps. */
+  var TW_RENDER_N = 10;
   var TW_MAX_MINTS = 60;                         /* DexScreener batch cap */
   var TW_GT_POOL_LOOKUPS = 10;                   /* GT free-tier courtesy cap */
 
@@ -12723,7 +12932,7 @@ var TrenchWire = (function () {
       html = '<p class="sub">No tokens qualify in this window yet  - every candidate is either under the 2h survival gate or unread. ' +
              'Check the other windows, or tap Refresh after the next check.</p>';
     } else {
-      html = win.ranked.map(function (r, i) { return twCardHtml58(r, i + 1, windowKey); }).join("");
+      html = win.ranked.slice(0, TW_RENDER_N).map(function (r, i) { return twCardHtml58(r, i + 1, windowKey); }).join("");
     }
     if (win.tooYoung && win.tooYoung.length) {
       html += '<p class="fee" style="margin-top:8px">Too young to rank (under 2h old): ' +
@@ -16091,5 +16300,7 @@ var V50Polish = (function () {
 })();
 
 </script>
+<!-- TRENCH HOUSE v61: House module (external, CSP script hashes untouched) -->
+<script src="trench-house/trench-house.js" defer></script>
 </body>
 </html>
