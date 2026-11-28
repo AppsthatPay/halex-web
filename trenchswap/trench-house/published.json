@@ -1,0 +1,469 @@
+{
+ "_sample_note": "SAMPLE DATA for the stage-1 prototype, round 2. Every wallet, handle, token, headline, view count and number below is invented for layout testing. No real wallets, no real people, no real news, no real ads, no real reads. In production the financial blocks are live chain reads (DESIGN.md section 7), news cards are baked from outlet RSS at publish time (section 2.4), ad view tallies are approximate client tallies folded in at publish (section 2.6), and engagement counts are publish-time tallies (section 2.6).",
+ "ads": [
+  {
+   "id": "a-000001",
+   "image": {
+    "sample_label": "SAMPLE AD CREATIVE (avatar art standing in for an uploaded ad image)",
+    "url": "trench-house/avatars/lookout.svg"
+   },
+   "link_label": "Read the Journal",
+   "link_url": "https://example.com/deep-trencher",
+   "status": "published",
+   "text": "SAMPLE AD. The Trench Journal: one page a night on what the chain actually said. Read it before the next mint, not after.",
+   "ts": "2026-11-27T17:05:00Z",
+   "views_purchased": 1000,
+   "views_served": 412,
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "id": "a-000002",
+   "image": {
+    "sample_label": "SAMPLE AD CREATIVE (avatar art standing in for an uploaded ad image)",
+    "url": "trench-house/avatars/sapper.svg"
+   },
+   "link_label": "Get the checklist",
+   "link_url": "https://example.com/capn",
+   "status": "published",
+   "text": "SAMPLE AD. Trench Notes, the free checklist I run before any buy. No signals, no calls, just the reads in order.",
+   "ts": "2026-11-27T12:05:00Z",
+   "views_purchased": 500,
+   "views_served": 137,
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  }
+ ],
+ "generated_at": "2026-11-27T19:05:00Z",
+ "news": [
+  {
+   "headline": "Sample headline: Solana network posts another week of steady throughput as memecoin volume cools",
+   "id": "n-000003",
+   "outlet": "CoinDesk",
+   "status": "published",
+   "ts": "2026-11-27T18:41:00Z",
+   "url": "https://example.com/news/coindesk-sample"
+  },
+  {
+   "headline": "Sample headline: Wallet safety groups push message-signing standards for social profiles",
+   "id": "n-000002",
+   "outlet": "Cointelegraph",
+   "status": "published",
+   "ts": "2026-11-27T16:22:00Z",
+   "url": "https://example.com/news/cointelegraph-sample"
+  },
+  {
+   "headline": "Sample headline: Markets steady into the holiday weekend as traders watch rate signals",
+   "id": "n-000001",
+   "outlet": "Reuters",
+   "status": "published",
+   "ts": "2026-11-27T13:58:00Z",
+   "url": "https://example.com/news/reuters-sample"
+  }
+ ],
+ "posts": [
+  {
+   "engagement": {
+    "likes": 9,
+    "quotes": 0,
+    "replies": 2,
+    "reposts": 1,
+    "views": 212
+   },
+   "id": "p-000009",
+   "media": {
+    "images": [
+     "trench-house/avatars/skytrencher.svg",
+     "trench-house/avatars/diver.svg"
+    ],
+    "kind": "image",
+    "sample_label": "SAMPLE PICTURES (avatar art standing in for uploaded photos, 2 of up to 4)"
+   },
+   "status": "published",
+   "text": "SAMPLE post. Two views from the deep end tonight. Same trench, one hour apart. This is why we sit and watch instead of chasing.",
+   "ts": "2026-11-27T18:44:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 6,
+    "quotes": 1,
+    "replies": 1,
+    "reposts": 0,
+    "views": 158
+   },
+   "id": "n-feed-anchor-1",
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE post. If the House feed shows you a headline, a call-out and a trencher's own words in one scroll, that is the whole point. Read all three before you touch anything.",
+   "ts": "2026-11-27T18:31:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 4,
+    "quotes": 0,
+    "replies": 0,
+    "reposts": 1,
+    "views": 121
+   },
+   "id": "q-000001",
+   "quote_of": "p-000002",
+   "status": "published",
+   "text": "SAMPLE quote. This right here. The 3 AM test has never once lied to me.",
+   "ts": "2026-11-27T18:24:00Z",
+   "type": "quote",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 11,
+    "quotes": 1,
+    "replies": 3,
+    "reposts": 2,
+    "views": 340
+   },
+   "id": "c-000002",
+   "mint": "Samp1eMintTokenXXXXXXXXXXXXXXXXXXXXXXXXpump",
+   "reason": "SAMPLE call-out. Watching this one because the same three wallets keep adding on every dip and the dev has not sold a single token since launch. Small, quiet, still early.",
+   "source": "trenchswap-trenching-tab",
+   "status": "published",
+   "token_name": "Sample Token (not a real token)",
+   "token_symbol": "$SAMPLE",
+   "ts": "2026-11-27T17:52:00Z",
+   "type": "callout",
+   "wallet": "Samp1eWa11etNightOwlXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 18,
+    "quotes": 1,
+    "replies": 5,
+    "reposts": 3,
+    "views": 402
+   },
+   "id": "p-000006",
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE post. House rules I trade by: read the mint authority, read the freeze authority, read the holders. If a read comes back NOT READ, that is the answer. The trench rewards patience.",
+   "ts": "2026-11-27T17:20:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 2,
+    "quotes": 0,
+    "replies": 0,
+    "reposts": 0,
+    "views": 96
+   },
+   "id": "p-000005",
+   "repost_of": "p-000002",
+   "status": "published",
+   "ts": "2026-11-27T16:48:00Z",
+   "type": "repost",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 7,
+    "quotes": 0,
+    "replies": 2,
+    "reposts": 1,
+    "views": 187
+   },
+   "id": "p-000007",
+   "link_card": {
+    "description": "SAMPLE Open Graph preview baked at publish time: what a bonding curve is, why early prices move so fast, and what graduation changes.",
+    "image": "trench-house/avatars/miner.svg",
+    "kind": "article",
+    "site": "Example Markets Blog",
+    "title": "Bonding Curves, Explained Without the Hype (SAMPLE preview)",
+    "url": "https://example.com/bonding-curves-explained"
+   },
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE link share. Good plain-English walkthrough of how bonding curves actually price the early minutes. Worth ten minutes of your night.",
+   "ts": "2026-11-27T16:05:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 14,
+    "quotes": 1,
+    "replies": 4,
+    "reposts": 3,
+    "views": 366
+   },
+   "id": "p-000002",
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE post. Night shift report: two fresh mints worth a second look, nine worth forgetting. The difference was never the chart. It was who held, who sold, and who was still there at 3 AM.",
+   "ts": "2026-11-27T15:31:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etNightOwlXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 5,
+    "quotes": 0,
+    "replies": 1,
+    "reposts": 0,
+    "views": 143
+   },
+   "id": "p-000008",
+   "link_card": {
+    "kind": "pumpfun",
+    "mint": "Samp1eMintCrewTokenXXXXXXXXXXXXXXXXXXXXpump",
+    "token_name": "Owl Crew Token (sample, not real)",
+    "token_symbol": "$OWLCREW",
+    "url": "https://pump.fun/coin/Samp1eMintCrewTokenXXXXXXXXXXXXXXXXXXXXpump"
+   },
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE pump.fun link share. Crew token page, sharing the link the way the House renders it: a token card, not a buy button. Trading stays in TrenchSwap.",
+   "ts": "2026-11-27T15:02:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etNightOwlXXXXXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 8,
+    "quotes": 0,
+    "replies": 2,
+    "reposts": 1,
+    "views": 229
+   },
+   "id": "c-000001",
+   "mint": "Samp1eMintCrewTokenXXXXXXXXXXXXXXXXXXXXpump",
+   "reason": "SAMPLE call-out. Crew token, tiny and dumb and honest about it. Watching because liquidity keeps creeping up while nobody talks about it. That is usually the tell.",
+   "source": "trenchswap-trenching-tab",
+   "status": "published",
+   "token_name": "Owl Crew Token (sample, not real)",
+   "token_symbol": "$OWLCREW",
+   "ts": "2026-11-27T14:05:00Z",
+   "type": "callout",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 12,
+    "quotes": 0,
+    "replies": 3,
+    "reposts": 2,
+    "views": 298
+   },
+   "id": "p-000004",
+   "media": {
+    "kind": "video",
+    "sample_label": "SAMPLE VIDEO SLOT (5s, no real video in the prototype)",
+    "seconds": 5,
+    "url": ""
+   },
+   "status": "published",
+   "text": "SAMPLE post. Morning muster. If your whole thesis fits in one green candle, you do not have a thesis, you have a hope. Bring a reason or stay on the wall.",
+   "ts": "2026-11-27T13:12:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 10,
+    "quotes": 0,
+    "replies": 1,
+    "reposts": 1,
+    "views": 254
+   },
+   "id": "p-000003",
+   "media": {
+    "images": [
+     "trench-house/avatars/skytrencher.svg"
+    ],
+    "kind": "image",
+    "sample_label": "SAMPLE PICTURE (avatar art standing in for an uploaded photo)"
+   },
+   "status": "published",
+   "text": "SAMPLE post. View from the deep end this morning. Some of us are down here so the rest of you do not have to be.",
+   "ts": "2026-11-27T12:40:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "engagement": {
+    "likes": 21,
+    "quotes": 2,
+    "replies": 6,
+    "reposts": 4,
+    "views": 511
+   },
+   "id": "p-000001",
+   "media": null,
+   "status": "published",
+   "text": "SAMPLE post. First post in the House. One wallet, one name, my own words. Everything financial stays off unless I turn it on myself. That is how this place should work.",
+   "ts": "2026-11-27T11:02:00Z",
+   "type": "post",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  }
+ ],
+ "profiles": [
+  {
+   "avatar": "diver",
+   "bio": "SAMPLE profile. Down in the deep trenches, watching new pairs and reading the chain before I touch anything.",
+   "financial_display": {
+    "holdings": true,
+    "minted_tokens": false,
+    "recent_trades": false
+   },
+   "handle": "deep_trencher",
+   "joined": "2026-11-27",
+   "links": [
+    {
+     "label": "My trench journal",
+     "safe_checked": true,
+     "url": "https://example.com/deep-trencher"
+    },
+    {
+     "label": "Charts I watch",
+     "safe_checked": true,
+     "url": "https://example.org/charts"
+    }
+   ],
+   "sample_financial": {
+    "holdings": [
+     {
+      "amount": "4.205",
+      "note": "SAMPLE",
+      "symbol": "SOL"
+     },
+     {
+      "amount": "182.44",
+      "note": "SAMPLE",
+      "symbol": "USDC"
+     },
+     {
+      "amount": "250000",
+      "note": "SAMPLE",
+      "symbol": "$SAMPLE"
+     }
+    ]
+   },
+   "signature": "SAMPLE-SIGNATURE-NOT-REAL",
+   "socials": {
+    "facebook": {
+     "method": null,
+     "url": "https://facebook.com/example.deep.trencher",
+     "verified": false
+    },
+    "x": {
+     "method": "code-post",
+     "url": "https://x.com/example_deep_trencher",
+     "verified": true
+    }
+   },
+   "status": "published",
+   "wallet": "Samp1eWa11etDeepTrencherXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "avatar": "captain",
+   "bio": "SAMPLE profile. Chart first, questions second. I post my watchlist thinking here, nothing else. Financial display stays off by my choice.",
+   "financial_display": {
+    "holdings": false,
+    "minted_tokens": false,
+    "recent_trades": false
+   },
+   "handle": "capn_trenches",
+   "joined": "2026-11-27",
+   "links": [
+    {
+     "label": "Trench notes",
+     "safe_checked": true,
+     "url": "https://example.com/capn"
+    },
+    {
+     "label": "",
+     "safe_checked": false,
+     "url": ""
+    }
+   ],
+   "signature": "SAMPLE-SIGNATURE-NOT-REAL",
+   "socials": {
+    "facebook": {
+     "method": null,
+     "url": "",
+     "verified": false
+    },
+    "x": {
+     "method": "code-post",
+     "url": "https://x.com/example_capn",
+     "verified": true
+    }
+   },
+   "status": "published",
+   "wallet": "Samp1eWa11etCapnTrenchesXXXXXXXXXXXXXXXXXX"
+  },
+  {
+   "avatar": "nightwatch",
+   "bio": "SAMPLE profile. Night shift. I minted two joke tokens for my crew and I show my trades so nobody has to guess what I did.",
+   "financial_display": {
+    "holdings": false,
+    "minted_tokens": true,
+    "recent_trades": true
+   },
+   "handle": "owl_of_the_trench",
+   "joined": "2026-11-27",
+   "links": [
+    {
+     "label": "Crew page",
+     "safe_checked": true,
+     "url": "https://example.com/owl-crew"
+    },
+    {
+     "label": "Old blog",
+     "safe_checked": true,
+     "url": "https://example.net/owl"
+    }
+   ],
+   "sample_financial": {
+    "minted_tokens": [
+     {
+      "mint": "Samp1eMintTokenXXXXXXXXXXXXXXXXXXXXXXXXpump",
+      "symbol": "$SAMPLE",
+      "via": "SAMPLE record"
+     },
+     {
+      "mint": "Samp1eMintCrewTokenXXXXXXXXXXXXXXXXXXXXpump",
+      "symbol": "$OWLCREW",
+      "via": "SAMPLE record"
+     }
+    ],
+    "recent_trades": [
+     {
+      "text": "SAMPLE trade: SOL into $SAMPLE",
+      "when": "2026-11-27 09:14 EST"
+     },
+     {
+      "text": "SAMPLE trade: $SAMPLE into USDC",
+      "when": "2026-11-26 22:03 EST"
+     }
+    ]
+   },
+   "signature": "SAMPLE-SIGNATURE-NOT-REAL",
+   "socials": {
+    "facebook": {
+     "method": "code-post",
+     "url": "https://facebook.com/example.owl",
+     "verified": true
+    },
+    "x": {
+     "method": null,
+     "url": "",
+     "verified": false
+    }
+   },
+   "status": "published",
+   "wallet": "Samp1eWa11etNightOwlXXXXXXXXXXXXXXXXXXXXXX"
+  }
+ ]
+}
